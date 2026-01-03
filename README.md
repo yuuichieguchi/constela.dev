@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Constela Documentation Site
 
-## Getting Started
+The official documentation site for [Constela](https://github.com/yuuichieguchi/constela) - a compiler-first UI language for vibecoding.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework**: Next.js 16 + React 19
+- **Styling**: Tailwind CSS v4 + @tailwindcss/typography
+- **MDX**: next-mdx-remote + gray-matter
+- **Syntax Highlighting**: Shiki (@shikijs/rehype)
+- **Playground Editor**: Monaco Editor
+- **Theme**: next-themes (light/dark mode)
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+constela.dev/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── docs/               # Documentation pages
+│   │   ├── reference/          # API reference pages
+│   │   ├── examples/           # Example pages
+│   │   └── playground/         # Interactive playground
+│   ├── components/
+│   │   ├── layout/             # Header, Sidebar, Footer, etc.
+│   │   ├── mdx/                # MDX components (CodeBlock, Callout, PropsTable)
+│   │   ├── playground/         # Playground components
+│   │   └── home/               # Home page components
+│   ├── content/
+│   │   ├── docs/               # Documentation MDX files
+│   │   └── reference/          # Reference MDX files
+│   └── lib/                    # Utilities (mdx, navigation, config)
+└── public/                     # Static assets
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pages
 
-## Learn More
+### Documentation (Get Started)
+- Introduction
+- Installation
+- Your First App
+- State & Expressions
+- Actions & Events
+- Fetch & Effects
+- Components
+- Routing
 
-To learn more about Next.js, take a look at the following resources:
+### Reference
+- DSL Root Schema
+- View Nodes
+- Expressions
+- Actions
+- Error Codes
+- Packages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Examples
+- Counter
+- Todo List
+- Fetch List
+- Router
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Playground
+Interactive editor to write and run Constela code in the browser.
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The site is optimized for static deployment:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+Deploy the `.next` directory to:
+- **Vercel** (recommended)
+- **Netlify**
+- **GitHub Pages**
+- Any static hosting
+
+### Vercel Deployment
+
+```bash
+npx vercel
+```
+
+## Dependencies
+
+This site depends on the following Constela packages (installed from npm):
+
+- `@constela/core` - Types, schema, validator
+- `@constela/compiler` - AST transformation
+- `@constela/runtime` - DOM renderer
+- `@constela/router` - Client-side routing
+
+## License
+
+MIT

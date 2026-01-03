@@ -1,0 +1,263 @@
+---
+title: View Nodes
+description: Complete reference for all view node types in Constela
+---
+
+## Overview
+
+View nodes are the building blocks of Constela UIs. There are 6 node types, each serving a specific purpose in describing your interface.
+
+## Element Node
+
+Renders an HTML element with optional props and children.
+
+```json
+{
+  "kind": "element",
+  "tag": "div",
+  "props": { "class": "container" },
+  "children": [ ... ]
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"element\"", required: true, description: "Node type identifier." },
+  { name: "tag", type: "string", required: true, description: "HTML tag name (e.g., \"div\", \"span\", \"button\")." },
+  { name: "props", type: "Record<string, Expression | string>", required: false, description: "HTML attributes and event handlers. Event handlers use action names as strings." },
+  { name: "children", type: "ViewNode[]", required: false, description: "Child nodes to render inside this element." }
+]} />
+
+### Event Handling
+
+Event handlers are specified as action names in props:
+
+```json
+{
+  "kind": "element",
+  "tag": "button",
+  "props": {
+    "onclick": "handleClick",
+    "onmouseover": "showTooltip"
+  },
+  "children": [...]
+}
+```
+
+## Text Node
+
+Renders dynamic or static text content.
+
+```json
+{
+  "kind": "text",
+  "content": { "expr": "state", "name": "message" }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"text\"", required: true, description: "Node type identifier." },
+  { name: "content", type: "Expression", required: true, description: "Expression that evaluates to the text content." }
+]} />
+
+### Examples
+
+```json
+// Static text
+{ "kind": "text", "content": { "expr": "lit", "value": "Hello, World!" } }
+
+// Dynamic text from state
+{ "kind": "text", "content": { "expr": "state", "name": "userName" } }
+
+// Computed text
+{
+  "kind": "text",
+  "content": {
+    "expr": "bin",
+    "op": "+",
+    "left": { "expr": "lit", "value": "Count: " },
+    "right": { "expr": "state", "name": "count" }
+  }
+}
+```
+
+## If Node
+
+Conditionally renders content based on an expression.
+
+```json
+{
+  "kind": "if",
+  "condition": { "expr": "state", "name": "isLoggedIn" },
+  "then": { ... },
+  "else": { ... }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"if\"", required: true, description: "Node type identifier." },
+  { name: "condition", type: "Expression", required: true, description: "Expression that evaluates to a boolean." },
+  { name: "then", type: "ViewNode", required: true, description: "Node to render when condition is truthy." },
+  { name: "else", type: "ViewNode", required: false, description: "Node to render when condition is falsy." }
+]} />
+
+### Example
+
+```json
+{
+  "kind": "if",
+  "condition": {
+    "expr": "bin",
+    "op": ">",
+    "left": { "expr": "state", "name": "count" },
+    "right": { "expr": "lit", "value": 0 }
+  },
+  "then": {
+    "kind": "text",
+    "content": { "expr": "lit", "value": "Positive!" }
+  },
+  "else": {
+    "kind": "text",
+    "content": { "expr": "lit", "value": "Zero or negative" }
+  }
+}
+```
+
+## Each Node
+
+Iterates over an array and renders content for each item.
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "todos" },
+  "as": "todo",
+  "index": "i",
+  "key": "id",
+  "body": { ... }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"each\"", required: true, description: "Node type identifier." },
+  { name: "items", type: "Expression", required: true, description: "Expression that evaluates to an array." },
+  { name: "as", type: "string", required: true, description: "Variable name for the current item in each iteration." },
+  { name: "index", type: "string", required: false, description: "Variable name for the current index." },
+  { name: "key", type: "string", required: false, description: "Property name to use as unique key for each item." },
+  { name: "body", type: "ViewNode", required: true, description: "Node to render for each item." }
+]} />
+
+### Example
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "users" },
+  "as": "user",
+  "index": "idx",
+  "key": "id",
+  "body": {
+    "kind": "element",
+    "tag": "li",
+    "children": [
+      {
+        "kind": "text",
+        "content": { "expr": "var", "name": "user", "path": "name" }
+      }
+    ]
+  }
+}
+```
+
+## Component Node
+
+Renders a reusable component with props.
+
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "label": { "expr": "lit", "value": "Click me" }
+  },
+  "children": [ ... ]
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"component\"", required: true, description: "Node type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the component to render (must be defined in components)." },
+  { name: "props", type: "Record<string, Expression>", required: false, description: "Props to pass to the component." },
+  { name: "children", type: "ViewNode[]", required: false, description: "Children to pass into the component's slot." }
+]} />
+
+### Example
+
+```json
+{
+  "kind": "component",
+  "name": "Card",
+  "props": {
+    "title": { "expr": "lit", "value": "Welcome" },
+    "variant": { "expr": "state", "name": "cardStyle" }
+  },
+  "children": [
+    { "kind": "text", "content": { "expr": "lit", "value": "Card content here" } }
+  ]
+}
+```
+
+## Slot Node
+
+Placeholder for children passed to a component.
+
+```json
+{
+  "kind": "slot"
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"slot\"", required: true, description: "Node type identifier. No additional props." }
+]} />
+
+### Usage in Component Definition
+
+```json
+{
+  "components": {
+    "Card": {
+      "props": {
+        "title": { "type": "string" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "props": { "class": "card" },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h2",
+            "children": [
+              { "kind": "text", "content": { "expr": "var", "name": "title" } }
+            ]
+          },
+          { "kind": "slot" }
+        ]
+      }
+    }
+  }
+}
+```
+
+When using this component:
+
+```json
+{
+  "kind": "component",
+  "name": "Card",
+  "props": { "title": { "expr": "lit", "value": "Hello" } },
+  "children": [
+    { "kind": "text", "content": { "expr": "lit", "value": "This goes into the slot" } }
+  ]
+}
+```

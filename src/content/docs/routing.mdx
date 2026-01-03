@@ -1,0 +1,431 @@
+---
+title: Routing
+description: Add client-side routing
+---
+
+<Callout type="note">
+Routing is provided by `@constela/router`, a separate package. It is not part of the core DSL.
+</Callout>
+
+## Installation
+
+Install the router package:
+
+```bash
+npm install @constela/router
+```
+
+## Creating a Router
+
+Use `createRouter` to set up client-side navigation:
+
+```javascript
+import { createApp } from '@constela/runtime';
+import { createRouter } from '@constela/router';
+
+const router = createRouter({
+  routes: [
+    { path: '/', component: 'HomePage' },
+    { path: '/about', component: 'AboutPage' },
+    { path: '/users/:id', component: 'UserPage' }
+  ]
+});
+
+const app = createApp(definition, { router });
+app.mount(document.getElementById('root'));
+```
+
+## Route Definition
+
+Each route has:
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `path` | Yes | URL path pattern |
+| `component` | Yes | Component name to render |
+| `exact` | No | Match path exactly (default: true) |
+
+```javascript
+const routes = [
+  { path: '/', component: 'HomePage', exact: true },
+  { path: '/products', component: 'ProductList' },
+  { path: '/products/:id', component: 'ProductDetail' },
+  { path: '/products/:id/reviews', component: 'ProductReviews' },
+  { path: '*', component: 'NotFound' }
+];
+```
+
+### Path Parameters
+
+Use `:paramName` syntax for dynamic segments:
+
+```javascript
+{ path: '/users/:userId', component: 'UserPage' }
+{ path: '/posts/:year/:month/:slug', component: 'BlogPost' }
+```
+
+### Wildcard Routes
+
+Use `*` to catch all unmatched routes:
+
+```javascript
+{ path: '*', component: 'NotFoundPage' }
+```
+
+<Callout type="tip">
+Always place the wildcard route last in your routes array.
+</Callout>
+
+## Navigation
+
+### Link Component
+
+Use the built-in `Link` component for navigation:
+
+```json
+{
+  "kind": "component",
+  "name": "Link",
+  "props": {
+    "to": { "expr": "lit", "value": "/about" }
+  },
+  "children": [
+    { "kind": "text", "content": { "expr": "lit", "value": "About Us" } }
+  ]
+}
+```
+
+### Programmatic Navigation
+
+Navigate programmatically using the router action:
+
+```json
+{
+  "actions": {
+    "goToUser": {
+      "steps": [
+        {
+          "do": "navigate",
+          "to": "/users/123"
+        }
+      ]
+    }
+  }
+}
+```
+
+With dynamic paths:
+
+```json
+{
+  "actions": {
+    "viewUserProfile": {
+      "steps": [
+        {
+          "do": "navigate",
+          "to": {
+            "expr": "bin",
+            "op": "+",
+            "left": { "expr": "lit", "value": "/users/" },
+            "right": { "expr": "state", "name": "selectedUserId" }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Accessing Route Parameters
+
+Access route parameters using the `route` expression:
+
+```json
+{
+  "kind": "text",
+  "content": { "expr": "route", "param": "id" }
+}
+```
+
+### Example: User Profile Page
+
+```json
+{
+  "components": {
+    "UserPage": {
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "User Profile" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "User ID: " } },
+              { "kind": "text", "content": { "expr": "route", "param": "id" } }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+## Router Outlet
+
+Use `RouterOutlet` to specify where route components render:
+
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "nav",
+        "children": [
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Home" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/about" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "About" } }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "component",
+        "name": "RouterOutlet"
+      }
+    ]
+  }
+}
+```
+
+## Complete Example: Multi-Page App
+
+```javascript
+// main.js
+import { createApp } from '@constela/runtime';
+import { createRouter } from '@constela/router';
+import definition from './app.json';
+
+const router = createRouter({
+  routes: [
+    { path: '/', component: 'HomePage' },
+    { path: '/products', component: 'ProductList' },
+    { path: '/products/:id', component: 'ProductDetail' },
+    { path: '/cart', component: 'CartPage' },
+    { path: '*', component: 'NotFound' }
+  ]
+});
+
+const app = createApp(definition, { router });
+app.mount(document.getElementById('root'));
+```
+
+```json
+{
+  "version": "1.0",
+  "components": {
+    "HomePage": {
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Welcome" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/products" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Browse Products" } }
+            ]
+          }
+        ]
+      }
+    },
+    "ProductList": {
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Products" } }
+            ]
+          },
+          {
+            "kind": "each",
+            "list": { "expr": "state", "name": "products" },
+            "itemName": "product",
+            "template": {
+              "kind": "component",
+              "name": "Link",
+              "props": {
+                "to": {
+                  "expr": "bin",
+                  "op": "+",
+                  "left": { "expr": "lit", "value": "/products/" },
+                  "right": { "expr": "var", "name": "product", "path": "id" }
+                }
+              },
+              "children": [
+                { "kind": "text", "content": { "expr": "var", "name": "product", "path": "name" } }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "ProductDetail": {
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Product Detail" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Product ID: " } },
+              { "kind": "text", "content": { "expr": "route", "param": "id" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/products" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Back to Products" } }
+            ]
+          }
+        ]
+      }
+    },
+    "NotFound": {
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "404 - Page Not Found" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Go Home" } }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "state": {
+    "products": {
+      "type": "list",
+      "initial": [
+        { "id": "1", "name": "Product A" },
+        { "id": "2", "name": "Product B" },
+        { "id": "3", "name": "Product C" }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "header",
+        "children": [
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Home" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/products" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Products" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Link",
+            "props": { "to": { "expr": "lit", "value": "/cart" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Cart" } }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "main",
+        "children": [
+          {
+            "kind": "component",
+            "name": "RouterOutlet"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Summary
+
+The `@constela/router` package provides:
+
+- **Declarative routing**: Define routes as a simple array
+- **Dynamic parameters**: Use `:param` syntax for URL parameters
+- **Link component**: Navigate without page reloads
+- **Programmatic navigation**: Navigate from actions
+- **RouterOutlet**: Control where content renders
+
+This keeps routing concerns separate from the core DSL while providing a seamless integration experience.

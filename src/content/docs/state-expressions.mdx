@@ -1,0 +1,248 @@
+---
+title: State & Expressions
+description: Manage state and write expressions
+---
+
+## State Types
+
+Constela supports three state types:
+
+### number
+
+Numeric values (integers and floating-point).
+
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 },
+    "price": { "type": "number", "initial": 99.99 }
+  }
+}
+```
+
+### string
+
+Text values.
+
+```json
+{
+  "state": {
+    "message": { "type": "string", "initial": "" },
+    "username": { "type": "string", "initial": "Guest" }
+  }
+}
+```
+
+### list
+
+Arrays of values.
+
+```json
+{
+  "state": {
+    "items": { "type": "list", "initial": [] },
+    "todos": { 
+      "type": "list", 
+      "initial": [
+        { "id": 1, "text": "Learn Constela", "done": false }
+      ] 
+    }
+  }
+}
+```
+
+<Callout type="note">
+List items can be any JSON-serializable value: numbers, strings, or objects.
+</Callout>
+
+## Expressions
+
+Expressions are used throughout Constela to compute values dynamically. Every expression has an `expr` field that specifies its type.
+
+### lit - Literal Values
+
+Static values that don't change.
+
+```json
+{ "expr": "lit", "value": 42 }
+{ "expr": "lit", "value": "Hello, World!" }
+{ "expr": "lit", "value": true }
+{ "expr": "lit", "value": null }
+```
+
+### state - State References
+
+Read the current value of a state field.
+
+```json
+{ "expr": "state", "name": "count" }
+{ "expr": "state", "name": "username" }
+```
+
+### var - Variable References
+
+Access loop variables or event payloads. Use `path` to access nested properties.
+
+```json
+{ "expr": "var", "name": "item" }
+{ "expr": "var", "name": "item", "path": "name" }
+{ "expr": "var", "name": "item", "path": "user.email" }
+{ "expr": "var", "name": "event", "path": "target.value" }
+```
+
+<Callout type="tip">
+The `var` expression is essential for `each` loops and event handlers. Inside an `each` block, you can access the current item and its properties.
+</Callout>
+
+### param - Component Parameters
+
+Access parameters passed to a component.
+
+```json
+{ "expr": "param", "name": "title" }
+{ "expr": "param", "name": "disabled" }
+```
+
+### bin - Binary Operations
+
+Perform operations between two expressions.
+
+```json
+{
+  "expr": "bin",
+  "op": "+",
+  "left": { "expr": "state", "name": "count" },
+  "right": { "expr": "lit", "value": 1 }
+}
+```
+
+### not - Logical Negation
+
+Invert a boolean expression.
+
+```json
+{
+  "expr": "not",
+  "operand": { "expr": "state", "name": "isHidden" }
+}
+```
+
+## Binary Operators
+
+The `bin` expression supports these operators:
+
+### Arithmetic Operators
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `+` | Addition | `5 + 3` = 8 |
+| `-` | Subtraction | `5 - 3` = 2 |
+| `*` | Multiplication | `5 * 3` = 15 |
+| `/` | Division | `6 / 3` = 2 |
+
+```json
+{
+  "expr": "bin",
+  "op": "*",
+  "left": { "expr": "state", "name": "quantity" },
+  "right": { "expr": "state", "name": "price" }
+}
+```
+
+### Comparison Operators
+
+| Operator | Description |
+|----------|-------------|
+| `==` | Equal |
+| `!=` | Not equal |
+| `<` | Less than |
+| `<=` | Less than or equal |
+| `>` | Greater than |
+| `>=` | Greater than or equal |
+
+```json
+{
+  "expr": "bin",
+  "op": ">=",
+  "left": { "expr": "state", "name": "age" },
+  "right": { "expr": "lit", "value": 18 }
+}
+```
+
+### Logical Operators
+
+| Operator | Description |
+|----------|-------------|
+| `&&` | Logical AND |
+| `\|\|` | Logical OR |
+
+```json
+{
+  "expr": "bin",
+  "op": "&&",
+  "left": { "expr": "state", "name": "isLoggedIn" },
+  "right": { "expr": "state", "name": "hasPermission" }
+}
+```
+
+## Expression Examples
+
+### Conditional Text
+
+Display different text based on state:
+
+```json
+{
+  "kind": "if",
+  "condition": {
+    "expr": "bin",
+    "op": ">",
+    "left": { "expr": "state", "name": "count" },
+    "right": { "expr": "lit", "value": 0 }
+  },
+  "then": {
+    "kind": "text",
+    "content": { "expr": "lit", "value": "Count is positive" }
+  },
+  "else": {
+    "kind": "text",
+    "content": { "expr": "lit", "value": "Count is zero or negative" }
+  }
+}
+```
+
+### Computed Values
+
+Calculate a total from quantity and price:
+
+```json
+{
+  "kind": "text",
+  "content": {
+    "expr": "bin",
+    "op": "*",
+    "left": { "expr": "state", "name": "quantity" },
+    "right": { "expr": "state", "name": "price" }
+  }
+}
+```
+
+### Nested Object Access
+
+Access nested properties from a list item:
+
+```json
+{
+  "kind": "each",
+  "list": { "expr": "state", "name": "users" },
+  "itemName": "user",
+  "template": {
+    "kind": "text",
+    "content": { "expr": "var", "name": "user", "path": "profile.displayName" }
+  }
+}
+```
+
+## Next Steps
+
+Learn how to modify state with [Actions & Events](/docs/actions-events).

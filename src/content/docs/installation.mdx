@@ -1,0 +1,177 @@
+---
+title: Installation
+description: Install Constela packages
+---
+
+## Package Overview
+
+Constela is distributed as multiple npm packages, each with a specific purpose:
+
+| Package | Purpose |
+|---------|---------|
+| `@constela/core` | Type definitions and JSON validation |
+| `@constela/compiler` | AST transformation and code generation |
+| `@constela/runtime` | DOM renderer and state management |
+| `@constela/router` | Client-side routing (optional) |
+| `@constela/cli` | Command-line tools (optional) |
+
+## Installation
+
+Install the core packages:
+
+```bash
+npm install @constela/core @constela/compiler @constela/runtime
+```
+
+For client-side routing support:
+
+```bash
+npm install @constela/router
+```
+
+For CLI tools:
+
+```bash
+npm install -g @constela/cli
+```
+
+## Package Details
+
+### @constela/core
+
+Provides TypeScript types and validation utilities for Constela JSON definitions.
+
+```typescript
+import { validateApp, type AppDefinition } from '@constela/core';
+
+const app: AppDefinition = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  view: { kind: 'text', content: { expr: 'lit', value: 'Hello' } }
+};
+
+const result = validateApp(app);
+if (!result.valid) {
+  console.error(result.errors);
+}
+```
+
+### @constela/compiler
+
+Transforms Constela JSON into optimized JavaScript code.
+
+```typescript
+import { compile } from '@constela/compiler';
+
+const compiled = compile(appDefinition);
+// Returns JavaScript code as string
+```
+
+### @constela/runtime
+
+Renders compiled Constela apps to the DOM.
+
+```typescript
+import { createApp } from '@constela/runtime';
+
+const app = createApp(compiledCode);
+app.mount(document.getElementById('root'));
+```
+
+## Basic Project Setup
+
+<Callout type="tip">
+The simplest way to try Constela is with a single HTML file - no build tools required.
+</Callout>
+
+### Option 1: HTML + Script Tags
+
+Create an `index.html` file:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Constela App</title>
+  <script src="https://unpkg.com/@constela/runtime"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="application/json" id="app-definition">
+    {
+      "version": "1.0",
+      "state": {
+        "count": { "type": "number", "initial": 0 }
+      },
+      "view": {
+        "kind": "text",
+        "content": { "expr": "state", "name": "count" }
+      }
+    }
+  </script>
+  <script>
+    const definition = JSON.parse(
+      document.getElementById('app-definition').textContent
+    );
+    Constela.createApp(definition).mount(document.getElementById('app'));
+  </script>
+</body>
+</html>
+```
+
+### Option 2: Node.js Project
+
+1. Initialize a new project:
+
+```bash
+mkdir my-constela-app
+cd my-constela-app
+npm init -y
+npm install @constela/core @constela/compiler @constela/runtime
+```
+
+2. Create `app.json`:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": {
+    "increment": {
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "events": {
+      "onClick": { "action": "increment" }
+    },
+    "children": [
+      {
+        "kind": "text",
+        "content": { "expr": "state", "name": "count" }
+      }
+    ]
+  }
+}
+```
+
+3. Create `index.js`:
+
+```javascript
+import { readFileSync } from 'node:fs';
+import { compile } from '@constela/compiler';
+
+const definition = JSON.parse(readFileSync('./app.json', 'utf-8'));
+const code = compile(definition);
+console.log(code);
+```
+
+## Next Steps
+
+Now that you have Constela installed, let's [build your first app](/docs/first-app).

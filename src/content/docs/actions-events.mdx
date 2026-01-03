@@ -1,0 +1,339 @@
+---
+title: Actions & Events
+description: Handle user interactions
+---
+
+## Action Definition
+
+Actions define how your application responds to events. Each action has a name and an array of steps.
+
+```json
+{
+  "actions": {
+    "submit": {
+      "steps": [
+        { "do": "set", "target": "loading", "value": { "expr": "lit", "value": true } },
+        { "do": "update", "target": "items", "operation": "push", "value": { "expr": "state", "name": "newItem" } },
+        { "do": "set", "target": "newItem", "value": { "expr": "lit", "value": "" } }
+      ]
+    }
+  }
+}
+```
+
+Steps execute sequentially, from first to last.
+
+## Action Steps
+
+### set - Set State Value
+
+Replace a state value entirely.
+
+```json
+{
+  "do": "set",
+  "target": "count",
+  "value": { "expr": "lit", "value": 0 }
+}
+```
+
+The `value` field accepts any expression:
+
+```json
+{
+  "do": "set",
+  "target": "doubled",
+  "value": {
+    "expr": "bin",
+    "op": "*",
+    "left": { "expr": "state", "name": "count" },
+    "right": { "expr": "lit", "value": 2 }
+  }
+}
+```
+
+### update - Modify State
+
+Apply an operation to modify state.
+
+```json
+{
+  "do": "update",
+  "target": "count",
+  "operation": "increment"
+}
+```
+
+## Update Operations
+
+### increment
+
+Increase a number by 1 (or by a specified amount).
+
+```json
+{ "do": "update", "target": "count", "operation": "increment" }
+{ "do": "update", "target": "count", "operation": "increment", "amount": 5 }
+```
+
+### decrement
+
+Decrease a number by 1 (or by a specified amount).
+
+```json
+{ "do": "update", "target": "count", "operation": "decrement" }
+{ "do": "update", "target": "count", "operation": "decrement", "amount": 10 }
+```
+
+### push
+
+Add an item to the end of a list.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "push",
+  "value": { "expr": "state", "name": "newItem" }
+}
+```
+
+### pop
+
+Remove the last item from a list.
+
+```json
+{ "do": "update", "target": "items", "operation": "pop" }
+```
+
+### remove
+
+Remove an item from a list by index or by matching a condition.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "remove",
+  "index": { "expr": "var", "name": "index" }
+}
+```
+
+<Callout type="note">
+The `remove` operation is commonly used inside `each` loops where the index is available.
+</Callout>
+
+## Event Handlers
+
+Connect user interactions to actions using the `events` field on elements.
+
+```json
+{
+  "kind": "element",
+  "tag": "button",
+  "events": {
+    "onClick": { "action": "increment" }
+  },
+  "children": [
+    { "kind": "text", "content": { "expr": "lit", "value": "Click me" } }
+  ]
+}
+```
+
+### Supported Events
+
+| Event | Description | Common Use |
+|-------|-------------|------------|
+| `onClick` | Element clicked | Buttons, links |
+| `onInput` | Input value changed | Text inputs |
+| `onSubmit` | Form submitted | Forms |
+| `onChange` | Value changed | Select, checkbox |
+| `onFocus` | Element focused | Inputs |
+| `onBlur` | Element lost focus | Inputs |
+
+### onClick
+
+Triggered when an element is clicked.
+
+```json
+{
+  "kind": "element",
+  "tag": "button",
+  "events": {
+    "onClick": { "action": "handleClick" }
+  }
+}
+```
+
+### onInput
+
+Triggered when an input's value changes. Use `var` expression to access the value.
+
+```json
+{
+  "kind": "element",
+  "tag": "input",
+  "attributes": {
+    "type": { "expr": "lit", "value": "text" },
+    "value": { "expr": "state", "name": "inputValue" }
+  },
+  "events": {
+    "onInput": { "action": "updateInput" }
+  }
+}
+```
+
+With the action:
+
+```json
+{
+  "actions": {
+    "updateInput": {
+      "steps": [
+        {
+          "do": "set",
+          "target": "inputValue",
+          "value": { "expr": "var", "name": "event", "path": "target.value" }
+        }
+      ]
+    }
+  }
+}
+```
+
+<Callout type="tip">
+For input events, `event.target.value` contains the current input value. Access it with `{ "expr": "var", "name": "event", "path": "target.value" }`.
+</Callout>
+
+### onSubmit
+
+Triggered when a form is submitted.
+
+```json
+{
+  "kind": "element",
+  "tag": "form",
+  "events": {
+    "onSubmit": { "action": "handleSubmit" }
+  },
+  "children": [
+    {
+      "kind": "element",
+      "tag": "input",
+      "attributes": {
+        "type": { "expr": "lit", "value": "text" }
+      }
+    },
+    {
+      "kind": "element",
+      "tag": "button",
+      "attributes": {
+        "type": { "expr": "lit", "value": "submit" }
+      },
+      "children": [
+        { "kind": "text", "content": { "expr": "lit", "value": "Submit" } }
+      ]
+    }
+  ]
+}
+```
+
+## Complete Example: Todo List
+
+Here's a complete example combining state, actions, and events:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "todos": { "type": "list", "initial": [] },
+    "newTodo": { "type": "string", "initial": "" }
+  },
+  "actions": {
+    "updateNewTodo": {
+      "steps": [
+        {
+          "do": "set",
+          "target": "newTodo",
+          "value": { "expr": "var", "name": "event", "path": "target.value" }
+        }
+      ]
+    },
+    "addTodo": {
+      "steps": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "push",
+          "value": { "expr": "state", "name": "newTodo" }
+        },
+        {
+          "do": "set",
+          "target": "newTodo",
+          "value": { "expr": "lit", "value": "" }
+        }
+      ]
+    },
+    "removeTodo": {
+      "steps": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "remove",
+          "index": { "expr": "var", "name": "index" }
+        }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "input",
+        "attributes": {
+          "type": { "expr": "lit", "value": "text" },
+          "value": { "expr": "state", "name": "newTodo" },
+          "placeholder": { "expr": "lit", "value": "Enter a todo..." }
+        },
+        "events": {
+          "onInput": { "action": "updateNewTodo" }
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "events": { "onClick": { "action": "addTodo" } },
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Add" } }
+        ]
+      },
+      {
+        "kind": "each",
+        "list": { "expr": "state", "name": "todos" },
+        "itemName": "todo",
+        "indexName": "index",
+        "template": {
+          "kind": "element",
+          "tag": "div",
+          "children": [
+            { "kind": "text", "content": { "expr": "var", "name": "todo" } },
+            {
+              "kind": "element",
+              "tag": "button",
+              "events": { "onClick": { "action": "removeTodo" } },
+              "children": [
+                { "kind": "text", "content": { "expr": "lit", "value": "Remove" } }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+## Next Steps
+
+Learn how to make HTTP requests with [Fetch & Effects](/docs/fetch-effects).

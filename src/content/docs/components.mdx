@@ -1,0 +1,339 @@
+---
+title: Components
+description: Create reusable components
+---
+
+## Component Definition
+
+Components allow you to create reusable UI pieces. Define components in the `components` section of your app.
+
+```json
+{
+  "version": "1.0",
+  "components": {
+    "Button": {
+      "params": {
+        "label": { "type": "string" },
+        "disabled": { "type": "boolean", "default": false }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "button",
+        "attributes": {
+          "disabled": { "expr": "param", "name": "disabled" }
+        },
+        "children": [
+          { "kind": "text", "content": { "expr": "param", "name": "label" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+## Parameters
+
+Components accept parameters using the `params` field. Each parameter has:
+
+- **type**: The parameter type (`"string"`, `"number"`, `"boolean"`, `"object"`, `"list"`)
+- **default**: Optional default value
+
+```json
+{
+  "params": {
+    "title": { "type": "string" },
+    "count": { "type": "number", "default": 0 },
+    "items": { "type": "list", "default": [] },
+    "showIcon": { "type": "boolean", "default": true }
+  }
+}
+```
+
+<Callout type="note">
+Parameters without a `default` value are required when using the component.
+</Callout>
+
+## Accessing Parameters
+
+Use the `param` expression to access parameter values inside a component.
+
+```json
+{
+  "kind": "text",
+  "content": { "expr": "param", "name": "title" }
+}
+```
+
+For conditional rendering based on parameters:
+
+```json
+{
+  "kind": "if",
+  "condition": { "expr": "param", "name": "showIcon" },
+  "then": {
+    "kind": "element",
+    "tag": "span",
+    "children": [
+      { "kind": "text", "content": { "expr": "lit", "value": "★" } }
+    ]
+  }
+}
+```
+
+## Using Components
+
+Use the `component` kind to instantiate a component.
+
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "label": { "expr": "lit", "value": "Click me" },
+    "disabled": { "expr": "state", "name": "isLoading" }
+  }
+}
+```
+
+Props can be:
+- Literal values
+- State references
+- Any expression
+
+## Slot for Children
+
+Use `slot` to allow components to receive children.
+
+### Defining a Slot
+
+```json
+{
+  "components": {
+    "Card": {
+      "params": {
+        "title": { "type": "string" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "attributes": {
+          "class": { "expr": "lit", "value": "card" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h2",
+            "children": [
+              { "kind": "text", "content": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "attributes": {
+              "class": { "expr": "lit", "value": "card-body" }
+            },
+            "children": [
+              { "kind": "slot" }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Using a Component with Children
+
+```json
+{
+  "kind": "component",
+  "name": "Card",
+  "props": {
+    "title": { "expr": "lit", "value": "Welcome" }
+  },
+  "children": [
+    {
+      "kind": "text",
+      "content": { "expr": "lit", "value": "This content appears in the slot." }
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Slots are powerful for creating layout components like cards, modals, and containers.
+</Callout>
+
+## Component Composition
+
+Components can use other components.
+
+```json
+{
+  "components": {
+    "Icon": {
+      "params": {
+        "name": { "type": "string" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "span",
+        "attributes": {
+          "class": { "expr": "param", "name": "name" }
+        }
+      }
+    },
+    "IconButton": {
+      "params": {
+        "icon": { "type": "string" },
+        "label": { "type": "string" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "button",
+        "children": [
+          {
+            "kind": "component",
+            "name": "Icon",
+            "props": {
+              "name": { "expr": "param", "name": "icon" }
+            }
+          },
+          {
+            "kind": "text",
+            "content": { "expr": "param", "name": "label" }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+## Complete Example: Component Library
+
+Here's a complete example with multiple reusable components:
+
+```json
+{
+  "version": "1.0",
+  "components": {
+    "Badge": {
+      "params": {
+        "text": { "type": "string" },
+        "variant": { "type": "string", "default": "default" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "span",
+        "attributes": {
+          "class": { "expr": "param", "name": "variant" }
+        },
+        "children": [
+          { "kind": "text", "content": { "expr": "param", "name": "text" } }
+        ]
+      }
+    },
+    "Card": {
+      "params": {
+        "title": { "type": "string" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "attributes": {
+          "class": { "expr": "lit", "value": "card" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "attributes": {
+              "class": { "expr": "lit", "value": "card-header" }
+            },
+            "children": [
+              { "kind": "text", "content": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "attributes": {
+              "class": { "expr": "lit", "value": "card-content" }
+            },
+            "children": [
+              { "kind": "slot" }
+            ]
+          }
+        ]
+      }
+    },
+    "UserCard": {
+      "params": {
+        "name": { "type": "string" },
+        "role": { "type": "string" },
+        "status": { "type": "string", "default": "active" }
+      },
+      "view": {
+        "kind": "component",
+        "name": "Card",
+        "props": {
+          "title": { "expr": "param", "name": "name" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "p",
+            "children": [
+              { "kind": "text", "content": { "expr": "param", "name": "role" } }
+            ]
+          },
+          {
+            "kind": "component",
+            "name": "Badge",
+            "props": {
+              "text": { "expr": "param", "name": "status" },
+              "variant": { "expr": "param", "name": "status" }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "state": {
+    "users": {
+      "type": "list",
+      "initial": [
+        { "name": "Alice", "role": "Developer", "status": "active" },
+        { "name": "Bob", "role": "Designer", "status": "away" }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "each",
+        "list": { "expr": "state", "name": "users" },
+        "itemName": "user",
+        "template": {
+          "kind": "component",
+          "name": "UserCard",
+          "props": {
+            "name": { "expr": "var", "name": "user", "path": "name" },
+            "role": { "expr": "var", "name": "user", "path": "role" },
+            "status": { "expr": "var", "name": "user", "path": "status" }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+## Next Steps
+
+Learn about client-side navigation with [Routing](/docs/routing).

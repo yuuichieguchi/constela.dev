@@ -1,0 +1,72 @@
+---
+title: Introduction
+description: Learn what Constela is and why it exists
+---
+
+## What is Constela?
+
+Constela is a **compiler-first UI language** designed for vibecoding. It provides a structured JSON-based DSL (Domain Specific Language) that AI assistants can easily generate and manipulate.
+
+Unlike traditional UI frameworks that require complex build toolchains and deep JavaScript knowledge, Constela compiles declarative JSON definitions directly into optimized DOM operations.
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "message": { "type": "string", "initial": "Hello, Constela!" }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "text",
+        "content": { "expr": "state", "name": "message" }
+      }
+    ]
+  }
+}
+```
+
+## Mental Model: Language vs Library
+
+<Callout type="tip">
+Think of Constela as a **language**, not a library. You describe what you want, and the compiler handles the how.
+</Callout>
+
+Traditional UI development:
+- Write JavaScript/TypeScript code
+- Import framework functions
+- Manage state manually
+- Handle DOM updates yourself
+
+Constela approach:
+- Describe UI structure in JSON
+- Declare state and its types
+- Define actions declaratively
+- Compiler generates efficient code
+
+## What Constela is NOT
+
+- **Not a React replacement**: Constela is designed for specific use cases, not general-purpose web development
+- **Not a framework**: It's a language with its own compiler and runtime
+- **Not for complex apps**: Large-scale applications with intricate state management are better served by established frameworks
+
+## When to Use Constela
+
+Constela excels in these scenarios:
+
+| Use Case | Why Constela Works |
+|----------|-------------------|
+| **AI-generated UI** | Structured JSON is easier for LLMs to generate correctly |
+| **Simple interactive widgets** | Minimal setup, no build complexity |
+| **Embedded components** | Small runtime footprint |
+| **Rapid prototyping** | Describe once, compile anywhere |
+
+<Callout type="note">
+Constela is particularly powerful when paired with AI assistants. The JSON-based DSL reduces hallucination and improves generation accuracy.
+</Callout>
+
+## Next Steps
+
+Ready to get started? Head to the [Installation](/docs/installation) guide to set up Constela in your project.

@@ -1,0 +1,369 @@
+---
+title: Error Codes
+description: Complete reference for all Constela validation and runtime errors
+---
+
+## Overview
+
+Constela provides descriptive error codes to help you quickly identify and fix issues in your programs. Each error code follows the format `CATEGORY_SPECIFIC`.
+
+## SCHEMA_INVALID
+
+**When it occurs:** The program structure does not match the expected schema.
+
+**Common causes:**
+- Missing required fields (`version`, `state`, `actions`, `view`)
+- Invalid field types
+- Malformed JSON
+
+**How to fix:**
+
+```json
+// Invalid - missing version
+{
+  "state": { ... },
+  "view": { ... }
+}
+
+// Valid
+{
+  "version": "1.0",
+  "state": { ... },
+  "actions": [],
+  "view": { ... }
+}
+```
+
+## UNDEFINED_STATE
+
+**When it occurs:** A state expression references a state field that does not exist.
+
+**Common causes:**
+- Typo in state name
+- Forgot to declare the state field
+- State name mismatch between declaration and usage
+
+**How to fix:**
+
+```json
+// Error: UNDEFINED_STATE for "counter"
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "view": {
+    "kind": "text",
+    "content": { "expr": "state", "name": "counter" }  // Wrong name!
+  }
+}
+
+// Fixed: Use correct state name
+{
+  "content": { "expr": "state", "name": "count" }
+}
+```
+
+## UNDEFINED_ACTION
+
+**When it occurs:** An event handler references an action that does not exist.
+
+**Common causes:**
+- Typo in action name
+- Action not defined in `actions` array
+- Case sensitivity issues
+
+**How to fix:**
+
+```json
+// Error: UNDEFINED_ACTION for "Increment"
+{
+  "actions": [
+    { "name": "increment", "steps": [...] }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": { "onclick": "Increment" }  // Case mismatch!
+  }
+}
+
+// Fixed: Match exact action name
+{
+  "props": { "onclick": "increment" }
+}
+```
+
+## VAR_UNDEFINED
+
+**When it occurs:** A variable expression references a variable that is not in scope.
+
+**Common causes:**
+- Using `var` expression outside of an `each` loop or component
+- Typo in variable name
+- Variable name mismatch with `as` declaration
+
+**How to fix:**
+
+```json
+// Error: VAR_UNDEFINED for "item"
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "items" },
+  "as": "todo",  // Declared as "todo"
+  "body": {
+    "kind": "text",
+    "content": { "expr": "var", "name": "item" }  // Wrong name!
+  }
+}
+
+// Fixed: Use correct variable name
+{
+  "content": { "expr": "var", "name": "todo" }
+}
+```
+
+## DUPLICATE_ACTION
+
+**When it occurs:** Two or more actions share the same name.
+
+**Common causes:**
+- Copy-paste error
+- Forgot to rename duplicated action
+
+**How to fix:**
+
+```json
+// Error: DUPLICATE_ACTION for "handleClick"
+{
+  "actions": [
+    { "name": "handleClick", "steps": [...] },
+    { "name": "handleClick", "steps": [...] }  // Duplicate!
+  ]
+}
+
+// Fixed: Use unique names
+{
+  "actions": [
+    { "name": "handleClickPrimary", "steps": [...] },
+    { "name": "handleClickSecondary", "steps": [...] }
+  ]
+}
+```
+
+## UNSUPPORTED_VERSION
+
+**When it occurs:** The specified DSL version is not supported.
+
+**Common causes:**
+- Using a version that does not exist
+- Typo in version string
+
+**How to fix:**
+
+```json
+// Error: UNSUPPORTED_VERSION for "2.0"
+{
+  "version": "2.0",
+  ...
+}
+
+// Fixed: Use supported version
+{
+  "version": "1.0",
+  ...
+}
+```
+
+<Callout type="note">
+Currently, only version "1.0" is supported.
+</Callout>
+
+## COMPONENT_NOT_FOUND
+
+**When it occurs:** A component node references a component that is not defined.
+
+**Common causes:**
+- Component not defined in `components` object
+- Typo in component name
+- Case sensitivity issues
+
+**How to fix:**
+
+```json
+// Error: COMPONENT_NOT_FOUND for "button"
+{
+  "components": {
+    "Button": { ... }
+  },
+  "view": {
+    "kind": "component",
+    "name": "button"  // Case mismatch!
+  }
+}
+
+// Fixed: Match exact component name
+{
+  "kind": "component",
+  "name": "Button"
+}
+```
+
+## COMPONENT_PROP_MISSING
+
+**When it occurs:** A required component prop is not provided.
+
+**Common causes:**
+- Forgot to pass a required prop
+- Typo in prop name
+
+**How to fix:**
+
+```json
+// Error: COMPONENT_PROP_MISSING for "label"
+{
+  "components": {
+    "Button": {
+      "props": {
+        "label": { "type": "string" }  // Required prop
+      },
+      "view": { ... }
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "Button",
+    "props": {}  // Missing label!
+  }
+}
+
+// Fixed: Provide required prop
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "label": { "expr": "lit", "value": "Click me" }
+  }
+}
+```
+
+## COMPONENT_CYCLE
+
+**When it occurs:** A component directly or indirectly references itself, creating an infinite loop.
+
+**Common causes:**
+- Component A uses Component B, which uses Component A
+- Component using itself in its own view
+
+**How to fix:**
+
+```json
+// Error: COMPONENT_CYCLE detected
+{
+  "components": {
+    "Card": {
+      "props": { "title": { "type": "string" } },
+      "view": {
+        "kind": "component",
+        "name": "Card",  // Self-reference!
+        "props": { ... }
+      }
+    }
+  }
+}
+
+// Fixed: Remove circular reference
+{
+  "components": {
+    "Card": {
+      "props": { "title": { "type": "string" } },
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [...]
+      }
+    }
+  }
+}
+```
+
+## COMPONENT_PROP_TYPE
+
+**When it occurs:** A prop value does not match the expected type.
+
+**Common causes:**
+- Passing wrong type (e.g., number instead of string)
+- Expression evaluates to wrong type
+
+**How to fix:**
+
+```json
+// Error: COMPONENT_PROP_TYPE for "count" (expected number)
+{
+  "components": {
+    "Counter": {
+      "props": {
+        "count": { "type": "number" }
+      },
+      "view": { ... }
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "Counter",
+    "props": {
+      "count": { "expr": "lit", "value": "42" }  // String, not number!
+    }
+  }
+}
+
+// Fixed: Use correct type
+{
+  "props": {
+    "count": { "expr": "lit", "value": 42 }
+  }
+}
+```
+
+## PARAM_UNDEFINED
+
+**When it occurs:** A param expression references a parameter that is not available.
+
+**Common causes:**
+- Using `param` expression outside of action steps
+- Typo in parameter name
+- Accessing wrong parameter context
+
+**How to fix:**
+
+```json
+// Error: PARAM_UNDEFINED for "data"
+{
+  "do": "set",
+  "target": "result",
+  "value": { "expr": "param", "name": "data" }  // Wrong param name!
+}
+
+// Fixed: Use correct parameter name
+// In onSuccess, use "result" for response data
+{
+  "do": "set",
+  "target": "result",
+  "value": { "expr": "param", "name": "result" }
+}
+```
+
+<Callout type="tip">
+In fetch `onSuccess` handlers, use `result` to access the response data. In `onError` handlers, use `error` to access error information.
+</Callout>
+
+## Debugging Tips
+
+1. **Read the full error message**: Error messages include the location and context of the issue.
+
+2. **Check spelling**: Most errors are caused by typos in names.
+
+3. **Verify declarations**: Ensure all state, actions, and components are properly declared before use.
+
+4. **Use a JSON validator**: Make sure your JSON is valid before running through Constela.
+
+5. **Start simple**: Build your UI incrementally, testing after each change.

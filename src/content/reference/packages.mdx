@@ -1,0 +1,256 @@
+---
+title: Packages
+description: Overview of all Constela packages and their purposes
+---
+
+## Overview
+
+Constela is organized into several packages, each with a specific responsibility. This modular architecture allows you to use only what you need.
+
+## @constela/core
+
+The foundational package containing type definitions, schema validation, and core utilities.
+
+```bash
+npm install @constela/core
+```
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `Program` | TypeScript type for the root program structure |
+| `ViewNode` | Union type for all view node types |
+| `Expression` | Union type for all expression types |
+| `ActionDefinition` | Type for action definitions |
+| `ActionStep` | Union type for all step types |
+| `validateProgram` | Function to validate a program against the schema |
+| `ProgramSchema` | Zod schema for runtime validation |
+
+### Usage
+
+```typescript
+import { Program, validateProgram } from '@constela/core';
+
+const program: Program = {
+  version: "1.0",
+  state: { count: { type: "number", initial: 0 } },
+  actions: [],
+  view: { kind: "text", content: { expr: "state", name: "count" } }
+};
+
+const result = validateProgram(program);
+if (result.success) {
+  console.log('Valid program!');
+} else {
+  console.error('Validation errors:', result.errors);
+}
+```
+
+## @constela/compiler
+
+The AST transformation and code generation package.
+
+```bash
+npm install @constela/compiler
+```
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `compile` | Main compilation function |
+| `CompileOptions` | Configuration options for compilation |
+| `CompileResult` | Result containing generated code |
+| `transform` | AST transformation utilities |
+
+### Usage
+
+```typescript
+import { compile } from '@constela/compiler';
+import type { Program } from '@constela/core';
+
+const program: Program = { ... };
+
+const result = compile(program, {
+  target: 'esm',
+  minify: true
+});
+
+console.log(result.code);
+```
+
+### Compile Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `target` | `"esm" \| "cjs" \| "iife"` | `"esm"` | Output module format |
+| `minify` | `boolean` | `false` | Minify the output |
+| `sourcemap` | `boolean` | `false` | Generate source maps |
+
+## @constela/runtime
+
+The browser runtime for rendering and reactivity.
+
+```bash
+npm install @constela/runtime
+```
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `createApp` | Creates an application instance |
+| `mount` | Mounts the app to a DOM element |
+| `hydrate` | Hydrates server-rendered HTML |
+
+### Usage
+
+```typescript
+import { createApp, mount } from '@constela/runtime';
+import type { Program } from '@constela/core';
+
+const program: Program = { ... };
+
+const app = createApp(program);
+mount(app, document.getElementById('app')!);
+```
+
+### Runtime Features
+
+- **Fine-grained reactivity**: Only updates what changed
+- **Event delegation**: Efficient event handling
+- **Memory efficient**: Minimal DOM node creation
+- **SSR compatible**: Works with server-rendered HTML
+
+## @constela/router
+
+Client-side routing for multi-page Constela applications.
+
+```bash
+npm install @constela/router
+```
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `createRouter` | Creates a router instance |
+| `Route` | Route configuration type |
+| `RouterOptions` | Router configuration options |
+
+### Usage
+
+```typescript
+import { createRouter } from '@constela/router';
+import { createApp, mount } from '@constela/runtime';
+
+const router = createRouter({
+  routes: [
+    { path: '/', program: homeProgram },
+    { path: '/about', program: aboutProgram },
+    { path: '/users/:id', program: userProgram }
+  ]
+});
+
+router.onNavigate((program) => {
+  const app = createApp(program);
+  mount(app, document.getElementById('app')!);
+});
+
+router.start();
+```
+
+### Route Parameters
+
+Route parameters are automatically extracted and available in your program:
+
+```json
+{
+  "kind": "text",
+  "content": { "expr": "param", "name": "id" }
+}
+```
+
+## @constela/cli
+
+Command-line tools for development and building.
+
+```bash
+npm install -g @constela/cli
+# or
+npx constela
+```
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `constela build <file>` | Compile a program to JavaScript |
+| `constela dev <file>` | Start development server with hot reload |
+| `constela validate <file>` | Validate a program without building |
+| `constela init` | Initialize a new Constela project |
+
+### Build Command
+
+```bash
+constela build app.json --output dist/app.js --minify
+```
+
+Options:
+- `--output, -o`: Output file path
+- `--minify, -m`: Minify output
+- `--sourcemap, -s`: Generate source map
+- `--target, -t`: Module format (esm, cjs, iife)
+
+### Dev Command
+
+```bash
+constela dev app.json --port 3000
+```
+
+Options:
+- `--port, -p`: Dev server port (default: 3000)
+- `--open, -o`: Open browser automatically
+
+### Validate Command
+
+```bash
+constela validate app.json
+```
+
+Validates the program and reports any errors without generating output.
+
+## Package Dependencies
+
+```
+@constela/cli
+  ├── @constela/core
+  ├── @constela/compiler
+  └── @constela/runtime
+
+@constela/router
+  └── @constela/runtime
+      └── @constela/core
+
+@constela/compiler
+  └── @constela/core
+```
+
+<Callout type="tip">
+For most projects, installing `@constela/cli` provides everything you need. The CLI includes all other packages as dependencies.
+</Callout>
+
+## Version Compatibility
+
+All packages follow semantic versioning and are released together. Always use the same version across all Constela packages in your project.
+
+```json
+{
+  "dependencies": {
+    "@constela/core": "^1.0.0",
+    "@constela/compiler": "^1.0.0",
+    "@constela/runtime": "^1.0.0"
+  }
+}
+```

@@ -1,0 +1,211 @@
+---
+title: Your First App
+description: Build a counter app
+---
+
+Let's build a classic counter application to understand Constela's core concepts.
+
+## The Counter App
+
+Here's the complete `app.json` for a counter:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": {
+    "increment": {
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    },
+    "decrement": {
+      "steps": [
+        { "do": "update", "target": "count", "operation": "decrement" }
+      ]
+    },
+    "reset": {
+      "steps": [
+        { "do": "set", "target": "count", "value": { "expr": "lit", "value": 0 } }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h1",
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Counter" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "p",
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Count: " } },
+          { "kind": "text", "content": { "expr": "state", "name": "count" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "button",
+            "events": { "onClick": { "action": "decrement" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "-" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "button",
+            "events": { "onClick": { "action": "reset" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "Reset" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "button",
+            "events": { "onClick": { "action": "increment" } },
+            "children": [
+              { "kind": "text", "content": { "expr": "lit", "value": "+" } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Understanding the Structure
+
+Every Constela app has four main sections:
+
+### 1. Version
+
+```json
+{
+  "version": "1.0"
+}
+```
+
+The version field specifies which version of the Constela DSL you're using. This ensures compatibility as the language evolves.
+
+### 2. State
+
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  }
+}
+```
+
+State defines the reactive data in your application. Each state field has:
+- A **name** (the key, e.g., `"count"`)
+- A **type** (`"number"`, `"string"`, or `"list"`)
+- An **initial** value
+
+<Callout type="note">
+State is automatically reactive. When state changes, the view updates automatically.
+</Callout>
+
+### 3. Actions
+
+```json
+{
+  "actions": {
+    "increment": {
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    }
+  }
+}
+```
+
+Actions define how state changes. Each action has:
+- A **name** (the key, e.g., `"increment"`)
+- An array of **steps** that execute sequentially
+
+The `do` field specifies the step type:
+- `"set"` - Set a state value directly
+- `"update"` - Modify state with an operation (increment, decrement, push, pop, remove)
+- `"fetch"` - Make HTTP requests
+
+### 4. View
+
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "events": { "onClick": { "action": "increment" } },
+    "children": [...]
+  }
+}
+```
+
+View defines the UI structure. The `kind` field specifies the node type:
+- `"element"` - HTML element
+- `"text"` - Text content
+- `"if"` - Conditional rendering
+- `"each"` - List iteration
+- `"component"` - Reusable component
+- `"slot"` - Placeholder for children
+
+## Running the App
+
+### Using HTML
+
+Create `index.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Counter App</title>
+  <script src="https://unpkg.com/@constela/runtime"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    fetch('./app.json')
+      .then(res => res.json())
+      .then(definition => {
+        Constela.createApp(definition).mount(document.getElementById('app'));
+      });
+  </script>
+</body>
+</html>
+```
+
+### Using the CLI
+
+If you have `@constela/cli` installed:
+
+```bash
+constela serve app.json
+```
+
+This starts a development server with hot reloading.
+
+<Callout type="tip">
+Use the CLI for development. It provides helpful error messages and validates your JSON automatically.
+</Callout>
+
+## What's Next?
+
+Now that you understand the basics, explore:
+- [State & Expressions](/docs/state-expressions) - Deep dive into state management
+- [Actions & Events](/docs/actions-events) - Handle user interactions
+- [Components](/docs/components) - Create reusable UI pieces

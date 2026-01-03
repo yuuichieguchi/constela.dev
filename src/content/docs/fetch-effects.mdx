@@ -1,0 +1,402 @@
+---
+title: Fetch & Effects
+description: Make HTTP requests
+---
+
+## Fetch Step
+
+The `fetch` step allows you to make HTTP requests from within actions.
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/users",
+  "method": "GET",
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "users",
+        "value": { "expr": "var", "name": "response" }
+      }
+    ]
+  },
+  "onError": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "error",
+        "value": { "expr": "lit", "value": "Failed to load users" }
+      }
+    ]
+  }
+}
+```
+
+## Fetch Step Structure
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `do` | Yes | Must be `"fetch"` |
+| `url` | Yes | Request URL (string or expression) |
+| `method` | No | HTTP method (default: `"GET"`) |
+| `headers` | No | Request headers object |
+| `body` | No | Request body (for POST, PUT, etc.) |
+| `onSuccess` | No | Steps to run on successful response |
+| `onError` | No | Steps to run on error |
+
+## HTTP Methods
+
+Constela supports standard HTTP methods:
+
+### GET - Retrieve Data
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/items",
+  "method": "GET",
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "items",
+        "value": { "expr": "var", "name": "response" }
+      }
+    ]
+  }
+}
+```
+
+### POST - Create Data
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/items",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "name": { "expr": "state", "name": "newItemName" },
+    "quantity": { "expr": "state", "name": "quantity" }
+  },
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "update",
+        "target": "items",
+        "operation": "push",
+        "value": { "expr": "var", "name": "response" }
+      },
+      {
+        "do": "set",
+        "target": "newItemName",
+        "value": { "expr": "lit", "value": "" }
+      }
+    ]
+  }
+}
+```
+
+### PUT - Update Data
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/items/123",
+  "method": "PUT",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "name": { "expr": "state", "name": "editName" }
+  },
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "editMode",
+        "value": { "expr": "lit", "value": false }
+      }
+    ]
+  }
+}
+```
+
+### DELETE - Remove Data
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/items/123",
+  "method": "DELETE",
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "update",
+        "target": "items",
+        "operation": "remove",
+        "index": { "expr": "var", "name": "deletedIndex" }
+      }
+    ]
+  }
+}
+```
+
+## Accessing Response Data
+
+In `onSuccess` handlers, access the response using the `var` expression with `"name": "response"`.
+
+### Simple Response
+
+For APIs that return a simple value or array:
+
+```json
+{
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "data",
+        "value": { "expr": "var", "name": "response" }
+      }
+    ]
+  }
+}
+```
+
+### Nested Response Data
+
+For APIs that wrap data in an object:
+
+```json
+{
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "users",
+        "value": { "expr": "var", "name": "response", "path": "data.users" }
+      },
+      {
+        "do": "set",
+        "target": "total",
+        "value": { "expr": "var", "name": "response", "path": "meta.total" }
+      }
+    ]
+  }
+}
+```
+
+<Callout type="tip">
+Use the `path` field to navigate into nested response structures. For example, `"path": "data.items"` accesses `response.data.items`.
+</Callout>
+
+## Error Handling
+
+The `onError` handler receives error information when a request fails.
+
+```json
+{
+  "do": "fetch",
+  "url": "https://api.example.com/data",
+  "method": "GET",
+  "onSuccess": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "loading",
+        "value": { "expr": "lit", "value": false }
+      },
+      {
+        "do": "set",
+        "target": "data",
+        "value": { "expr": "var", "name": "response" }
+      }
+    ]
+  },
+  "onError": {
+    "steps": [
+      {
+        "do": "set",
+        "target": "loading",
+        "value": { "expr": "lit", "value": false }
+      },
+      {
+        "do": "set",
+        "target": "error",
+        "value": { "expr": "lit", "value": "Failed to load data. Please try again." }
+      }
+    ]
+  }
+}
+```
+
+<Callout type="warning">
+Always handle errors gracefully. Network requests can fail for many reasons: network issues, server errors, timeouts, etc.
+</Callout>
+
+## Dynamic URLs
+
+Use expressions to build dynamic URLs:
+
+```json
+{
+  "do": "fetch",
+  "url": {
+    "expr": "bin",
+    "op": "+",
+    "left": { "expr": "lit", "value": "https://api.example.com/users/" },
+    "right": { "expr": "state", "name": "userId" }
+  },
+  "method": "GET"
+}
+```
+
+## Complete Example: Data Fetching App
+
+Here's a complete example that fetches and displays a list of posts:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "posts": { "type": "list", "initial": [] },
+    "loading": { "type": "number", "initial": 0 },
+    "error": { "type": "string", "initial": "" }
+  },
+  "actions": {
+    "loadPosts": {
+      "steps": [
+        {
+          "do": "set",
+          "target": "loading",
+          "value": { "expr": "lit", "value": 1 }
+        },
+        {
+          "do": "set",
+          "target": "error",
+          "value": { "expr": "lit", "value": "" }
+        },
+        {
+          "do": "fetch",
+          "url": "https://jsonplaceholder.typicode.com/posts?_limit=10",
+          "method": "GET",
+          "onSuccess": {
+            "steps": [
+              {
+                "do": "set",
+                "target": "loading",
+                "value": { "expr": "lit", "value": 0 }
+              },
+              {
+                "do": "set",
+                "target": "posts",
+                "value": { "expr": "var", "name": "response" }
+              }
+            ]
+          },
+          "onError": {
+            "steps": [
+              {
+                "do": "set",
+                "target": "loading",
+                "value": { "expr": "lit", "value": 0 }
+              },
+              {
+                "do": "set",
+                "target": "error",
+                "value": { "expr": "lit", "value": "Failed to load posts" }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h1",
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Posts" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "events": { "onClick": { "action": "loadPosts" } },
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Load Posts" } }
+        ]
+      },
+      {
+        "kind": "if",
+        "condition": {
+          "expr": "bin",
+          "op": "==",
+          "left": { "expr": "state", "name": "loading" },
+          "right": { "expr": "lit", "value": 1 }
+        },
+        "then": {
+          "kind": "text",
+          "content": { "expr": "lit", "value": "Loading..." }
+        }
+      },
+      {
+        "kind": "if",
+        "condition": {
+          "expr": "bin",
+          "op": "!=",
+          "left": { "expr": "state", "name": "error" },
+          "right": { "expr": "lit", "value": "" }
+        },
+        "then": {
+          "kind": "element",
+          "tag": "p",
+          "attributes": {
+            "style": { "expr": "lit", "value": "color: red;" }
+          },
+          "children": [
+            { "kind": "text", "content": { "expr": "state", "name": "error" } }
+          ]
+        }
+      },
+      {
+        "kind": "each",
+        "list": { "expr": "state", "name": "posts" },
+        "itemName": "post",
+        "template": {
+          "kind": "element",
+          "tag": "article",
+          "children": [
+            {
+              "kind": "element",
+              "tag": "h2",
+              "children": [
+                { "kind": "text", "content": { "expr": "var", "name": "post", "path": "title" } }
+              ]
+            },
+            {
+              "kind": "element",
+              "tag": "p",
+              "children": [
+                { "kind": "text", "content": { "expr": "var", "name": "post", "path": "body" } }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+## Next Steps
+
+Learn how to create reusable UI pieces with [Components](/docs/components).

@@ -1,0 +1,284 @@
+---
+title: Actions
+description: Complete reference for action definitions and step types
+---
+
+## Overview
+
+Actions define how your application responds to user interactions and events. Each action consists of a name and a sequence of steps that execute in order.
+
+## Action Definition
+
+```json
+{
+  "name": "incrementCounter",
+  "steps": [
+    { "do": "update", "target": "count", "operation": "increment" }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "name", type: "string", required: true, description: "Unique identifier for the action. Used in event handlers." },
+  { name: "steps", type: "ActionStep[]", required: true, description: "Array of steps to execute when the action is triggered." }
+]} />
+
+## Set Step
+
+Directly sets a state value.
+
+```json
+{
+  "do": "set",
+  "target": "message",
+  "value": { "expr": "lit", "value": "Hello!" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"set\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field to modify. Use dot notation for nested paths." },
+  { name: "value", type: "Expression", required: true, description: "Expression that evaluates to the new value." }
+]} />
+
+### Examples
+
+```json
+// Set a simple value
+{ "do": "set", "target": "name", "value": { "expr": "lit", "value": "John" } }
+
+// Set from event parameter
+{
+  "do": "set",
+  "target": "inputValue",
+  "value": { "expr": "param", "name": "event", "path": "target.value" }
+}
+
+// Set nested property
+{
+  "do": "set",
+  "target": "user.profile.name",
+  "value": { "expr": "lit", "value": "Jane" }
+}
+```
+
+## Update Step
+
+Applies a predefined operation to a state value.
+
+```json
+{
+  "do": "update",
+  "target": "count",
+  "operation": "increment"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field to modify." },
+  { name: "operation", type: "string", required: true, description: "Operation to perform (see operations table)." },
+  { name: "value", type: "Expression", required: false, description: "Value for operations that require one (e.g., push, remove)." }
+]} />
+
+### Operations
+
+| Operation | Description | Requires Value |
+|-----------|-------------|----------------|
+| `increment` | Adds 1 to a number | No |
+| `decrement` | Subtracts 1 from a number | No |
+| `push` | Appends to an array | Yes |
+| `pop` | Removes last element from array | No |
+| `remove` | Removes matching element from array | Yes |
+
+### Examples
+
+```json
+// Increment counter
+{ "do": "update", "target": "count", "operation": "increment" }
+
+// Add item to array
+{
+  "do": "update",
+  "target": "todos",
+  "operation": "push",
+  "value": { "expr": "state", "name": "newTodo" }
+}
+
+// Remove item from array
+{
+  "do": "update",
+  "target": "items",
+  "operation": "remove",
+  "value": { "expr": "var", "name": "itemToRemove" }
+}
+
+// Remove last item
+{ "do": "update", "target": "stack", "operation": "pop" }
+```
+
+## Fetch Step
+
+Makes an HTTP request and handles the response.
+
+```json
+{
+  "do": "fetch",
+  "url": { "expr": "lit", "value": "https://api.example.com/data" },
+  "method": "GET",
+  "result": "fetchedData",
+  "onSuccess": [
+    { "do": "set", "target": "isLoading", "value": { "expr": "lit", "value": false } }
+  ],
+  "onError": [
+    { "do": "set", "target": "error", "value": { "expr": "param", "name": "error" } }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"fetch\"", required: true, description: "Step type identifier." },
+  { name: "url", type: "Expression", required: true, description: "Expression that evaluates to the request URL." },
+  { name: "method", type: "\"GET\" | \"POST\" | \"PUT\" | \"DELETE\"", required: false, default: "\"GET\"", description: "HTTP method." },
+  { name: "body", type: "Expression", required: false, description: "Request body (for POST, PUT). Will be JSON stringified." },
+  { name: "result", type: "string", required: false, description: "State field to store the response data." },
+  { name: "onSuccess", type: "ActionStep[]", required: false, description: "Steps to execute on successful response." },
+  { name: "onError", type: "ActionStep[]", required: false, description: "Steps to execute on error." }
+]} />
+
+### HTTP Methods
+
+| Method | Description | Typical Use |
+|--------|-------------|-------------|
+| `GET` | Retrieve data | Fetching lists, details |
+| `POST` | Create new resource | Submitting forms, creating items |
+| `PUT` | Update existing resource | Editing items |
+| `DELETE` | Remove resource | Deleting items |
+
+### Complete Fetch Example
+
+```json
+{
+  "name": "loadUsers",
+  "steps": [
+    {
+      "do": "set",
+      "target": "isLoading",
+      "value": { "expr": "lit", "value": true }
+    },
+    {
+      "do": "fetch",
+      "url": { "expr": "lit", "value": "https://api.example.com/users" },
+      "method": "GET",
+      "result": "users",
+      "onSuccess": [
+        {
+          "do": "set",
+          "target": "isLoading",
+          "value": { "expr": "lit", "value": false }
+        }
+      ],
+      "onError": [
+        {
+          "do": "set",
+          "target": "isLoading",
+          "value": { "expr": "lit", "value": false }
+        },
+        {
+          "do": "set",
+          "target": "errorMessage",
+          "value": { "expr": "lit", "value": "Failed to load users" }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### POST Request Example
+
+```json
+{
+  "name": "createTodo",
+  "steps": [
+    {
+      "do": "fetch",
+      "url": { "expr": "lit", "value": "https://api.example.com/todos" },
+      "method": "POST",
+      "body": {
+        "expr": "state",
+        "name": "newTodo"
+      },
+      "onSuccess": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "push",
+          "value": { "expr": "param", "name": "result" }
+        },
+        {
+          "do": "set",
+          "target": "newTodo",
+          "value": { "expr": "lit", "value": { "title": "", "completed": false } }
+        }
+      ]
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+In `onSuccess` handlers, the `result` parameter contains the parsed JSON response. In `onError` handlers, the `error` parameter contains error information.
+</Callout>
+
+## Combining Steps
+
+Actions can contain multiple steps that execute sequentially:
+
+```json
+{
+  "name": "submitForm",
+  "steps": [
+    {
+      "do": "set",
+      "target": "isSubmitting",
+      "value": { "expr": "lit", "value": true }
+    },
+    {
+      "do": "set",
+      "target": "error",
+      "value": { "expr": "lit", "value": null }
+    },
+    {
+      "do": "fetch",
+      "url": { "expr": "lit", "value": "/api/submit" },
+      "method": "POST",
+      "body": { "expr": "state", "name": "formData" },
+      "onSuccess": [
+        {
+          "do": "set",
+          "target": "isSubmitting",
+          "value": { "expr": "lit", "value": false }
+        },
+        {
+          "do": "set",
+          "target": "submitted",
+          "value": { "expr": "lit", "value": true }
+        }
+      ],
+      "onError": [
+        {
+          "do": "set",
+          "target": "isSubmitting",
+          "value": { "expr": "lit", "value": false }
+        },
+        {
+          "do": "set",
+          "target": "error",
+          "value": { "expr": "param", "name": "error" }
+        }
+      ]
+    }
+  ]
+}
+```

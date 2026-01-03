@@ -1,0 +1,208 @@
+---
+title: Expressions
+description: Complete reference for all expression types in Constela
+---
+
+## Overview
+
+Expressions are the way to work with dynamic values in Constela. They can represent literal values, state access, variable access, and computed values.
+
+## Literal Expression
+
+Represents a static, constant value.
+
+```json
+{ "expr": "lit", "value": "Hello, World!" }
+{ "expr": "lit", "value": 42 }
+{ "expr": "lit", "value": true }
+{ "expr": "lit", "value": ["a", "b", "c"] }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"lit\"", required: true, description: "Expression type identifier." },
+  { name: "value", type: "any", required: true, description: "The literal value (string, number, boolean, array, or object)." }
+]} />
+
+## State Expression
+
+Accesses a value from the application state.
+
+```json
+{ "expr": "state", "name": "count" }
+{ "expr": "state", "name": "user", "path": "profile.name" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"state\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the state field to access." },
+  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+]} />
+
+### Path Access Examples
+
+```json
+// Access state.user.profile.name
+{ "expr": "state", "name": "user", "path": "profile.name" }
+
+// Access state.settings.theme
+{ "expr": "state", "name": "settings", "path": "theme" }
+
+// Access state.items[0] (use with caution - arrays)
+{ "expr": "state", "name": "items", "path": "0" }
+```
+
+## Variable Expression
+
+Accesses a loop variable or component prop.
+
+```json
+{ "expr": "var", "name": "item" }
+{ "expr": "var", "name": "user", "path": "email" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"var\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the variable (from each loop's 'as' or component props)." },
+  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+]} />
+
+### Usage in Each Loop
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "users" },
+  "as": "user",
+  "index": "i",
+  "body": {
+    "kind": "text",
+    "content": { "expr": "var", "name": "user", "path": "name" }
+  }
+}
+```
+
+## Binary Expression
+
+Computes a value from two operands and an operator.
+
+```json
+{
+  "expr": "bin",
+  "op": "+",
+  "left": { "expr": "state", "name": "count" },
+  "right": { "expr": "lit", "value": 1 }
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"bin\"", required: true, description: "Expression type identifier." },
+  { name: "op", type: "string", required: true, description: "Binary operator (see operators table below)." },
+  { name: "left", type: "Expression", required: true, description: "Left operand expression." },
+  { name: "right", type: "Expression", required: true, description: "Right operand expression." }
+]} />
+
+### Binary Operators
+
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `+` | Addition / String concatenation | `5 + 3 = 8`, `"a" + "b" = "ab"` |
+| `-` | Subtraction | `5 - 3 = 2` |
+| `*` | Multiplication | `5 * 3 = 15` |
+| `/` | Division | `6 / 3 = 2` |
+| `==` | Equality | `5 == 5` is `true` |
+| `!=` | Inequality | `5 != 3` is `true` |
+| `<` | Less than | `3 < 5` is `true` |
+| `<=` | Less than or equal | `3 <= 3` is `true` |
+| `>` | Greater than | `5 > 3` is `true` |
+| `>=` | Greater than or equal | `5 >= 5` is `true` |
+| `&&` | Logical AND | `true && false` is `false` |
+| `\|\|` | Logical OR | `true \|\| false` is `true` |
+
+### Complex Expression Example
+
+```json
+{
+  "expr": "bin",
+  "op": "&&",
+  "left": {
+    "expr": "bin",
+    "op": ">",
+    "left": { "expr": "state", "name": "count" },
+    "right": { "expr": "lit", "value": 0 }
+  },
+  "right": {
+    "expr": "bin",
+    "op": "<",
+    "left": { "expr": "state", "name": "count" },
+    "right": { "expr": "lit", "value": 100 }
+  }
+}
+```
+
+This evaluates to `true` when `count > 0 && count < 100`.
+
+## Not Expression
+
+Negates a boolean expression.
+
+```json
+{
+  "expr": "not",
+  "operand": { "expr": "state", "name": "isLoading" }
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"not\"", required: true, description: "Expression type identifier." },
+  { name: "operand", type: "Expression", required: true, description: "Expression to negate (should evaluate to boolean)." }
+]} />
+
+### Example
+
+```json
+{
+  "kind": "if",
+  "condition": {
+    "expr": "not",
+    "operand": { "expr": "state", "name": "isHidden" }
+  },
+  "then": {
+    "kind": "text",
+    "content": { "expr": "lit", "value": "Visible content" }
+  }
+}
+```
+
+## Param Expression
+
+Accesses action parameters (used inside action steps).
+
+```json
+{ "expr": "param", "name": "value" }
+{ "expr": "param", "name": "event", "path": "target.value" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"param\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the action parameter." },
+  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+]} />
+
+### Usage in Actions
+
+```json
+{
+  "name": "updateInput",
+  "steps": [
+    {
+      "do": "set",
+      "target": "inputValue",
+      "value": { "expr": "param", "name": "event", "path": "target.value" }
+    }
+  ]
+}
+```
+
+<Callout type="note">
+The `param` expression is primarily used within action steps to access event data or other runtime parameters.
+</Callout>

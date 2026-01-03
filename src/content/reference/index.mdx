@@ -1,0 +1,131 @@
+---
+title: DSL Root Schema
+description: Complete specification of the Constela program structure
+---
+
+## Overview
+
+Every Constela program is a single JSON object that follows a specific schema. This document describes the top-level structure that all Constela programs must adhere to.
+
+```json
+{
+  "version": "1.0",
+  "state": { ... },
+  "actions": [ ... ],
+  "view": { ... },
+  "components": { ... }
+}
+```
+
+## Root Properties
+
+<PropsTable items={[
+  { name: "version", type: "string", required: true, description: "DSL version identifier. Currently only \"1.0\" is supported." },
+  { name: "state", type: "Record<string, StateField>", required: true, description: "Application state definitions. Keys are state names, values are field definitions." },
+  { name: "actions", type: "ActionDefinition[]", required: true, description: "Array of action definitions that describe how state changes." },
+  { name: "view", type: "ViewNode", required: true, description: "The root view node that describes the UI structure." },
+  { name: "components", type: "Record<string, ComponentDef>", required: false, description: "Reusable component definitions. Keys are component names." }
+]} />
+
+## State Field Definition
+
+Each state field specifies a type and initial value.
+
+<PropsTable items={[
+  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"array\" | \"object\"", required: true, description: "The data type of the state field." },
+  { name: "initial", type: "any", required: true, description: "The initial value. Must match the declared type." }
+]} />
+
+### Example State
+
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 },
+    "message": { "type": "string", "initial": "Hello" },
+    "items": { "type": "array", "initial": [] },
+    "user": { "type": "object", "initial": { "name": "", "age": 0 } },
+    "isActive": { "type": "boolean", "initial": false }
+  }
+}
+```
+
+## Component Definition
+
+Components allow you to create reusable UI pieces.
+
+<PropsTable items={[
+  { name: "props", type: "Record<string, PropDef>", required: true, description: "Component prop definitions with types and optional defaults." },
+  { name: "view", type: "ViewNode", required: true, description: "The view tree for this component." }
+]} />
+
+### Prop Definition
+
+<PropsTable items={[
+  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"array\" | \"object\"", required: true, description: "The expected type of the prop." },
+  { name: "default", type: "any", required: false, description: "Default value if prop is not provided." }
+]} />
+
+### Example Component
+
+```json
+{
+  "components": {
+    "Button": {
+      "props": {
+        "label": { "type": "string" },
+        "variant": { "type": "string", "default": "primary" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "class": { "expr": "var", "name": "variant" }
+        },
+        "children": [
+          { "kind": "text", "content": { "expr": "var", "name": "label" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+## Complete Example
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "text",
+        "content": { "expr": "state", "name": "count" }
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onclick": "increment"
+        },
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "+1" } }
+        ]
+      }
+    ]
+  }
+}
+```
