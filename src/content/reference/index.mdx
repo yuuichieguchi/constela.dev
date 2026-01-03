@@ -32,7 +32,7 @@ Every Constela program is a single JSON object that follows a specific schema. T
 Each state field specifies a type and initial value.
 
 <PropsTable items={[
-  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"array\" | \"object\"", required: true, description: "The data type of the state field." },
+  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"list\" | \"object\"", required: true, description: "The data type of the state field." },
   { name: "initial", type: "any", required: true, description: "The initial value. Must match the declared type." }
 ]} />
 
@@ -43,7 +43,7 @@ Each state field specifies a type and initial value.
   "state": {
     "count": { "type": "number", "initial": 0 },
     "message": { "type": "string", "initial": "Hello" },
-    "items": { "type": "array", "initial": [] },
+    "items": { "type": "list", "initial": [] },
     "user": { "type": "object", "initial": { "name": "", "age": 0 } },
     "isActive": { "type": "boolean", "initial": false }
   }
@@ -55,15 +55,15 @@ Each state field specifies a type and initial value.
 Components allow you to create reusable UI pieces.
 
 <PropsTable items={[
-  { name: "props", type: "Record<string, PropDef>", required: true, description: "Component prop definitions with types and optional defaults." },
+  { name: "params", type: "Record<string, ParamDef>", required: true, description: "Component parameter definitions with types and optional defaults." },
   { name: "view", type: "ViewNode", required: true, description: "The view tree for this component." }
 ]} />
 
-### Prop Definition
+### Param Definition
 
 <PropsTable items={[
-  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"array\" | \"object\"", required: true, description: "The expected type of the prop." },
-  { name: "default", type: "any", required: false, description: "Default value if prop is not provided." }
+  { name: "type", type: "\"string\" | \"number\" | \"boolean\" | \"json\"", required: true, description: "The expected type of the parameter." },
+  { name: "required", type: "boolean", required: false, default: "true", description: "Whether the parameter is required." }
 ]} />
 
 ### Example Component
@@ -72,18 +72,18 @@ Components allow you to create reusable UI pieces.
 {
   "components": {
     "Button": {
-      "props": {
+      "params": {
         "label": { "type": "string" },
-        "variant": { "type": "string", "default": "primary" }
+        "variant": { "type": "string" }
       },
       "view": {
         "kind": "element",
         "tag": "button",
         "props": {
-          "class": { "expr": "var", "name": "variant" }
+          "class": { "expr": "param", "name": "variant" }
         },
         "children": [
-          { "kind": "text", "content": { "expr": "var", "name": "label" } }
+          { "kind": "text", "value": { "expr": "param", "name": "label" } }
         ]
       }
     }
@@ -113,16 +113,16 @@ Components allow you to create reusable UI pieces.
     "children": [
       {
         "kind": "text",
-        "content": { "expr": "state", "name": "count" }
+        "value": { "expr": "state", "name": "count" }
       },
       {
         "kind": "element",
         "tag": "button",
         "props": {
-          "onclick": "increment"
+          "onClick": { "event": "click", "action": "increment" }
         },
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "+1" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "+1" } }
         ]
       }
     ]

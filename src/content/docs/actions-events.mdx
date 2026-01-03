@@ -72,7 +72,7 @@ Increase a number by 1 (or by a specified amount).
 
 ```json
 { "do": "update", "target": "count", "operation": "increment" }
-{ "do": "update", "target": "count", "operation": "increment", "amount": 5 }
+{ "do": "update", "target": "count", "operation": "increment", "value": { "expr": "lit", "value": 5 } }
 ```
 
 ### decrement
@@ -81,7 +81,7 @@ Decrease a number by 1 (or by a specified amount).
 
 ```json
 { "do": "update", "target": "count", "operation": "decrement" }
-{ "do": "update", "target": "count", "operation": "decrement", "amount": 10 }
+{ "do": "update", "target": "count", "operation": "decrement", "value": { "expr": "lit", "value": 10 } }
 ```
 
 ### push
@@ -151,9 +151,9 @@ Flip a boolean state value. Perfect for modals, dropdowns, and visibility toggle
       {
         "kind": "element",
         "tag": "button",
-        "events": { "onClick": { "action": "toggleModal" } },
+        "props": { "onClick": { "event": "click", "action": "toggleModal" } },
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Open Modal" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Open Modal" } }
         ]
       },
       {
@@ -164,13 +164,13 @@ Flip a boolean state value. Perfect for modals, dropdowns, and visibility toggle
           "tag": "div",
           "props": { "class": { "expr": "lit", "value": "modal" } },
           "children": [
-            { "kind": "text", "content": { "expr": "lit", "value": "Modal Content" } },
+            { "kind": "text", "value": { "expr": "lit", "value": "Modal Content" } },
             {
               "kind": "element",
               "tag": "button",
-              "events": { "onClick": { "action": "toggleModal" } },
+              "props": { "onClick": { "event": "click", "action": "toggleModal" } },
               "children": [
-                { "kind": "text", "content": { "expr": "lit", "value": "Close" } }
+                { "kind": "text", "value": { "expr": "lit", "value": "Close" } }
               ]
             }
           ]
@@ -244,22 +244,69 @@ Replace an element at a specific index in a list. Used for editing items in plac
 The `replaceAt` operation is commonly used inside `each` loops where the index is available, enabling inline editing of list items.
 </Callout>
 
+### insertAt
+
+Insert an item at a specific index in a list. All elements at and after the index are shifted.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "insertAt",
+  "index": { "expr": "lit", "value": 0 },
+  "value": { "expr": "state", "name": "newItem" }
+}
+```
+
+<Callout type="tip">
+Use `insertAt` with index 0 to add items at the beginning of a list, or with the list length to append at the end.
+</Callout>
+
+### splice
+
+Delete and/or insert items at a specific index. This is the most flexible list operation.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "splice",
+  "index": { "expr": "var", "name": "index" },
+  "deleteCount": { "expr": "lit", "value": 1 },
+  "value": { "expr": "lit", "value": ["newItem1", "newItem2"] }
+}
+```
+
+| Property | Required | Description |
+|----------|----------|-------------|
+| `index` | Yes | Position to start the operation |
+| `deleteCount` | Yes | Number of items to delete |
+| `value` | No | Array of items to insert at the position |
+
+<Callout type="note">
+The `splice` operation mirrors JavaScript's `Array.prototype.splice()`. Set `deleteCount` to 0 to insert without deleting.
+</Callout>
+
 ## Event Handlers
 
-Connect user interactions to actions using the `events` field on elements.
+Connect user interactions to actions using event handlers in `props`.
 
 ```json
 {
   "kind": "element",
   "tag": "button",
-  "events": {
-    "onClick": { "action": "increment" }
+  "props": {
+    "onClick": { "event": "click", "action": "increment" }
   },
   "children": [
-    { "kind": "text", "content": { "expr": "lit", "value": "Click me" } }
+    { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
   ]
 }
 ```
+
+<Callout type="note">
+Event handlers have the structure `{ "event": "eventType", "action": "actionName", "payload": ... }`. The `event` field specifies the DOM event type (e.g., "click", "input", "submit").
+</Callout>
 
 ### Supported Events
 
@@ -280,8 +327,8 @@ Triggered when an element is clicked.
 {
   "kind": "element",
   "tag": "button",
-  "events": {
-    "onClick": { "action": "handleClick" }
+  "props": {
+    "onClick": { "event": "click", "action": "handleClick" }
   }
 }
 ```
@@ -294,12 +341,10 @@ Triggered when an input's value changes. Use `var` expression to access the valu
 {
   "kind": "element",
   "tag": "input",
-  "attributes": {
+  "props": {
     "type": { "expr": "lit", "value": "text" },
-    "value": { "expr": "state", "name": "inputValue" }
-  },
-  "events": {
-    "onInput": { "action": "updateInput" }
+    "value": { "expr": "state", "name": "inputValue" },
+    "onInput": { "event": "input", "action": "updateInput" }
   }
 }
 ```
@@ -334,25 +379,25 @@ Triggered when a form is submitted.
 {
   "kind": "element",
   "tag": "form",
-  "events": {
-    "onSubmit": { "action": "handleSubmit" }
+  "props": {
+    "onSubmit": { "event": "submit", "action": "handleSubmit" }
   },
   "children": [
     {
       "kind": "element",
       "tag": "input",
-      "attributes": {
+      "props": {
         "type": { "expr": "lit", "value": "text" }
       }
     },
     {
       "kind": "element",
       "tag": "button",
-      "attributes": {
+      "props": {
         "type": { "expr": "lit", "value": "submit" }
       },
       "children": [
-        { "kind": "text", "content": { "expr": "lit", "value": "Submit" } }
+        { "kind": "text", "value": { "expr": "lit", "value": "Submit" } }
       ]
     }
   ]
@@ -436,19 +481,19 @@ Here's a complete example combining state, actions, events, and the new features
       {
         "kind": "element",
         "tag": "input",
-        "attributes": {
+        "props": {
           "type": { "expr": "lit", "value": "text" },
           "value": { "expr": "state", "name": "newTodo" },
-          "placeholder": { "expr": "lit", "value": "Enter a todo..." }
-        },
-        "events": { "onInput": { "action": "updateNewTodo" } }
+          "placeholder": { "expr": "lit", "value": "Enter a todo..." },
+          "onInput": { "event": "input", "action": "updateNewTodo" }
+        }
       },
       {
         "kind": "element",
         "tag": "button",
-        "events": { "onClick": { "action": "addTodo" } },
+        "props": { "onClick": { "event": "click", "action": "addTodo" } },
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Add" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Add" } }
         ]
       },
       {
@@ -463,7 +508,7 @@ Here's a complete example combining state, actions, events, and the new features
           "children": [
             {
               "kind": "text",
-              "content": {
+              "value": {
                 "expr": "get",
                 "base": { "expr": "var", "name": "todo" },
                 "path": "title"
@@ -471,7 +516,7 @@ Here's a complete example combining state, actions, events, and the new features
             },
             {
               "kind": "text",
-              "content": {
+              "value": {
                 "expr": "cond",
                 "if": {
                   "expr": "get",
@@ -485,11 +530,11 @@ Here's a complete example combining state, actions, events, and the new features
             {
               "kind": "element",
               "tag": "button",
-              "events": { "onClick": { "action": "toggleDone" } },
+              "props": { "onClick": { "event": "click", "action": "toggleDone" } },
               "children": [
                 {
                   "kind": "text",
-                  "content": {
+                  "value": {
                     "expr": "cond",
                     "if": {
                       "expr": "get",
@@ -505,9 +550,9 @@ Here's a complete example combining state, actions, events, and the new features
             {
               "kind": "element",
               "tag": "button",
-              "events": { "onClick": { "action": "removeTodo" } },
+              "props": { "onClick": { "event": "click", "action": "removeTodo" } },
               "children": [
-                { "kind": "text", "content": { "expr": "lit", "value": "Remove" } }
+                { "kind": "text", "value": { "expr": "lit", "value": "Remove" } }
               ]
             }
           ]

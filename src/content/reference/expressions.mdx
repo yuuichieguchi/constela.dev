@@ -29,26 +29,36 @@ Accesses a value from the application state.
 
 ```json
 { "expr": "state", "name": "count" }
-{ "expr": "state", "name": "user", "path": "profile.name" }
+{ "expr": "state", "name": "user" }
 ```
 
 <PropsTable items={[
   { name: "expr", type: "\"state\"", required: true, description: "Expression type identifier." },
-  { name: "name", type: "string", required: true, description: "Name of the state field to access." },
-  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+  { name: "name", type: "string", required: true, description: "Name of the state field to access." }
 ]} />
 
-### Path Access Examples
+<Callout type="tip">
+To access nested properties of a state field, use the `get` expression instead.
+</Callout>
+
+### Nested Property Access
+
+Use the `get` expression to access properties within state objects:
 
 ```json
 // Access state.user.profile.name
-{ "expr": "state", "name": "user", "path": "profile.name" }
+{
+  "expr": "get",
+  "base": { "expr": "state", "name": "user" },
+  "path": "profile.name"
+}
 
 // Access state.settings.theme
-{ "expr": "state", "name": "settings", "path": "theme" }
-
-// Access state.items[0] (use with caution - arrays)
-{ "expr": "state", "name": "items", "path": "0" }
+{
+  "expr": "get",
+  "base": { "expr": "state", "name": "settings" },
+  "path": "theme"
+}
 ```
 
 ## Variable Expression
@@ -76,7 +86,7 @@ Accesses a loop variable or component prop.
   "index": "i",
   "body": {
     "kind": "text",
-    "content": { "expr": "var", "name": "user", "path": "name" }
+    "value": { "expr": "var", "name": "user", "path": "name" }
   }
 }
 ```
@@ -168,7 +178,7 @@ Negates a boolean expression.
   },
   "then": {
     "kind": "text",
-    "content": { "expr": "lit", "value": "Visible content" }
+    "value": { "expr": "lit", "value": "Visible content" }
   }
 }
 ```
@@ -241,7 +251,7 @@ Returns different values based on a condition. Unlike the `if` node which contro
 // Conditional text label
 {
   "kind": "text",
-  "content": {
+  "value": {
     "expr": "cond",
     "if": { "expr": "state", "name": "isAdmin" },
     "then": { "expr": "lit", "value": "Admin Panel" },
@@ -356,7 +366,7 @@ Both `get` and `var` with `path` can access nested properties. Use `get` when th
     "children": [
       {
         "kind": "text",
-        "content": {
+        "value": {
           "expr": "get",
           "base": { "expr": "var", "name": "todo" },
           "path": "title"
@@ -364,7 +374,7 @@ Both `get` and `var` with `path` can access nested properties. Use `get` when th
       },
       {
         "kind": "text",
-        "content": {
+        "value": {
           "expr": "cond",
           "if": {
             "expr": "get",

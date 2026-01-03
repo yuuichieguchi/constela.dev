@@ -324,15 +324,15 @@ Here's a complete example that fetches and displays a list of posts:
         "kind": "element",
         "tag": "h1",
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Posts" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Posts" } }
         ]
       },
       {
         "kind": "element",
         "tag": "button",
-        "events": { "onClick": { "action": "loadPosts" } },
+        "props": { "onClick": { "event": "click", "action": "loadPosts" } },
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Load Posts" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Load Posts" } }
         ]
       },
       {
@@ -345,7 +345,7 @@ Here's a complete example that fetches and displays a list of posts:
         },
         "then": {
           "kind": "text",
-          "content": { "expr": "lit", "value": "Loading..." }
+          "value": { "expr": "lit", "value": "Loading..." }
         }
       },
       {
@@ -359,11 +359,11 @@ Here's a complete example that fetches and displays a list of posts:
         "then": {
           "kind": "element",
           "tag": "p",
-          "attributes": {
+          "props": {
             "style": { "expr": "lit", "value": "color: red;" }
           },
           "children": [
-            { "kind": "text", "content": { "expr": "state", "name": "error" } }
+            { "kind": "text", "value": { "expr": "state", "name": "error" } }
           ]
         }
       },
@@ -379,14 +379,14 @@ Here's a complete example that fetches and displays a list of posts:
               "kind": "element",
               "tag": "h2",
               "children": [
-                { "kind": "text", "content": { "expr": "var", "name": "post", "path": "title" } }
+                { "kind": "text", "value": { "expr": "var", "name": "post", "path": "title" } }
               ]
             },
             {
               "kind": "element",
               "tag": "p",
               "children": [
-                { "kind": "text", "content": { "expr": "var", "name": "post", "path": "body" } }
+                { "kind": "text", "value": { "expr": "var", "name": "post", "path": "body" } }
               ]
             }
           ]

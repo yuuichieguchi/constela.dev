@@ -90,7 +90,7 @@ Use the built-in `Link` component for navigation:
     "to": { "expr": "lit", "value": "/about" }
   },
   "children": [
-    { "kind": "text", "content": { "expr": "lit", "value": "About Us" } }
+    { "kind": "text", "value": { "expr": "lit", "value": "About Us" } }
   ]
 }
 ```
@@ -143,7 +143,7 @@ Access route parameters using the `route` expression:
 ```json
 {
   "kind": "text",
-  "content": { "expr": "route", "param": "id" }
+  "value": { "expr": "route", "param": "id" }
 }
 ```
 
@@ -161,15 +161,15 @@ Access route parameters using the `route` expression:
             "kind": "element",
             "tag": "h1",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "User Profile" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "User Profile" } }
             ]
           },
           {
             "kind": "element",
             "tag": "p",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "User ID: " } },
-              { "kind": "text", "content": { "expr": "route", "param": "id" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "User ID: " } },
+              { "kind": "text", "value": { "expr": "route", "param": "id" } }
             ]
           }
         ]
@@ -198,7 +198,7 @@ Use `RouterOutlet` to specify where route components render:
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Home" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Home" } }
             ]
           },
           {
@@ -206,7 +206,7 @@ Use `RouterOutlet` to specify where route components render:
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/about" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "About" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "About" } }
             ]
           }
         ]
@@ -255,7 +255,7 @@ app.mount(document.getElementById('root'));
             "kind": "element",
             "tag": "h1",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Welcome" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Welcome" } }
             ]
           },
           {
@@ -263,7 +263,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/products" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Browse Products" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Browse Products" } }
             ]
           }
         ]
@@ -278,7 +278,7 @@ app.mount(document.getElementById('root'));
             "kind": "element",
             "tag": "h1",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Products" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Products" } }
             ]
           },
           {
@@ -297,7 +297,7 @@ app.mount(document.getElementById('root'));
                 }
               },
               "children": [
-                { "kind": "text", "content": { "expr": "var", "name": "product", "path": "name" } }
+                { "kind": "text", "value": { "expr": "var", "name": "product", "path": "name" } }
               ]
             }
           }
@@ -313,15 +313,15 @@ app.mount(document.getElementById('root'));
             "kind": "element",
             "tag": "h1",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Product Detail" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Product Detail" } }
             ]
           },
           {
             "kind": "element",
             "tag": "p",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Product ID: " } },
-              { "kind": "text", "content": { "expr": "route", "param": "id" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Product ID: " } },
+              { "kind": "text", "value": { "expr": "route", "param": "id" } }
             ]
           },
           {
@@ -329,7 +329,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/products" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Back to Products" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Back to Products" } }
             ]
           }
         ]
@@ -344,7 +344,7 @@ app.mount(document.getElementById('root'));
             "kind": "element",
             "tag": "h1",
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "404 - Page Not Found" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "404 - Page Not Found" } }
             ]
           },
           {
@@ -352,7 +352,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Go Home" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Go Home" } }
             ]
           }
         ]
@@ -382,7 +382,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Home" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Home" } }
             ]
           },
           {
@@ -390,7 +390,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/products" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Products" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Products" } }
             ]
           },
           {
@@ -398,7 +398,7 @@ app.mount(document.getElementById('root'));
             "name": "Link",
             "props": { "to": { "expr": "lit", "value": "/cart" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Cart" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Cart" } }
             ]
           }
         ]

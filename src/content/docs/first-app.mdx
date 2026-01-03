@@ -40,15 +40,15 @@ Here's the complete `app.json` for a counter:
         "kind": "element",
         "tag": "h1",
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Counter" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Counter" } }
         ]
       },
       {
         "kind": "element",
         "tag": "p",
         "children": [
-          { "kind": "text", "content": { "expr": "lit", "value": "Count: " } },
-          { "kind": "text", "content": { "expr": "state", "name": "count" } }
+          { "kind": "text", "value": { "expr": "lit", "value": "Count: " } },
+          { "kind": "text", "value": { "expr": "state", "name": "count" } }
         ]
       },
       {
@@ -58,25 +58,25 @@ Here's the complete `app.json` for a counter:
           {
             "kind": "element",
             "tag": "button",
-            "events": { "onClick": { "action": "decrement" } },
+            "props": { "onClick": { "event": "click", "action": "decrement" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "-" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "-" } }
             ]
           },
           {
             "kind": "element",
             "tag": "button",
-            "events": { "onClick": { "action": "reset" } },
+            "props": { "onClick": { "event": "click", "action": "reset" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "Reset" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "Reset" } }
             ]
           },
           {
             "kind": "element",
             "tag": "button",
-            "events": { "onClick": { "action": "increment" } },
+            "props": { "onClick": { "event": "click", "action": "increment" } },
             "children": [
-              { "kind": "text", "content": { "expr": "lit", "value": "+" } }
+              { "kind": "text", "value": { "expr": "lit", "value": "+" } }
             ]
           }
         ]
@@ -149,7 +149,7 @@ The `do` field specifies the step type:
   "view": {
     "kind": "element",
     "tag": "button",
-    "events": { "onClick": { "action": "increment" } },
+    "props": { "onClick": { "event": "click", "action": "increment" } },
     "children": [...]
   }
 }

@@ -19,11 +19,11 @@ Components allow you to create reusable UI pieces. Define components in the `com
       "view": {
         "kind": "element",
         "tag": "button",
-        "attributes": {
+        "props": {
           "disabled": { "expr": "param", "name": "disabled" }
         },
         "children": [
-          { "kind": "text", "content": { "expr": "param", "name": "label" } }
+          { "kind": "text", "value": { "expr": "param", "name": "label" } }
         ]
       }
     }
@@ -60,7 +60,7 @@ Use the `param` expression to access parameter values inside a component.
 ```json
 {
   "kind": "text",
-  "content": { "expr": "param", "name": "title" }
+  "value": { "expr": "param", "name": "title" }
 }
 ```
 
@@ -74,7 +74,7 @@ For conditional rendering based on parameters:
     "kind": "element",
     "tag": "span",
     "children": [
-      { "kind": "text", "content": { "expr": "lit", "value": "★" } }
+      { "kind": "text", "value": { "expr": "lit", "value": "★" } }
     ]
   }
 }
@@ -116,7 +116,7 @@ Use `slot` to allow components to receive children.
       "view": {
         "kind": "element",
         "tag": "div",
-        "attributes": {
+        "props": {
           "class": { "expr": "lit", "value": "card" }
         },
         "children": [
@@ -124,13 +124,13 @@ Use `slot` to allow components to receive children.
             "kind": "element",
             "tag": "h2",
             "children": [
-              { "kind": "text", "content": { "expr": "param", "name": "title" } }
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
             ]
           },
           {
             "kind": "element",
             "tag": "div",
-            "attributes": {
+            "props": {
               "class": { "expr": "lit", "value": "card-body" }
             },
             "children": [
@@ -156,7 +156,7 @@ Use `slot` to allow components to receive children.
   "children": [
     {
       "kind": "text",
-      "content": { "expr": "lit", "value": "This content appears in the slot." }
+      "value": { "expr": "lit", "value": "This content appears in the slot." }
     }
   ]
 }
@@ -180,7 +180,7 @@ Components can use other components.
       "view": {
         "kind": "element",
         "tag": "span",
-        "attributes": {
+        "props": {
           "class": { "expr": "param", "name": "name" }
         }
       }
@@ -203,7 +203,7 @@ Components can use other components.
           },
           {
             "kind": "text",
-            "content": { "expr": "param", "name": "label" }
+            "value": { "expr": "param", "name": "label" }
           }
         ]
       }
@@ -228,11 +228,11 @@ Here's a complete example with multiple reusable components:
       "view": {
         "kind": "element",
         "tag": "span",
-        "attributes": {
+        "props": {
           "class": { "expr": "param", "name": "variant" }
         },
         "children": [
-          { "kind": "text", "content": { "expr": "param", "name": "text" } }
+          { "kind": "text", "value": { "expr": "param", "name": "text" } }
         ]
       }
     },
@@ -243,24 +243,24 @@ Here's a complete example with multiple reusable components:
       "view": {
         "kind": "element",
         "tag": "div",
-        "attributes": {
+        "props": {
           "class": { "expr": "lit", "value": "card" }
         },
         "children": [
           {
             "kind": "element",
             "tag": "div",
-            "attributes": {
+            "props": {
               "class": { "expr": "lit", "value": "card-header" }
             },
             "children": [
-              { "kind": "text", "content": { "expr": "param", "name": "title" } }
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
             ]
           },
           {
             "kind": "element",
             "tag": "div",
-            "attributes": {
+            "props": {
               "class": { "expr": "lit", "value": "card-content" }
             },
             "children": [
@@ -287,7 +287,7 @@ Here's a complete example with multiple reusable components:
             "kind": "element",
             "tag": "p",
             "children": [
-              { "kind": "text", "content": { "expr": "param", "name": "role" } }
+              { "kind": "text", "value": { "expr": "param", "name": "role" } }
             ]
           },
           {

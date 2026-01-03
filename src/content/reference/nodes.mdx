@@ -29,15 +29,15 @@ Renders an HTML element with optional props and children.
 
 ### Event Handling
 
-Event handlers are specified as action names in props:
+Event handlers are specified as objects with `event`, `action`, and optional `payload` fields in `props`:
 
 ```json
 {
   "kind": "element",
   "tag": "button",
   "props": {
-    "onclick": "handleClick",
-    "onmouseover": "showTooltip"
+    "onClick": { "event": "click", "action": "handleClick" },
+    "onMouseOver": { "event": "mouseover", "action": "showTooltip" }
   },
   "children": [...]
 }
@@ -50,28 +50,28 @@ Renders dynamic or static text content.
 ```json
 {
   "kind": "text",
-  "content": { "expr": "state", "name": "message" }
+  "value": { "expr": "state", "name": "message" }
 }
 ```
 
 <PropsTable items={[
   { name: "kind", type: "\"text\"", required: true, description: "Node type identifier." },
-  { name: "content", type: "Expression", required: true, description: "Expression that evaluates to the text content." }
+  { name: "value", type: "Expression", required: true, description: "Expression that evaluates to the text content." }
 ]} />
 
 ### Examples
 
 ```json
 // Static text
-{ "kind": "text", "content": { "expr": "lit", "value": "Hello, World!" } }
+{ "kind": "text", "value": { "expr": "lit", "value": "Hello, World!" } }
 
 // Dynamic text from state
-{ "kind": "text", "content": { "expr": "state", "name": "userName" } }
+{ "kind": "text", "value": { "expr": "state", "name": "userName" } }
 
 // Computed text
 {
   "kind": "text",
-  "content": {
+  "value": {
     "expr": "bin",
     "op": "+",
     "left": { "expr": "lit", "value": "Count: " },
@@ -113,11 +113,11 @@ Conditionally renders content based on an expression.
   },
   "then": {
     "kind": "text",
-    "content": { "expr": "lit", "value": "Positive!" }
+    "value": { "expr": "lit", "value": "Positive!" }
   },
   "else": {
     "kind": "text",
-    "content": { "expr": "lit", "value": "Zero or negative" }
+    "value": { "expr": "lit", "value": "Zero or negative" }
   }
 }
 ```
@@ -142,7 +142,7 @@ Iterates over an array and renders content for each item.
   { name: "items", type: "Expression", required: true, description: "Expression that evaluates to an array." },
   { name: "as", type: "string", required: true, description: "Variable name for the current item in each iteration." },
   { name: "index", type: "string", required: false, description: "Variable name for the current index." },
-  { name: "key", type: "string", required: false, description: "Property name to use as unique key for each item." },
+  { name: "key", type: "Expression", required: false, description: "Expression that evaluates to a unique key for each item (e.g., item.id)." },
   { name: "body", type: "ViewNode", required: true, description: "Node to render for each item." }
 ]} />
 
@@ -154,14 +154,14 @@ Iterates over an array and renders content for each item.
   "items": { "expr": "state", "name": "users" },
   "as": "user",
   "index": "idx",
-  "key": "id",
+  "key": { "expr": "var", "name": "user", "path": "id" },
   "body": {
     "kind": "element",
     "tag": "li",
     "children": [
       {
         "kind": "text",
-        "content": { "expr": "var", "name": "user", "path": "name" }
+        "value": { "expr": "var", "name": "user", "path": "name" }
       }
     ]
   }
@@ -201,7 +201,7 @@ Renders a reusable component with props.
     "variant": { "expr": "state", "name": "cardStyle" }
   },
   "children": [
-    { "kind": "text", "content": { "expr": "lit", "value": "Card content here" } }
+    { "kind": "text", "value": { "expr": "lit", "value": "Card content here" } }
   ]
 }
 ```
@@ -226,19 +226,19 @@ Placeholder for children passed to a component.
 {
   "components": {
     "Card": {
-      "props": {
+      "params": {
         "title": { "type": "string" }
       },
       "view": {
         "kind": "element",
         "tag": "div",
-        "props": { "class": "card" },
+        "props": { "class": { "expr": "lit", "value": "card" } },
         "children": [
           {
             "kind": "element",
             "tag": "h2",
             "children": [
-              { "kind": "text", "content": { "expr": "var", "name": "title" } }
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
             ]
           },
           { "kind": "slot" }
@@ -257,7 +257,7 @@ When using this component:
   "name": "Card",
   "props": { "title": { "expr": "lit", "value": "Hello" } },
   "children": [
-    { "kind": "text", "content": { "expr": "lit", "value": "This goes into the slot" } }
+    { "kind": "text", "value": { "expr": "lit", "value": "This goes into the slot" } }
   ]
 }
 ```

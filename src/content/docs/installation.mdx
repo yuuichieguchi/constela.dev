@@ -105,7 +105,7 @@ Create an `index.html` file:
       },
       "view": {
         "kind": "text",
-        "content": { "expr": "state", "name": "count" }
+        "value": { "expr": "state", "name": "count" }
       }
     }
   </script>
@@ -148,13 +148,13 @@ npm install @constela/core @constela/compiler @constela/runtime
   "view": {
     "kind": "element",
     "tag": "button",
-    "events": {
-      "onClick": { "action": "increment" }
+    "props": {
+      "onClick": { "event": "click", "action": "increment" }
     },
     "children": [
       {
         "kind": "text",
-        "content": { "expr": "state", "name": "count" }
+        "value": { "expr": "state", "name": "count" }
       }
     ]
   }

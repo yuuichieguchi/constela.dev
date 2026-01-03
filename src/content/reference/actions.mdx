@@ -85,13 +85,15 @@ Applies a predefined operation to a state value.
 
 | Operation | Description | Requires Value | State Type |
 |-----------|-------------|----------------|------------|
-| `increment` | Adds 1 to a number | No | number |
-| `decrement` | Subtracts 1 from a number | No | number |
+| `increment` | Adds to a number (default: 1) | No (optional value) | number |
+| `decrement` | Subtracts from a number (default: 1) | No (optional value) | number |
 | `toggle` | Flips a boolean value | No | boolean |
 | `push` | Appends to an array | Yes | list |
 | `pop` | Removes last element from array | No | list |
 | `remove` | Removes matching element from array | Yes | list |
 | `replaceAt` | Replaces element at a specific index | Yes (index + value) | list |
+| `insertAt` | Inserts element at a specific index | Yes (index + value) | list |
+| `splice` | Deletes and/or inserts at index | Yes (index + deleteCount, optional value) | list |
 | `merge` | Shallow-merges properties into an object | Yes | object |
 
 ### Examples
@@ -195,6 +197,56 @@ Replaces an element at a specific index in an array. Useful for editing list ite
 
 <Callout type="tip">
 The `replaceAt` operation is commonly used inside `each` loops where the index is available, enabling inline editing of list items.
+</Callout>
+
+### insertAt
+
+Inserts an element at a specific index in an array. Elements at and after the index are shifted.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "insertAt",
+  "index": { "expr": "lit", "value": 0 },
+  "value": { "expr": "state", "name": "newItem" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field (must be list)." },
+  { name: "operation", type: "\"insertAt\"", required: true, description: "InsertAt operation identifier." },
+  { name: "index", type: "Expression", required: true, description: "Expression evaluating to the index to insert at." },
+  { name: "value", type: "Expression", required: true, description: "Expression evaluating to the value to insert." }
+]} />
+
+### splice
+
+Deletes and/or inserts items at a specific index. The most flexible list operation, mirroring JavaScript's `Array.prototype.splice()`.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "splice",
+  "index": { "expr": "var", "name": "index" },
+  "deleteCount": { "expr": "lit", "value": 1 },
+  "value": { "expr": "lit", "value": ["replacement1", "replacement2"] }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field (must be list)." },
+  { name: "operation", type: "\"splice\"", required: true, description: "Splice operation identifier." },
+  { name: "index", type: "Expression", required: true, description: "Expression evaluating to the start index." },
+  { name: "deleteCount", type: "Expression", required: true, description: "Expression evaluating to the number of elements to delete." },
+  { name: "value", type: "Expression", required: false, description: "Expression evaluating to an array of items to insert (optional)." }
+]} />
+
+<Callout type="note">
+Set `deleteCount` to 0 to insert without deleting. Omit `value` to delete without inserting.
 </Callout>
 
 ## Fetch Step

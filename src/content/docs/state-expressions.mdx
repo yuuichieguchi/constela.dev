@@ -276,11 +276,11 @@ Display different text based on state using the `if` node:
   },
   "then": {
     "kind": "text",
-    "content": { "expr": "lit", "value": "Count is positive" }
+    "value": { "expr": "lit", "value": "Count is positive" }
   },
   "else": {
     "kind": "text",
-    "content": { "expr": "lit", "value": "Count is zero or negative" }
+    "value": { "expr": "lit", "value": "Count is zero or negative" }
   }
 }
 ```
@@ -296,7 +296,7 @@ When you need conditional text within an element (not conditional rendering), us
   "children": [
     {
       "kind": "text",
-      "content": {
+      "value": {
         "expr": "cond",
         "if": {
           "expr": "bin",
@@ -323,7 +323,7 @@ Calculate a total from quantity and price:
 ```json
 {
   "kind": "text",
-  "content": {
+  "value": {
     "expr": "bin",
     "op": "*",
     "left": { "expr": "state", "name": "quantity" },
@@ -343,7 +343,7 @@ Access nested properties from a list item using `var` with `path`:
   "as": "user",
   "body": {
     "kind": "text",
-    "content": { "expr": "var", "name": "user", "path": "profile.displayName" }
+    "value": { "expr": "var", "name": "user", "path": "profile.displayName" }
   }
 }
 ```
@@ -368,7 +368,7 @@ When iterating over arrays of objects, use `get` for explicit property access. C
         "children": [
           {
             "kind": "text",
-            "content": {
+            "value": {
               "expr": "get",
               "base": { "expr": "var", "name": "product" },
               "path": "name"
@@ -378,7 +378,7 @@ When iterating over arrays of objects, use `get` for explicit property access. C
       },
       {
         "kind": "text",
-        "content": {
+        "value": {
           "expr": "cond",
           "if": {
             "expr": "get",

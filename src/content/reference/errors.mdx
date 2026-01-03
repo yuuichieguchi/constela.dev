@@ -53,13 +53,13 @@ Constela provides descriptive error codes to help you quickly identify and fix i
   },
   "view": {
     "kind": "text",
-    "content": { "expr": "state", "name": "counter" }  // Wrong name!
+    "value": { "expr": "state", "name": "counter" }  // Wrong name!
   }
 }
 
 // Fixed: Use correct state name
 {
-  "content": { "expr": "state", "name": "count" }
+  "value": { "expr": "state", "name": "count" }
 }
 ```
 
@@ -83,13 +83,17 @@ Constela provides descriptive error codes to help you quickly identify and fix i
   "view": {
     "kind": "element",
     "tag": "button",
-    "props": { "onclick": "Increment" }  // Case mismatch!
+    "props": {
+      "onClick": { "event": "click", "action": "Increment" }  // Case mismatch!
+    }
   }
 }
 
 // Fixed: Match exact action name
 {
-  "props": { "onclick": "increment" }
+  "props": {
+    "onClick": { "event": "click", "action": "increment" }
+  }
 }
 ```
 
@@ -112,13 +116,13 @@ Constela provides descriptive error codes to help you quickly identify and fix i
   "as": "todo",  // Declared as "todo"
   "body": {
     "kind": "text",
-    "content": { "expr": "var", "name": "item" }  // Wrong name!
+    "value": { "expr": "var", "name": "item" }  // Wrong name!
   }
 }
 
 // Fixed: Use correct variable name
 {
-  "content": { "expr": "var", "name": "todo" }
+  "value": { "expr": "var", "name": "todo" }
 }
 ```
 
