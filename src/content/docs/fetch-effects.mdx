@@ -369,9 +369,9 @@ Here's a complete example that fetches and displays a list of posts:
       },
       {
         "kind": "each",
-        "list": { "expr": "state", "name": "posts" },
-        "itemName": "post",
-        "template": {
+        "items": { "expr": "state", "name": "posts" },
+        "as": "post",
+        "body": {
           "kind": "element",
           "tag": "article",
           "children": [

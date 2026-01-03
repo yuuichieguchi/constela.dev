@@ -317,9 +317,9 @@ Here's a complete example with multiple reusable components:
     "children": [
       {
         "kind": "each",
-        "list": { "expr": "state", "name": "users" },
-        "itemName": "user",
-        "template": {
+        "items": { "expr": "state", "name": "users" },
+        "as": "user",
+        "body": {
           "kind": "component",
           "name": "UserCard",
           "props": {

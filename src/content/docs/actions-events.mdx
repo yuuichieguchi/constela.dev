@@ -122,6 +122,128 @@ Remove an item from a list by index or by matching a condition.
 The `remove` operation is commonly used inside `each` loops where the index is available.
 </Callout>
 
+### toggle
+
+Flip a boolean state value. Perfect for modals, dropdowns, and visibility toggles.
+
+```json
+{ "do": "update", "target": "isMenuOpen", "operation": "toggle" }
+```
+
+#### Modal Toggle Example
+
+```json
+{
+  "state": {
+    "modalOpen": { "type": "boolean", "initial": false }
+  },
+  "actions": {
+    "toggleModal": {
+      "steps": [
+        { "do": "update", "target": "modalOpen", "operation": "toggle" }
+      ]
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "button",
+        "events": { "onClick": { "action": "toggleModal" } },
+        "children": [
+          { "kind": "text", "content": { "expr": "lit", "value": "Open Modal" } }
+        ]
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "modalOpen" },
+        "then": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "class": { "expr": "lit", "value": "modal" } },
+          "children": [
+            { "kind": "text", "content": { "expr": "lit", "value": "Modal Content" } },
+            {
+              "kind": "element",
+              "tag": "button",
+              "events": { "onClick": { "action": "toggleModal" } },
+              "children": [
+                { "kind": "text", "content": { "expr": "lit", "value": "Close" } }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+### merge
+
+Shallow-merge properties into an object state. Ideal for form handling where you update individual fields.
+
+```json
+{
+  "do": "update",
+  "target": "formData",
+  "operation": "merge",
+  "value": { "expr": "lit", "value": { "email": "new@example.com" } }
+}
+```
+
+#### Form Update Example
+
+```json
+{
+  "state": {
+    "form": {
+      "type": "object",
+      "initial": { "name": "", "email": "", "message": "" }
+    }
+  },
+  "actions": {
+    "updateName": {
+      "steps": [
+        {
+          "do": "update",
+          "target": "form",
+          "operation": "merge",
+          "value": {
+            "expr": "lit",
+            "value": { "name": "value-from-input" }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+<Callout type="tip">
+The `merge` operation only overwrites specified properties. Other properties in the object remain unchanged, making it ideal for partial form updates.
+</Callout>
+
+### replaceAt
+
+Replace an element at a specific index in a list. Used for editing items in place.
+
+```json
+{
+  "do": "update",
+  "target": "items",
+  "operation": "replaceAt",
+  "index": { "expr": "var", "name": "index" },
+  "value": { "expr": "state", "name": "editedItem" }
+}
+```
+
+<Callout type="note">
+The `replaceAt` operation is commonly used inside `each` loops where the index is available, enabling inline editing of list items.
+</Callout>
+
 ## Event Handlers
 
 Connect user interactions to actions using the `events` field on elements.
@@ -237,15 +359,21 @@ Triggered when a form is submitted.
 }
 ```
 
-## Complete Example: Todo List
+## Complete Example: Enhanced Todo List
 
-Here's a complete example combining state, actions, and events:
+Here's a complete example combining state, actions, events, and the new features:
 
 ```json
 {
   "version": "1.0",
   "state": {
-    "todos": { "type": "list", "initial": [] },
+    "todos": {
+      "type": "list",
+      "initial": [
+        { "id": 1, "title": "Learn Constela", "done": false },
+        { "id": 2, "title": "Build an app", "done": false }
+      ]
+    },
     "newTodo": { "type": "string", "initial": "" }
   },
   "actions": {
@@ -264,12 +392,29 @@ Here's a complete example combining state, actions, and events:
           "do": "update",
           "target": "todos",
           "operation": "push",
-          "value": { "expr": "state", "name": "newTodo" }
+          "value": {
+            "expr": "lit",
+            "value": { "id": 0, "title": "", "done": false }
+          }
         },
         {
           "do": "set",
           "target": "newTodo",
           "value": { "expr": "lit", "value": "" }
+        }
+      ]
+    },
+    "toggleDone": {
+      "steps": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "replaceAt",
+          "index": { "expr": "var", "name": "index" },
+          "value": {
+            "expr": "lit",
+            "value": { "done": true }
+          }
         }
       ]
     },
@@ -296,9 +441,7 @@ Here's a complete example combining state, actions, and events:
           "value": { "expr": "state", "name": "newTodo" },
           "placeholder": { "expr": "lit", "value": "Enter a todo..." }
         },
-        "events": {
-          "onInput": { "action": "updateNewTodo" }
-        }
+        "events": { "onInput": { "action": "updateNewTodo" } }
       },
       {
         "kind": "element",
@@ -310,14 +453,55 @@ Here's a complete example combining state, actions, and events:
       },
       {
         "kind": "each",
-        "list": { "expr": "state", "name": "todos" },
-        "itemName": "todo",
-        "indexName": "index",
-        "template": {
+        "items": { "expr": "state", "name": "todos" },
+        "as": "todo",
+        "index": "index",
+        "body": {
           "kind": "element",
           "tag": "div",
+          "props": { "class": { "expr": "lit", "value": "todo-item" } },
           "children": [
-            { "kind": "text", "content": { "expr": "var", "name": "todo" } },
+            {
+              "kind": "text",
+              "content": {
+                "expr": "get",
+                "base": { "expr": "var", "name": "todo" },
+                "path": "title"
+              }
+            },
+            {
+              "kind": "text",
+              "content": {
+                "expr": "cond",
+                "if": {
+                  "expr": "get",
+                  "base": { "expr": "var", "name": "todo" },
+                  "path": "done"
+                },
+                "then": { "expr": "lit", "value": " [Completed]" },
+                "else": { "expr": "lit", "value": " [Pending]" }
+              }
+            },
+            {
+              "kind": "element",
+              "tag": "button",
+              "events": { "onClick": { "action": "toggleDone" } },
+              "children": [
+                {
+                  "kind": "text",
+                  "content": {
+                    "expr": "cond",
+                    "if": {
+                      "expr": "get",
+                      "base": { "expr": "var", "name": "todo" },
+                      "path": "done"
+                    },
+                    "then": { "expr": "lit", "value": "Undo" },
+                    "else": { "expr": "lit", "value": "Complete" }
+                  }
+                }
+              ]
+            },
             {
               "kind": "element",
               "tag": "button",
@@ -333,6 +517,12 @@ Here's a complete example combining state, actions, and events:
   }
 }
 ```
+
+This example demonstrates:
+- **`get`** expression to access `todo.title` and `todo.done`
+- **`cond`** expression for conditional labels ("Completed" vs "Pending")
+- **`replaceAt`** operation for toggling completion status
+- **`each`** loop with index for item-level operations
 
 ## Next Steps
 

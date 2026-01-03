@@ -206,3 +206,176 @@ Accesses action parameters (used inside action steps).
 <Callout type="note">
 The `param` expression is primarily used within action steps to access event data or other runtime parameters.
 </Callout>
+
+## Cond Expression
+
+Returns different values based on a condition. Unlike the `if` node which controls rendering, `cond` evaluates to a value.
+
+```json
+{
+  "expr": "cond",
+  "if": { "expr": "state", "name": "done" },
+  "then": { "expr": "lit", "value": "Completed" },
+  "else": { "expr": "lit", "value": "Pending" }
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"cond\"", required: true, description: "Expression type identifier." },
+  { name: "if", type: "Expression", required: true, description: "Condition expression (must evaluate to boolean)." },
+  { name: "then", type: "Expression", required: true, description: "Expression to evaluate when condition is true." },
+  { name: "else", type: "Expression", required: true, description: "Expression to evaluate when condition is false." }
+]} />
+
+### Cond vs If Node
+
+| Feature | `cond` Expression | `if` Node |
+|---------|------------------|-----------|
+| Purpose | Compute a value | Control rendering |
+| Returns | A value | A view node |
+| Usage | Inside text, attributes, props | View tree |
+
+### Examples
+
+```json
+// Conditional text label
+{
+  "kind": "text",
+  "content": {
+    "expr": "cond",
+    "if": { "expr": "state", "name": "isAdmin" },
+    "then": { "expr": "lit", "value": "Admin Panel" },
+    "else": { "expr": "lit", "value": "User Dashboard" }
+  }
+}
+
+// Conditional CSS class
+{
+  "kind": "element",
+  "tag": "div",
+  "props": {
+    "class": {
+      "expr": "cond",
+      "if": { "expr": "state", "name": "isActive" },
+      "then": { "expr": "lit", "value": "active" },
+      "else": { "expr": "lit", "value": "inactive" }
+    }
+  }
+}
+
+// Nested cond for multiple conditions
+{
+  "expr": "cond",
+  "if": {
+    "expr": "bin",
+    "op": ">",
+    "left": { "expr": "state", "name": "score" },
+    "right": { "expr": "lit", "value": 80 }
+  },
+  "then": { "expr": "lit", "value": "Excellent" },
+  "else": {
+    "expr": "cond",
+    "if": {
+      "expr": "bin",
+      "op": ">",
+      "left": { "expr": "state", "name": "score" },
+      "right": { "expr": "lit", "value": 50 }
+    },
+    "then": { "expr": "lit", "value": "Good" },
+    "else": { "expr": "lit", "value": "Needs Improvement" }
+  }
+}
+```
+
+<Callout type="tip">
+Use `cond` when you need conditional values inside text, attributes, or props. Use `if` nodes when you need to conditionally render entire elements.
+</Callout>
+
+## Get Expression
+
+Accesses properties from an object expression. Essential for working with object arrays in `each` loops.
+
+```json
+{
+  "expr": "get",
+  "base": { "expr": "var", "name": "item" },
+  "path": "title"
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"get\"", required: true, description: "Expression type identifier." },
+  { name: "base", type: "Expression", required: true, description: "Base expression (typically a variable or state)." },
+  { name: "path", type: "string", required: true, description: "Dot-separated path to the property." }
+]} />
+
+### Path Access
+
+The `path` supports dot notation for nested properties:
+
+```json
+// Access item.user.profile.name
+{
+  "expr": "get",
+  "base": { "expr": "var", "name": "item" },
+  "path": "user.profile.name"
+}
+```
+
+<Callout type="note">
+If a property in the path doesn't exist, the expression returns `undefined`. This allows safe access to optional properties.
+</Callout>
+
+### Get vs Var with Path
+
+Both `get` and `var` with `path` can access nested properties. Use `get` when the base is a computed expression, and `var` with `path` when accessing a simple loop variable.
+
+```json
+// Using var with path (simpler for loop variables)
+{ "expr": "var", "name": "user", "path": "email" }
+
+// Using get (when base is computed or for clarity)
+{
+  "expr": "get",
+  "base": { "expr": "var", "name": "user" },
+  "path": "email"
+}
+```
+
+### Usage in Each Loop
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "todos" },
+  "as": "todo",
+  "index": "i",
+  "body": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "text",
+        "content": {
+          "expr": "get",
+          "base": { "expr": "var", "name": "todo" },
+          "path": "title"
+        }
+      },
+      {
+        "kind": "text",
+        "content": {
+          "expr": "cond",
+          "if": {
+            "expr": "get",
+            "base": { "expr": "var", "name": "todo" },
+            "path": "done"
+          },
+          "then": { "expr": "lit", "value": " [Completed]" },
+          "else": { "expr": "lit", "value": " [Pending]" }
+        }
+      }
+    ]
+  }
+}
+```

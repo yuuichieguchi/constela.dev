@@ -5,7 +5,7 @@ description: Manage state and write expressions
 
 ## State Types
 
-Constela supports three state types:
+Constela supports five state types:
 
 ### number
 
@@ -53,6 +53,46 @@ Arrays of values.
 
 <Callout type="note">
 List items can be any JSON-serializable value: numbers, strings, or objects.
+</Callout>
+
+### boolean
+
+True/false values for toggles and flags.
+
+```json
+{
+  "state": {
+    "isOpen": { "type": "boolean", "initial": false },
+    "darkMode": { "type": "boolean", "initial": true }
+  }
+}
+```
+
+<Callout type="tip">
+Use boolean state with the `toggle` operation to easily flip values on user interaction.
+</Callout>
+
+### object
+
+Structured data with named properties.
+
+```json
+{
+  "state": {
+    "user": {
+      "type": "object",
+      "initial": { "name": "", "email": "" }
+    },
+    "form": {
+      "type": "object",
+      "initial": { "title": "", "body": "", "tags": [] }
+    }
+  }
+}
+```
+
+<Callout type="tip">
+Use object state with the `merge` operation to update individual properties without replacing the entire object.
 </Callout>
 
 ## Expressions
@@ -127,6 +167,40 @@ Invert a boolean expression.
 }
 ```
 
+### cond - Conditional Values
+
+Return different values based on a condition. Unlike the `if` node that controls what gets rendered, `cond` computes a value.
+
+```json
+{
+  "expr": "cond",
+  "if": { "expr": "state", "name": "isDarkMode" },
+  "then": { "expr": "lit", "value": "#1a1a1a" },
+  "else": { "expr": "lit", "value": "#ffffff" }
+}
+```
+
+Use `cond` for:
+- Dynamic text labels
+- Conditional CSS classes
+- Computed attribute values
+
+### get - Property Access
+
+Access nested properties from expressions. Particularly useful with `each` loops over object arrays.
+
+```json
+{
+  "expr": "get",
+  "base": { "expr": "var", "name": "item" },
+  "path": "user.name"
+}
+```
+
+<Callout type="tip">
+While `var` with `path` works for simple cases, `get` makes the property access explicit and works with any base expression.
+</Callout>
+
 ## Binary Operators
 
 The `bin` expression supports these operators:
@@ -189,7 +263,7 @@ The `bin` expression supports these operators:
 
 ### Conditional Text
 
-Display different text based on state:
+Display different text based on state using the `if` node:
 
 ```json
 {
@@ -211,6 +285,37 @@ Display different text based on state:
 }
 ```
 
+#### Using cond for Inline Conditional Values
+
+When you need conditional text within an element (not conditional rendering), use the `cond` expression:
+
+```json
+{
+  "kind": "element",
+  "tag": "span",
+  "children": [
+    {
+      "kind": "text",
+      "content": {
+        "expr": "cond",
+        "if": {
+          "expr": "bin",
+          "op": ">",
+          "left": { "expr": "state", "name": "count" },
+          "right": { "expr": "lit", "value": 0 }
+        },
+        "then": { "expr": "lit", "value": "Items available" },
+        "else": { "expr": "lit", "value": "No items" }
+      }
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Use `if` nodes when you want to conditionally show/hide entire elements. Use `cond` expressions when you need different values within the same element structure.
+</Callout>
+
 ### Computed Values
 
 Calculate a total from quantity and price:
@@ -229,16 +334,62 @@ Calculate a total from quantity and price:
 
 ### Nested Object Access
 
-Access nested properties from a list item:
+Access nested properties from a list item using `var` with `path`:
 
 ```json
 {
   "kind": "each",
-  "list": { "expr": "state", "name": "users" },
-  "itemName": "user",
-  "template": {
+  "items": { "expr": "state", "name": "users" },
+  "as": "user",
+  "body": {
     "kind": "text",
     "content": { "expr": "var", "name": "user", "path": "profile.displayName" }
+  }
+}
+```
+
+#### Object Arrays with get
+
+When iterating over arrays of objects, use `get` for explicit property access. Combined with `cond`, you can create rich displays:
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "products" },
+  "as": "product",
+  "body": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "class": { "expr": "lit", "value": "product-card" } },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h3",
+        "children": [
+          {
+            "kind": "text",
+            "content": {
+              "expr": "get",
+              "base": { "expr": "var", "name": "product" },
+              "path": "name"
+            }
+          }
+        ]
+      },
+      {
+        "kind": "text",
+        "content": {
+          "expr": "cond",
+          "if": {
+            "expr": "get",
+            "base": { "expr": "var", "name": "product" },
+            "path": "inStock"
+          },
+          "then": { "expr": "lit", "value": "In Stock" },
+          "else": { "expr": "lit", "value": "Out of Stock" }
+        }
+      }
+    ]
   }
 }
 ```

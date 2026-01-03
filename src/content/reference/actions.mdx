@@ -83,13 +83,16 @@ Applies a predefined operation to a state value.
 
 ### Operations
 
-| Operation | Description | Requires Value |
-|-----------|-------------|----------------|
-| `increment` | Adds 1 to a number | No |
-| `decrement` | Subtracts 1 from a number | No |
-| `push` | Appends to an array | Yes |
-| `pop` | Removes last element from array | No |
-| `remove` | Removes matching element from array | Yes |
+| Operation | Description | Requires Value | State Type |
+|-----------|-------------|----------------|------------|
+| `increment` | Adds 1 to a number | No | number |
+| `decrement` | Subtracts 1 from a number | No | number |
+| `toggle` | Flips a boolean value | No | boolean |
+| `push` | Appends to an array | Yes | list |
+| `pop` | Removes last element from array | No | list |
+| `remove` | Removes matching element from array | Yes | list |
+| `replaceAt` | Replaces element at a specific index | Yes (index + value) | list |
+| `merge` | Shallow-merges properties into an object | Yes | object |
 
 ### Examples
 
@@ -116,6 +119,83 @@ Applies a predefined operation to a state value.
 // Remove last item
 { "do": "update", "target": "stack", "operation": "pop" }
 ```
+
+### toggle
+
+Flips a boolean state value. Ideal for toggles, modals, and visibility controls.
+
+```json
+{ "do": "update", "target": "isOpen", "operation": "toggle" }
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field to toggle (must be boolean)." },
+  { name: "operation", type: "\"toggle\"", required: true, description: "Toggle operation identifier." }
+]} />
+
+<Callout type="note">
+The target state must be a boolean type. Using toggle on non-boolean values results in a compile-time error.
+</Callout>
+
+### merge
+
+Shallow-merges properties into an object state. Existing properties are preserved unless overwritten.
+
+```json
+{
+  "do": "update",
+  "target": "form",
+  "operation": "merge",
+  "value": { "expr": "lit", "value": { "email": "user@example.com" } }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field to merge into (must be object)." },
+  { name: "operation", type: "\"merge\"", required: true, description: "Merge operation identifier." },
+  { name: "value", type: "Expression", required: true, description: "Object expression to merge into target." }
+]} />
+
+#### Merge Example
+
+```json
+// State: form = { name: "John", email: "" }
+{
+  "do": "update",
+  "target": "form",
+  "operation": "merge",
+  "value": { "expr": "lit", "value": { "email": "john@example.com", "phone": "123-456" } }
+}
+// Result: form = { name: "John", email: "john@example.com", phone: "123-456" }
+```
+
+### replaceAt
+
+Replaces an element at a specific index in an array. Useful for editing list items in place.
+
+```json
+{
+  "do": "update",
+  "target": "todos",
+  "operation": "replaceAt",
+  "index": { "expr": "var", "name": "index" },
+  "value": { "expr": "lit", "value": { "title": "Updated", "done": true } }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"update\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field (must be list)." },
+  { name: "operation", type: "\"replaceAt\"", required: true, description: "ReplaceAt operation identifier." },
+  { name: "index", type: "Expression", required: true, description: "Expression evaluating to the index to replace." },
+  { name: "value", type: "Expression", required: true, description: "Expression evaluating to the new value." }
+]} />
+
+<Callout type="tip">
+The `replaceAt` operation is commonly used inside `each` loops where the index is available, enabling inline editing of list items.
+</Callout>
 
 ## Fetch Step
 

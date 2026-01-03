@@ -21,6 +21,7 @@ export const docsNavigation: NavSection[] = [
       { title: 'Fetch & Effects', href: '/docs/fetch-effects' },
       { title: 'Components', href: '/docs/components' },
       { title: 'Routing', href: '/docs/routing' },
+      { title: 'Design Principles', href: '/docs/design-principles' },
     ],
   },
 ];

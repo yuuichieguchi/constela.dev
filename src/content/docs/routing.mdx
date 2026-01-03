@@ -283,9 +283,9 @@ app.mount(document.getElementById('root'));
           },
           {
             "kind": "each",
-            "list": { "expr": "state", "name": "products" },
-            "itemName": "product",
-            "template": {
+            "items": { "expr": "state", "name": "products" },
+            "as": "product",
+            "body": {
               "kind": "component",
               "name": "Link",
               "props": {

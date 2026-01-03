@@ -1,0 +1,141 @@
+---
+title: Design Principles
+description: Understanding Constela's design philosophy and compile-time safety
+---
+
+## Overview
+
+Constela is designed with a core philosophy: **catch errors at compile time, not runtime**. This principle guides every aspect of the language design.
+
+## Limited Operations, Maximum Safety
+
+Constela intentionally provides a constrained set of operations and expression types. This isn't a limitation—it's a feature.
+
+### Why Constraints Matter
+
+| Approach | Benefit |
+|----------|---------|
+| Limited expression types | Exhaustive type checking possible |
+| Predefined operations | Invalid operations caught at compile time |
+| Declarative actions | No runtime surprises |
+| Structured JSON | AI-friendly, less prone to errors |
+
+<Callout type="important">
+Every expression type and operation in Constela is known at compile time. This enables the compiler to verify correctness before any code runs.
+</Callout>
+
+## Exhaustive Handling Guarantees
+
+Constela uses exhaustive switch checks inside the compiler and runtime.
+
+This means that when a new expression kind or operation is introduced, all relevant evaluation and execution logic must be updated explicitly. If any case is missed, the build fails.
+
+### What This Means in Practice
+
+When the Constela team adds a new expression type (like `cond` or `get`) or a new update operation (like `toggle` or `merge`), the compiler itself will not build until every handler is updated.
+
+This design ensures:
+
+1. **No unhandled DSL constructs at runtime** - Every possible expression and operation has explicit handling
+2. **Failures happen during development** - Not in user applications
+3. **Safer long-term evolution** - New features cannot be partially implemented
+
+<Callout type="note">
+This is an internal implementation detail. You don't need to think about it—it's a guarantee that Constela handles everything correctly.
+</Callout>
+
+## Compile-Time Error Detection
+
+### Invalid Operation Errors
+
+Using an operation on the wrong state type produces a compile-time error:
+
+```json
+// Error: 'count' is number, 'toggle' requires boolean
+{
+  "do": "update",
+  "target": "count",
+  "operation": "toggle"
+}
+```
+
+### Type Mismatch Errors
+
+Operations validate their target state types:
+
+```json
+// Error: merge requires object target, 'items' is a list
+{
+  "do": "update",
+  "target": "items",
+  "operation": "merge",
+  "value": { "expr": "lit", "value": { "key": "value" } }
+}
+```
+
+### Missing Required Fields
+
+Operations with required fields are validated:
+
+```json
+// Error: replaceAt requires 'index' field
+{
+  "do": "update",
+  "target": "todos",
+  "operation": "replaceAt",
+  "value": { "expr": "lit", "value": { "title": "New" } }
+}
+```
+
+## State Type Requirements
+
+Each operation has specific state type requirements:
+
+| Operation | Required State Type |
+|-----------|-------------------|
+| `increment` | number |
+| `decrement` | number |
+| `toggle` | boolean |
+| `push` | list |
+| `pop` | list |
+| `remove` | list |
+| `replaceAt` | list |
+| `merge` | object |
+
+<Callout type="tip">
+The compiler validates these requirements. Using `toggle` on a number or `push` on a boolean produces a clear compile-time error.
+</Callout>
+
+## Expression Type Requirements
+
+Expressions also have type constraints:
+
+| Expression | Returns | Constraints |
+|------------|---------|-------------|
+| `lit` | any | Value must be JSON-serializable |
+| `state` | any | State field must exist |
+| `var` | any | Variable must be in scope |
+| `bin` | varies | Operands must be compatible with operator |
+| `not` | boolean | Operand must be boolean |
+| `cond` | any | `if` clause must be boolean |
+| `get` | any | Base must be object or array |
+| `param` | any | Only valid inside action steps |
+
+## The AI Advantage
+
+Constela's constrained design makes it ideal for AI-generated UIs:
+
+1. **Structured JSON reduces hallucination** - AI models generate valid syntax more reliably
+2. **Limited vocabulary improves accuracy** - Fewer options means fewer mistakes
+3. **Type errors surface immediately** - No debugging runtime issues
+4. **Predictable patterns** - AI can learn and replicate correct usage
+
+<Callout type="note">
+When AI generates invalid Constela code, the compiler provides specific error messages that help both humans and AI systems understand and fix the issue.
+</Callout>
+
+## Next Steps
+
+- Learn about [State & Expressions](/docs/state-expressions) to understand the core data model
+- See [Actions & Events](/docs/actions-events) for handling user interactions
+- Explore the [Reference](/reference) for complete API documentation
