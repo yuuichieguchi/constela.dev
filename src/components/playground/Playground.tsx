@@ -81,8 +81,12 @@ function createJsonParseError(message: string): JsonParseError {
   } as JsonParseError;
 }
 
-export function Playground() {
-  const [code, setCode] = useState(INITIAL_CODE);
+interface PlaygroundProps {
+  initialCode?: string;
+}
+
+export function Playground({ initialCode }: PlaygroundProps) {
+  const [code, setCode] = useState(initialCode ?? INITIAL_CODE);
   const [errors, setErrors] = useState<ConstelaError[]>([]);
   const [runtimeError, setRuntimeError] = useState<Error | null>(null);
   const [program, setProgram] = useState<CompiledProgram | null>(null);
