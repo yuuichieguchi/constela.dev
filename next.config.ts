@@ -27,7 +27,7 @@ const playgroundCsp = [
   "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
   "img-src 'self' blob: data:",
   "font-src 'self' https://cdn.jsdelivr.net data:",
-  "connect-src 'self' https://cdn.jsdelivr.net",
+  "connect-src 'self' https://cdn.jsdelivr.net https://jsonplaceholder.typicode.com",
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
