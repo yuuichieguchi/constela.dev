@@ -120,21 +120,31 @@ const EXAMPLE_CODES: Record<string, string> = {
   "view": {
     "kind": "element",
     "tag": "div",
+    "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
     "children": [
       {
         "kind": "element",
         "tag": "h1",
+        "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Todo List" } }]
       },
       {
         "kind": "element",
+        "tag": "p",
+        "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add items and manage your todo list." } }]
+      },
+      {
+        "kind": "element",
         "tag": "div",
+        "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; margin-bottom: 16px;" } },
         "children": [
           {
             "kind": "element",
             "tag": "input",
             "props": {
               "type": { "expr": "lit", "value": "text" },
+              "style": { "expr": "lit", "value": "flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; color: #333; background: white;" },
               "value": { "expr": "state", "name": "newTodo" },
               "onInput": { "event": "input", "action": "setNewTodo", "payload": { "expr": "var", "name": "value" } }
             }
@@ -142,7 +152,11 @@ const EXAMPLE_CODES: Record<string, string> = {
           {
             "kind": "element",
             "tag": "button",
-            "props": { "onClick": { "event": "click", "action": "addTodo" } },
+            "props": {
+              "style": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } }, "then": { "expr": "lit", "value": "padding: 8px 16px; background: #ccc; color: #666; border: none; border-radius: 4px; cursor: not-allowed; font-size: 14px;" }, "else": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" } },
+              "disabled": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } },
+              "onClick": { "event": "click", "action": "addTodo" }
+            },
             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add" } }]
           }
         ]
@@ -150,6 +164,7 @@ const EXAMPLE_CODES: Record<string, string> = {
       {
         "kind": "element",
         "tag": "ul",
+        "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin: 0;" } },
         "children": [
           {
             "kind": "each",
@@ -158,12 +173,21 @@ const EXAMPLE_CODES: Record<string, string> = {
             "body": {
               "kind": "element",
               "tag": "li",
+              "props": { "style": { "expr": "lit", "value": "display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
               "children": [
-                { "kind": "text", "value": { "expr": "var", "name": "item" } },
+                {
+                  "kind": "element",
+                  "tag": "span",
+                  "props": { "style": { "expr": "lit", "value": "color: #333;" } },
+                  "children": [{ "kind": "text", "value": { "expr": "var", "name": "item" } }]
+                },
                 {
                   "kind": "element",
                   "tag": "button",
-                  "props": { "onClick": { "event": "click", "action": "removeTodo", "payload": { "expr": "var", "name": "item" } } },
+                  "props": {
+                    "style": { "expr": "lit", "value": "padding: 4px 12px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;" },
+                    "onClick": { "event": "click", "action": "removeTodo", "payload": { "expr": "var", "name": "item" } }
+                  },
                   "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Delete" } }]
                 }
               ]
