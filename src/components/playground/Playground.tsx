@@ -7,66 +7,7 @@ import { PlaygroundEditor } from './PlaygroundEditor';
 import { PlaygroundPreview } from './PlaygroundPreview';
 import { PlaygroundErrors } from './PlaygroundErrors';
 import { PlaygroundSuccess } from './PlaygroundSuccess';
-
-const INITIAL_CODE = `{
-  "version": "1.0",
-  "state": {
-    "count": { "type": "number", "initial": 0 }
-  },
-  "actions": [
-    {
-      "name": "increment",
-      "steps": [{ "do": "update", "target": "count", "operation": "increment" }]
-    },
-    {
-      "name": "decrement",
-      "steps": [{ "do": "update", "target": "count", "operation": "decrement" }]
-    }
-  ],
-  "view": {
-    "kind": "element",
-    "tag": "div",
-    "props": { "style": { "expr": "lit", "value": "padding: 20px; font-family: sans-serif;" } },
-    "children": [
-      {
-        "kind": "element",
-        "tag": "h2",
-        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Counter" } }]
-      },
-      {
-        "kind": "element",
-        "tag": "p",
-        "props": { "style": { "expr": "lit", "value": "font-size: 2rem; font-weight: bold;" } },
-        "children": [{ "kind": "text", "value": { "expr": "state", "name": "count" } }]
-      },
-      {
-        "kind": "element",
-        "tag": "div",
-        "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px;" } },
-        "children": [
-          {
-            "kind": "element",
-            "tag": "button",
-            "props": {
-              "onClick": { "event": "click", "action": "decrement" },
-              "style": { "expr": "lit", "value": "padding: 8px 16px; cursor: pointer;" }
-            },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "-" } }]
-          },
-          {
-            "kind": "element",
-            "tag": "button",
-            "props": {
-              "onClick": { "event": "click", "action": "increment" },
-              "style": { "expr": "lit", "value": "padding: 8px 16px; cursor: pointer;" }
-            },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+" } }]
-          }
-        ]
-      }
-    ]
-  }
-}`;
+import { DEFAULT_CODE } from './example-codes';
 
 interface JsonParseError extends ConstelaError {
   code: 'SCHEMA_INVALID';
@@ -86,7 +27,7 @@ interface PlaygroundProps {
 }
 
 export function Playground({ initialCode }: PlaygroundProps) {
-  const [code, setCode] = useState(initialCode ?? INITIAL_CODE);
+  const [code, setCode] = useState(initialCode ?? DEFAULT_CODE);
   const [errors, setErrors] = useState<ConstelaError[]>([]);
   const [runtimeError, setRuntimeError] = useState<Error | null>(null);
   const [program, setProgram] = useState<CompiledProgram | null>(null);
