@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import { compileMDX as compileMDXRemote } from 'next-mdx-remote/rsc';
 import rehypeShiki from '@shikijs/rehype';
 import remarkGfm from 'remark-gfm';
-import { CodeBlock, Callout, PropsTable } from '@/components/mdx';
+import { CodeBlock, Callout, PropsTable, CompareGrid } from '@/components/mdx';
 
 const contentDirectory = path.join(process.cwd(), 'src/content');
 
@@ -66,6 +66,7 @@ const mdxComponents = {
   },
   Callout,
   PropsTable,
+  CompareGrid,
 };
 
 export async function compileMDX(source: string) {
