@@ -6,6 +6,7 @@ import { compile, type CompiledProgram } from '@constela/compiler';
 import { PlaygroundEditor } from './PlaygroundEditor';
 import { PlaygroundPreview } from './PlaygroundPreview';
 import { PlaygroundErrors } from './PlaygroundErrors';
+import { PlaygroundSuccess } from './PlaygroundSuccess';
 
 const INITIAL_CODE = `{
   "version": "1.0",
@@ -86,10 +87,12 @@ export function Playground() {
   const [runtimeError, setRuntimeError] = useState<Error | null>(null);
   const [program, setProgram] = useState<CompiledProgram | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+  const [validationSuccess, setValidationSuccess] = useState(false);
 
   const handleValidate = useCallback(() => {
     setErrors([]);
     setRuntimeError(null);
+    setValidationSuccess(false);
 
     // Parse JSON
     let parsed: unknown;
@@ -108,6 +111,7 @@ export function Playground() {
       return false;
     }
 
+    setValidationSuccess(true);
     return true;
   }, [code]);
 
@@ -145,6 +149,11 @@ export function Playground() {
     setRuntimeError(error);
   }, []);
 
+  const handleCodeChange = useCallback((newCode: string) => {
+    setCode(newCode);
+    setValidationSuccess(false);
+  }, []);
+
   return (
     <div className="flex h-[calc(100vh-var(--header-height)-120px)] flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -179,13 +188,15 @@ export function Playground() {
       </div>
 
       <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 lg:grid-cols-2">
-        <PlaygroundEditor value={code} onChange={setCode} />
+        <PlaygroundEditor value={code} onChange={handleCodeChange} />
         <PlaygroundPreview program={program} onError={handleRuntimeError} />
       </div>
 
       {(errors.length > 0 || runtimeError) && (
         <PlaygroundErrors errors={errors} runtimeError={runtimeError} />
       )}
+
+      <PlaygroundSuccess show={validationSuccess && errors.length === 0 && !runtimeError} />
     </div>
   );
 }
