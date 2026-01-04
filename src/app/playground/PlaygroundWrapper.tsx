@@ -204,16 +204,27 @@ const EXAMPLE_CODES: Record<string, string> = {
   "view": {
     "kind": "element",
     "tag": "div",
+    "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
     "children": [
       {
         "kind": "element",
         "tag": "h1",
-        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Fetch Example" } }]
+        "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "API Data Fetching" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "p",
+        "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Click the button to fetch user data from JSONPlaceholder API." } }]
       },
       {
         "kind": "element",
         "tag": "button",
-        "props": { "onClick": { "event": "click", "action": "fetchUsers" } },
+        "props": {
+          "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" },
+          "onClick": { "event": "click", "action": "fetchUsers" }
+        },
         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Fetch Users" } }]
       },
       {
@@ -222,12 +233,24 @@ const EXAMPLE_CODES: Record<string, string> = {
         "then": {
           "kind": "element",
           "tag": "p",
+          "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #666;" } },
           "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Loading..." } }]
+        }
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "loading" }, "right": { "expr": "lit", "value": "error" } },
+        "then": {
+          "kind": "element",
+          "tag": "p",
+          "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #dc2626;" } },
+          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Failed to fetch data." } }]
         }
       },
       {
         "kind": "element",
         "tag": "ul",
+        "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin-top: 16px;" } },
         "children": [
           {
             "kind": "each",
@@ -236,8 +259,20 @@ const EXAMPLE_CODES: Record<string, string> = {
             "body": {
               "kind": "element",
               "tag": "li",
+              "props": { "style": { "expr": "lit", "value": "padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
               "children": [
-                { "kind": "text", "value": { "expr": "var", "name": "user", "path": "name" } }
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "style": { "expr": "lit", "value": "font-weight: bold; color: #333;" } },
+                  "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "name" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "style": { "expr": "lit", "value": "color: #666; font-size: 14px;" } },
+                  "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "email" } }]
+                }
               ]
             }
           }
