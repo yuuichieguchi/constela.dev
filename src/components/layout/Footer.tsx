@@ -7,11 +7,12 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="grid items-center gap-4 text-center sm:grid-cols-3 sm:text-left">
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Constela. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
+          <span className="text-xs text-muted-foreground sm:justify-self-center">Built with Constela</span>
+          <div className="flex items-center justify-center gap-6 sm:justify-self-end">
             <Link
               href={REPO_MAIN}
               target="_blank"
@@ -30,9 +31,6 @@ export function Footer() {
             </Link>
           </div>
         </div>
-        <p className="mt-4 text-center text-xs text-muted-foreground">
-          Built with Constela
-        </p>
       </div>
     </footer>
   );
