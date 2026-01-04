@@ -1,7 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import type { AppInstance } from '@constela/runtime';
+import type { CompiledProgram } from '@constela/compiler';
+import compiledCounter from './counter.compiled.json';
 
+// Display string for code panel (simplified version without styling)
 const counterExample = `{
   "version": "1.0",
   "state": {
@@ -44,7 +48,9 @@ const counterExample = `{
 
 export function CodeDemo() {
   const [copied, setCopied] = useState(false);
-  const [count, setCount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const appRef = useRef<AppInstance | null>(null);
 
   const handleCopy = useCallback(async () => {
     try {
@@ -54,6 +60,46 @@ export function CodeDemo() {
     } catch (err) {
       console.error('Failed to copy:', err);
     }
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const initApp = async () => {
+      if (!containerRef.current) return;
+
+      try {
+        // Dynamic import to avoid SSR issues
+        const { createApp } = await import('@constela/runtime');
+
+        if (!mounted || !containerRef.current) return;
+
+        // Clear container before mounting
+        containerRef.current.innerHTML = '';
+
+        // Use pre-compiled program (no compile() call needed)
+        const app = createApp(compiledCounter as CompiledProgram, containerRef.current);
+        appRef.current = app;
+      } catch (err) {
+        if (mounted) {
+          setError(err instanceof Error ? err.message : String(err));
+        }
+      }
+    };
+
+    initApp();
+
+    return () => {
+      mounted = false;
+      if (appRef.current) {
+        try {
+          appRef.current.destroy();
+        } catch {
+          // Ignore cleanup errors
+        }
+        appRef.current = null;
+      }
+    };
   }, []);
 
   return (
@@ -126,28 +172,16 @@ export function CodeDemo() {
               </span>
             </div>
             <div className="flex flex-1 flex-col items-center justify-center gap-6 p-8">
-              <div className="text-6xl font-bold tabular-nums text-foreground">
-                {count}
-              </div>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setCount((c) => c - 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
-                  aria-label="Decrement"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => setCount((c) => c + 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
-                  aria-label="Increment"
-                >
-                  +
-                </button>
-              </div>
+              {error ? (
+                <div className="text-center text-sm text-red-500">
+                  Error: {error}
+                </div>
+              ) : (
+                <div ref={containerRef} className="flex items-center justify-center" />
+              )}
               <p className="text-center text-sm text-muted-foreground">
                 This preview demonstrates the counter&apos;s behavior.<br />
-                The actual Constela runtime compiles and renders the JSON above.
+                The actual Constela runtime compiles and renders the JSON on the left.
               </p>
             </div>
           </div>
