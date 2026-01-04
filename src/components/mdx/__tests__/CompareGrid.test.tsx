@@ -351,4 +351,29 @@ describe('CompareGrid component', () => {
       expect(screen.getByText('Item 2')).toBeInTheDocument();
     });
   });
+
+  // ==================== Prose Isolation ====================
+
+  describe('prose isolation', () => {
+    it('should have not-prose class on grid container to prevent Tailwind Typography inheritance', async () => {
+      /**
+       * Given: CompareGrid component inside prose context
+       * When: Rendering the component
+       * Then: Grid container should have not-prose class to prevent
+       *       Tailwind Typography styles from affecting internal elements
+       *
+       * RED PHASE: This test will FAIL - not-prose class is not yet applied
+       */
+      const { CompareGrid } = await import('../CompareGrid');
+      const { container } = render(
+        <CompareGrid>
+          <CompareGrid.Column title="Column 1">Content 1</CompareGrid.Column>
+          <CompareGrid.Column title="Column 2">Content 2</CompareGrid.Column>
+        </CompareGrid>
+      );
+
+      const gridContainer = container.firstChild as HTMLElement;
+      expect(gridContainer.className).toContain('not-prose');
+    });
+  });
 });
