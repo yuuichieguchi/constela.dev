@@ -48,41 +48,56 @@ const EXAMPLE_CODES: Record<string, string> = {
   "view": {
     "kind": "element",
     "tag": "div",
+    "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
     "children": [
       {
         "kind": "element",
         "tag": "h1",
-        "children": [
-          { "kind": "text", "value": { "expr": "lit", "value": "Counter" } }
-        ]
+        "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Counter" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "p",
+        "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "A simple counter with increment, decrement, and reset." } }]
       },
       {
         "kind": "element",
         "tag": "div",
-        "children": [
-          { "kind": "text", "value": { "expr": "state", "name": "count" } }
-        ]
+        "props": { "style": { "expr": "lit", "value": "font-size: 48px; font-weight: bold; text-align: center; padding: 24px; background: #f5f5f5; border-radius: 8px; margin-bottom: 16px; color: #333;" } },
+        "children": [{ "kind": "text", "value": { "expr": "state", "name": "count" } }]
       },
       {
         "kind": "element",
         "tag": "div",
+        "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; justify-content: center;" } },
         "children": [
           {
             "kind": "element",
             "tag": "button",
-            "props": { "onClick": { "event": "click", "action": "decrement" } },
+            "props": {
+              "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
+              "onClick": { "event": "click", "action": "decrement" }
+            },
             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "-" } }]
           },
           {
             "kind": "element",
             "tag": "button",
-            "props": { "onClick": { "event": "click", "action": "increment" } },
+            "props": {
+              "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
+              "onClick": { "event": "click", "action": "increment" }
+            },
             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+" } }]
           },
           {
             "kind": "element",
             "tag": "button",
-            "props": { "onClick": { "event": "click", "action": "reset" } },
+            "props": {
+              "style": { "expr": "lit", "value": "padding: 12px 24px; font-size: 14px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;" },
+              "onClick": { "event": "click", "action": "reset" }
+            },
             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Reset" } }]
           }
         ]
