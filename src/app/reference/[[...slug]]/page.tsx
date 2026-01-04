@@ -25,9 +25,20 @@ export async function generateMetadata({
     };
   }
 
+  const path = slug ? `/reference/${slug.join('/')}` : '/reference';
+
   return {
     title: doc.frontmatter.title,
     description: doc.frontmatter.description,
+    openGraph: {
+      type: 'article',
+      title: doc.frontmatter.title,
+      description: doc.frontmatter.description,
+      url: path,
+    },
+    alternates: {
+      canonical: path,
+    },
   };
 }
 
