@@ -64,6 +64,13 @@ const mdxComponents = {
   pre: ({ children, ...props }: React.ComponentPropsWithoutRef<'pre'>) => {
     return <CodeBlock {...props}>{children}</CodeBlock>;
   },
+  table: ({ children, ...props }: React.ComponentPropsWithoutRef<'table'>) => {
+    return (
+      <div className="overflow-x-auto">
+        <table {...props}>{children}</table>
+      </div>
+    );
+  },
   Callout,
   PropsTable,
   CompareGrid,
