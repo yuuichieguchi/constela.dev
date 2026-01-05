@@ -24,7 +24,9 @@ export function Header() {
 
   const mobileNavigation = pathname.startsWith('/reference')
     ? referenceNavigation
-    : docsNavigation;
+    : pathname.startsWith('/docs')
+      ? docsNavigation
+      : [];
 
   return (
     <>

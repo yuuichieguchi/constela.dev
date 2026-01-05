@@ -85,7 +85,9 @@ export function MobileNav({ navigation, isOpen, onClose }: MobileNavProps) {
                 );
               })}
             </ul>
-            <div className="border-t border-border pt-6" />
+            {navigation.length > 0 && (
+              <div className="border-t border-border pt-6" />
+            )}
             {navigation.map((section) => (
               <div key={section.title}>
                 <h3 className="mb-2 text-sm font-semibold text-foreground">
