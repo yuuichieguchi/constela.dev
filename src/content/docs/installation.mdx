@@ -13,25 +13,32 @@ Constela is distributed as multiple npm packages, each with a specific purpose:
 | `@constela/compiler` | AST transformation and code generation |
 | `@constela/runtime` | DOM renderer and state management |
 | `@constela/router` | Client-side routing (optional) |
+| `@constela/next` | Next.js integration with SSR support (optional) |
 | `@constela/cli` | Command-line tools (optional) |
 
 ## Installation
 
-Install the core packages:
+### With Next.js (Recommended)
+
+```bash
+npm install @constela/next @constela/compiler @constela/runtime
+```
+
+### Standalone (No framework)
+
+For client-side only usage without a framework:
 
 ```bash
 npm install @constela/core @constela/compiler @constela/runtime
 ```
 
-For client-side routing support:
+### Optional packages
 
 ```bash
+# Client-side routing
 npm install @constela/router
-```
 
-For CLI tools:
-
-```bash
+# CLI tools
 npm install -g @constela/cli
 ```
 

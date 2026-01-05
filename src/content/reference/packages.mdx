@@ -172,6 +172,76 @@ Route parameters are automatically extracted and available in your program:
 }
 ```
 
+## @constela/next
+
+Next.js App Router (13+) integration package with Server-Side Rendering (SSR) support.
+
+```bash
+npm install @constela/next
+```
+
+<Callout type="note">
+**Requirements**: Next.js 13+ (App Router), React 18+, @constela/compiler, @constela/runtime
+</Callout>
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `renderToString` | Renders a CompiledProgram to HTML string for SSR |
+| `ConstelaEmbed` | React component for embedding Constela programs |
+| `ConstelaEmbedProps` | TypeScript type for component props |
+
+### ConstelaEmbedProps
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `program` | `CompiledProgram` | Yes | Compiled Constela program |
+| `ssrHtml` | `string` | No | Pre-rendered HTML from renderToString() |
+| `className` | `string` | No | CSS class for container |
+| `id` | `string` | No | ID for container |
+
+### Usage with SSR
+
+```typescript
+// app/page.tsx
+import { ConstelaEmbed, renderToString } from '@constela/next';
+import { compile } from '@constela/compiler';
+
+const myProgram = { /* ... */ };
+
+export default function Page() {
+  const result = compile(myProgram);
+  if (!result.ok) throw new Error('Compile failed');
+
+  const ssrHtml = renderToString(result.program);
+
+  return (
+    <div>
+      <h1>My App</h1>
+      <ConstelaEmbed program={result.program} ssrHtml={ssrHtml} />
+    </div>
+  );
+}
+```
+
+### Client-Only Usage
+
+```typescript
+'use client';
+import { ConstelaEmbed, type ConstelaEmbedProps } from '@constela/next';
+
+export function DynamicWidget({ program }: Pick<ConstelaEmbedProps, 'program'>) {
+  return <ConstelaEmbed program={program} />;
+}
+```
+
+### How It Works
+
+1. Server-side: `renderToString()` generates HTML
+2. Initial render: SSR HTML displays immediately (fast LCP)
+3. Client-side: `createApp()` hydrates for interactivity
+
 ## @constela/cli
 
 Command-line tools for development and building.
@@ -228,6 +298,12 @@ Validates the program and reports any errors without generating output.
   ├── @constela/core
   ├── @constela/compiler
   └── @constela/runtime
+
+@constela/next
+  ├── @constela/compiler (peer)
+  ├── @constela/runtime (peer)
+  ├── next (peer)
+  └── react (peer)
 
 @constela/router
   └── @constela/runtime
