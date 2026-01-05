@@ -335,6 +335,79 @@ constela validate app.json
 
 Validates the program and reports any errors without generating output.
 
+## @constela/start
+
+Meta-framework for building full-stack Constela applications with file-based routing, SSR, SSG, and edge runtime support.
+
+```bash
+npm install @constela/start
+```
+
+<Callout type="note">
+`@constela/start` is to Constela what SolidStart is to SolidJS — a full-featured meta-framework for production applications.
+</Callout>
+
+### Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `defineConfig` | Configuration function for `constela.config.ts` |
+| `APIContext` | Type for API route handlers |
+| `MiddlewareHandler` | Type for middleware functions |
+| `GetStaticPaths` | Type for SSG path generation |
+| `RouteParams` | Type for route parameter access |
+
+### Usage
+
+```typescript
+// src/routes/index.ts
+import type { Program } from '@constela/core';
+
+export default {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  actions: [
+    { name: 'increment', steps: [{ do: 'update', target: 'count', operation: 'increment' }] }
+  ],
+  view: {
+    kind: 'element',
+    tag: 'div',
+    children: [
+      { kind: 'text', value: { expr: 'state', name: 'count' } },
+      {
+        kind: 'element',
+        tag: 'button',
+        props: { onClick: { event: 'click', action: 'increment' } },
+        children: [{ kind: 'text', value: { expr: 'lit', value: '+1' } }]
+      }
+    ]
+  }
+} satisfies Program;
+```
+
+### CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `constela-start dev` | Start development server with HMR |
+| `constela-start build` | Build for production |
+| `constela-start start` | Start production server |
+
+### Features
+
+| Feature | Description |
+|---------|-------------|
+| File-based routing | Routes generated from `src/routes/` directory |
+| SSR | Server-side rendering with `@constela/server` |
+| SSG | Static site generation with `getStaticPaths` |
+| API Routes | GET/POST/PUT/DELETE/PATCH endpoints |
+| Middleware | Koa/Hono-style `next()` pattern |
+| Edge Runtime | Cloudflare Workers, Vercel Edge, Deno |
+
+<Callout type="tip">
+See the full [@constela/start documentation](/docs/start) for detailed usage and examples.
+</Callout>
+
 ## Package Dependencies
 
 ```
@@ -342,6 +415,12 @@ Validates the program and reports any errors without generating output.
   ├── @constela/core
   ├── @constela/compiler
   └── @constela/runtime
+
+@constela/start
+  ├── @constela/core
+  ├── @constela/compiler
+  ├── @constela/runtime
+  └── @constela/server
 
 @constela/server
   └── @constela/compiler (peer)

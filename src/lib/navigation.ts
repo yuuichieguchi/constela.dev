@@ -24,6 +24,10 @@ export const docsNavigation: NavSection[] = [
       { title: 'Design Principles', href: '/docs/design-principles' },
     ],
   },
+  {
+    title: 'Framework',
+    items: [{ title: '@constela/start', href: '/docs/start' }],
+  },
 ];
 
 export const referenceNavigation: NavSection[] = [

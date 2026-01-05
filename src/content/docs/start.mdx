@@ -1,0 +1,358 @@
+---
+title: '@constela/start'
+description: Full-stack meta-framework for Constela applications with file-based routing, SSR, and edge runtime support
+---
+
+<Callout type="note">
+`@constela/start` is the meta-framework for building full-stack Constela applications, similar to what SolidStart is for SolidJS.
+</Callout>
+
+## Overview
+
+`@constela/start` provides everything you need to build production-ready Constela applications:
+
+- **File-based routing**: Routes are automatically generated from the `src/routes/` directory structure
+- **SSR**: Server-side rendering using `@constela/server`'s `renderToString`
+- **SSG**: Static site generation with `getStaticPaths` support
+- **API Routes**: Full support for GET/POST/PUT/DELETE/PATCH endpoints
+- **Middleware**: Koa/Hono-style `next()` pattern for request handling
+- **Edge Runtime**: Deploy to Cloudflare Workers, Vercel Edge, or Deno
+- **Vite-based**: Development server with HMR support
+
+### Constela Ecosystem
+
+| SolidJS | Constela | Purpose |
+|---------|----------|---------|
+| solid-js | @constela/core | Core type definitions |
+| solid-js/web | @constela/runtime | Client-side renderer |
+| solid-js/server | @constela/server | SSR renderer |
+| SolidStart | @constela/start | Meta-framework |
+
+## Installation
+
+```bash
+npm install @constela/start
+```
+
+Or create a new project:
+
+```bash
+npx create-constela my-app
+cd my-app
+npm install
+npm run dev
+```
+
+## Project Structure
+
+A typical `@constela/start` project has the following structure:
+
+```
+my-app/
+├── src/
+│   └── routes/
+│       ├── index.ts       # /
+│       ├── about.ts       # /about
+│       ├── users/
+│       │   ├── index.ts   # /users
+│       │   └── [id].ts    # /users/:id
+│       └── api/
+│           └── users.ts   # /api/users
+├── constela.config.ts
+└── package.json
+```
+
+## File-based Routing
+
+Routes are determined by the file structure inside `src/routes/`:
+
+| File Path | Route |
+|-----------|-------|
+| `src/routes/index.ts` | `/` |
+| `src/routes/about.ts` | `/about` |
+| `src/routes/users/index.ts` | `/users` |
+| `src/routes/users/[id].ts` | `/users/:id` |
+| `src/routes/posts/[...slug].ts` | `/posts/*` (catch-all) |
+
+### Dynamic Routes
+
+Use square brackets for dynamic segments:
+
+```typescript
+// src/routes/users/[id].ts
+import type { Program, RouteParams } from '@constela/start';
+
+export default function UserPage({ params }: RouteParams<{ id: string }>) {
+  return {
+    version: '1.0',
+    state: {},
+    actions: [],
+    view: {
+      kind: 'element',
+      tag: 'div',
+      children: [
+        { kind: 'text', value: { expr: 'lit', value: `User ID: ${params.id}` } }
+      ]
+    }
+  } satisfies Program;
+}
+```
+
+### Catch-all Routes
+
+Use `[...slug]` for catch-all routes:
+
+```typescript
+// src/routes/docs/[...slug].ts
+// Matches /docs/a, /docs/a/b, /docs/a/b/c, etc.
+```
+
+## SSR & Hydration
+
+`@constela/start` provides server-side rendering out of the box:
+
+### Page Component
+
+```typescript
+// src/routes/index.ts
+import type { Program } from '@constela/core';
+
+export default {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  actions: [
+    {
+      name: 'increment',
+      steps: [{ do: 'update', target: 'count', operation: 'increment' }]
+    }
+  ],
+  view: {
+    kind: 'element',
+    tag: 'div',
+    children: [
+      { kind: 'text', value: { expr: 'state', name: 'count' } },
+      {
+        kind: 'element',
+        tag: 'button',
+        props: { onClick: { event: 'click', action: 'increment' } },
+        children: [{ kind: 'text', value: { expr: 'lit', value: '+1' } }]
+      }
+    ]
+  }
+} satisfies Program;
+```
+
+<Callout type="tip">
+Programs are automatically SSR'd on the server and hydrated on the client for optimal performance and SEO.
+</Callout>
+
+## SSG (Static Site Generation)
+
+For static pages, export `getStaticPaths` to pre-render at build time:
+
+```typescript
+// src/routes/posts/[slug].ts
+import type { Program, GetStaticPaths } from '@constela/start';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await fetchPosts();
+  return posts.map(post => ({
+    params: { slug: post.slug }
+  }));
+};
+
+export default function PostPage({ params }) {
+  return {
+    version: '1.0',
+    // ... program definition
+  } satisfies Program;
+}
+```
+
+### Build Output
+
+```bash
+npx constela-start build
+# Generates:
+# dist/posts/hello-world.html
+# dist/posts/another-post.html
+# ...
+```
+
+## API Routes
+
+Create API endpoints by exporting HTTP method handlers:
+
+```typescript
+// src/routes/api/users.ts
+import type { APIContext } from '@constela/start';
+
+export async function GET({ params, query }: APIContext) {
+  const users = await db.users.findMany();
+  return Response.json({ users });
+}
+
+export async function POST({ request }: APIContext) {
+  const body = await request.json();
+  const user = await db.users.create(body);
+  return Response.json({ created: user }, { status: 201 });
+}
+
+export async function PUT({ request, params }: APIContext) {
+  const body = await request.json();
+  const user = await db.users.update(params.id, body);
+  return Response.json({ updated: user });
+}
+
+export async function DELETE({ params }: APIContext) {
+  await db.users.delete(params.id);
+  return new Response(null, { status: 204 });
+}
+```
+
+### APIContext
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `request` | `Request` | The incoming request object |
+| `params` | `Record<string, string>` | Route parameters |
+| `query` | `URLSearchParams` | Query string parameters |
+| `env` | `object` | Environment bindings (for edge runtimes) |
+
+## Middleware
+
+Create middleware using the `next()` pattern:
+
+```typescript
+// src/middleware.ts
+import type { MiddlewareHandler } from '@constela/start';
+
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  // Before request
+  console.log(`${ctx.request.method} ${ctx.request.url}`);
+
+  const start = Date.now();
+
+  // Call next middleware or route handler
+  const response = await next();
+
+  // After request
+  console.log(`Completed in ${Date.now() - start}ms`);
+
+  return response;
+};
+```
+
+### Route-specific Middleware
+
+```typescript
+// src/routes/admin/_middleware.ts
+import type { MiddlewareHandler } from '@constela/start';
+
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  const token = ctx.request.headers.get('Authorization');
+
+  if (!isValidToken(token)) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  return next();
+};
+```
+
+<Callout type="note">
+Middleware files prefixed with `_` (e.g., `_middleware.ts`) apply to all routes in that directory and its subdirectories.
+</Callout>
+
+## CLI Commands
+
+### Development Server
+
+```bash
+npx constela-start dev
+```
+
+| Option | Description |
+|--------|-------------|
+| `--port, -p` | Port number (default: 3000) |
+| `--host` | Host to bind (default: localhost) |
+| `--open` | Open browser automatically |
+
+### Production Build
+
+```bash
+npx constela-start build
+```
+
+| Option | Description |
+|--------|-------------|
+| `--target` | Build target: `node`, `cloudflare`, `vercel`, `deno` |
+| `--outDir` | Output directory (default: dist) |
+
+### Production Server
+
+```bash
+npx constela-start start
+```
+
+<Callout type="tip">
+For serverless deployments, the build output is self-contained and ready to deploy.
+</Callout>
+
+## Edge Runtime
+
+`@constela/start` supports deployment to edge platforms:
+
+### Cloudflare Workers
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'cloudflare',
+  // Cloudflare-specific options
+});
+```
+
+### Vercel Edge
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'vercel',
+  edge: true
+});
+```
+
+### Deno Deploy
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'deno'
+});
+```
+
+### Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `target` | `'node' \| 'cloudflare' \| 'vercel' \| 'deno'` | Deployment target |
+| `edge` | `boolean` | Enable edge runtime (Vercel) |
+| `ssr` | `boolean` | Enable server-side rendering (default: true) |
+| `prerender` | `string[]` | Routes to pre-render at build time |
+
+## Summary
+
+`@constela/start` provides:
+
+- **Zero-config development**: Just create routes and start building
+- **File-based routing**: Intuitive directory-to-URL mapping
+- **Full-stack capabilities**: SSR, SSG, and API routes in one framework
+- **Edge-ready**: Deploy anywhere with platform-specific adapters
+- **Type-safe**: Full TypeScript support throughout
