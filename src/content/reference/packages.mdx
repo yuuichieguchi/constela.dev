@@ -122,6 +122,8 @@ mount(app, document.getElementById('app')!);
 - **Event delegation**: Efficient event handling
 - **Memory efficient**: Minimal DOM node creation
 - **SSR compatible**: Works with server-rendered HTML
+- **Markdown rendering**: GFM support with DOMPurify sanitization
+- **Code highlighting**: VS Code-quality syntax highlighting via Shiki
 
 ## @constela/router
 
@@ -241,6 +243,16 @@ export function DynamicWidget({ program }: Pick<ConstelaEmbedProps, 'program'>) 
 1. Server-side: `renderToString()` generates HTML
 2. Initial render: SSR HTML displays immediately (fast LCP)
 3. Client-side: `createApp()` hydrates for interactivity
+
+### Markdown & Code Rendering
+
+Server-side rendering support for `markdown` and `code` nodes:
+
+| Feature | Library | Description |
+|---------|---------|-------------|
+| Markdown parsing | marked | GFM-compatible Markdown parser |
+| Syntax highlighting | shiki | VS Code-quality code highlighting |
+| XSS protection | DOMPurify | HTML sanitization for security |
 
 ## @constela/cli
 

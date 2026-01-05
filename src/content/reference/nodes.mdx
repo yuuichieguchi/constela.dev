@@ -5,7 +5,7 @@ description: Complete reference for all view node types in Constela
 
 ## Overview
 
-View nodes are the building blocks of Constela UIs. There are 6 node types, each serving a specific purpose in describing your interface.
+View nodes are the building blocks of Constela UIs. There are 8 node types, each serving a specific purpose in describing your interface.
 
 ## Element Node
 
@@ -259,5 +259,86 @@ When using this component:
   "children": [
     { "kind": "text", "value": { "expr": "lit", "value": "This goes into the slot" } }
   ]
+}
+```
+
+## Markdown Node
+
+Renders Markdown content as HTML with GFM (GitHub Flavored Markdown) support.
+
+```json
+{
+  "kind": "markdown",
+  "content": { "expr": "lit", "value": "# Hello\n\nThis is **bold** text." }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"markdown\"", required: true, description: "Node type identifier." },
+  { name: "content", type: "Expression", required: true, description: "Expression that evaluates to a Markdown string." }
+]} />
+
+### Features
+
+- **GFM support**: Tables, strikethrough, task lists, and more
+- **XSS protection**: Sanitized via DOMPurify
+- **SSR compatible**: Works with server-rendered HTML
+- **CSS class**: `.constela-markdown` for styling
+
+### Examples
+
+```json
+// Static markdown
+{
+  "kind": "markdown",
+  "content": { "expr": "lit", "value": "## Features\n\n- Item 1\n- Item 2" }
+}
+
+// Dynamic markdown from state
+{
+  "kind": "markdown",
+  "content": { "expr": "state", "name": "articleBody" }
+}
+```
+
+## Code Node
+
+Renders code with VS Code-quality syntax highlighting powered by Shiki.
+
+```json
+{
+  "kind": "code",
+  "language": { "expr": "lit", "value": "typescript" },
+  "content": { "expr": "lit", "value": "const x: number = 1;" }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"code\"", required: true, description: "Node type identifier." },
+  { name: "language", type: "Expression", required: true, description: "Expression that evaluates to the language name (e.g., \"typescript\", \"javascript\", \"json\")." },
+  { name: "content", type: "Expression", required: true, description: "Expression that evaluates to the code string." }
+]} />
+
+### Features
+
+- **Shiki highlighting**: VS Code-quality syntax highlighting
+- **SSR compatible**: Pre-highlighted on the server
+- **CSS class**: `.constela-code` for styling
+
+### Examples
+
+```json
+// Static code block
+{
+  "kind": "code",
+  "language": { "expr": "lit", "value": "json" },
+  "content": { "expr": "lit", "value": "{ \"key\": \"value\" }" }
+}
+
+// Dynamic code from state
+{
+  "kind": "code",
+  "language": { "expr": "state", "name": "selectedLanguage" },
+  "content": { "expr": "state", "name": "codeSnippet" }
 }
 ```

@@ -13,7 +13,7 @@
   "dependencies": {
     "@constela/compiler": "^0.3.3",
     "@constela/core": "^0.3.3",
-    "@constela/router": "^0.1.3",
+    "@constela/router": "^0.1.4",
     "@constela/runtime": "^0.3.5",
     "@shikijs/rehype": "^3.20.0",
     "@tailwindcss/typography": "^0.5.19",
