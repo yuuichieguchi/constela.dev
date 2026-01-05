@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { NavSection } from '@/lib/navigation';
+import { topNav } from '@/lib/navigation';
 
 interface MobileNavProps {
   navigation: NavSection[];
@@ -65,6 +66,26 @@ export function MobileNav({ navigation, isOpen, onClose }: MobileNavProps) {
         </div>
         <nav className="h-[calc(100vh-var(--header-height))] overflow-y-auto p-6">
           <div className="space-y-6">
+            <ul className="space-y-1">
+              {topNav.map((item) => {
+                const isActive = pathname.startsWith(item.href);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`block rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                        isActive
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                    >
+                      {item.title}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="border-t border-border pt-6" />
             {navigation.map((section) => (
               <div key={section.title}>
                 <h3 className="mb-2 text-sm font-semibold text-foreground">
