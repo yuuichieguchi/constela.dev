@@ -39,11 +39,12 @@ const playgroundCsp = [
 // 通常ページ用CSP
 const defaultCsp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
-  "style-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+  "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
   "img-src 'self' blob: data:",
-  "font-src 'self' data:",
-  "connect-src 'self'",
+  "font-src 'self' https://cdn.jsdelivr.net data:",
+  "connect-src 'self' https://cdn.jsdelivr.net",
+  "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -54,18 +55,7 @@ const defaultCsp = [
 const nextConfig: NextConfig = {
   async headers() {
     return [
-      // その他全ページ用（通常CSP）- 先に定義
-      {
-        source: "/:path*",
-        headers: [
-          ...securityHeaders,
-          {
-            key: "Content-Security-Policy",
-            value: defaultCsp,
-          },
-        ],
-      },
-      // Playgroundページ用（CSP緩和）- 後から上書き
+      // Playgroundページ用（CSP緩和）- 具体的なパスを先に定義
       {
         source: "/playground",
         headers: [
@@ -84,6 +74,17 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value: playgroundCsp,
+          },
+        ],
+      },
+      // その他全ページ用（通常CSP）- 汎用パスは最後に
+      {
+        source: "/:path*",
+        headers: [
+          ...securityHeaders,
+          {
+            key: "Content-Security-Policy",
+            value: defaultCsp,
           },
         ],
       },
