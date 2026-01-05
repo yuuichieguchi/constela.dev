@@ -200,25 +200,26 @@ import { renderToString } from '@constela/server';
 
 const myProgram = { /* ... */ };
 
-const result = compile(myProgram);
-if (!result.ok) throw new Error('Compile failed');
+async function generateHtml() {
+  const result = compile(myProgram);
+  if (!result.ok) throw new Error('Compile failed');
 
-const html = await renderToString(result.program);
+  const content = await renderToString(result.program);
 
-// Use with any server framework (Express, Hono, Fastify, etc.)
-res.send(`
-  <!DOCTYPE html>
-  <html>
-    <body>
-      <div id="app">${html}</div>
-      <script type="module">
-        import { createApp } from '@constela/runtime';
-        import program from './program.js';
-        createApp(program, document.getElementById('app'));
-      </script>
-    </body>
-  </html>
-`);
+  return `
+    <!DOCTYPE html>
+    <html>
+      <body>
+        <div id="app">${content}</div>
+        <script type="module">
+          import { createApp } from '@constela/runtime';
+          import program from './program.js';
+          createApp(program, document.getElementById('app'));
+        </script>
+      </body>
+    </html>
+  `;
+}
 ```
 
 ### Features
