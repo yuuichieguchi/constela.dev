@@ -174,85 +174,116 @@ Route parameters are automatically extracted and available in your program:
 }
 ```
 
-## @constela/next
+## @constela/server
 
-Next.js App Router (13+) integration package with Server-Side Rendering (SSR) support.
+Server-Side Rendering (SSR) package for any JavaScript server environment.
 
 ```bash
-npm install @constela/next
+npm install @constela/server
 ```
 
 <Callout type="note">
-**Requirements**: Next.js 13+ (App Router), React 18+, @constela/compiler, @constela/runtime
+**Requirements**: @constela/compiler (peer dependency)
 </Callout>
 
 ### Key Exports
 
 | Export | Description |
 |--------|-------------|
-| `renderToString` | Renders a CompiledProgram to HTML string for SSR |
-| `ConstelaEmbed` | React component for embedding Constela programs |
-| `ConstelaEmbedProps` | TypeScript type for component props |
+| `renderToString` | Renders a CompiledProgram to HTML string for SSR (async) |
 
-### ConstelaEmbedProps
-
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `program` | `CompiledProgram` | Yes | Compiled Constela program |
-| `ssrHtml` | `string` | No | Pre-rendered HTML from renderToString() |
-| `className` | `string` | No | CSS class for container |
-| `id` | `string` | No | ID for container |
-
-### Usage with SSR
+### Usage
 
 ```typescript
-// app/page.tsx
-import { ConstelaEmbed, renderToString } from '@constela/next';
 import { compile } from '@constela/compiler';
+import { renderToString } from '@constela/server';
 
 const myProgram = { /* ... */ };
 
-export default function Page() {
+const result = compile(myProgram);
+if (!result.ok) throw new Error('Compile failed');
+
+const html = await renderToString(result.program);
+
+// Use with any server framework (Express, Hono, Fastify, etc.)
+res.send(`
+  <!DOCTYPE html>
+  <html>
+    <body>
+      <div id="app">${html}</div>
+      <script type="module">
+        import { createApp } from '@constela/runtime';
+        import program from './program.js';
+        createApp(program, document.getElementById('app'));
+      </script>
+    </body>
+  </html>
+`);
+```
+
+### Features
+
+| Feature | Library | Description |
+|---------|---------|-------------|
+| Markdown parsing | marked | GFM-compatible Markdown parser |
+| Syntax highlighting | shiki | VS Code-quality code highlighting at build time |
+| XSS protection | DOMPurify | HTML sanitization for security |
+
+<Callout type="tip">
+`@constela/server` is framework-agnostic. Use it with Express, Hono, Fastify, or any Node.js/Bun/Deno server.
+</Callout>
+
+### Integration with Next.js
+
+For Next.js projects, use `@constela/server` in Server Components:
+
+```typescript
+// app/page.tsx (Server Component)
+import { compile } from '@constela/compiler';
+import { renderToString } from '@constela/server';
+import { ConstelaClient } from './ConstelaClient';
+
+const myProgram = { /* ... */ };
+
+export default async function Page() {
   const result = compile(myProgram);
   if (!result.ok) throw new Error('Compile failed');
 
-  const ssrHtml = renderToString(result.program);
+  const ssrHtml = await renderToString(result.program);
 
   return (
     <div>
       <h1>My App</h1>
-      <ConstelaEmbed program={result.program} ssrHtml={ssrHtml} />
+      <ConstelaClient program={result.program} ssrHtml={ssrHtml} />
     </div>
   );
 }
 ```
 
-### Client-Only Usage
-
 ```typescript
+// ConstelaClient.tsx (Client Component)
 'use client';
-import { ConstelaEmbed, type ConstelaEmbedProps } from '@constela/next';
+import { useEffect, useRef } from 'react';
+import { createApp } from '@constela/runtime';
+import type { CompiledProgram } from '@constela/compiler';
 
-export function DynamicWidget({ program }: Pick<ConstelaEmbedProps, 'program'>) {
-  return <ConstelaEmbed program={program} />;
+interface Props {
+  program: CompiledProgram;
+  ssrHtml: string;
+}
+
+export function ConstelaClient({ program, ssrHtml }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const app = createApp(program, ref.current);
+    return () => app.destroy();
+  }, [program]);
+
+  return <div ref={ref} dangerouslySetInnerHTML={{ __html: ssrHtml }} />;
 }
 ```
-
-### How It Works
-
-1. Server-side: `renderToString()` generates HTML
-2. Initial render: SSR HTML displays immediately (fast LCP)
-3. Client-side: `createApp()` hydrates for interactivity
-
-### Markdown & Code Rendering
-
-Server-side rendering support for `markdown` and `code` nodes:
-
-| Feature | Library | Description |
-|---------|---------|-------------|
-| Markdown parsing | marked | GFM-compatible Markdown parser |
-| Syntax highlighting | shiki | VS Code-quality code highlighting |
-| XSS protection | DOMPurify | HTML sanitization for security |
 
 ## @constela/cli
 
@@ -311,11 +342,8 @@ Validates the program and reports any errors without generating output.
   ├── @constela/compiler
   └── @constela/runtime
 
-@constela/next
-  ├── @constela/compiler (peer)
-  ├── @constela/runtime (peer)
-  ├── next (peer)
-  └── react (peer)
+@constela/server
+  └── @constela/compiler (peer)
 
 @constela/router
   └── @constela/runtime
