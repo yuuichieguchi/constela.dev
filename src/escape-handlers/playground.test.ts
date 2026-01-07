@@ -4,14 +4,13 @@
  * Coverage:
  * - Handler structure (name property, mount function)
  * - mount returns a cleanup function
- * - Dynamic import for React components
- * - Cleanup function behavior
- *
- * TDD Red Phase: These tests are expected to FAIL because:
- * - playground.ts does not exist yet
+ * - Sets up click handlers for Validate and Run buttons
+ * - Reads initial code from URL ?example=xxx parameter
+ * - Initializes ctx state with code from example-codes
+ * - Cleanup removes event listeners
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // ==================== Types ====================
 
@@ -26,15 +25,12 @@ interface EscapeContext {
   subscribe: (name: string, fn: (value: unknown) => void) => () => void;
 }
 
-interface EscapeHandler {
-  name: string;
-  mount: (element: HTMLElement, ctx: EscapeContext) => () => void;
-}
-
 // ==================== Mock Setup ====================
 
-const createMockContext = (overrides: Partial<EscapeContext> = {}): EscapeContext => {
-  const state: Record<string, unknown> = {};
+const createMockContext = (
+  initialState: Record<string, unknown> = {}
+): EscapeContext => {
+  const state: Record<string, unknown> = { ...initialState };
   const subscribers: Record<string, Array<(value: unknown) => void>> = {};
 
   return {
@@ -56,62 +52,96 @@ const createMockContext = (overrides: Partial<EscapeContext> = {}): EscapeContex
         }
       });
     }),
-    ...overrides,
   };
 };
 
-const createMockElement = (): HTMLElement => {
-  const element = document.createElement('div');
-  element.id = 'playground-container';
-  return element;
+/**
+ * Creates a mock playground container element with all required child elements
+ */
+const createMockPlaygroundElement = (): HTMLElement => {
+  const container = document.createElement('div');
+  container.setAttribute('data-constela-escape', 'playground');
+
+  // Add validate button
+  const validateBtn = document.createElement('button');
+  validateBtn.id = 'validate-btn';
+  container.appendChild(validateBtn);
+
+  // Add run button
+  const runBtn = document.createElement('button');
+  runBtn.id = 'run-btn';
+  container.appendChild(runBtn);
+
+  // Add editor container
+  const editorContainer = document.createElement('div');
+  editorContainer.id = 'editor-container';
+  container.appendChild(editorContainer);
+
+  // Add preview container
+  const previewContainer = document.createElement('div');
+  previewContainer.id = 'preview-container';
+  container.appendChild(previewContainer);
+
+  // Add message container
+  const messageContainer = document.createElement('div');
+  messageContainer.id = 'message-container';
+  container.appendChild(messageContainer);
+
+  return container;
 };
 
 // ==================== Hoisted Mock ====================
 
-// Mock React and ReactDOM for dynamic import testing
-const { mockReactDOM, mockPlaygroundComponent } = vi.hoisted(() => {
-  const mockRoot = {
-    render: vi.fn(),
-    unmount: vi.fn(),
-  };
-
-  return {
-    mockReactDOM: {
-      createRoot: vi.fn(() => mockRoot),
-    },
-    mockPlaygroundComponent: vi.fn(() => null),
-  };
-});
-
-vi.mock('react', () => ({
-  createElement: vi.fn(() => null),
+// Mock @constela/core
+vi.mock('@constela/core', () => ({
+  validateAst: vi.fn(() => ({ ok: true, value: {} })),
 }));
 
-vi.mock('react-dom/client', () => ({
-  createRoot: mockReactDOM.createRoot,
+// Mock @constela/compiler
+vi.mock('@constela/compiler', () => ({
+  compile: vi.fn(() => ({ ok: true, program: {} })),
 }));
 
-vi.mock('@/components/playground', () => ({
-  Playground: mockPlaygroundComponent,
+// Mock @constela/runtime
+vi.mock('@constela/runtime', () => ({
+  createApp: vi.fn(() => ({ destroy: vi.fn() })),
 }));
 
+// Mock example-codes
 vi.mock('@/components/playground/example-codes', () => ({
   EXAMPLE_CODES: {
-    counter: '{}',
-    'todo-list': '{}',
+    counter: '{"version":"1.0","view":{"kind":"text","value":{"expr":"lit","value":"Counter"}}}',
+    'todo-list': '{"version":"1.0","view":{"kind":"text","value":{"expr":"lit","value":"Todo"}}}',
   },
+  DEFAULT_CODE: '{"version":"1.0","view":{"kind":"text","value":{"expr":"lit","value":"Default"}}}',
 }));
 
 // ==================== Tests ====================
 
 describe('Playground EscapeHandler', () => {
+  let originalLocation: Location;
+
   beforeEach(() => {
     vi.clearAllMocks();
-    mockReactDOM.createRoot.mockClear();
+    // Save original location
+    originalLocation = window.location;
+    // Mock window.location
+    Object.defineProperty(window, 'location', {
+      value: {
+        ...originalLocation,
+        search: '',
+      },
+      writable: true,
+    });
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    // Restore original location
+    Object.defineProperty(window, 'location', {
+      value: originalLocation,
+      writable: true,
+    });
   });
 
   // ==================== Handler Structure ====================
@@ -122,8 +152,6 @@ describe('Playground EscapeHandler', () => {
        * Given: Playground handler module
        * When: Importing the handler
        * Then: Should have name property set to "playground"
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
        */
       const { playgroundHandler } = await import('./playground');
 
@@ -136,8 +164,6 @@ describe('Playground EscapeHandler', () => {
        * Given: Playground handler
        * When: Inspecting handler properties
        * Then: Should have mount as a function
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
        */
       const { playgroundHandler } = await import('./playground');
 
@@ -150,11 +176,9 @@ describe('Playground EscapeHandler', () => {
        * Given: Playground handler
        * When: Calling mount with element and context
        * Then: Should return a cleanup function
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
        */
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = createMockPlaygroundElement();
       const ctx = createMockContext();
 
       const cleanup = playgroundHandler.mount(element, ctx);
@@ -163,96 +187,147 @@ describe('Playground EscapeHandler', () => {
     });
   });
 
-  // ==================== Dynamic Import ====================
+  // ==================== Initial Code Setup ====================
 
-  describe('dynamic import', () => {
-    it('should dynamically import React components when mounted', async () => {
+  describe('initial code setup', () => {
+    it('should set default code in ctx state when no URL parameter', async () => {
       /**
-       * Given: Playground handler is mounted
-       * When: Handler initializes
-       * Then: Should dynamically import React components
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
+       * Given: No ?example parameter in URL
+       * When: Handler mounts
+       * Then: Should set default code in ctx state
        */
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = createMockPlaygroundElement();
       const ctx = createMockContext();
 
       playgroundHandler.mount(element, ctx);
 
-      // Give time for async import
-      await vi.waitFor(() => {
-        expect(mockReactDOM.createRoot).toHaveBeenCalled();
-      });
+      expect(ctx.setState).toHaveBeenCalledWith(
+        'code',
+        expect.any(String)
+      );
     });
 
-    it('should call createRoot with the provided element', async () => {
+    it('should set example code when ?example=counter in URL', async () => {
       /**
-       * Given: Playground handler is mounted
-       * When: React components are loaded
-       * Then: Should create React root with the provided element
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
+       * Given: ?example=counter parameter in URL
+       * When: Handler mounts
+       * Then: Should set counter example code in ctx state
        */
+      Object.defineProperty(window, 'location', {
+        value: { ...originalLocation, search: '?example=counter' },
+        writable: true,
+      });
+
+      vi.resetModules();
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = createMockPlaygroundElement();
       const ctx = createMockContext();
 
       playgroundHandler.mount(element, ctx);
 
-      await vi.waitFor(() => {
-        expect(mockReactDOM.createRoot).toHaveBeenCalledWith(element);
+      expect(ctx.setState).toHaveBeenCalledWith(
+        'code',
+        expect.stringContaining('Counter')
+      );
+    });
+
+    it('should set default code when ?example has unknown value', async () => {
+      /**
+       * Given: ?example=unknown parameter in URL
+       * When: Handler mounts
+       * Then: Should fall back to default code
+       */
+      Object.defineProperty(window, 'location', {
+        value: { ...originalLocation, search: '?example=unknown' },
+        writable: true,
       });
+
+      vi.resetModules();
+      const { playgroundHandler } = await import('./playground');
+      const element = createMockPlaygroundElement();
+      const ctx = createMockContext();
+
+      playgroundHandler.mount(element, ctx);
+
+      expect(ctx.setState).toHaveBeenCalledWith(
+        'code',
+        expect.any(String)
+      );
+    });
+  });
+
+  // ==================== Button Click Handlers ====================
+
+  describe('button click handlers', () => {
+    it('should add click listener to validate button', async () => {
+      /**
+       * Given: Playground handler mounts
+       * When: Handler initializes
+       * Then: Validate button should have click listener
+       */
+      const { playgroundHandler } = await import('./playground');
+      const element = createMockPlaygroundElement();
+      const ctx = createMockContext();
+      const validateBtn = element.querySelector('#validate-btn') as HTMLButtonElement;
+      const addEventListenerSpy = vi.spyOn(validateBtn, 'addEventListener');
+
+      playgroundHandler.mount(element, ctx);
+
+      expect(addEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
+    });
+
+    it('should add click listener to run button', async () => {
+      /**
+       * Given: Playground handler mounts
+       * When: Handler initializes
+       * Then: Run button should have click listener
+       */
+      const { playgroundHandler } = await import('./playground');
+      const element = createMockPlaygroundElement();
+      const ctx = createMockContext();
+      const runBtn = element.querySelector('#run-btn') as HTMLButtonElement;
+      const addEventListenerSpy = vi.spyOn(runBtn, 'addEventListener');
+
+      playgroundHandler.mount(element, ctx);
+
+      expect(addEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
     });
   });
 
   // ==================== Cleanup ====================
 
   describe('cleanup', () => {
-    it('should unmount React root when cleanup is called', async () => {
+    it('should remove click listeners when cleanup is called', async () => {
       /**
        * Given: Handler is mounted
        * When: Cleanup function is called
-       * Then: React root should be unmounted
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
+       * Then: Event listeners should be removed
        */
-      const mockRoot = {
-        render: vi.fn(),
-        unmount: vi.fn(),
-      };
-      mockReactDOM.createRoot.mockReturnValue(mockRoot);
-
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = createMockPlaygroundElement();
       const ctx = createMockContext();
+      const validateBtn = element.querySelector('#validate-btn') as HTMLButtonElement;
+      const removeEventListenerSpy = vi.spyOn(validateBtn, 'removeEventListener');
 
       const cleanup = playgroundHandler.mount(element, ctx);
-
-      await vi.waitFor(() => {
-        expect(mockReactDOM.createRoot).toHaveBeenCalled();
-      });
-
       cleanup();
 
-      expect(mockRoot.unmount).toHaveBeenCalled();
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function));
     });
 
-    it('should be safe to call cleanup before import completes', async () => {
+    it('should be safe to call cleanup immediately', async () => {
       /**
-       * Given: Handler is mounted but import not yet resolved
+       * Given: Handler is mounted
        * When: Cleanup is called immediately
        * Then: Should not throw an error
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
        */
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = createMockPlaygroundElement();
       const ctx = createMockContext();
 
       const cleanup = playgroundHandler.mount(element, ctx);
 
-      // Call cleanup immediately without waiting
       expect(() => cleanup()).not.toThrow();
     });
   });
@@ -260,25 +335,31 @@ describe('Playground EscapeHandler', () => {
   // ==================== Edge Cases ====================
 
   describe('edge cases', () => {
-    it('should handle import failure gracefully', async () => {
+    it('should handle missing validate button gracefully', async () => {
       /**
-       * Given: React component import fails
+       * Given: Element without validate button
        * When: Handler mounts
-       * Then: Should not throw and cleanup should be safe to call
-       *
-       * RED PHASE: This test will FAIL - playground.ts does not exist
+       * Then: Should not throw
        */
-      vi.doMock('react-dom/client', () => {
-        throw new Error('Failed to load React');
-      });
-
       const { playgroundHandler } = await import('./playground');
-      const element = createMockElement();
+      const element = document.createElement('div');
       const ctx = createMockContext();
 
-      // Should not throw
-      const cleanup = playgroundHandler.mount(element, ctx);
-      expect(() => cleanup()).not.toThrow();
+      expect(() => playgroundHandler.mount(element, ctx)).not.toThrow();
+    });
+
+    it('should handle missing run button gracefully', async () => {
+      /**
+       * Given: Element without run button
+       * When: Handler mounts
+       * Then: Should not throw
+       */
+      const { playgroundHandler } = await import('./playground');
+      const element = document.createElement('div');
+      element.innerHTML = '<button id="validate-btn"></button>';
+      const ctx = createMockContext();
+
+      expect(() => playgroundHandler.mount(element, ctx)).not.toThrow();
     });
   });
 });

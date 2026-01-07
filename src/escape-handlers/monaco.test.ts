@@ -130,7 +130,10 @@ const { mockEditor, mockMonacoModule } = vi.hoisted(() => {
   return { mockEditor: editor, mockMonacoModule: module };
 });
 
-vi.mock('monaco-editor', () => mockMonacoModule);
+vi.mock('monaco-editor', () => ({
+  default: mockMonacoModule,
+  ...mockMonacoModule,
+}));
 
 // ==================== Tests ====================
 

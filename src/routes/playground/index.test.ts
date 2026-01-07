@@ -6,12 +6,10 @@
  * - Page structure (root div, header, main, footer)
  * - Main element with pt-[var(--header-height)] class
  * - Escape container with data-constela-escape="playground" attribute
- * - Loading spinner element with animate-spin class
- * - Loading text "Loading editor..."
- *
- * TDD Red Phase: These tests are expected to FAIL because:
- * - src/routes/playground/index.ts does not exist yet
- * - createPlaygroundPage function is not implemented
+ * - Full Playground UI structure (header with title/buttons, editor/preview grid)
+ * - Editor container with data-constela-escape="monaco" attribute
+ * - Preview container with id="preview-container"
+ * - Message container with id="message-container"
  */
 
 import { describe, it, expect } from 'vitest';
@@ -154,8 +152,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: playground/index.ts module
        * When: Importing the module
        * Then: Should export createPlaygroundPage function
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const module = await import('./index');
       expect(module).toHaveProperty('createPlaygroundPage');
@@ -171,8 +167,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Called
        * Then: Should return a CompiledNode with kind property
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -185,8 +179,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Called
        * Then: Should return node with kind "element"
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -203,8 +195,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting root element
        * Then: Should have tag "div"
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -220,8 +210,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting root element classes
        * Then: Should include min-h-screen class
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -236,8 +224,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting page structure
        * Then: Should contain header element
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -251,8 +237,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting page structure
        * Then: Should contain main element
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -266,8 +250,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting page structure
        * Then: Should contain footer element
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -281,8 +263,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting main element
        * Then: Should have padding-top class for header offset
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -303,8 +283,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Inspecting page structure
        * Then: Should contain escape container for client-side mounting
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
@@ -318,37 +296,156 @@ describe('Playground Page (createPlaygroundPage)', () => {
     });
   });
 
-  // ==================== Loading State ====================
+  // ==================== Playground UI Structure ====================
 
-  describe('loading state', () => {
-    it('should contain loading spinner element with animate-spin class', async () => {
+  describe('playground UI structure', () => {
+    it('should contain "Playground" title text', async () => {
       /**
        * Given: createPlaygroundPage function
-       * When: Inspecting loading state
-       * Then: Should contain spinner with animate-spin class
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
-       */
-      const { createPlaygroundPage } = await import('./index');
-      const result = createPlaygroundPage();
-
-      const spinner = findElementByClass(result, 'animate-spin');
-      expect(spinner).not.toBeNull();
-    });
-
-    it('should contain "Loading editor..." text', async () => {
-      /**
-       * Given: createPlaygroundPage function
-       * When: Inspecting loading state
-       * Then: Should contain loading message text
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
+       * When: Inspecting page content
+       * Then: Should contain Playground title
        */
       const { createPlaygroundPage } = await import('./index');
       const result = createPlaygroundPage();
 
       const textContent = getAllTextContent(result);
-      expect(textContent).toContain('Loading editor...');
+      expect(textContent).toContain('Playground');
+    });
+
+    it('should contain Validate button', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page content
+       * Then: Should contain Validate button text
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const textContent = getAllTextContent(result);
+      expect(textContent).toContain('Validate');
+    });
+
+    it('should contain Run button', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page content
+       * Then: Should contain Run button text
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const textContent = getAllTextContent(result);
+      expect(textContent).toContain('Run');
+    });
+
+    it('should contain button with id="validate-btn"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain validate button with id
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const validateBtn = findElementByAttribute(result, 'id', 'validate-btn');
+      expect(validateBtn).not.toBeNull();
+      expect(validateBtn?.tag).toBe('button');
+    });
+
+    it('should contain button with id="run-btn"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain run button with id
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const runBtn = findElementByAttribute(result, 'id', 'run-btn');
+      expect(runBtn).not.toBeNull();
+      expect(runBtn?.tag).toBe('button');
+    });
+
+    it('should contain editor container with data-constela-escape="monaco"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain monaco editor escape container
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const editorContainer = findElementByAttribute(
+        result,
+        'data-constela-escape',
+        'monaco'
+      );
+      expect(editorContainer).not.toBeNull();
+    });
+
+    it('should contain editor container with id="editor-container"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain editor container with id
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const editorContainer = findElementByAttribute(result, 'id', 'editor-container');
+      expect(editorContainer).not.toBeNull();
+    });
+
+    it('should contain preview container with id="preview-container"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain preview container with id
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const previewContainer = findElementByAttribute(result, 'id', 'preview-container');
+      expect(previewContainer).not.toBeNull();
+    });
+
+    it('should contain message container with id="message-container"', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page structure
+       * Then: Should contain message container for errors/success
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const messageContainer = findElementByAttribute(result, 'id', 'message-container');
+      expect(messageContainer).not.toBeNull();
+    });
+
+    it('should contain "Editor" label text', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page content
+       * Then: Should contain Editor panel label
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const textContent = getAllTextContent(result);
+      expect(textContent).toContain('Editor');
+    });
+
+    it('should contain "Preview" label text', async () => {
+      /**
+       * Given: createPlaygroundPage function
+       * When: Inspecting page content
+       * Then: Should contain Preview panel label
+       */
+      const { createPlaygroundPage } = await import('./index');
+      const result = createPlaygroundPage();
+
+      const textContent = getAllTextContent(result);
+      expect(textContent).toContain('Preview');
     });
   });
 
@@ -360,8 +457,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Called with no arguments
        * Then: Should not throw and return valid node
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
 
@@ -375,8 +470,6 @@ describe('Playground Page (createPlaygroundPage)', () => {
        * Given: createPlaygroundPage function
        * When: Called multiple times
        * Then: Should return same structure (pure function)
-       *
-       * RED PHASE: This test will FAIL - index.ts does not exist
        */
       const { createPlaygroundPage } = await import('./index');
 
