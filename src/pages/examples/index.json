@@ -1,0 +1,116 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/examples",
+    "layout": "main",
+    "meta": {
+      "title": "Examples - Constela",
+      "description": "Explore interactive examples showcasing Constela features."
+    }
+  },
+  "imports": {
+    "examples": "../../data/examples.json"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+    },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h1",
+        "props": {
+          "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Examples" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "p",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Explore interactive examples showcasing Constela features." } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-8 grid gap-6 sm:grid-cols-2" }
+        },
+        "children": [
+          {
+            "kind": "each",
+            "items": { "expr": "import", "name": "examples", "path": "examples" },
+            "as": "example",
+            "body": {
+              "kind": "element",
+              "tag": "a",
+              "props": {
+                "href": {
+                  "expr": "bin",
+                  "op": "+",
+                  "left": { "expr": "lit", "value": "/examples/" },
+                  "right": { "expr": "var", "name": "example", "path": "slug" }
+                },
+                "class": { "expr": "lit", "value": "group block rounded-lg border border-border bg-background p-6 transition-colors hover:border-primary hover:bg-muted/50" }
+              },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "h3",
+                  "props": {
+                    "class": { "expr": "lit", "value": "font-semibold text-foreground group-hover:text-primary" }
+                  },
+                  "children": [
+                    { "kind": "text", "value": { "expr": "var", "name": "example", "path": "title" } }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "p",
+                  "props": {
+                    "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" }
+                  },
+                  "children": [
+                    { "kind": "text", "value": { "expr": "var", "name": "example", "path": "description" } }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": {
+                    "class": { "expr": "lit", "value": "mt-4 flex flex-wrap gap-2" }
+                  },
+                  "children": [
+                    {
+                      "kind": "each",
+                      "items": { "expr": "var", "name": "example", "path": "features" },
+                      "as": "feature",
+                      "body": {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "rounded-full bg-muted px-2.5 py-0.5 text-xs" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "var", "name": "feature" } }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

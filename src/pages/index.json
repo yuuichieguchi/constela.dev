@@ -1,0 +1,346 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/",
+    "layout": "main",
+    "meta": {
+      "title": "Constela - A compiler-first UI language",
+      "description": "A compiler-first UI language for vibecoding"
+    }
+  },
+  "imports": {
+    "examples": "../data/examples.json"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "section",
+        "props": {
+          "class": { "expr": "lit", "value": "px-6 py-24" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mx-auto max-w-4xl text-center" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "h1",
+                "props": {
+                  "class": { "expr": "lit", "value": "text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Constela" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "p",
+                "props": {
+                  "class": { "expr": "lit", "value": "mt-6 max-w-2xl text-lg text-muted-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "A compiler-first UI language for vibecoding" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "mt-8 flex flex-wrap justify-center gap-4" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/docs" },
+                      "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "lit", "value": "Get Started" } }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/playground" },
+                      "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md border border-border bg-background px-6 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "lit", "value": "Playground" } }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "section",
+        "props": {
+          "class": { "expr": "lit", "value": "border-t border-border bg-muted/30" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mx-auto max-w-7xl px-6 py-16" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "h2",
+                "props": {
+                  "class": { "expr": "lit", "value": "text-center text-3xl font-bold tracking-tight text-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Built for the AI Era" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6 shadow-sm" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "AI-Friendly DSL" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "A JSON-based DSL optimized for LLM generation and parsing." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6 shadow-sm" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Deterministic Actions" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Predictable event handling with compile-time validation." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6 shadow-sm" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Schema Validation" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Built-in schema validation for type-safe components." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6 shadow-sm" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Minimal Runtime" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Lightweight runtime with zero dependencies." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6 shadow-sm" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Structured Errors" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Clear, actionable error messages for debugging." } }]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "section",
+        "props": {
+          "class": { "expr": "lit", "value": "border-t border-border" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mx-auto max-w-7xl px-6 py-16" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "h2",
+                "props": {
+                  "class": { "expr": "lit", "value": "text-center text-3xl font-bold tracking-tight text-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "See It in Action" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "mt-12 grid gap-6 lg:grid-cols-2" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "counter.constela.json" } }]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "p-4" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "pre",
+                            "props": { "class": { "expr": "lit", "value": "text-sm text-foreground overflow-x-auto" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "code",
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    { \"name\": \"increment\", \"steps\": [...] },\n    { \"name\": \"decrement\", \"steps\": [...] }\n  ],\n  \"view\": { ... }\n}" } }]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Live Preview" } }]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "flex min-h-[200px] items-center justify-center p-4" },
+                          "id": { "expr": "lit", "value": "code-demo-preview" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "lit", "value": "Counter demo will render here" } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

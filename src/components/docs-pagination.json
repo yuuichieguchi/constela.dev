@@ -1,0 +1,163 @@
+{
+  "version": "1.0",
+  "components": {
+    "DocsPagination": {
+      "params": {
+        "prev": { "type": "json", "required": false },
+        "next": { "type": "json", "required": false }
+      },
+      "view": {
+        "kind": "if",
+        "condition": {
+          "expr": "bin",
+          "op": "||",
+          "left": { "expr": "param", "name": "prev" },
+          "right": { "expr": "param", "name": "next" }
+        },
+        "then": {
+          "kind": "element",
+          "tag": "nav",
+          "props": {
+            "class": { "expr": "lit", "value": "border-t border-border mt-12 pt-6 flex justify-between" }
+          },
+          "children": [
+            {
+              "kind": "if",
+              "condition": { "expr": "param", "name": "prev" },
+              "then": {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "param", "name": "prev", "path": "href" },
+                  "class": { "expr": "lit", "value": "flex flex-col items-start group" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "flex items-center gap-2" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "svg",
+                        "props": {
+                          "width": { "expr": "lit", "value": "20" },
+                          "height": { "expr": "lit", "value": "20" },
+                          "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                          "fill": { "expr": "lit", "value": "none" },
+                          "stroke": { "expr": "lit", "value": "currentColor" },
+                          "stroke-width": { "expr": "lit", "value": "2" }
+                        },
+                        "children": [
+                          { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M15 19l-7-7 7-7" } } }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "flex flex-col" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": {
+                              "class": { "expr": "lit", "value": "text-sm text-muted-foreground" }
+                            },
+                            "children": [
+                              { "kind": "text", "value": { "expr": "lit", "value": "Previous" } }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": {
+                              "class": { "expr": "lit", "value": "text-foreground font-medium group-hover:text-primary" }
+                            },
+                            "children": [
+                              { "kind": "text", "value": { "expr": "param", "name": "prev", "path": "title" } }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "if",
+              "condition": { "expr": "param", "name": "next" },
+              "then": {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "param", "name": "next", "path": "href" },
+                  "class": { "expr": "lit", "value": "flex flex-col items-end ml-auto group" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "flex items-center gap-2" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "flex flex-col items-end" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": {
+                              "class": { "expr": "lit", "value": "text-sm text-muted-foreground" }
+                            },
+                            "children": [
+                              { "kind": "text", "value": { "expr": "lit", "value": "Next" } }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": {
+                              "class": { "expr": "lit", "value": "text-foreground font-medium group-hover:text-primary" }
+                            },
+                            "children": [
+                              { "kind": "text", "value": { "expr": "param", "name": "next", "path": "title" } }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "svg",
+                        "props": {
+                          "width": { "expr": "lit", "value": "20" },
+                          "height": { "expr": "lit", "value": "20" },
+                          "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                          "fill": { "expr": "lit", "value": "none" },
+                          "stroke": { "expr": "lit", "value": "currentColor" },
+                          "stroke-width": { "expr": "lit", "value": "2" }
+                        },
+                        "children": [
+                          { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M9 5l7 7-7 7" } } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

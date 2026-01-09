@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/reference/:slug*",
+    "layout": "docs",
+    "layoutProps": {
+      "navigation": { "expr": "import", "name": "nav", "path": "referenceNavigation" },
+      "currentPath": { "expr": "route", "source": "path" }
+    },
+    "meta": {
+      "title": "Reference - Constela",
+      "description": "API Reference for Constela DSL"
+    }
+  },
+  "imports": {
+    "nav": "../../data/navigation.json",
+    "mdxComponents": "../../data/mdx-components.json"
+  },
+  "data": {
+    "docs": {
+      "type": "glob",
+      "pattern": "../../content/reference/**/*.mdx",
+      "transform": "mdx",
+      "components": { "expr": "import", "name": "mdxComponents" }
+    }
+  },
+  "getStaticPaths": {
+    "source": "docs",
+    "params": {
+      "slug": { "expr": "var", "name": "item", "path": "slug" }
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+    },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "article",
+        "props": {
+          "class": { "expr": "lit", "value": "prose prose-slate dark:prose-invert max-w-none" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "props": {
+              "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.title" } }
+            ]
+          },
+          {
+            "kind": "if",
+            "condition": { "expr": "data", "name": "docs", "path": "frontmatter.description" },
+            "then": {
+              "kind": "element",
+              "tag": "p",
+              "props": {
+                "class": { "expr": "lit", "value": "mt-2 text-lg text-muted-foreground" }
+              },
+              "children": [
+                { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.description" } }
+              ]
+            }
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-8" }
+            },
+            "children": [
+              { "kind": "slot", "name": "mdx-content" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

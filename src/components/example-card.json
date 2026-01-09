@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "components": {
+    "ExampleCard": {
+      "params": {
+        "title": { "type": "string", "required": true },
+        "description": { "type": "string", "required": true },
+        "href": { "type": "string", "required": true },
+        "features": { "type": "json", "required": false }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "a",
+        "props": {
+          "href": { "expr": "param", "name": "href" },
+          "class": { "expr": "lit", "value": "group block rounded-lg border border-border bg-background p-6 transition-colors hover:border-primary hover:bg-muted/50" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h3",
+            "props": {
+              "class": { "expr": "lit", "value": "font-semibold text-foreground group-hover:text-primary" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-2 text-sm text-muted-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "param", "name": "description" } }
+            ]
+          },
+          {
+            "kind": "if",
+            "condition": { "expr": "param", "name": "features" },
+            "then": {
+              "kind": "element",
+              "tag": "div",
+              "props": {
+                "class": { "expr": "lit", "value": "mt-4 flex flex-wrap gap-2" }
+              },
+              "children": [
+                {
+                  "kind": "each",
+                  "items": { "expr": "param", "name": "features" },
+                  "as": "feature",
+                  "body": {
+                    "kind": "element",
+                    "tag": "span",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-full bg-muted px-2.5 py-0.5 text-xs" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "var", "name": "feature" } }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

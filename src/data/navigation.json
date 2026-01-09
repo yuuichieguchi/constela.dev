@@ -1,0 +1,43 @@
+{
+  "topNav": [
+    { "title": "Docs", "href": "/docs" },
+    { "title": "Reference", "href": "/reference" },
+    { "title": "Examples", "href": "/examples" },
+    { "title": "Playground", "href": "/playground" }
+  ],
+  "docsNavigation": [
+    {
+      "title": "Get Started",
+      "items": [
+        { "title": "Introduction", "href": "/docs" },
+        { "title": "Installation", "href": "/docs/installation" },
+        { "title": "Your First App", "href": "/docs/first-app" },
+        { "title": "State & Expressions", "href": "/docs/state-expressions" },
+        { "title": "Actions & Events", "href": "/docs/actions-events" },
+        { "title": "Fetch & Effects", "href": "/docs/fetch-effects" },
+        { "title": "Components", "href": "/docs/components" },
+        { "title": "Routing", "href": "/docs/routing" },
+        { "title": "Design Principles", "href": "/docs/design-principles" }
+      ]
+    },
+    {
+      "title": "Framework",
+      "items": [
+        { "title": "@constela/start", "href": "/docs/start" }
+      ]
+    }
+  ],
+  "referenceNavigation": [
+    {
+      "title": "Reference",
+      "items": [
+        { "title": "DSL Root", "href": "/reference" },
+        { "title": "View Nodes", "href": "/reference/nodes" },
+        { "title": "Expressions", "href": "/reference/expressions" },
+        { "title": "Actions", "href": "/reference/actions" },
+        { "title": "Error Codes", "href": "/reference/errors" },
+        { "title": "Packages", "href": "/reference/packages" }
+      ]
+    }
+  ]
+}

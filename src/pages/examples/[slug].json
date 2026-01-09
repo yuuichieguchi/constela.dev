@@ -1,0 +1,134 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/examples/:slug",
+    "layout": "main",
+    "meta": {
+      "title": "Example - Constela",
+      "description": "Interactive example showcasing Constela features."
+    }
+  },
+  "imports": {
+    "examples": "../../data/examples.json"
+  },
+  "getStaticPaths": {
+    "source": { "expr": "import", "name": "examples", "path": "examples" },
+    "params": {
+      "slug": { "expr": "var", "name": "item", "path": "slug" }
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+    },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "a",
+        "props": {
+          "href": { "expr": "lit", "value": "/examples" },
+          "class": { "expr": "lit", "value": "inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "svg",
+            "props": {
+              "width": { "expr": "lit", "value": "16" },
+              "height": { "expr": "lit", "value": "16" },
+              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+              "fill": { "expr": "lit", "value": "none" },
+              "stroke": { "expr": "lit", "value": "currentColor" },
+              "stroke-width": { "expr": "lit", "value": "2" }
+            },
+            "children": [
+              { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M15 19l-7-7 7-7" } } }
+            ]
+          },
+          { "kind": "text", "value": { "expr": "lit", "value": "Back to Examples" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "h1",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-8 text-3xl font-bold text-foreground" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "route", "name": "slug", "source": "param" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-8" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h2",
+            "props": {
+              "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Source Code" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-4 overflow-hidden rounded-lg border border-border bg-card" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "pre",
+                "props": {
+                  "class": { "expr": "lit", "value": "p-4 text-sm text-foreground overflow-x-auto" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "code",
+                    "children": [
+                      { "kind": "text", "value": { "expr": "lit", "value": "// Example code will be displayed here" } }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-8" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "a",
+            "props": {
+              "href": {
+                "expr": "bin",
+                "op": "+",
+                "left": { "expr": "lit", "value": "/playground?example=" },
+                "right": { "expr": "route", "name": "slug", "source": "param" }
+              },
+              "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Try in Playground" } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

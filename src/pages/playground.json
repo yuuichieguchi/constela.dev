@@ -1,0 +1,464 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/playground",
+    "layout": "main",
+    "meta": {
+      "title": "Playground - Constela",
+      "description": "Interactive playground for Constela DSL"
+    }
+  },
+  "imports": {
+    "examples": "../data/examples.json"
+  },
+  "state": {
+    "code": { "type": "string", "initial": "" },
+    "editor": { "type": "object", "initial": null },
+    "errors": { "type": "list", "initial": [] },
+    "message": { "type": "string", "initial": "" },
+    "messageType": { "type": "string", "initial": "" },
+    "app": { "type": "object", "initial": null }
+  },
+  "lifecycle": {
+    "onMount": "initPlayground",
+    "onUnmount": "cleanup"
+  },
+  "actions": [
+    {
+      "name": "initPlayground",
+      "steps": [
+        {
+          "do": "set",
+          "target": "code",
+          "value": { "expr": "import", "name": "examples", "path": "codes.counter" }
+        },
+        {
+          "do": "import",
+          "module": "monaco-editor",
+          "result": "monaco",
+          "onSuccess": [
+            {
+              "do": "call",
+              "target": { "expr": "var", "name": "monaco", "path": "editor.create" },
+              "args": [
+                { "expr": "ref", "name": "editorContainer" },
+                {
+                  "expr": "lit",
+                  "value": {
+                    "language": "json",
+                    "theme": "vs-dark",
+                    "automaticLayout": true,
+                    "minimap": { "enabled": false },
+                    "fontSize": 14,
+                    "lineNumbers": "on",
+                    "scrollBeyondLastLine": false
+                  }
+                }
+              ],
+              "result": "editorInstance"
+            },
+            {
+              "do": "set",
+              "target": "editor",
+              "value": { "expr": "var", "name": "editorInstance" }
+            },
+            {
+              "do": "call",
+              "target": { "expr": "state", "name": "editor", "path": "setValue" },
+              "args": [
+                { "expr": "state", "name": "code" }
+              ]
+            },
+            {
+              "do": "subscribe",
+              "target": { "expr": "state", "name": "editor" },
+              "event": "onDidChangeModelContent",
+              "action": "onCodeChange"
+            }
+          ],
+          "onError": [
+            {
+              "do": "set",
+              "target": "message",
+              "value": { "expr": "lit", "value": "Failed to load Monaco Editor" }
+            },
+            {
+              "do": "set",
+              "target": "messageType",
+              "value": { "expr": "lit", "value": "error" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "onCodeChange",
+      "steps": [
+        {
+          "do": "call",
+          "target": { "expr": "state", "name": "editor", "path": "getValue" },
+          "args": [],
+          "result": "currentCode"
+        },
+        {
+          "do": "set",
+          "target": "code",
+          "value": { "expr": "var", "name": "currentCode" }
+        }
+      ]
+    },
+    {
+      "name": "validate",
+      "steps": [
+        {
+          "do": "set",
+          "target": "errors",
+          "value": { "expr": "lit", "value": [] }
+        },
+        {
+          "do": "set",
+          "target": "message",
+          "value": { "expr": "lit", "value": "" }
+        },
+        {
+          "do": "import",
+          "module": "@constela/core",
+          "result": "core",
+          "onSuccess": [
+            {
+              "do": "call",
+              "target": { "expr": "var", "name": "JSON", "path": "parse" },
+              "args": [{ "expr": "state", "name": "code" }],
+              "result": "parsed",
+              "onSuccess": [
+                {
+                  "do": "call",
+                  "target": { "expr": "var", "name": "core", "path": "validateAst" },
+                  "args": [{ "expr": "var", "name": "parsed" }],
+                  "result": "validationResult",
+                  "onSuccess": [
+                    {
+                      "do": "set",
+                      "target": "message",
+                      "value": { "expr": "lit", "value": "Validation successful!" }
+                    },
+                    {
+                      "do": "set",
+                      "target": "messageType",
+                      "value": { "expr": "lit", "value": "success" }
+                    }
+                  ],
+                  "onError": [
+                    {
+                      "do": "set",
+                      "target": "message",
+                      "value": { "expr": "var", "name": "error", "path": "message" }
+                    },
+                    {
+                      "do": "set",
+                      "target": "messageType",
+                      "value": { "expr": "lit", "value": "error" }
+                    }
+                  ]
+                }
+              ],
+              "onError": [
+                {
+                  "do": "set",
+                  "target": "message",
+                  "value": { "expr": "lit", "value": "Invalid JSON syntax" }
+                },
+                {
+                  "do": "set",
+                  "target": "messageType",
+                  "value": { "expr": "lit", "value": "error" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "run",
+      "steps": [
+        {
+          "do": "set",
+          "target": "errors",
+          "value": { "expr": "lit", "value": [] }
+        },
+        {
+          "do": "set",
+          "target": "message",
+          "value": { "expr": "lit", "value": "" }
+        },
+        {
+          "do": "import",
+          "module": "@constela/compiler",
+          "result": "compiler",
+          "onSuccess": [
+            {
+              "do": "import",
+              "module": "@constela/runtime",
+              "result": "runtime",
+              "onSuccess": [
+                {
+                  "do": "call",
+                  "target": { "expr": "var", "name": "JSON", "path": "parse" },
+                  "args": [{ "expr": "state", "name": "code" }],
+                  "result": "parsed",
+                  "onSuccess": [
+                    {
+                      "do": "call",
+                      "target": { "expr": "var", "name": "compiler", "path": "compile" },
+                      "args": [{ "expr": "var", "name": "parsed" }],
+                      "result": "compileResult",
+                      "onSuccess": [
+                        {
+                          "do": "if",
+                          "condition": { "expr": "var", "name": "compileResult", "path": "ok" },
+                          "then": [
+                            {
+                              "do": "if",
+                              "condition": { "expr": "state", "name": "app" },
+                              "then": [
+                                {
+                                  "do": "call",
+                                  "target": { "expr": "state", "name": "app", "path": "destroy" },
+                                  "args": []
+                                }
+                              ]
+                            },
+                            {
+                              "do": "call",
+                              "target": { "expr": "var", "name": "runtime", "path": "createApp" },
+                              "args": [
+                                { "expr": "var", "name": "compileResult", "path": "program" },
+                                { "expr": "ref", "name": "previewContainer" }
+                              ],
+                              "result": "newApp"
+                            },
+                            {
+                              "do": "set",
+                              "target": "app",
+                              "value": { "expr": "var", "name": "newApp" }
+                            },
+                            {
+                              "do": "set",
+                              "target": "message",
+                              "value": { "expr": "lit", "value": "Running!" }
+                            },
+                            {
+                              "do": "set",
+                              "target": "messageType",
+                              "value": { "expr": "lit", "value": "success" }
+                            }
+                          ],
+                          "else": [
+                            {
+                              "do": "set",
+                              "target": "message",
+                              "value": { "expr": "lit", "value": "Compilation failed" }
+                            },
+                            {
+                              "do": "set",
+                              "target": "messageType",
+                              "value": { "expr": "lit", "value": "error" }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "onError": [
+                    {
+                      "do": "set",
+                      "target": "message",
+                      "value": { "expr": "lit", "value": "Invalid JSON syntax" }
+                    },
+                    {
+                      "do": "set",
+                      "target": "messageType",
+                      "value": { "expr": "lit", "value": "error" }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cleanup",
+      "steps": [
+        {
+          "do": "if",
+          "condition": { "expr": "state", "name": "app" },
+          "then": [
+            {
+              "do": "call",
+              "target": { "expr": "state", "name": "app", "path": "destroy" },
+              "args": []
+            }
+          ]
+        },
+        {
+          "do": "dispose",
+          "target": { "expr": "state", "name": "editor" }
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "class": { "expr": "lit", "value": "mx-auto max-w-7xl px-6 py-8" }
+    },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "flex items-center justify-between" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "props": {
+              "class": { "expr": "lit", "value": "text-2xl font-bold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Playground" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "flex items-center gap-3" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "button",
+                "props": {
+                  "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md border border-border bg-background px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted" },
+                  "onClick": { "event": "click", "action": "validate" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Validate" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "button",
+                "props": {
+                  "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90" },
+                  "onClick": { "event": "click", "action": "run" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Run" } }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-6 grid gap-6 lg:grid-cols-2" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "span",
+                    "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
+                    "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Editor" } }]
+                  }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "ref": "editorContainer",
+                "props": {
+                  "class": { "expr": "lit", "value": "h-[500px]" }
+                }
+              }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "span",
+                    "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
+                    "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Preview" } }]
+                  }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "ref": "previewContainer",
+                "props": {
+                  "class": { "expr": "lit", "value": "h-[500px] overflow-auto p-4" }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "message" },
+        "then": {
+          "kind": "element",
+          "tag": "div",
+          "props": {
+            "class": {
+              "expr": "cond",
+              "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "messageType" }, "right": { "expr": "lit", "value": "error" } },
+              "then": { "expr": "lit", "value": "mt-4 rounded-lg border border-red-500 bg-red-500/10 p-4 text-sm text-red-500" },
+              "else": { "expr": "lit", "value": "mt-4 rounded-lg border border-green-500 bg-green-500/10 p-4 text-sm text-green-500" }
+            }
+          },
+          "children": [
+            { "kind": "text", "value": { "expr": "state", "name": "message" } }
+          ]
+        }
+      }
+    ]
+  }
+}

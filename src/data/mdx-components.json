@@ -1,0 +1,223 @@
+{
+  "Callout": {
+    "params": {
+      "type": { "type": "string", "required": false }
+    },
+    "view": {
+      "kind": "element",
+      "tag": "div",
+      "props": {
+        "class": {
+          "expr": "cond",
+          "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "warning" } },
+          "then": { "expr": "lit", "value": "border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/20 pl-4 py-2 my-4" },
+          "else": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "tip" } },
+            "then": { "expr": "lit", "value": "border-l-4 border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 pl-4 py-2 my-4" },
+            "else": {
+              "expr": "cond",
+              "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "important" } },
+              "then": { "expr": "lit", "value": "border-l-4 border-l-red-500 bg-red-50 dark:bg-red-950/20 pl-4 py-2 my-4" },
+              "else": { "expr": "lit", "value": "border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950/20 pl-4 py-2 my-4" }
+            }
+          }
+        }
+      },
+      "children": [
+        {
+          "kind": "element",
+          "tag": "slot"
+        }
+      ]
+    }
+  },
+  "PropsTable": {
+    "params": {
+      "items": { "type": "array", "required": true }
+    },
+    "view": {
+      "kind": "element",
+      "tag": "div",
+      "props": {
+        "class": { "expr": "lit", "value": "overflow-x-auto my-4" }
+      },
+      "children": [
+        {
+          "kind": "element",
+          "tag": "table",
+          "props": {
+            "class": { "expr": "lit", "value": "w-full text-sm" }
+          },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "thead",
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "tr",
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "th",
+                      "props": { "class": { "expr": "lit", "value": "text-left p-2" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Name" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "th",
+                      "props": { "class": { "expr": "lit", "value": "text-left p-2" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Type" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "th",
+                      "props": { "class": { "expr": "lit", "value": "text-left p-2" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Required" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "th",
+                      "props": { "class": { "expr": "lit", "value": "text-left p-2" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Default" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "th",
+                      "props": { "class": { "expr": "lit", "value": "text-left p-2" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Description" } }]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "element",
+              "tag": "tbody",
+              "children": [
+                {
+                  "kind": "each",
+                  "items": { "expr": "param", "name": "items" },
+                  "as": "item",
+                  "body": {
+                    "kind": "element",
+                    "tag": "tr",
+                    "props": {
+                      "class": { "expr": "lit", "value": "border-t border-border" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "td",
+                        "props": { "class": { "expr": "lit", "value": "p-2 font-mono text-sm" } },
+                        "children": [{ "kind": "text", "value": { "expr": "var", "name": "item", "path": "name" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "td",
+                        "props": { "class": { "expr": "lit", "value": "p-2 font-mono text-sm text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "var", "name": "item", "path": "type" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "td",
+                        "props": { "class": { "expr": "lit", "value": "p-2" } },
+                        "children": [
+                          {
+                            "kind": "text",
+                            "value": {
+                              "expr": "cond",
+                              "if": { "expr": "var", "name": "item", "path": "required" },
+                              "then": { "expr": "lit", "value": "Yes" },
+                              "else": { "expr": "lit", "value": "No" }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "td",
+                        "props": { "class": { "expr": "lit", "value": "p-2 font-mono text-sm" } },
+                        "children": [
+                          {
+                            "kind": "text",
+                            "value": {
+                              "expr": "cond",
+                              "if": { "expr": "var", "name": "item", "path": "default" },
+                              "then": { "expr": "var", "name": "item", "path": "default" },
+                              "else": { "expr": "lit", "value": "-" }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "td",
+                        "props": { "class": { "expr": "lit", "value": "p-2" } },
+                        "children": [
+                          {
+                            "kind": "text",
+                            "value": {
+                              "expr": "cond",
+                              "if": { "expr": "var", "name": "item", "path": "description" },
+                              "then": { "expr": "var", "name": "item", "path": "description" },
+                              "else": { "expr": "lit", "value": "" }
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "CompareGrid": {
+    "view": {
+      "kind": "element",
+      "tag": "div",
+      "props": {
+        "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 gap-6 my-4" }
+      },
+      "children": [
+        {
+          "kind": "element",
+          "tag": "slot"
+        }
+      ]
+    }
+  },
+  "CompareGrid.Column": {
+    "params": {
+      "title": { "type": "string", "required": true }
+    },
+    "view": {
+      "kind": "element",
+      "tag": "div",
+      "props": {
+        "class": { "expr": "lit", "value": "border rounded p-4" }
+      },
+      "children": [
+        {
+          "kind": "element",
+          "tag": "h3",
+          "props": {
+            "class": { "expr": "lit", "value": "font-semibold mb-2" }
+          },
+          "children": [
+            { "kind": "text", "value": { "expr": "param", "name": "title" } }
+          ]
+        },
+        {
+          "kind": "element",
+          "tag": "slot"
+        }
+      ]
+    }
+  }
+}
