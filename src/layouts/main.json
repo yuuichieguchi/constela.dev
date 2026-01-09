@@ -1,5 +1,6 @@
 {
   "version": "1.0",
+  "type": "layout",
   "imports": {
     "config": "../data/config.json",
     "nav": "../data/navigation.json"

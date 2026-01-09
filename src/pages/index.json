@@ -19,9 +19,32 @@
         "kind": "element",
         "tag": "section",
         "props": {
-          "class": { "expr": "lit", "value": "px-6 py-24" }
+          "class": { "expr": "lit", "value": "relative overflow-hidden px-6 py-24 sm:py-32 lg:py-40" }
         },
         "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "absolute inset-0 -z-10 overflow-hidden" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl" }
+                }
+              },
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "absolute bottom-0 right-0 h-[400px] w-[600px] translate-x-1/4 translate-y-1/4 rounded-full bg-primary/5 blur-3xl" }
+                }
+              }
+            ]
+          },
           {
             "kind": "element",
             "tag": "div",
@@ -33,7 +56,7 @@
                 "kind": "element",
                 "tag": "h1",
                 "props": {
-                  "class": { "expr": "lit", "value": "text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl" }
+                  "class": { "expr": "lit", "value": "text-5xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl" }
                 },
                 "children": [
                   { "kind": "text", "value": { "expr": "lit", "value": "Constela" } }
@@ -43,7 +66,7 @@
                 "kind": "element",
                 "tag": "p",
                 "props": {
-                  "class": { "expr": "lit", "value": "mt-6 max-w-2xl text-lg text-muted-foreground" }
+                  "class": { "expr": "lit", "value": "mt-4 text-xl font-medium text-primary sm:text-2xl" }
                 },
                 "children": [
                   { "kind": "text", "value": { "expr": "lit", "value": "A compiler-first UI language for vibecoding" } }
@@ -51,9 +74,19 @@
               },
               {
                 "kind": "element",
+                "tag": "p",
+                "props": {
+                  "class": { "expr": "lit", "value": "mx-auto mt-6 max-w-2xl text-lg leading-8 text-muted-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Define your UI as structured JSON, let the compiler validate your schema, and render with a minimal, reactive runtime. Perfect for AI-assisted development." } }
+                ]
+              },
+              {
+                "kind": "element",
                 "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "mt-8 flex flex-wrap justify-center gap-4" }
+                  "class": { "expr": "lit", "value": "mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row" }
                 },
                 "children": [
                   {
@@ -61,10 +94,31 @@
                     "tag": "a",
                     "props": {
                       "href": { "expr": "lit", "value": "/docs" },
-                      "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90" }
+                      "class": { "expr": "lit", "value": "inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto" }
                     },
                     "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "Get Started" } }
+                      { "kind": "text", "value": { "expr": "lit", "value": "Get Started" } },
+                      {
+                        "kind": "element",
+                        "tag": "svg",
+                        "props": {
+                          "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                          "viewBox": { "expr": "lit", "value": "0 0 20 20" },
+                          "fill": { "expr": "lit", "value": "currentColor" },
+                          "class": { "expr": "lit", "value": "h-5 w-5" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "path",
+                            "props": {
+                              "fill-rule": { "expr": "lit", "value": "evenodd" },
+                              "d": { "expr": "lit", "value": "M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" },
+                              "clip-rule": { "expr": "lit", "value": "evenodd" }
+                            }
+                          }
+                        ]
+                      }
                     ]
                   },
                   {
@@ -72,9 +126,30 @@
                     "tag": "a",
                     "props": {
                       "href": { "expr": "lit", "value": "/playground" },
-                      "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md border border-border bg-background px-6 py-3 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted" }
+                      "class": { "expr": "lit", "value": "inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-border px-6 text-base font-medium text-foreground transition-colors hover:bg-muted sm:w-auto" }
                     },
                     "children": [
+                      {
+                        "kind": "element",
+                        "tag": "svg",
+                        "props": {
+                          "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                          "viewBox": { "expr": "lit", "value": "0 0 20 20" },
+                          "fill": { "expr": "lit", "value": "currentColor" },
+                          "class": { "expr": "lit", "value": "h-5 w-5" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "path",
+                            "props": {
+                              "fill-rule": { "expr": "lit", "value": "evenodd" },
+                              "d": { "expr": "lit", "value": "M6.28 5.22a.75.75 0 010 1.06L2.56 10l3.72 3.72a.75.75 0 01-1.06 1.06L.97 10.53a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0zm7.44 0a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L17.44 10l-3.72-3.72a.75.75 0 010-1.06zM11.377 2.011a.75.75 0 01.612.867l-2.5 14.5a.75.75 0 01-1.478-.255l2.5-14.5a.75.75 0 01.866-.612z" },
+                              "clip-rule": { "expr": "lit", "value": "evenodd" }
+                            }
+                          }
+                        ]
+                      },
                       { "kind": "text", "value": { "expr": "lit", "value": "Playground" } }
                     ]
                   }
@@ -252,6 +327,16 @@
               },
               {
                 "kind": "element",
+                "tag": "p",
+                "props": {
+                  "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "A simple counter in Constela. Declarative state, typed actions, and reactive views in pure JSON." } }
+                ]
+              },
+              {
+                "kind": "element",
                 "tag": "div",
                 "props": {
                   "class": { "expr": "lit", "value": "mt-12 grid gap-6 lg:grid-cols-2" }
@@ -292,7 +377,7 @@
                               {
                                 "kind": "element",
                                 "tag": "code",
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    { \"name\": \"increment\", \"steps\": [...] },\n    { \"name\": \"decrement\", \"steps\": [...] }\n  ],\n  \"view\": { ... }\n}" } }]
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"increment\" }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"decrement\" }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"count\" } },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"increment\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"+\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"decrement\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"-\" } }]\n      }\n    ]\n  }\n}" } }]
                               }
                             ]
                           }
