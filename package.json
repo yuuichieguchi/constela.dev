@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "constela-start dev",
+    "dev": "constela-start dev --css src/styles/globals.css",
     "build": "constela-start build",
     "start": "constela-start start",
     "preview": "constela-start start",
@@ -18,7 +18,7 @@
     "@constela/router": "^7.0.0",
     "@constela/runtime": "^0.9.2",
     "@constela/server": "^3.0.0",
-    "@constela/start": "^1.0.0",
+    "@constela/start": "^1.1.0",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
