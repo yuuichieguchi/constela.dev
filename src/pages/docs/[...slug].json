@@ -5,7 +5,7 @@
     "layout": "docs",
     "layoutParams": {
       "navigation": { "expr": "import", "name": "nav", "path": "docsNavigation" },
-      "currentPath": { "expr": "route", "name": "path" }
+      "currentPath": { "expr": "route", "source": "path" }
     },
     "meta": {
       "title": "Documentation - Constela",
@@ -28,6 +28,152 @@
     "source": "docs",
     "params": {
       "slug": { "expr": "var", "name": "item", "path": "slug" }
+    }
+  },
+  "components": {
+    "DocsPagination": {
+      "params": {
+        "prev": { "type": "json", "required": false },
+        "next": { "type": "json", "required": false }
+      },
+      "view": {
+        "kind": "if",
+        "condition": {
+          "expr": "bin",
+          "op": "||",
+          "left": { "expr": "param", "name": "prev" },
+          "right": { "expr": "param", "name": "next" }
+        },
+        "then": {
+          "kind": "element",
+          "tag": "nav",
+          "props": {
+            "class": { "expr": "lit", "value": "mt-12 flex items-center justify-between border-t border-border pt-6" }
+          },
+          "children": [
+            {
+              "kind": "if",
+              "condition": { "expr": "param", "name": "prev" },
+              "then": {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "param", "name": "prev", "path": "href" },
+                  "class": { "expr": "lit", "value": "group flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "stroke": { "expr": "lit", "value": "currentColor" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke-linecap": { "expr": "lit", "value": "round" },
+                      "stroke-linejoin": { "expr": "lit", "value": "round" },
+                      "class": { "expr": "lit", "value": "h-4 w-4 transition-transform group-hover:-translate-x-1" }
+                    },
+                    "children": [
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M19 12H5" } } },
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M12 19l-7-7 7-7" } } }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "span",
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "block text-xs text-muted-foreground" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "lit", "value": "Previous" } }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "font-medium text-foreground" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "param", "name": "prev", "path": "title" } }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "else": {
+                "kind": "element",
+                "tag": "div"
+              }
+            },
+            {
+              "kind": "if",
+              "condition": { "expr": "param", "name": "next" },
+              "then": {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "param", "name": "next", "path": "href" },
+                  "class": { "expr": "lit", "value": "group flex items-center gap-2 text-right text-sm text-muted-foreground transition-colors hover:text-foreground" }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "span",
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "block text-xs text-muted-foreground" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "lit", "value": "Next" } }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "font-medium text-foreground" }
+                        },
+                        "children": [
+                          { "kind": "text", "value": { "expr": "param", "name": "next", "path": "title" } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "stroke": { "expr": "lit", "value": "currentColor" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke-linecap": { "expr": "lit", "value": "round" },
+                      "stroke-linejoin": { "expr": "lit", "value": "round" },
+                      "class": { "expr": "lit", "value": "h-4 w-4 transition-transform group-hover:translate-x-1" }
+                    },
+                    "children": [
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M5 12h14" } } },
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M12 5l7 7-7 7" } } }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
     }
   },
   "view": {
@@ -79,6 +225,30 @@
             ]
           }
         ]
+      },
+      {
+        "kind": "component",
+        "name": "DocsPagination",
+        "props": {
+          "prev": {
+            "expr": "get",
+            "base": {
+              "expr": "index",
+              "base": { "expr": "import", "name": "nav", "path": "docsPagination" },
+              "key": { "expr": "route", "source": "path" }
+            },
+            "path": "prev"
+          },
+          "next": {
+            "expr": "get",
+            "base": {
+              "expr": "index",
+              "base": { "expr": "import", "name": "nav", "path": "docsPagination" },
+              "key": { "expr": "route", "source": "path" }
+            },
+            "path": "next"
+          }
+        }
       }
     ]
   }

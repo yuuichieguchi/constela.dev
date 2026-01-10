@@ -39,5 +39,47 @@
         { "title": "Packages", "href": "/reference/packages" }
       ]
     }
-  ]
+  ],
+  "docsPagination": {
+    "/docs": {
+      "prev": null,
+      "next": { "title": "Installation", "href": "/docs/installation" }
+    },
+    "/docs/installation": {
+      "prev": { "title": "Introduction", "href": "/docs" },
+      "next": { "title": "Your First App", "href": "/docs/first-app" }
+    },
+    "/docs/first-app": {
+      "prev": { "title": "Installation", "href": "/docs/installation" },
+      "next": { "title": "State & Expressions", "href": "/docs/state-expressions" }
+    },
+    "/docs/state-expressions": {
+      "prev": { "title": "Your First App", "href": "/docs/first-app" },
+      "next": { "title": "Actions & Events", "href": "/docs/actions-events" }
+    },
+    "/docs/actions-events": {
+      "prev": { "title": "State & Expressions", "href": "/docs/state-expressions" },
+      "next": { "title": "Fetch & Effects", "href": "/docs/fetch-effects" }
+    },
+    "/docs/fetch-effects": {
+      "prev": { "title": "Actions & Events", "href": "/docs/actions-events" },
+      "next": { "title": "Components", "href": "/docs/components" }
+    },
+    "/docs/components": {
+      "prev": { "title": "Fetch & Effects", "href": "/docs/fetch-effects" },
+      "next": { "title": "Routing", "href": "/docs/routing" }
+    },
+    "/docs/routing": {
+      "prev": { "title": "Components", "href": "/docs/components" },
+      "next": { "title": "Design Principles", "href": "/docs/design-principles" }
+    },
+    "/docs/design-principles": {
+      "prev": { "title": "Routing", "href": "/docs/routing" },
+      "next": { "title": "@constela/start", "href": "/docs/start" }
+    },
+    "/docs/start": {
+      "prev": { "title": "Design Principles", "href": "/docs/design-principles" },
+      "next": null
+    }
+  }
 }

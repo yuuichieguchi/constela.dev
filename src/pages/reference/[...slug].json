@@ -5,7 +5,7 @@
     "layout": "docs",
     "layoutParams": {
       "navigation": { "expr": "import", "name": "nav", "path": "referenceNavigation" },
-      "currentPath": { "expr": "route", "name": "path" }
+      "currentPath": { "expr": "route", "source": "path" }
     },
     "meta": {
       "title": "Reference - Constela",
