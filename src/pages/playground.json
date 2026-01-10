@@ -79,6 +79,18 @@
               "target": { "expr": "state", "name": "editor" },
               "event": "onDidChangeModelContent",
               "action": "onCodeChange"
+            },
+            {
+              "do": "call",
+              "target": { "expr": "var", "name": "monaco", "path": "editor.setTheme" },
+              "args": [
+                {
+                  "expr": "cond",
+                  "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "theme" }, "right": { "expr": "lit", "value": "dark" } },
+                  "then": { "expr": "lit", "value": "vs-dark" },
+                  "else": { "expr": "lit", "value": "vs" }
+                }
+              ]
             }
           ],
           "onError": [
@@ -143,26 +155,32 @@
                   "result": "validationResult",
                   "onSuccess": [
                     {
-                      "do": "set",
-                      "target": "message",
-                      "value": { "expr": "lit", "value": "Validation successful!" }
-                    },
-                    {
-                      "do": "set",
-                      "target": "messageType",
-                      "value": { "expr": "lit", "value": "success" }
-                    }
-                  ],
-                  "onError": [
-                    {
-                      "do": "set",
-                      "target": "message",
-                      "value": { "expr": "var", "name": "error", "path": "message" }
-                    },
-                    {
-                      "do": "set",
-                      "target": "messageType",
-                      "value": { "expr": "lit", "value": "error" }
+                      "do": "if",
+                      "condition": { "expr": "var", "name": "validationResult", "path": "ok" },
+                      "then": [
+                        {
+                          "do": "set",
+                          "target": "message",
+                          "value": { "expr": "lit", "value": "Validation successful!" }
+                        },
+                        {
+                          "do": "set",
+                          "target": "messageType",
+                          "value": { "expr": "lit", "value": "success" }
+                        }
+                      ],
+                      "else": [
+                        {
+                          "do": "set",
+                          "target": "message",
+                          "value": { "expr": "var", "name": "validationResult", "path": "error.message" }
+                        },
+                        {
+                          "do": "set",
+                          "target": "messageType",
+                          "value": { "expr": "lit", "value": "error" }
+                        }
+                      ]
                     }
                   ]
                 }
@@ -179,6 +197,18 @@
                   "value": { "expr": "lit", "value": "error" }
                 }
               ]
+            }
+          ],
+          "onError": [
+            {
+              "do": "set",
+              "target": "message",
+              "value": { "expr": "lit", "value": "Failed to load @constela/core" }
+            },
+            {
+              "do": "set",
+              "target": "messageType",
+              "value": { "expr": "lit", "value": "error" }
             }
           ]
         }
@@ -288,7 +318,31 @@
                     }
                   ]
                 }
+              ],
+              "onError": [
+                {
+                  "do": "set",
+                  "target": "message",
+                  "value": { "expr": "lit", "value": "Failed to load @constela/runtime" }
+                },
+                {
+                  "do": "set",
+                  "target": "messageType",
+                  "value": { "expr": "lit", "value": "error" }
+                }
               ]
+            }
+          ],
+          "onError": [
+            {
+              "do": "set",
+              "target": "message",
+              "value": { "expr": "lit", "value": "Failed to load @constela/compiler" }
+            },
+            {
+              "do": "set",
+              "target": "messageType",
+              "value": { "expr": "lit", "value": "error" }
             }
           ]
         }
@@ -311,6 +365,64 @@
         {
           "do": "dispose",
           "target": { "expr": "state", "name": "editor" }
+        }
+      ]
+    },
+    {
+      "name": "toggleTheme",
+      "steps": [
+        {
+          "do": "set",
+          "target": "theme",
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "theme" }, "right": { "expr": "lit", "value": "dark" } },
+            "then": { "expr": "lit", "value": "light" },
+            "else": { "expr": "lit", "value": "dark" }
+          }
+        },
+        {
+          "do": "storage",
+          "operation": "set",
+          "key": { "expr": "lit", "value": "theme" },
+          "value": { "expr": "state", "name": "theme" },
+          "storage": "local"
+        },
+        {
+          "do": "dom",
+          "operation": "removeClass",
+          "selector": { "expr": "lit", "value": "html" },
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "theme" }, "right": { "expr": "lit", "value": "dark" } },
+            "then": { "expr": "lit", "value": "light" },
+            "else": { "expr": "lit", "value": "dark" }
+          }
+        },
+        {
+          "do": "dom",
+          "operation": "addClass",
+          "selector": { "expr": "lit", "value": "html" },
+          "value": { "expr": "state", "name": "theme" }
+        },
+        {
+          "do": "import",
+          "module": "monaco-editor",
+          "result": "monaco",
+          "onSuccess": [
+            {
+              "do": "call",
+              "target": { "expr": "var", "name": "monaco", "path": "editor.setTheme" },
+              "args": [
+                {
+                  "expr": "cond",
+                  "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "theme" }, "right": { "expr": "lit", "value": "dark" } },
+                  "then": { "expr": "lit", "value": "vs-dark" },
+                  "else": { "expr": "lit", "value": "vs" }
+                }
+              ]
+            }
+          ]
         }
       ]
     }
