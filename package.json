@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "constela-start dev --css src/styles/globals.css",
+    "dev": "constela-start dev --css src/styles/globals.css --layoutsDir src/layouts",
     "build": "constela-start build",
     "start": "constela-start start",
     "preview": "constela-start start",
