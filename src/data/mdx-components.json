@@ -10,24 +10,154 @@
         "class": {
           "expr": "cond",
           "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "warning" } },
-          "then": { "expr": "lit", "value": "border-l-4 border-l-amber-500 bg-amber-50 dark:bg-amber-950/20 pl-4 py-2 my-4" },
+          "then": { "expr": "lit", "value": "not-prose my-6 border-l-4 border-l-amber-500 pl-4 py-3" },
           "else": {
             "expr": "cond",
             "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "tip" } },
-            "then": { "expr": "lit", "value": "border-l-4 border-l-emerald-500 bg-emerald-50 dark:bg-emerald-950/20 pl-4 py-2 my-4" },
+            "then": { "expr": "lit", "value": "not-prose my-6 border-l-4 border-l-emerald-500 pl-4 py-3" },
             "else": {
               "expr": "cond",
               "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "important" } },
-              "then": { "expr": "lit", "value": "border-l-4 border-l-red-500 bg-red-50 dark:bg-red-950/20 pl-4 py-2 my-4" },
-              "else": { "expr": "lit", "value": "border-l-4 border-l-blue-500 bg-blue-50 dark:bg-blue-950/20 pl-4 py-2 my-4" }
+              "then": { "expr": "lit", "value": "not-prose my-6 border-l-4 border-l-red-500 pl-4 py-3" },
+              "else": { "expr": "lit", "value": "not-prose my-6 border-l-4 border-l-blue-500 pl-4 py-3" }
             }
           }
-        }
+        },
+        "role": { "expr": "lit", "value": "alert" }
       },
       "children": [
         {
           "kind": "element",
-          "tag": "slot"
+          "tag": "div",
+          "props": { "class": { "expr": "lit", "value": "flex items-start gap-3" } },
+          "children": [
+            {
+              "kind": "if",
+              "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "tip" } },
+              "then": {
+                "kind": "element",
+                "tag": "svg",
+                "props": {
+                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                  "fill": { "expr": "lit", "value": "none" },
+                  "stroke": { "expr": "lit", "value": "currentColor" },
+                  "stroke-width": { "expr": "lit", "value": "2" },
+                  "stroke-linecap": { "expr": "lit", "value": "round" },
+                  "stroke-linejoin": { "expr": "lit", "value": "round" },
+                  "class": { "expr": "lit", "value": "mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600 dark:text-emerald-400" }
+                },
+                "children": [
+                  { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M9 18h6" } } },
+                  { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M10 22h4" } } },
+                  { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" } } }
+                ]
+              },
+              "else": {
+                "kind": "if",
+                "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "warning" } },
+                "then": {
+                  "kind": "element",
+                  "tag": "svg",
+                  "props": {
+                    "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                    "fill": { "expr": "lit", "value": "none" },
+                    "stroke": { "expr": "lit", "value": "currentColor" },
+                    "stroke-width": { "expr": "lit", "value": "2" },
+                    "stroke-linecap": { "expr": "lit", "value": "round" },
+                    "stroke-linejoin": { "expr": "lit", "value": "round" },
+                    "class": { "expr": "lit", "value": "mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400" }
+                  },
+                  "children": [
+                    { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" } } },
+                    { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "12" }, "y1": { "expr": "lit", "value": "9" }, "x2": { "expr": "lit", "value": "12" }, "y2": { "expr": "lit", "value": "13" } } },
+                    { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "12" }, "y1": { "expr": "lit", "value": "17" }, "x2": { "expr": "lit", "value": "12.01" }, "y2": { "expr": "lit", "value": "17" } } }
+                  ]
+                },
+                "else": {
+                  "kind": "if",
+                  "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "important" } },
+                  "then": {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "stroke": { "expr": "lit", "value": "currentColor" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke-linecap": { "expr": "lit", "value": "round" },
+                      "stroke-linejoin": { "expr": "lit", "value": "round" },
+                      "class": { "expr": "lit", "value": "mt-0.5 h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400" }
+                    },
+                    "children": [
+                      { "kind": "element", "tag": "circle", "props": { "cx": { "expr": "lit", "value": "12" }, "cy": { "expr": "lit", "value": "12" }, "r": { "expr": "lit", "value": "10" } } },
+                      { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "12" }, "y1": { "expr": "lit", "value": "8" }, "x2": { "expr": "lit", "value": "12" }, "y2": { "expr": "lit", "value": "12" } } },
+                      { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "12" }, "y1": { "expr": "lit", "value": "16" }, "x2": { "expr": "lit", "value": "12.01" }, "y2": { "expr": "lit", "value": "16" } } }
+                    ]
+                  },
+                  "else": {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "stroke": { "expr": "lit", "value": "currentColor" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke-linecap": { "expr": "lit", "value": "round" },
+                      "stroke-linejoin": { "expr": "lit", "value": "round" },
+                      "class": { "expr": "lit", "value": "mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-400" }
+                    },
+                    "children": [
+                      { "kind": "element", "tag": "circle", "props": { "cx": { "expr": "lit", "value": "12" }, "cy": { "expr": "lit", "value": "12" }, "r": { "expr": "lit", "value": "10" } } },
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M12 16v-4" } } },
+                      { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M12 8h.01" } } }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "class": { "expr": "lit", "value": "flex-1 min-w-0" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "p",
+                  "props": { "class": { "expr": "lit", "value": "font-semibold text-foreground" } },
+                  "children": [
+                    {
+                      "kind": "if",
+                      "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "tip" } },
+                      "then": { "kind": "text", "value": { "expr": "lit", "value": "Tip" } },
+                      "else": {
+                        "kind": "if",
+                        "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "warning" } },
+                        "then": { "kind": "text", "value": { "expr": "lit", "value": "Warning" } },
+                        "else": {
+                          "kind": "if",
+                          "condition": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "type" }, "right": { "expr": "lit", "value": "important" } },
+                          "then": { "kind": "text", "value": { "expr": "lit", "value": "Important" } },
+                          "else": { "kind": "text", "value": { "expr": "lit", "value": "Note" } }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "class": { "expr": "lit", "value": "mt-1 text-sm text-foreground" } },
+                  "children": [
+                    { "kind": "slot" }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       ]
     }
@@ -182,13 +312,10 @@
       "kind": "element",
       "tag": "div",
       "props": {
-        "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 gap-6 my-4" }
+        "class": { "expr": "lit", "value": "not-prose grid grid-cols-1 md:grid-cols-2 gap-6 my-6" }
       },
       "children": [
-        {
-          "kind": "element",
-          "tag": "slot"
-        }
+        { "kind": "slot" }
       ]
     }
   },
@@ -200,14 +327,14 @@
       "kind": "element",
       "tag": "div",
       "props": {
-        "class": { "expr": "lit", "value": "border rounded p-4" }
+        "class": { "expr": "lit", "value": "p-4 border border-border bg-muted/30 rounded-lg" }
       },
       "children": [
         {
           "kind": "element",
           "tag": "h3",
           "props": {
-            "class": { "expr": "lit", "value": "font-semibold mb-2" }
+            "class": { "expr": "lit", "value": "font-semibold text-foreground mb-3" }
           },
           "children": [
             { "kind": "text", "value": { "expr": "param", "name": "title" } }
@@ -215,7 +342,13 @@
         },
         {
           "kind": "element",
-          "tag": "slot"
+          "tag": "div",
+          "props": {
+            "class": { "expr": "lit", "value": "text-sm text-muted-foreground" }
+          },
+          "children": [
+            { "kind": "slot" }
+          ]
         }
       ]
     }

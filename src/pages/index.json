@@ -560,7 +560,7 @@
                 "kind": "element",
                 "tag": "p",
                 "props": {
-                  "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
+                  "class": { "expr": "lit", "value": "mx-auto max-w-2xl text-center mt-4 text-lg text-muted-foreground" }
                 },
                 "children": [
                   { "kind": "text", "value": { "expr": "lit", "value": "A simple counter in Constela. Declarative state, typed actions, and reactive views in pure JSON." } }
