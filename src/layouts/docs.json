@@ -59,6 +59,23 @@
           "key": { "expr": "lit", "value": "theme" },
           "value": { "expr": "state", "name": "theme" },
           "storage": "local"
+        },
+        {
+          "do": "dom",
+          "operation": "removeClass",
+          "selector": { "expr": "lit", "value": "html" },
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "theme" }, "right": { "expr": "lit", "value": "dark" } },
+            "then": { "expr": "lit", "value": "light" },
+            "else": { "expr": "lit", "value": "dark" }
+          }
+        },
+        {
+          "do": "dom",
+          "operation": "addClass",
+          "selector": { "expr": "lit", "value": "html" },
+          "value": { "expr": "state", "name": "theme" }
         }
       ]
     }
