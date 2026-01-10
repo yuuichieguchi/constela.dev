@@ -3,9 +3,9 @@
   "route": {
     "path": "/reference/:slug*",
     "layout": "docs",
-    "layoutProps": {
+    "layoutParams": {
       "navigation": { "expr": "import", "name": "nav", "path": "referenceNavigation" },
-      "currentPath": { "expr": "route", "source": "path" }
+      "currentPath": { "expr": "route", "name": "path" }
     },
     "meta": {
       "title": "Reference - Constela",

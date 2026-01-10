@@ -3,9 +3,9 @@
   "route": {
     "path": "/docs/:slug*",
     "layout": "docs",
-    "layoutProps": {
+    "layoutParams": {
       "navigation": { "expr": "import", "name": "nav", "path": "docsNavigation" },
-      "currentPath": { "expr": "route", "source": "path" }
+      "currentPath": { "expr": "route", "name": "path" }
     },
     "meta": {
       "title": "Documentation - Constela",
