@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@source "../../../constela/packages/server/src/renderer.ts";
+@source "@constela/server";
 
 :root {
   --background: #ffffff;

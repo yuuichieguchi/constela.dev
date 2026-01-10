@@ -21,11 +21,11 @@ importers:
         specifier: ^0.10.1
         version: 0.10.1
       '@constela/server':
-        specifier: ^3.0.0
-        version: 3.0.0(@constela/compiler@0.7.0)
+        specifier: ^3.0.1
+        version: 3.0.1(@constela/compiler@0.7.0)
       '@constela/start':
-        specifier: ^1.2.1
-        version: 1.2.1(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.2.8
+        version: 1.2.8(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.18)
@@ -119,14 +119,14 @@ packages:
     resolution: {integrity: sha512-k+k0B/YZ29KH46ojEnuMV6d/+qJpZRpr8o1rtnWUE/Eda4zOSz+XD/XRk7wCW6C7CfxnFztErqcY9s79MnYd7w==}
     engines: {node: '>=20.0.0'}
 
-  '@constela/server@3.0.0':
-    resolution: {integrity: sha512-83e18mwz3iX1Bsz8+MXnHC7tjc3Kuo1QOVG3/YdkYJVloPAZUN4HEGS8XfXaiTo9B6yoTZ2yXLgZK1Og6g9GSw==}
+  '@constela/server@3.0.1':
+    resolution: {integrity: sha512-UR9bYNuRDGvaiVzQWXQDEJT4Ts0TfcPLCLuA/fxIf4yPWF+5L2kSZ+TwbvTdNjkeSEZAZxITgbce5BEh7qC5EQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       '@constela/compiler': ^0.7.0
 
-  '@constela/start@1.2.1':
-    resolution: {integrity: sha512-reGAwjmJF+dJ4VID0XasreTuh/jPWSMZXjjHT1PEXYCxg2SUv8cX56h7yEW18xugwKKmedmVQIydFtx01zu1XQ==}
+  '@constela/start@1.2.8':
+    resolution: {integrity: sha512-Zedtf3JaFn+gqfrEbRs583vqVV2xsqxlXd9zf6arJF9G5u5hnBSkS4Ned4Ye5WaMNauHqq8wjg8v56hfI7tX1g==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -154,8 +154,8 @@ packages:
     peerDependencies:
       '@csstools/css-tokenizer': ^3.0.4
 
-  '@csstools/css-syntax-patches-for-csstree@1.0.23':
-    resolution: {integrity: sha512-YEmgyklR6l/oKUltidNVYdjSmLSW88vMsKx0pmiS3r71s8ZZRpd8A0Yf0U+6p/RzElmMnPBv27hNWjDQMSZRtQ==}
+  '@csstools/css-syntax-patches-for-csstree@1.0.24':
+    resolution: {integrity: sha512-T0pSTcd9eYEHV+llVPSkZU7URdVGu87BpSvozMwRoLJYXmLXvEHgYfv0yDsQH9+DIdLzkJCOJBABqWWnwTGPvg==}
     engines: {node: '>=18'}
 
   '@csstools/css-tokenizer@3.0.4':
@@ -1471,6 +1471,12 @@ packages:
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
 
+  marked-shiki@1.2.1:
+    resolution: {integrity: sha512-yHxYQhPY5oYaIRnROn98foKhuClark7M373/VpLxiy5TrDu9Jd/LsMwo8w+U91Up4oDb9IXFrP0N1MFRz8W/DQ==}
+    peerDependencies:
+      marked: '>=7.0.0'
+      shiki: '>=1.0.0'
+
   marked@17.0.1:
     resolution: {integrity: sha512-boeBdiS0ghpWcSwoNm/jJBwdpFaMnZWRzjA6SkUMYb40SVaN1x7mmfGKp0jvexGcx+7y2La5zRZsYFZI6Qpypg==}
     engines: {node: '>= 20'}
@@ -2141,11 +2147,12 @@ snapshots:
       marked: 17.0.1
       shiki: 3.21.0
 
-  '@constela/server@3.0.0(@constela/compiler@0.7.0)':
+  '@constela/server@3.0.1(@constela/compiler@0.7.0)':
     dependencies:
       '@constela/compiler': 0.7.0
       isomorphic-dompurify: 2.35.0
       marked: 17.0.1
+      marked-shiki: 1.2.1(marked@17.0.1)(shiki@1.29.2)
       shiki: 1.29.2
     transitivePeerDependencies:
       - '@exodus/crypto'
@@ -2154,13 +2161,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@constela/start@1.2.1(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
+  '@constela/start@1.2.8(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
       '@constela/compiler': 0.7.0
       '@constela/core': 0.7.0
       '@constela/router': 8.0.0(@constela/compiler@0.7.0)(@constela/runtime@0.10.1)
       '@constela/runtime': 0.10.1
-      '@constela/server': 3.0.0(@constela/compiler@0.7.0)
+      '@constela/server': 3.0.1(@constela/compiler@0.7.0)
       commander: 12.1.0
       esbuild: 0.24.2
       fast-glob: 3.3.3
@@ -2207,7 +2214,7 @@ snapshots:
     dependencies:
       '@csstools/css-tokenizer': 3.0.4
 
-  '@csstools/css-syntax-patches-for-csstree@1.0.23': {}
+  '@csstools/css-syntax-patches-for-csstree@1.0.24': {}
 
   '@csstools/css-tokenizer@3.0.4': {}
 
@@ -2883,7 +2890,7 @@ snapshots:
   cssstyle@5.3.7:
     dependencies:
       '@asamuzakjp/css-color': 4.1.1
-      '@csstools/css-syntax-patches-for-csstree': 1.0.23
+      '@csstools/css-syntax-patches-for-csstree': 1.0.24
       css-tree: 3.1.0
       lru-cache: 11.2.4
 
@@ -3373,6 +3380,11 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
   markdown-table@3.0.4: {}
+
+  marked-shiki@1.2.1(marked@17.0.1)(shiki@1.29.2):
+    dependencies:
+      marked: 17.0.1
+      shiki: 1.29.2
 
   marked@17.0.1: {}
 
