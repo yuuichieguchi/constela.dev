@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@source "../../../constela/packages/server/src/renderer.ts";
 
 :root {
   --background: #ffffff;
@@ -142,4 +143,27 @@ body {
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* CodePreview styling - matches original React component */
+/* Use !important to override shiki's inline styles */
+.constela-code pre {
+  overflow-x: auto !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid var(--border) !important;
+  background: var(--muted) !important;
+  padding: 1rem !important;
+  font-size: 0.875rem !important;
+  line-height: 1.7 !important;
+}
+
+.constela-code pre code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  background: transparent !important;
+}
+
+/* Reset shiki's default background while preserving syntax colors */
+.constela-code .shiki,
+.constela-code pre.shiki {
+  background-color: transparent !important;
 }

@@ -19,86 +19,121 @@
   },
   "view": {
     "kind": "element",
-    "tag": "div",
+    "tag": "article",
     "props": {
-      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12 space-y-8" }
     },
     "children": [
       {
         "kind": "element",
-        "tag": "a",
-        "props": {
-          "href": { "expr": "lit", "value": "/examples" },
-          "class": { "expr": "lit", "value": "inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground" }
-        },
+        "tag": "header",
         "children": [
           {
             "kind": "element",
-            "tag": "svg",
+            "tag": "a",
             "props": {
-              "width": { "expr": "lit", "value": "16" },
-              "height": { "expr": "lit", "value": "16" },
-              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-              "fill": { "expr": "lit", "value": "none" },
-              "stroke": { "expr": "lit", "value": "currentColor" },
-              "stroke-width": { "expr": "lit", "value": "2" }
+              "href": { "expr": "lit", "value": "/examples" },
+              "class": { "expr": "lit", "value": "mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground" }
             },
             "children": [
-              { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M15 19l-7-7 7-7" } } }
+              {
+                "kind": "element",
+                "tag": "svg",
+                "props": {
+                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                  "fill": { "expr": "lit", "value": "none" },
+                  "stroke": { "expr": "lit", "value": "currentColor" },
+                  "stroke-width": { "expr": "lit", "value": "2" },
+                  "stroke-linecap": { "expr": "lit", "value": "round" },
+                  "stroke-linejoin": { "expr": "lit", "value": "round" },
+                  "class": { "expr": "lit", "value": "h-4 w-4" }
+                },
+                "children": [
+                  { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M19 12H5M12 19l-7-7 7-7" } } }
+                ]
+              },
+              { "kind": "text", "value": { "expr": "lit", "value": "Back to Examples" } }
             ]
           },
-          { "kind": "text", "value": { "expr": "lit", "value": "Back to Examples" } }
+          {
+            "kind": "element",
+            "tag": "h1",
+            "props": {
+              "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "title" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-2 text-lg text-muted-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "description" } }
+            ]
+          }
         ]
       },
       {
         "kind": "element",
-        "tag": "h1",
-        "props": {
-          "class": { "expr": "lit", "value": "mt-8 text-3xl font-bold text-foreground" }
-        },
-        "children": [
-          { "kind": "text", "value": { "expr": "route", "name": "slug", "source": "param" } }
-        ]
-      },
-      {
-        "kind": "element",
-        "tag": "div",
-        "props": {
-          "class": { "expr": "lit", "value": "mt-8" }
-        },
+        "tag": "section",
         "children": [
           {
             "kind": "element",
             "tag": "h2",
             "props": {
-              "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" }
+              "class": { "expr": "lit", "value": "mb-4 text-xl font-semibold text-foreground" }
             },
             "children": [
               { "kind": "text", "value": { "expr": "lit", "value": "Source Code" } }
             ]
           },
           {
+            "kind": "code",
+            "content": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "codeStrings" }, "key": { "expr": "route", "name": "slug" } },
+            "language": { "expr": "lit", "value": "json" }
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "section",
+        "children": [
+          {
             "kind": "element",
-            "tag": "div",
+            "tag": "h2",
             "props": {
-              "class": { "expr": "lit", "value": "mt-4 overflow-hidden rounded-lg border border-border bg-card" }
+              "class": { "expr": "lit", "value": "mb-4 text-xl font-semibold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Features Used" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "ul",
+            "props": {
+              "class": { "expr": "lit", "value": "flex flex-wrap gap-2" }
             },
             "children": [
               {
-                "kind": "element",
-                "tag": "pre",
-                "props": {
-                  "class": { "expr": "lit", "value": "p-4 text-sm text-foreground overflow-x-auto" }
-                },
-                "children": [
-                  {
-                    "kind": "element",
-                    "tag": "code",
-                    "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "// Example code will be displayed here" } }
-                    ]
-                  }
-                ]
+                "kind": "each",
+                "items": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "features" },
+                "as": "feature",
+                "body": {
+                  "kind": "element",
+                  "tag": "li",
+                  "props": {
+                    "class": { "expr": "lit", "value": "rounded-full border border-border bg-muted px-3 py-1 text-sm text-foreground" }
+                  },
+                  "children": [
+                    { "kind": "text", "value": { "expr": "var", "name": "feature" } }
+                  ]
+                }
               }
             ]
           }
@@ -106,10 +141,65 @@
       },
       {
         "kind": "element",
-        "tag": "div",
-        "props": {
-          "class": { "expr": "lit", "value": "mt-8" }
-        },
+        "tag": "section",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h2",
+            "props": {
+              "class": { "expr": "lit", "value": "mb-4 text-xl font-semibold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "How to Run" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "space-y-3" }
+            },
+            "children": [
+              {
+                "kind": "each",
+                "items": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "runCommands" },
+                "as": "cmd",
+                "body": {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": {
+                    "class": { "expr": "lit", "value": "group relative" }
+                  },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "pre",
+                      "props": {
+                        "class": { "expr": "lit", "value": "overflow-x-auto rounded-lg border border-border bg-muted p-4 text-sm" }
+                      },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "code",
+                          "props": {
+                            "class": { "expr": "lit", "value": "font-mono text-foreground" }
+                          },
+                          "children": [
+                            { "kind": "text", "value": { "expr": "var", "name": "cmd" } }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "section",
         "children": [
           {
             "kind": "element",
@@ -119,11 +209,26 @@
                 "expr": "bin",
                 "op": "+",
                 "left": { "expr": "lit", "value": "/playground?example=" },
-                "right": { "expr": "route", "name": "slug", "source": "param" }
+                "right": { "expr": "route", "name": "slug" }
               },
-              "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90" }
+              "class": { "expr": "lit", "value": "inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90" }
             },
             "children": [
+              {
+                "kind": "element",
+                "tag": "svg",
+                "props": {
+                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                  "fill": { "expr": "lit", "value": "none" },
+                  "stroke": { "expr": "lit", "value": "currentColor" },
+                  "stroke-width": { "expr": "lit", "value": "2" },
+                  "class": { "expr": "lit", "value": "h-4 w-4" }
+                },
+                "children": [
+                  { "kind": "element", "tag": "polygon", "props": { "points": { "expr": "lit", "value": "5 3 19 12 5 21 5 3" } } }
+                ]
+              },
               { "kind": "text", "value": { "expr": "lit", "value": "Try in Playground" } }
             ]
           }

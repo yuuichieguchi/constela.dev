@@ -30,7 +30,12 @@
         {
           "do": "set",
           "target": "code",
-          "value": { "expr": "import", "name": "examples", "path": "codes.counter" }
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "route", "name": "example", "source": "query" },
+            "then": { "expr": "index", "base": { "expr": "import", "name": "examples", "path": "codeStrings" }, "key": { "expr": "route", "name": "example", "source": "query" } },
+            "else": { "expr": "import", "name": "examples", "path": "defaultCodeString" }
+          }
         },
         {
           "do": "import",

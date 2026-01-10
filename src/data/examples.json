@@ -3,412 +3,434 @@
     {
       "slug": "counter",
       "title": "Counter",
-      "description": "A simple counter with increment, decrement, and reset.",
-      "features": ["State", "Actions", "Events"]
-    },
-    {
-      "slug": "todo-list",
-      "title": "Todo List",
-      "description": "Manage your todo items with list operations.",
-      "features": ["State", "List Operations", "Input Binding", "Each Loop"]
-    },
-    {
-      "slug": "fetch-list",
-      "title": "Fetch List",
-      "description": "Fetch data from an external API and display results.",
-      "features": ["Async Actions", "Fetch", "Loading States", "Conditional Rendering"]
-    },
-    {
-      "slug": "router",
-      "title": "Router",
-      "description": "Client-side routing between multiple pages.",
-      "features": ["Router", "Navigation", "Dynamic Routes", "URL Parameters"]
-    }
-  ],
-  "codes": {
-    "counter": {
-      "version": "1.0",
-      "state": {
-        "count": { "type": "number", "initial": 0 }
-      },
-      "actions": [
-        {
-          "name": "increment",
-          "steps": [
-            { "do": "update", "target": "count", "operation": "increment" }
-          ]
+      "description": "A basic counter example demonstrating state management with increment, decrement, and reset actions.",
+      "features": ["Number state", "Actions with steps", "Click event handlers", "State updates (increment, decrement, set)"],
+      "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run counter.json"],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "count": { "type": "number", "initial": 0 }
         },
-        {
-          "name": "decrement",
-          "steps": [
-            { "do": "update", "target": "count", "operation": "decrement" }
-          ]
-        },
-        {
-          "name": "reset",
-          "steps": [
-            { "do": "set", "target": "count", "value": { "expr": "lit", "value": 0 } }
-          ]
-        }
-      ],
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
-        "children": [
+        "actions": [
           {
-            "kind": "element",
-            "tag": "h1",
-            "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Counter" } }]
+            "name": "increment",
+            "steps": [
+              { "do": "update", "target": "count", "operation": "increment" }
+            ]
           },
           {
-            "kind": "element",
-            "tag": "p",
-            "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "A simple counter with increment, decrement, and reset." } }]
+            "name": "decrement",
+            "steps": [
+              { "do": "update", "target": "count", "operation": "decrement" }
+            ]
           },
           {
-            "kind": "element",
-            "tag": "div",
-            "props": { "style": { "expr": "lit", "value": "font-size: 48px; font-weight: bold; text-align: center; padding: 24px; background: #f5f5f5; border-radius: 8px; margin-bottom: 16px; color: #333;" } },
-            "children": [{ "kind": "text", "value": { "expr": "state", "name": "count" } }]
-          },
-          {
-            "kind": "element",
-            "tag": "div",
-            "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; justify-content: center;" } },
-            "children": [
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "decrement" }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "-" } }]
-              },
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "increment" }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+" } }]
-              },
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "padding: 12px 24px; font-size: 14px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "reset" }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Reset" } }]
-              }
+            "name": "reset",
+            "steps": [
+              { "do": "set", "target": "count", "value": { "expr": "lit", "value": 0 } }
             ]
           }
-        ]
-      }
-    },
-    "todo-list": {
-      "version": "1.0",
-      "state": {
-        "todos": { "type": "list", "initial": [] },
-        "newTodo": { "type": "string", "initial": "" }
-      },
-      "actions": [
-        {
-          "name": "setNewTodo",
-          "steps": [
-            { "do": "set", "target": "newTodo", "value": { "expr": "var", "name": "value" } }
-          ]
-        },
-        {
-          "name": "addTodo",
-          "steps": [
-            { "do": "update", "target": "todos", "operation": "push", "value": { "expr": "state", "name": "newTodo" } },
-            { "do": "set", "target": "newTodo", "value": { "expr": "lit", "value": "" } }
-          ]
-        },
-        {
-          "name": "removeTodo",
-          "steps": [
-            { "do": "update", "target": "todos", "operation": "remove", "value": { "expr": "var", "name": "item" } }
-          ]
-        }
-      ],
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Todo List" } }]
-          },
-          {
-            "kind": "element",
-            "tag": "p",
-            "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add items and manage your todo list." } }]
-          },
-          {
-            "kind": "element",
-            "tag": "div",
-            "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; margin-bottom: 16px;" } },
-            "children": [
-              {
-                "kind": "element",
-                "tag": "input",
-                "props": {
-                  "type": { "expr": "lit", "value": "text" },
-                  "style": { "expr": "lit", "value": "flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; color: #333; background: white;" },
-                  "value": { "expr": "state", "name": "newTodo" },
-                  "onInput": { "event": "input", "action": "setNewTodo", "payload": { "expr": "var", "name": "value" } }
-                }
-              },
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } }, "then": { "expr": "lit", "value": "padding: 8px 16px; background: #ccc; color: #666; border: none; border-radius: 4px; cursor: not-allowed; font-size: 14px;" }, "else": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" } },
-                  "disabled": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } },
-                  "onClick": { "event": "click", "action": "addTodo" }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add" } }]
-              }
-            ]
-          },
-          {
-            "kind": "element",
-            "tag": "ul",
-            "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin: 0;" } },
-            "children": [
-              {
-                "kind": "each",
-                "items": { "expr": "state", "name": "todos" },
-                "as": "item",
-                "body": {
-                  "kind": "element",
-                  "tag": "li",
-                  "props": { "style": { "expr": "lit", "value": "display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
-                  "children": [
-                    {
-                      "kind": "element",
-                      "tag": "span",
-                      "props": { "style": { "expr": "lit", "value": "color: #333;" } },
-                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "item" } }]
-                    },
-                    {
-                      "kind": "element",
-                      "tag": "button",
-                      "props": {
-                        "style": { "expr": "lit", "value": "padding: 4px 12px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;" },
-                        "onClick": { "event": "click", "action": "removeTodo", "payload": { "expr": "var", "name": "item" } }
-                      },
-                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Delete" } }]
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "fetch-list": {
-      "version": "1.0",
-      "state": {
-        "users": { "type": "list", "initial": [] },
-        "loading": { "type": "string", "initial": "idle" }
-      },
-      "actions": [
-        {
-          "name": "fetchUsers",
-          "steps": [
-            { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "loading" } },
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
+          "children": [
             {
-              "do": "fetch",
-              "url": { "expr": "lit", "value": "https://jsonplaceholder.typicode.com/users" },
-              "method": "GET",
-              "result": "data",
-              "onSuccess": [
-                { "do": "set", "target": "users", "value": { "expr": "var", "name": "data" } },
-                { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "done" } }
-              ],
-              "onError": [
-                { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "error" } }
+              "kind": "element",
+              "tag": "h1",
+              "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Counter" } }]
+            },
+            {
+              "kind": "element",
+              "tag": "p",
+              "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "A simple counter with increment, decrement, and reset." } }]
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "style": { "expr": "lit", "value": "font-size: 48px; font-weight: bold; text-align: center; padding: 24px; background: #f5f5f5; border-radius: 8px; margin-bottom: 16px; color: #333;" } },
+              "children": [{ "kind": "text", "value": { "expr": "state", "name": "count" } }]
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; justify-content: center;" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "decrement" }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "-" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "increment" }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "padding: 12px 24px; font-size: 14px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "reset" }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Reset" } }]
+                }
               ]
             }
           ]
         }
-      ],
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "API Data Fetching" } }]
-          },
-          {
-            "kind": "element",
-            "tag": "p",
-            "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Click the button to fetch user data from JSONPlaceholder API." } }]
-          },
-          {
-            "kind": "element",
-            "tag": "button",
-            "props": {
-              "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" },
-              "onClick": { "event": "click", "action": "fetchUsers" }
-            },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Fetch Users" } }]
-          },
-          {
-            "kind": "if",
-            "condition": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "loading" }, "right": { "expr": "lit", "value": "loading" } },
-            "then": {
-              "kind": "element",
-              "tag": "p",
-              "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #666;" } },
-              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Loading..." } }]
-            }
-          },
-          {
-            "kind": "if",
-            "condition": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "loading" }, "right": { "expr": "lit", "value": "error" } },
-            "then": {
-              "kind": "element",
-              "tag": "p",
-              "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #dc2626;" } },
-              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Failed to fetch data." } }]
-            }
-          },
-          {
-            "kind": "element",
-            "tag": "ul",
-            "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin-top: 16px;" } },
-            "children": [
-              {
-                "kind": "each",
-                "items": { "expr": "state", "name": "users" },
-                "as": "user",
-                "body": {
-                  "kind": "element",
-                  "tag": "li",
-                  "props": { "style": { "expr": "lit", "value": "padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
-                  "children": [
-                    {
-                      "kind": "element",
-                      "tag": "div",
-                      "props": { "style": { "expr": "lit", "value": "font-weight: bold; color: #333;" } },
-                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "name" } }]
-                    },
-                    {
-                      "kind": "element",
-                      "tag": "div",
-                      "props": { "style": { "expr": "lit", "value": "color: #666; font-size: 14px;" } },
-                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "email" } }]
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
       }
     },
-    "router": {
-      "version": "1.0",
-      "state": {
-        "currentPage": { "type": "string", "initial": "home" }
-      },
-      "actions": [
-        {
-          "name": "navigate",
-          "steps": [
-            { "do": "set", "target": "currentPage", "value": { "expr": "var", "name": "page" } }
-          ]
-        }
-      ],
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
-        "children": [
+    {
+      "slug": "todo-list",
+      "title": "Todo List",
+      "description": "A todo list example demonstrating list state management, input binding, and iteration with the each loop.",
+      "features": ["List state", "String state", "Input binding with onInput", "Each loop for iteration", "List operations (push, remove)", "Action payload passing"],
+      "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run todo-list.json"],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "todos": { "type": "list", "initial": [] },
+          "newTodo": { "type": "string", "initial": "" }
+        },
+        "actions": [
           {
-            "kind": "element",
-            "tag": "h1",
-            "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Router Example" } }]
-          },
-          {
-            "kind": "element",
-            "tag": "p",
-            "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
-            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Client-side routing between pages." } }]
-          },
-          {
-            "kind": "element",
-            "tag": "nav",
-            "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; margin-bottom: 16px;" } },
-            "children": [
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "home" } } }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Home" } }]
-              },
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "about" } } }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "About" } }]
-              },
-              {
-                "kind": "element",
-                "tag": "button",
-                "props": {
-                  "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
-                  "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "contact" } } }
-                },
-                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Contact" } }]
-              }
+            "name": "setNewTodo",
+            "steps": [
+              { "do": "set", "target": "newTodo", "value": { "expr": "var", "name": "value" } }
             ]
           },
           {
-            "kind": "element",
-            "tag": "div",
-            "props": { "style": { "expr": "lit", "value": "padding: 16px; background: #f5f5f5; border-radius: 8px;" } },
-            "children": [
+            "name": "addTodo",
+            "steps": [
+              { "do": "update", "target": "todos", "operation": "push", "value": { "expr": "state", "name": "newTodo" } },
+              { "do": "set", "target": "newTodo", "value": { "expr": "lit", "value": "" } }
+            ]
+          },
+          {
+            "name": "removeTodo",
+            "steps": [
+              { "do": "update", "target": "todos", "operation": "remove", "value": { "expr": "var", "name": "item" } }
+            ]
+          }
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "h1",
+              "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Todo List" } }]
+            },
+            {
+              "kind": "element",
+              "tag": "p",
+              "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add items and manage your todo list." } }]
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; margin-bottom: 16px;" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "input",
+                  "props": {
+                    "type": { "expr": "lit", "value": "text" },
+                    "style": { "expr": "lit", "value": "flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; color: #333; background: white;" },
+                    "value": { "expr": "state", "name": "newTodo" },
+                    "onInput": { "event": "input", "action": "setNewTodo", "payload": { "expr": "var", "name": "value" } }
+                  }
+                },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } }, "then": { "expr": "lit", "value": "padding: 8px 16px; background: #ccc; color: #666; border: none; border-radius: 4px; cursor: not-allowed; font-size: 14px;" }, "else": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" } },
+                    "disabled": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "newTodo" }, "right": { "expr": "lit", "value": "" } },
+                    "onClick": { "event": "click", "action": "addTodo" }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add" } }]
+                }
+              ]
+            },
+            {
+              "kind": "element",
+              "tag": "ul",
+              "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin: 0;" } },
+              "children": [
+                {
+                  "kind": "each",
+                  "items": { "expr": "state", "name": "todos" },
+                  "as": "item",
+                  "body": {
+                    "kind": "element",
+                    "tag": "li",
+                    "props": { "style": { "expr": "lit", "value": "display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": { "style": { "expr": "lit", "value": "color: #333;" } },
+                        "children": [{ "kind": "text", "value": { "expr": "var", "name": "item" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "button",
+                        "props": {
+                          "style": { "expr": "lit", "value": "padding: 4px 12px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;" },
+                          "onClick": { "event": "click", "action": "removeTodo", "payload": { "expr": "var", "name": "item" } }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Delete" } }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "fetch-list",
+      "title": "Fetch List",
+      "description": "An example demonstrating how to fetch data from an API with loading states and error handling.",
+      "features": ["Fetch step for HTTP requests", "Loading state management", "onSuccess and onError handlers", "Conditional rendering with if", "Object property access with path", "Binary expressions for comparison"],
+      "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run fetch-list.json"],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "users": { "type": "list", "initial": [] },
+          "loading": { "type": "string", "initial": "idle" }
+        },
+        "actions": [
+          {
+            "name": "fetchUsers",
+            "steps": [
+              { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "loading" } },
               {
-                "kind": "element",
-                "tag": "p",
-                "props": { "style": { "expr": "lit", "value": "font-size: 18px; color: #333;" } },
-                "children": [
-                  { "kind": "text", "value": { "expr": "lit", "value": "Current page: " } },
-                  { "kind": "text", "value": { "expr": "state", "name": "currentPage" } }
+                "do": "fetch",
+                "url": { "expr": "lit", "value": "https://jsonplaceholder.typicode.com/users" },
+                "method": "GET",
+                "result": "data",
+                "onSuccess": [
+                  { "do": "set", "target": "users", "value": { "expr": "var", "name": "data" } },
+                  { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "done" } }
+                ],
+                "onError": [
+                  { "do": "set", "target": "loading", "value": { "expr": "lit", "value": "error" } }
                 ]
               }
             ]
           }
-        ]
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "h1",
+              "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "API Data Fetching" } }]
+            },
+            {
+              "kind": "element",
+              "tag": "p",
+              "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Click the button to fetch user data from JSONPlaceholder API." } }]
+            },
+            {
+              "kind": "element",
+              "tag": "button",
+              "props": {
+                "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;" },
+                "onClick": { "event": "click", "action": "fetchUsers" }
+              },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Fetch Users" } }]
+            },
+            {
+              "kind": "if",
+              "condition": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "loading" }, "right": { "expr": "lit", "value": "loading" } },
+              "then": {
+                "kind": "element",
+                "tag": "p",
+                "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #666;" } },
+                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Loading..." } }]
+              }
+            },
+            {
+              "kind": "if",
+              "condition": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "loading" }, "right": { "expr": "lit", "value": "error" } },
+              "then": {
+                "kind": "element",
+                "tag": "p",
+                "props": { "style": { "expr": "lit", "value": "margin-top: 16px; color: #dc2626;" } },
+                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Failed to fetch data." } }]
+              }
+            },
+            {
+              "kind": "element",
+              "tag": "ul",
+              "props": { "style": { "expr": "lit", "value": "list-style: none; padding: 0; margin-top: 16px;" } },
+              "children": [
+                {
+                  "kind": "each",
+                  "items": { "expr": "state", "name": "users" },
+                  "as": "user",
+                  "body": {
+                    "kind": "element",
+                    "tag": "li",
+                    "props": { "style": { "expr": "lit", "value": "padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;" } },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "style": { "expr": "lit", "value": "font-weight: bold; color: #333;" } },
+                        "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "name" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "style": { "expr": "lit", "value": "color: #666; font-size: 14px;" } },
+                        "children": [{ "kind": "text", "value": { "expr": "var", "name": "user", "path": "email" } }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "router",
+      "title": "Router",
+      "description": "A multi-page routing example demonstrating navigation, nested routes, and dynamic parameters.",
+      "features": ["@constela/router package", "Route definitions", "Link component for navigation", "Nested routes with Outlet", "Dynamic route parameters", "Route param expressions"],
+      "runCommands": ["npm install @constela/core @constela/runtime @constela/router", "npx constela dev"],
+      "note": "This example requires the @constela/router package and uses TypeScript instead of the JSON DSL for router configuration.",
+      "code": {
+        "version": "1.0",
+        "state": {
+          "currentPage": { "type": "string", "initial": "home" }
+        },
+        "actions": [
+          {
+            "name": "navigate",
+            "steps": [
+              { "do": "set", "target": "currentPage", "value": { "expr": "var", "name": "page" } }
+            ]
+          }
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "style": { "expr": "lit", "value": "font-family: system-ui, sans-serif; padding: 16px;" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "h1",
+              "props": { "style": { "expr": "lit", "value": "margin: 0 0 8px 0; font-size: 24px;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Router Example" } }]
+            },
+            {
+              "kind": "element",
+              "tag": "p",
+              "props": { "style": { "expr": "lit", "value": "color: #666; margin: 0 0 16px 0;" } },
+              "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Client-side routing between pages." } }]
+            },
+            {
+              "kind": "element",
+              "tag": "nav",
+              "props": { "style": { "expr": "lit", "value": "display: flex; gap: 8px; margin-bottom: 16px;" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "home" } } }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Home" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "about" } } }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "About" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "style": { "expr": "lit", "value": "padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;" },
+                    "onClick": { "event": "click", "action": "navigate", "payload": { "page": { "expr": "lit", "value": "contact" } } }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Contact" } }]
+                }
+              ]
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "style": { "expr": "lit", "value": "padding: 16px; background: #f5f5f5; border-radius: 8px;" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "p",
+                  "props": { "style": { "expr": "lit", "value": "font-size: 18px; color: #333;" } },
+                  "children": [
+                    { "kind": "text", "value": { "expr": "lit", "value": "Current page: " } },
+                    { "kind": "text", "value": { "expr": "state", "name": "currentPage" } }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     }
+  ],
+  "codes": {
+    "counter": { "$ref": "#/examples/0/code" },
+    "todo-list": { "$ref": "#/examples/1/code" },
+    "fetch-list": { "$ref": "#/examples/2/code" },
+    "router": { "$ref": "#/examples/3/code" }
   },
-  "defaultCode": "counter"
+  "items": {
+    "counter": { "$ref": "#/examples/0" },
+    "todo-list": { "$ref": "#/examples/1" },
+    "fetch-list": { "$ref": "#/examples/2" },
+    "router": { "$ref": "#/examples/3" }
+  },
+  "defaultCode": "counter",
+  "defaultCodeString": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": {\n      \"type\": \"number\",\n      \"initial\": 0\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"count\",\n          \"operation\": \"increment\"\n        }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"count\",\n          \"operation\": \"decrement\"\n        }\n      ]\n    },\n    {\n      \"name\": \"reset\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"count\",\n          \"value\": {\n            \"expr\": \"lit\",\n            \"value\": 0\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Counter\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"A simple counter with increment, decrement, and reset.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"font-size: 48px; font-weight: bold; text-align: center; padding: 24px; background: #f5f5f5; border-radius: 8px; margin-bottom: 16px; color: #333;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"state\",\n              \"name\": \"count\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"display: flex; gap: 8px; justify-content: center;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"decrement\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"-\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"increment\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"+\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 12px 24px; font-size: 14px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"reset\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Reset\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+  "codeStrings": {
+    "counter": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": {\n      \"type\": \"number\",\n      \"initial\": 0\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"count\",\n          \"operation\": \"increment\"\n        }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"count\",\n          \"operation\": \"decrement\"\n        }\n      ]\n    },\n    {\n      \"name\": \"reset\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"count\",\n          \"value\": {\n            \"expr\": \"lit\",\n            \"value\": 0\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Counter\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"A simple counter with increment, decrement, and reset.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"font-size: 48px; font-weight: bold; text-align: center; padding: 24px; background: #f5f5f5; border-radius: 8px; margin-bottom: 16px; color: #333;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"state\",\n              \"name\": \"count\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"display: flex; gap: 8px; justify-content: center;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"decrement\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"-\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"width: 48px; height: 48px; font-size: 24px; background: #0070f3; color: white; border: none; border-radius: 50%; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"increment\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"+\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 12px 24px; font-size: 14px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"reset\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Reset\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+    "todo-list": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"todos\": {\n      \"type\": \"list\",\n      \"initial\": []\n    },\n    \"newTodo\": {\n      \"type\": \"string\",\n      \"initial\": \"\"\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"setNewTodo\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"newTodo\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"value\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"addTodo\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"todos\",\n          \"operation\": \"push\",\n          \"value\": {\n            \"expr\": \"state\",\n            \"name\": \"newTodo\"\n          }\n        },\n        {\n          \"do\": \"set\",\n          \"target\": \"newTodo\",\n          \"value\": {\n            \"expr\": \"lit\",\n            \"value\": \"\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"removeTodo\",\n      \"steps\": [\n        {\n          \"do\": \"update\",\n          \"target\": \"todos\",\n          \"operation\": \"remove\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"item\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Todo List\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Add items and manage your todo list.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"display: flex; gap: 8px; margin-bottom: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"input\",\n            \"props\": {\n              \"type\": {\n                \"expr\": \"lit\",\n                \"value\": \"text\"\n              },\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; color: #333; background: white;\"\n              },\n              \"value\": {\n                \"expr\": \"state\",\n                \"name\": \"newTodo\"\n              },\n              \"onInput\": {\n                \"event\": \"input\",\n                \"action\": \"setNewTodo\",\n                \"payload\": {\n                  \"expr\": \"var\",\n                  \"name\": \"value\"\n                }\n              }\n            }\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"cond\",\n                \"if\": {\n                  \"expr\": \"bin\",\n                  \"op\": \"==\",\n                  \"left\": {\n                    \"expr\": \"state\",\n                    \"name\": \"newTodo\"\n                  },\n                  \"right\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"\"\n                  }\n                },\n                \"then\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"padding: 8px 16px; background: #ccc; color: #666; border: none; border-radius: 4px; cursor: not-allowed; font-size: 14px;\"\n                },\n                \"else\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;\"\n                }\n              },\n              \"disabled\": {\n                \"expr\": \"bin\",\n                \"op\": \"==\",\n                \"left\": {\n                  \"expr\": \"state\",\n                  \"name\": \"newTodo\"\n                },\n                \"right\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"\"\n                }\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"addTodo\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Add\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"ul\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"list-style: none; padding: 0; margin: 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"each\",\n            \"items\": {\n              \"expr\": \"state\",\n              \"name\": \"todos\"\n            },\n            \"as\": \"item\",\n            \"body\": {\n              \"kind\": \"element\",\n              \"tag\": \"li\",\n              \"props\": {\n                \"style\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"display: flex; align-items: center; justify-content: space-between; padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;\"\n                }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"color: #333;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"item\"\n                      }\n                    }\n                  ]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"button\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"padding: 4px 12px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;\"\n                    },\n                    \"onClick\": {\n                      \"event\": \"click\",\n                      \"action\": \"removeTodo\",\n                      \"payload\": {\n                        \"expr\": \"var\",\n                        \"name\": \"item\"\n                      }\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"lit\",\n                        \"value\": \"Delete\"\n                      }\n                    }\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      }\n    ]\n  }\n}",
+    "fetch-list": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": []\n    },\n    \"loading\": {\n      \"type\": \"string\",\n      \"initial\": \"idle\"\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"fetchUsers\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"loading\",\n          \"value\": {\n            \"expr\": \"lit\",\n            \"value\": \"loading\"\n          }\n        },\n        {\n          \"do\": \"fetch\",\n          \"url\": {\n            \"expr\": \"lit\",\n            \"value\": \"https://jsonplaceholder.typicode.com/users\"\n          },\n          \"method\": \"GET\",\n          \"result\": \"data\",\n          \"onSuccess\": [\n            {\n              \"do\": \"set\",\n              \"target\": \"users\",\n              \"value\": {\n                \"expr\": \"var\",\n                \"name\": \"data\"\n              }\n            },\n            {\n              \"do\": \"set\",\n              \"target\": \"loading\",\n              \"value\": {\n                \"expr\": \"lit\",\n                \"value\": \"done\"\n              }\n            }\n          ],\n          \"onError\": [\n            {\n              \"do\": \"set\",\n              \"target\": \"loading\",\n              \"value\": {\n                \"expr\": \"lit\",\n                \"value\": \"error\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"API Data Fetching\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Click the button to fetch user data from JSONPlaceholder API.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;\"\n          },\n          \"onClick\": {\n            \"event\": \"click\",\n            \"action\": \"fetchUsers\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Fetch Users\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": {\n          \"expr\": \"bin\",\n          \"op\": \"==\",\n          \"left\": {\n            \"expr\": \"state\",\n            \"name\": \"loading\"\n          },\n          \"right\": {\n            \"expr\": \"lit\",\n            \"value\": \"loading\"\n          }\n        },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"p\",\n          \"props\": {\n            \"style\": {\n              \"expr\": \"lit\",\n              \"value\": \"margin-top: 16px; color: #666;\"\n            }\n          },\n          \"children\": [\n            {\n              \"kind\": \"text\",\n              \"value\": {\n                \"expr\": \"lit\",\n                \"value\": \"Loading...\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": {\n          \"expr\": \"bin\",\n          \"op\": \"==\",\n          \"left\": {\n            \"expr\": \"state\",\n            \"name\": \"loading\"\n          },\n          \"right\": {\n            \"expr\": \"lit\",\n            \"value\": \"error\"\n          }\n        },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"p\",\n          \"props\": {\n            \"style\": {\n              \"expr\": \"lit\",\n              \"value\": \"margin-top: 16px; color: #dc2626;\"\n            }\n          },\n          \"children\": [\n            {\n              \"kind\": \"text\",\n              \"value\": {\n                \"expr\": \"lit\",\n                \"value\": \"Failed to fetch data.\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"ul\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"list-style: none; padding: 0; margin-top: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"each\",\n            \"items\": {\n              \"expr\": \"state\",\n              \"name\": \"users\"\n            },\n            \"as\": \"user\",\n            \"body\": {\n              \"kind\": \"element\",\n              \"tag\": \"li\",\n              \"props\": {\n                \"style\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;\"\n                }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"div\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"font-weight: bold; color: #333;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"user\",\n                        \"path\": \"name\"\n                      }\n                    }\n                  ]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"div\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"color: #666; font-size: 14px;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"user\",\n                        \"path\": \"email\"\n                      }\n                    }\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      }\n    ]\n  }\n}",
+    "router": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"currentPage\": {\n      \"type\": \"string\",\n      \"initial\": \"home\"\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"navigate\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"currentPage\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"page\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Router Example\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Client-side routing between pages.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"nav\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"display: flex; gap: 8px; margin-bottom: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"home\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Home\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"about\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"About\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"contact\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Contact\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"p\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"font-size: 18px; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Current page: \"\n                }\n              },\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"state\",\n                  \"name\": \"currentPage\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}"
+  }
 }

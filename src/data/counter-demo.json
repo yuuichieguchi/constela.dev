@@ -1,66 +1,116 @@
 {
   "version": "1.0",
   "state": {
-    "count": { "type": "number", "initial": 0 }
+    "count": {
+      "type": "number",
+      "initial": 0
+    }
   },
-  "actions": [
-    {
+  "actions": {
+    "increment": {
       "name": "increment",
       "steps": [
-        { "do": "update", "target": "count", "operation": "increment" }
+        {
+          "do": "update",
+          "target": "count",
+          "operation": "increment"
+        }
       ]
     },
-    {
+    "decrement": {
       "name": "decrement",
       "steps": [
-        { "do": "update", "target": "count", "operation": "decrement" }
+        {
+          "do": "update",
+          "target": "count",
+          "operation": "decrement"
+        }
       ]
     }
-  ],
+  },
   "view": {
     "kind": "element",
     "tag": "div",
     "props": {
-      "class": { "expr": "lit", "value": "flex flex-col items-center gap-6" }
+      "class": {
+        "expr": "lit",
+        "value": "flex flex-col items-center justify-center gap-6"
+      }
     },
     "children": [
       {
         "kind": "element",
-        "tag": "span",
+        "tag": "div",
         "props": {
-          "class": { "expr": "lit", "value": "text-5xl font-bold text-foreground tabular-nums" }
+          "class": {
+            "expr": "lit",
+            "value": "text-6xl font-bold tabular-nums text-foreground"
+          }
         },
         "children": [
-          { "kind": "text", "value": { "expr": "state", "name": "count" } }
+          {
+            "kind": "text",
+            "value": {
+              "expr": "state",
+              "name": "count"
+            }
+          }
         ]
       },
       {
         "kind": "element",
         "tag": "div",
         "props": {
-          "class": { "expr": "lit", "value": "flex gap-3" }
+          "class": {
+            "expr": "lit",
+            "value": "flex gap-4"
+          }
         },
         "children": [
           {
             "kind": "element",
             "tag": "button",
             "props": {
-              "class": { "expr": "lit", "value": "flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-muted text-lg font-medium text-foreground transition-colors hover:bg-background" },
-              "onClick": { "event": "click", "action": "decrement" }
+              "class": {
+                "expr": "lit",
+                "value": "flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
+              },
+              "onClick": {
+                "event": "click",
+                "action": "decrement"
+              }
             },
             "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "-" } }
+              {
+                "kind": "text",
+                "value": {
+                  "expr": "lit",
+                  "value": "-"
+                }
+              }
             ]
           },
           {
             "kind": "element",
             "tag": "button",
             "props": {
-              "class": { "expr": "lit", "value": "flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-muted text-lg font-medium text-foreground transition-colors hover:bg-background" },
-              "onClick": { "event": "click", "action": "increment" }
+              "class": {
+                "expr": "lit",
+                "value": "flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
+              },
+              "onClick": {
+                "event": "click",
+                "action": "increment"
+              }
             },
             "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "+" } }
+              {
+                "kind": "text",
+                "value": {
+                  "expr": "lit",
+                  "value": "+"
+                }
+              }
             ]
           }
         ]

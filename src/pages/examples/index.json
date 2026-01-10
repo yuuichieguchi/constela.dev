@@ -5,7 +5,7 @@
     "layout": "main",
     "meta": {
       "title": "Examples - Constela",
-      "description": "Explore interactive examples showcasing Constela features."
+      "description": "Explore these examples to learn how to build UIs with Constela."
     }
   },
   "imports": {
@@ -15,34 +15,40 @@
     "kind": "element",
     "tag": "div",
     "props": {
-      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12 space-y-8" }
     },
     "children": [
       {
         "kind": "element",
-        "tag": "h1",
-        "props": {
-          "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
-        },
+        "tag": "header",
         "children": [
-          { "kind": "text", "value": { "expr": "lit", "value": "Examples" } }
-        ]
-      },
-      {
-        "kind": "element",
-        "tag": "p",
-        "props": {
-          "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
-        },
-        "children": [
-          { "kind": "text", "value": { "expr": "lit", "value": "Explore interactive examples showcasing Constela features." } }
+          {
+            "kind": "element",
+            "tag": "h1",
+            "props": {
+              "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Examples" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-2 text-lg text-muted-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Explore these examples to learn how to build UIs with Constela." } }
+            ]
+          }
         ]
       },
       {
         "kind": "element",
         "tag": "div",
         "props": {
-          "class": { "expr": "lit", "value": "mt-8 grid gap-6 sm:grid-cols-2" }
+          "class": { "expr": "lit", "value": "grid gap-4 sm:grid-cols-2" }
         },
         "children": [
           {
@@ -66,7 +72,7 @@
                   "kind": "element",
                   "tag": "h3",
                   "props": {
-                    "class": { "expr": "lit", "value": "font-semibold text-foreground group-hover:text-primary" }
+                    "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground group-hover:text-primary" }
                   },
                   "children": [
                     { "kind": "text", "value": { "expr": "var", "name": "example", "path": "title" } }
@@ -97,7 +103,7 @@
                         "kind": "element",
                         "tag": "span",
                         "props": {
-                          "class": { "expr": "lit", "value": "rounded-full bg-muted px-2.5 py-0.5 text-xs" }
+                          "class": { "expr": "lit", "value": "rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground" }
                         },
                         "children": [
                           { "kind": "text", "value": { "expr": "var", "name": "feature" } }

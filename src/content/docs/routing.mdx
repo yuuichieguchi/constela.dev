@@ -143,7 +143,7 @@ Access route parameters using the `route` expression:
 ```json
 {
   "kind": "text",
-  "value": { "expr": "route", "param": "id" }
+  "value": { "expr": "route", "name": "id" }
 }
 ```
 
@@ -169,7 +169,7 @@ Access route parameters using the `route` expression:
             "tag": "p",
             "children": [
               { "kind": "text", "value": { "expr": "lit", "value": "User ID: " } },
-              { "kind": "text", "value": { "expr": "route", "param": "id" } }
+              { "kind": "text", "value": { "expr": "route", "name": "id" } }
             ]
           }
         ]
@@ -321,7 +321,7 @@ app.mount(document.getElementById('root'));
             "tag": "p",
             "children": [
               { "kind": "text", "value": { "expr": "lit", "value": "Product ID: " } },
-              { "kind": "text", "value": { "expr": "route", "param": "id" } }
+              { "kind": "text", "value": { "expr": "route", "name": "id" } }
             ]
           },
           {

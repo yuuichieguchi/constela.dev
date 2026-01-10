@@ -536,55 +536,64 @@
         "kind": "element",
         "tag": "section",
         "props": {
-          "class": { "expr": "lit", "value": "border-t border-border" }
+          "class": { "expr": "lit", "value": "px-6 py-16 sm:py-24" }
         },
         "children": [
           {
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "mx-auto max-w-7xl px-6 py-16" }
+              "class": { "expr": "lit", "value": "mx-auto max-w-7xl" }
             },
             "children": [
               {
                 "kind": "element",
-                "tag": "h2",
+                "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "text-center text-3xl font-bold tracking-tight text-foreground" }
+                  "class": { "expr": "lit", "value": "mx-auto max-w-2xl text-center" }
                 },
                 "children": [
-                  { "kind": "text", "value": { "expr": "lit", "value": "See It in Action" } }
-                ]
-              },
-              {
-                "kind": "element",
-                "tag": "p",
-                "props": {
-                  "class": { "expr": "lit", "value": "mx-auto max-w-2xl text-center mt-4 text-lg text-muted-foreground" }
-                },
-                "children": [
-                  { "kind": "text", "value": { "expr": "lit", "value": "A simple counter in Constela. Declarative state, typed actions, and reactive views in pure JSON." } }
+                  {
+                    "kind": "element",
+                    "tag": "h2",
+                    "props": {
+                      "class": { "expr": "lit", "value": "text-3xl font-bold tracking-tight text-foreground sm:text-4xl" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "lit", "value": "See It in Action" } }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "p",
+                    "props": {
+                      "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "lit", "value": "A simple counter in Constela. Declarative state, typed actions, and reactive views in pure JSON." } }
+                    ]
+                  }
                 ]
               },
               {
                 "kind": "element",
                 "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "mt-12 grid gap-6 lg:grid-cols-2" }
+                  "class": { "expr": "lit", "value": "mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-2" }
                 },
                 "children": [
                   {
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+                      "class": { "expr": "lit", "value": "group relative overflow-hidden rounded-xl border border-border bg-muted" }
                     },
                     "children": [
                       {
                         "kind": "element",
                         "tag": "div",
                         "props": {
-                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border px-4 py-2" }
                         },
                         "children": [
                           {
@@ -603,11 +612,12 @@
                           {
                             "kind": "element",
                             "tag": "pre",
-                            "props": { "class": { "expr": "lit", "value": "text-sm leading-relaxed text-foreground" } },
+                            "props": { "class": { "expr": "lit", "value": "text-sm leading-relaxed" } },
                             "children": [
                               {
                                 "kind": "element",
                                 "tag": "code",
+                                "props": { "class": { "expr": "lit", "value": "font-mono text-foreground" } },
                                 "children": [{ "kind": "text", "value": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"increment\" }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"decrement\" }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"count\" } },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"increment\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"+\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"decrement\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"-\" } }]\n      }\n    ]\n  }\n}" } }]
                               }
                             ]
@@ -620,14 +630,14 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "overflow-hidden rounded-lg border border-border bg-card" }
+                      "class": { "expr": "lit", "value": "flex flex-col overflow-hidden rounded-xl border border-border bg-background" }
                     },
                     "children": [
                       {
                         "kind": "element",
                         "tag": "div",
                         "props": {
-                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2" }
+                          "class": { "expr": "lit", "value": "border-b border-border px-4 py-2" }
                         },
                         "children": [
                           {
@@ -642,11 +652,29 @@
                         "kind": "element",
                         "tag": "div",
                         "props": {
-                          "class": { "expr": "lit", "value": "flex min-h-[200px] items-center justify-center p-4" },
-                          "id": { "expr": "lit", "value": "code-demo-preview" }
+                          "class": { "expr": "lit", "value": "flex flex-1 flex-col items-center justify-center gap-6 p-8" }
                         },
                         "children": [
-                          { "kind": "text", "value": { "expr": "lit", "value": "Counter demo will render here" } }
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": {
+                              "class": { "expr": "lit", "value": "flex items-center justify-center" },
+                              "id": { "expr": "lit", "value": "code-demo-preview" }
+                            }
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "p",
+                            "props": {
+                              "class": { "expr": "lit", "value": "text-center text-sm text-muted-foreground" }
+                            },
+                            "children": [
+                              { "kind": "text", "value": { "expr": "lit", "value": "This preview demonstrates the counter's behavior." } },
+                              { "kind": "element", "tag": "br" },
+                              { "kind": "text", "value": { "expr": "lit", "value": "The actual Constela runtime compiles and renders the JSON on the left." } }
+                            ]
+                          }
                         ]
                       }
                     ]
