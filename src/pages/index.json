@@ -11,6 +11,12 @@
   "imports": {
     "examples": "../data/examples.json"
   },
+  "widgets": [
+    {
+      "id": "code-demo-preview",
+      "src": "../data/counter-demo.json"
+    }
+  ],
   "view": {
     "kind": "element",
     "tag": "div",
@@ -181,6 +187,16 @@
                 },
                 "children": [
                   { "kind": "text", "value": { "expr": "lit", "value": "Built for the AI Era" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "p",
+                "props": {
+                  "class": { "expr": "lit", "value": "mx-auto mt-4 max-w-2xl text-center text-lg text-muted-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Constela bridges the gap between human intent and machine-generated UI with a language designed from the ground up for reliability." } }
                 ]
               },
               {
@@ -367,12 +383,12 @@
                       {
                         "kind": "element",
                         "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "p-4" } },
+                        "props": { "class": { "expr": "lit", "value": "max-h-[400px] overflow-auto p-4" } },
                         "children": [
                           {
                             "kind": "element",
                             "tag": "pre",
-                            "props": { "class": { "expr": "lit", "value": "text-sm text-foreground overflow-x-auto" } },
+                            "props": { "class": { "expr": "lit", "value": "text-sm leading-relaxed text-foreground" } },
                             "children": [
                               {
                                 "kind": "element",

@@ -9,6 +9,8 @@
   --border: #e4e4e7;
   --primary: #2563eb;
   --primary-foreground: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #171717;
   --sidebar-width: 280px;
   --header-height: 64px;
 }
@@ -21,6 +23,8 @@
   --border: #3f3f46;
   --primary: #3b82f6;
   --primary-foreground: #ffffff;
+  --card: #18181b;
+  --card-foreground: #fafafa;
 }
 
 @theme inline {
@@ -31,6 +35,8 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
