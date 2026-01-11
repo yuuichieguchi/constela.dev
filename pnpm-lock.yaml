@@ -24,8 +24,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(@constela/compiler@0.7.1)
       '@constela/start':
-        specifier: ^1.2.16
-        version: 1.2.16(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.2.17
+        version: 1.2.17(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.18)
@@ -125,8 +125,8 @@ packages:
     peerDependencies:
       '@constela/compiler': ^0.7.0
 
-  '@constela/start@1.2.16':
-    resolution: {integrity: sha512-Fr8gtEdiFVCUz6UMWQha0uI4AqiWPDI83/7/bhMu6jL/QyjYlghUiBxY3Fx3V5EUeK/2yc4ar5/s7hcwkrcAHg==}
+  '@constela/start@1.2.17':
+    resolution: {integrity: sha512-ATEMm8wlw/dRaPTUUG094m9kwnhapJaH/I1+EqT7HuUs8sfrlTF6TlXuLk0rL5CUXVgmG21EwkxfsG4Gl8rgfA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -2161,7 +2161,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@constela/start@1.2.16(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
+  '@constela/start@1.2.17(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
       '@constela/compiler': 0.7.1
       '@constela/core': 0.7.0
