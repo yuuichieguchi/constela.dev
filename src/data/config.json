@@ -1,6 +1,5 @@
 {
   "repoMain": "https://github.com/yuuichieguchi/constela",
-  "repoDocs": "https://github.com/yuuichieguchi/constela.dev",
   "site": {
     "name": "Constela",
     "description": "A compiler-first UI language for vibecoding",

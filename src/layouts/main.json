@@ -270,7 +270,7 @@
                       "class": { "expr": "lit", "value": "text-sm text-muted-foreground" }
                     },
                     "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "© 2025 Constela. All rights reserved." } }
+                      { "kind": "text", "value": { "expr": "lit", "value": "© 2026 Constela. All rights reserved." } }
                     ]
                   },
                   {
@@ -301,19 +301,6 @@
                         },
                         "children": [
                           { "kind": "text", "value": { "expr": "lit", "value": "GitHub" } }
-                        ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "a",
-                        "props": {
-                          "href": { "expr": "import", "name": "config", "path": "repoDocs" },
-                          "target": { "expr": "lit", "value": "_blank" },
-                          "rel": { "expr": "lit", "value": "noopener noreferrer" },
-                          "class": { "expr": "lit", "value": "text-sm text-muted-foreground transition-colors hover:text-foreground" }
-                        },
-                        "children": [
-                          { "kind": "text", "value": { "expr": "lit", "value": "Documentation" } }
                         ]
                       }
                     ]
