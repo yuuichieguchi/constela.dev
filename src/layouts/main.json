@@ -6,7 +6,8 @@
     "nav": "../data/navigation.json"
   },
   "state": {
-    "theme": { "type": "string", "initial": "dark" }
+    "theme": { "type": "string", "initial": "dark" },
+    "mobileMenuOpen": { "type": "boolean", "initial": false }
   },
   "lifecycle": {
     "onMount": "loadTheme"
@@ -92,6 +93,38 @@
           "value": { "expr": "state", "name": "theme" }
         }
       ]
+    },
+    {
+      "name": "openMobileMenu",
+      "steps": [
+        {
+          "do": "set",
+          "target": "mobileMenuOpen",
+          "value": { "expr": "lit", "value": true }
+        },
+        {
+          "do": "dom",
+          "operation": "addClass",
+          "selector": { "expr": "lit", "value": "body" },
+          "value": { "expr": "lit", "value": "overflow-hidden" }
+        }
+      ]
+    },
+    {
+      "name": "closeMobileMenu",
+      "steps": [
+        {
+          "do": "set",
+          "target": "mobileMenuOpen",
+          "value": { "expr": "lit", "value": false }
+        },
+        {
+          "do": "dom",
+          "operation": "removeClass",
+          "selector": { "expr": "lit", "value": "body" },
+          "value": { "expr": "lit", "value": "overflow-hidden" }
+        }
+      ]
     }
   ],
   "view": {
@@ -122,6 +155,36 @@
                   "class": { "expr": "lit", "value": "flex items-center gap-4" }
                 },
                 "children": [
+                  {
+                    "kind": "element",
+                    "tag": "button",
+                    "props": {
+                      "class": { "expr": "lit", "value": "flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted md:hidden" },
+                      "aria-label": { "expr": "lit", "value": "Open menu" },
+                      "onClick": { "event": "click", "action": "openMobileMenu" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "svg",
+                        "props": {
+                          "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                          "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                          "fill": { "expr": "lit", "value": "none" },
+                          "stroke": { "expr": "lit", "value": "currentColor" },
+                          "stroke-width": { "expr": "lit", "value": "2" },
+                          "stroke-linecap": { "expr": "lit", "value": "round" },
+                          "stroke-linejoin": { "expr": "lit", "value": "round" },
+                          "class": { "expr": "lit", "value": "h-5 w-5" }
+                        },
+                        "children": [
+                          { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "3" }, "y1": { "expr": "lit", "value": "12" }, "x2": { "expr": "lit", "value": "21" }, "y2": { "expr": "lit", "value": "12" } } },
+                          { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "3" }, "y1": { "expr": "lit", "value": "6" }, "x2": { "expr": "lit", "value": "21" }, "y2": { "expr": "lit", "value": "6" } } },
+                          { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "3" }, "y1": { "expr": "lit", "value": "18" }, "x2": { "expr": "lit", "value": "21" }, "y2": { "expr": "lit", "value": "18" } } }
+                        ]
+                      }
+                    ]
+                  },
                   {
                     "kind": "element",
                     "tag": "a",
@@ -231,6 +294,123 @@
             ]
           }
         ]
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "mobileMenuOpen" },
+        "then": {
+          "kind": "element",
+          "tag": "div",
+          "props": {
+            "class": { "expr": "lit", "value": "fixed inset-0 z-50 lg:hidden" }
+          },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": {
+                "class": { "expr": "lit", "value": "fixed inset-0 bg-background/80 backdrop-blur-sm" },
+                "onClick": { "event": "click", "action": "closeMobileMenu" }
+              }
+            },
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": {
+                "class": { "expr": "lit", "value": "fixed inset-y-0 left-0 w-full max-w-xs bg-background border-r border-border shadow-lg" }
+              },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": {
+                    "class": { "expr": "lit", "value": "flex h-[var(--header-height)] items-center justify-between border-b border-border px-6" }
+                  },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "span",
+                      "props": {
+                        "class": { "expr": "lit", "value": "text-lg font-bold text-foreground" }
+                      },
+                      "children": [
+                        { "kind": "text", "value": { "expr": "lit", "value": "Menu" } }
+                      ]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "button",
+                      "props": {
+                        "class": { "expr": "lit", "value": "flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted" },
+                        "aria-label": { "expr": "lit", "value": "Close menu" },
+                        "onClick": { "event": "click", "action": "closeMobileMenu" }
+                      },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "svg",
+                          "props": {
+                            "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                            "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                            "fill": { "expr": "lit", "value": "none" },
+                            "stroke": { "expr": "lit", "value": "currentColor" },
+                            "stroke-width": { "expr": "lit", "value": "2" },
+                            "stroke-linecap": { "expr": "lit", "value": "round" },
+                            "stroke-linejoin": { "expr": "lit", "value": "round" },
+                            "class": { "expr": "lit", "value": "h-5 w-5" }
+                          },
+                          "children": [
+                            { "kind": "element", "tag": "path", "props": { "d": { "expr": "lit", "value": "M18 6L6 18M6 6l12 12" } } }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "nav",
+                  "props": {
+                    "class": { "expr": "lit", "value": "h-[calc(100vh-var(--header-height))] overflow-y-auto p-6" }
+                  },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "ul",
+                      "props": {
+                        "class": { "expr": "lit", "value": "space-y-1" }
+                      },
+                      "children": [
+                        {
+                          "kind": "each",
+                          "items": { "expr": "import", "name": "nav", "path": "topNav" },
+                          "as": "item",
+                          "body": {
+                            "kind": "element",
+                            "tag": "li",
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "a",
+                                "props": {
+                                  "href": { "expr": "var", "name": "item", "path": "href" },
+                                  "class": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground" }
+                                },
+                                "children": [
+                                  { "kind": "text", "value": { "expr": "var", "name": "item", "path": "title" } }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "kind": "element",
