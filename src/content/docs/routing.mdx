@@ -101,16 +101,17 @@ Navigate programmatically using the router action:
 
 ```json
 {
-  "actions": {
-    "goToUser": {
+  "actions": [
+    {
+      "name": "goToUser",
       "steps": [
         {
           "do": "navigate",
-          "to": "/users/123"
+          "url": { "expr": "lit", "value": "/users/123" }
         }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -118,12 +119,13 @@ With dynamic paths:
 
 ```json
 {
-  "actions": {
-    "viewUserProfile": {
+  "actions": [
+    {
+      "name": "viewUserProfile",
       "steps": [
         {
           "do": "navigate",
-          "to": {
+          "url": {
             "expr": "bin",
             "op": "+",
             "left": { "expr": "lit", "value": "/users/" },
@@ -132,7 +134,7 @@ With dynamic paths:
         }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -144,6 +146,53 @@ Access route parameters using the `route` expression:
 {
   "kind": "text",
   "value": { "expr": "route", "name": "id" }
+}
+```
+
+### Route Expression Sources
+
+The `route` expression supports different sources for accessing URL data:
+
+| Source | Description | Example |
+|--------|-------------|---------|
+| `param` (default) | Dynamic path segments | `/users/:id` → `{ "expr": "route", "name": "id" }` |
+| `query` | URL query parameters | `?search=test` → `{ "expr": "route", "name": "search", "source": "query" }` |
+| `path` | Full current path | `{ "expr": "route", "source": "path" }` |
+
+### Query Parameters
+
+Access query string values with `source: "query"`:
+
+```json
+{
+  "kind": "text",
+  "value": { "expr": "route", "name": "search", "source": "query" }
+}
+```
+
+For a URL like `/products?category=electronics&page=2`:
+
+```json
+{
+  "kind": "element",
+  "tag": "div",
+  "children": [
+    {
+      "kind": "text",
+      "value": { "expr": "route", "name": "category", "source": "query" }
+    }
+  ]
+}
+```
+
+### Current Path
+
+Access the full current path:
+
+```json
+{
+  "kind": "text",
+  "value": { "expr": "route", "source": "path" }
 }
 ```
 
@@ -417,6 +466,69 @@ app.mount(document.getElementById('root'));
   }
 }
 ```
+
+## Route Lifecycle Hooks
+
+Execute actions when entering or leaving routes using lifecycle hooks:
+
+```json
+{
+  "lifecycle": {
+    "onRouteEnter": "loadPageData",
+    "onRouteLeave": "saveProgress"
+  }
+}
+```
+
+### Available Route Hooks
+
+| Hook | Description |
+|------|-------------|
+| `onRouteEnter` | Executed when navigating to this route |
+| `onRouteLeave` | Executed when navigating away from this route |
+
+### Example: Load Data on Route Enter
+
+```json
+{
+  "lifecycle": {
+    "onRouteEnter": "loadUserData"
+  },
+  "actions": [
+    {
+      "name": "loadUserData",
+      "steps": [
+        {
+          "do": "set",
+          "target": "loading",
+          "value": { "expr": "lit", "value": true }
+        },
+        {
+          "do": "fetch",
+          "url": {
+            "expr": "bin",
+            "op": "+",
+            "left": { "expr": "lit", "value": "/api/users/" },
+            "right": { "expr": "route", "name": "id" }
+          },
+          "result": "user",
+          "onSuccess": [
+            {
+              "do": "set",
+              "target": "loading",
+              "value": { "expr": "lit", "value": false }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Use `onRouteEnter` to fetch data specific to the route. Use `onRouteLeave` to save unsaved changes or clean up resources before navigating away.
+</Callout>
 
 ## Summary
 

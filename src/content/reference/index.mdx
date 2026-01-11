@@ -21,10 +21,15 @@ Every Constela program is a single JSON object that follows a specific schema. T
 
 <PropsTable items={[
   { name: "version", type: "string", required: true, description: "DSL version identifier. Currently only \"1.0\" is supported." },
+  { name: "type", type: "\"layout\"", required: false, description: "File type identifier. Set to \"layout\" for layout files." },
   { name: "state", type: "Record<string, StateField>", required: true, description: "Application state definitions. Keys are state names, values are field definitions." },
   { name: "actions", type: "ActionDefinition[]", required: true, description: "Array of action definitions that describe how state changes." },
   { name: "view", type: "ViewNode", required: true, description: "The root view node that describes the UI structure." },
-  { name: "components", type: "Record<string, ComponentDef>", required: false, description: "Reusable component definitions. Keys are component names." }
+  { name: "components", type: "Record<string, ComponentDef>", required: false, description: "Reusable component definitions. Keys are component names." },
+  { name: "imports", type: "Record<string, string>", required: false, description: "Static data imports. Keys are imported data names, values are relative paths to JSON files." },
+  { name: "externalImports", type: "Record<string, string>", required: false, description: "External module imports from CDN. Keys are module names, values are CDN URLs." },
+  { name: "lifecycle", type: "LifecycleHooks", required: false, description: "Lifecycle hook definitions for mount, unmount, and route events." },
+  { name: "route", type: "RouteDefinition", required: false, description: "Route metadata including path, layout, and meta tags." }
 ]} />
 
 ## State Field Definition
@@ -124,6 +129,154 @@ Components allow you to create reusable UI pieces.
         "children": [
           { "kind": "text", "value": { "expr": "lit", "value": "+1" } }
         ]
+      }
+    ]
+  }
+}
+```
+
+## Imports
+
+The `imports` property allows you to load static JSON data files at build time.
+
+```json
+{
+  "imports": {
+    "config": "../data/config.json",
+    "examples": "../data/examples.json"
+  }
+}
+```
+
+Access imported data using the `import` expression:
+
+```json
+{ "expr": "import", "name": "config", "path": "siteName" }
+```
+
+## External Imports
+
+The `externalImports` property allows you to dynamically import external JavaScript modules from CDN at runtime.
+
+```json
+{
+  "externalImports": {
+    "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm",
+    "chart.js": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/+esm"
+  }
+}
+```
+
+Use with the `import` action step to load modules dynamically:
+
+```json
+{
+  "do": "import",
+  "module": "monaco-editor",
+  "result": "monaco",
+  "onSuccess": [
+    {
+      "do": "call",
+      "target": { "expr": "var", "name": "monaco", "path": "editor.create" },
+      "args": [{ "expr": "ref", "name": "editorContainer" }]
+    }
+  ]
+}
+```
+
+## Lifecycle Hooks
+
+The `lifecycle` property defines actions to execute at specific points in the component or page lifecycle.
+
+<PropsTable items={[
+  { name: "onMount", type: "string", required: false, description: "Action name to execute when the component/page is mounted." },
+  { name: "onUnmount", type: "string", required: false, description: "Action name to execute when the component/page is unmounted." },
+  { name: "onRouteEnter", type: "string", required: false, description: "Action name to execute when entering this route." },
+  { name: "onRouteLeave", type: "string", required: false, description: "Action name to execute when leaving this route." }
+]} />
+
+### Example
+
+```json
+{
+  "lifecycle": {
+    "onMount": "initEditor",
+    "onUnmount": "cleanup"
+  },
+  "actions": [
+    {
+      "name": "initEditor",
+      "steps": [
+        { "do": "import", "module": "monaco-editor", "result": "monaco" }
+      ]
+    },
+    {
+      "name": "cleanup",
+      "steps": [
+        { "do": "dispose", "target": { "expr": "state", "name": "editor" } }
+      ]
+    }
+  ]
+}
+```
+
+## Route Definition
+
+The `route` property defines routing metadata for a page. Used with `@constela/start`.
+
+<PropsTable items={[
+  { name: "path", type: "string", required: true, description: "URL path pattern (e.g., \"/docs/[slug]\")" },
+  { name: "layout", type: "string", required: false, description: "Layout name to wrap this page." },
+  { name: "layoutParams", type: "Record<string, Expression>", required: false, description: "Parameters to pass to the layout." },
+  { name: "meta", type: "Record<string, Expression>", required: false, description: "Meta tags for the page (title, description, etc.)." }
+]} />
+
+### Example
+
+```json
+{
+  "route": {
+    "path": "/blog/[slug]",
+    "layout": "docs",
+    "meta": {
+      "title": { "expr": "data", "name": "post", "path": "frontmatter.title" },
+      "description": { "expr": "data", "name": "post", "path": "frontmatter.description" }
+    }
+  }
+}
+```
+
+## Layout Files
+
+Layout files use `"type": "layout"` and must contain at least one `slot` node for page content injection.
+
+```json
+{
+  "version": "1.0",
+  "type": "layout",
+  "state": {
+    "theme": { "type": "string", "initial": "light" }
+  },
+  "actions": [],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "class": { "expr": "lit", "value": "layout" } },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "header",
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Site Header" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "main",
+        "children": [{ "kind": "slot" }]
+      },
+      {
+        "kind": "element",
+        "tag": "footer",
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Site Footer" } }]
       }
     ]
   }

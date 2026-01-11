@@ -414,3 +414,428 @@ Actions can contain multiple steps that execute sequentially:
   ]
 }
 ```
+
+## Navigate Step
+
+Navigates to a different URL or page.
+
+```json
+{
+  "do": "navigate",
+  "url": { "expr": "lit", "value": "/dashboard" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"navigate\"", required: true, description: "Step type identifier." },
+  { name: "url", type: "Expression", required: true, description: "Expression that evaluates to the target URL." },
+  { name: "target", type: "\"_self\" | \"_blank\"", required: false, default: "\"_self\"", description: "Navigation target (same tab or new tab)." },
+  { name: "replace", type: "boolean", required: false, default: "false", description: "Use history.replaceState instead of pushState." }
+]} />
+
+### Examples
+
+```json
+// Navigate to a page
+{ "do": "navigate", "url": { "expr": "lit", "value": "/about" } }
+
+// Open in new tab
+{
+  "do": "navigate",
+  "url": { "expr": "lit", "value": "https://example.com" },
+  "target": "_blank"
+}
+
+// Dynamic navigation
+{
+  "do": "navigate",
+  "url": {
+    "expr": "bin",
+    "op": "+",
+    "left": { "expr": "lit", "value": "/posts/" },
+    "right": { "expr": "var", "name": "postId" }
+  }
+}
+```
+
+## Storage Step
+
+Interacts with browser localStorage or sessionStorage.
+
+```json
+{
+  "do": "storage",
+  "operation": "get",
+  "key": { "expr": "lit", "value": "theme" },
+  "storage": "local",
+  "result": "savedTheme"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"storage\"", required: true, description: "Step type identifier." },
+  { name: "operation", type: "\"get\" | \"set\" | \"remove\"", required: true, description: "Storage operation to perform." },
+  { name: "key", type: "Expression", required: true, description: "Expression that evaluates to the storage key." },
+  { name: "storage", type: "\"local\" | \"session\"", required: true, description: "Storage type (localStorage or sessionStorage)." },
+  { name: "value", type: "Expression", required: false, description: "Value to store (required for 'set' operation)." },
+  { name: "result", type: "string", required: false, description: "Variable name to store the retrieved value (for 'get' operation)." },
+  { name: "onSuccess", type: "ActionStep[]", required: false, description: "Steps to execute on success." },
+  { name: "onError", type: "ActionStep[]", required: false, description: "Steps to execute on error." }
+]} />
+
+### Storage Operations
+
+| Operation | Description | Requires Value | Requires Result |
+|-----------|-------------|----------------|-----------------|
+| `get` | Retrieve value from storage | No | Yes (recommended) |
+| `set` | Store value in storage | Yes | No |
+| `remove` | Remove key from storage | No | No |
+
+### Examples
+
+```json
+// Save theme preference
+{
+  "do": "storage",
+  "operation": "set",
+  "key": { "expr": "lit", "value": "theme" },
+  "value": { "expr": "state", "name": "theme" },
+  "storage": "local"
+}
+
+// Load theme on mount
+{
+  "do": "storage",
+  "operation": "get",
+  "key": { "expr": "lit", "value": "theme" },
+  "storage": "local",
+  "result": "savedTheme",
+  "onSuccess": [
+    {
+      "do": "if",
+      "condition": { "expr": "var", "name": "savedTheme" },
+      "then": [
+        { "do": "set", "target": "theme", "value": { "expr": "var", "name": "savedTheme" } }
+      ]
+    }
+  ]
+}
+
+// Clear user session
+{
+  "do": "storage",
+  "operation": "remove",
+  "key": { "expr": "lit", "value": "userToken" },
+  "storage": "session"
+}
+```
+
+## DOM Step
+
+Performs direct DOM manipulation operations.
+
+```json
+{
+  "do": "dom",
+  "operation": "addClass",
+  "selector": { "expr": "lit", "value": "html" },
+  "value": { "expr": "lit", "value": "dark" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"dom\"", required: true, description: "Step type identifier." },
+  { name: "operation", type: "string", required: true, description: "DOM operation to perform (see operations table)." },
+  { name: "selector", type: "Expression", required: true, description: "CSS selector or 'html'/'body' for document elements." },
+  { name: "value", type: "Expression", required: false, description: "Class name or attribute value." },
+  { name: "attribute", type: "string", required: false, description: "Attribute name (for setAttribute/removeAttribute)." }
+]} />
+
+### DOM Operations
+
+| Operation | Description | Requires Value | Requires Attribute |
+|-----------|-------------|----------------|-------------------|
+| `addClass` | Add a CSS class | Yes | No |
+| `removeClass` | Remove a CSS class | Yes | No |
+| `toggleClass` | Toggle a CSS class | Yes | No |
+| `setAttribute` | Set an attribute | Yes | Yes |
+| `removeAttribute` | Remove an attribute | No | Yes |
+
+### Examples
+
+```json
+// Add dark mode class to html element
+{
+  "do": "dom",
+  "operation": "addClass",
+  "selector": { "expr": "lit", "value": "html" },
+  "value": { "expr": "lit", "value": "dark" }
+}
+
+// Remove light mode class
+{
+  "do": "dom",
+  "operation": "removeClass",
+  "selector": { "expr": "lit", "value": "html" },
+  "value": { "expr": "lit", "value": "light" }
+}
+
+// Set data attribute
+{
+  "do": "dom",
+  "operation": "setAttribute",
+  "selector": { "expr": "lit", "value": "body" },
+  "attribute": "data-theme",
+  "value": { "expr": "state", "name": "theme" }
+}
+```
+
+<Callout type="note">
+The `dom` step is primarily used for theme switching and other cases where you need to modify elements outside the Constela-managed view tree.
+</Callout>
+
+## Import Step
+
+Dynamically imports an external JavaScript module at runtime.
+
+```json
+{
+  "do": "import",
+  "module": "monaco-editor",
+  "result": "monaco",
+  "onSuccess": [
+    { "do": "set", "target": "editorReady", "value": { "expr": "lit", "value": true } }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"import\"", required: true, description: "Step type identifier." },
+  { name: "module", type: "string", required: true, description: "Module name (must match a key in externalImports)." },
+  { name: "result", type: "string", required: true, description: "Variable name to store the imported module." },
+  { name: "onSuccess", type: "ActionStep[]", required: false, description: "Steps to execute after successful import." },
+  { name: "onError", type: "ActionStep[]", required: false, description: "Steps to execute on import failure." }
+]} />
+
+### Example: Loading Monaco Editor
+
+```json
+{
+  "externalImports": {
+    "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm"
+  },
+  "lifecycle": {
+    "onMount": "initEditor"
+  },
+  "actions": [{
+    "name": "initEditor",
+    "steps": [{
+      "do": "import",
+      "module": "monaco-editor",
+      "result": "monaco",
+      "onSuccess": [{
+        "do": "call",
+        "target": { "expr": "var", "name": "monaco", "path": "editor.create" },
+        "args": [
+          { "expr": "ref", "name": "editorContainer" },
+          { "expr": "lit", "value": { "language": "json", "theme": "vs-dark" } }
+        ],
+        "result": "editorInstance"
+      }]
+    }]
+  }]
+}
+```
+
+## Call Step
+
+Calls a JavaScript function on an imported module or DOM element.
+
+```json
+{
+  "do": "call",
+  "target": { "expr": "var", "name": "monaco", "path": "editor.create" },
+  "args": [
+    { "expr": "ref", "name": "container" },
+    { "expr": "lit", "value": { "language": "json" } }
+  ],
+  "result": "editor"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"call\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "Expression", required: true, description: "Expression that evaluates to a function." },
+  { name: "args", type: "Expression[]", required: false, description: "Array of argument expressions." },
+  { name: "result", type: "string", required: false, description: "Variable name to store the return value." },
+  { name: "onSuccess", type: "ActionStep[]", required: false, description: "Steps to execute after successful call." },
+  { name: "onError", type: "ActionStep[]", required: false, description: "Steps to execute on error." }
+]} />
+
+### Examples
+
+```json
+// Call a method on an imported library
+{
+  "do": "call",
+  "target": { "expr": "state", "name": "editor", "path": "getValue" },
+  "result": "editorValue"
+}
+
+// Call with arguments
+{
+  "do": "call",
+  "target": { "expr": "state", "name": "chart", "path": "update" },
+  "args": [{ "expr": "state", "name": "chartData" }]
+}
+```
+
+## Subscribe Step
+
+Subscribes to events from an external JavaScript object.
+
+```json
+{
+  "do": "subscribe",
+  "target": { "expr": "state", "name": "editor" },
+  "event": "onDidChangeModelContent",
+  "action": "onCodeChange"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"subscribe\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "Expression", required: true, description: "Expression that evaluates to an object with event methods." },
+  { name: "event", type: "string", required: true, description: "Event method name to subscribe to." },
+  { name: "action", type: "string", required: true, description: "Action name to execute when the event fires." }
+]} />
+
+### Example: Monaco Editor Change Events
+
+```json
+{
+  "actions": [
+    {
+      "name": "setupEditor",
+      "steps": [
+        {
+          "do": "subscribe",
+          "target": { "expr": "state", "name": "editor" },
+          "event": "onDidChangeModelContent",
+          "action": "onCodeChange"
+        }
+      ]
+    },
+    {
+      "name": "onCodeChange",
+      "steps": [
+        {
+          "do": "call",
+          "target": { "expr": "state", "name": "editor", "path": "getValue" },
+          "result": "currentCode",
+          "onSuccess": [
+            { "do": "set", "target": "code", "value": { "expr": "var", "name": "currentCode" } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Dispose Step
+
+Manually disposes of a resource (cleanup subscriptions, destroy editors, etc.).
+
+```json
+{
+  "do": "dispose",
+  "target": { "expr": "state", "name": "editor" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"dispose\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "Expression", required: true, description: "Expression that evaluates to an object with a dispose() method." }
+]} />
+
+### Example: Cleanup on Unmount
+
+```json
+{
+  "lifecycle": {
+    "onUnmount": "cleanup"
+  },
+  "actions": [{
+    "name": "cleanup",
+    "steps": [
+      { "do": "dispose", "target": { "expr": "state", "name": "subscription" } },
+      { "do": "dispose", "target": { "expr": "state", "name": "editor" } }
+    ]
+  }]
+}
+```
+
+<Callout type="tip">
+Always dispose of external resources in the `onUnmount` lifecycle hook to prevent memory leaks.
+</Callout>
+
+## If Step
+
+Conditionally executes steps based on a condition.
+
+```json
+{
+  "do": "if",
+  "condition": { "expr": "state", "name": "isLoggedIn" },
+  "then": [
+    { "do": "navigate", "url": { "expr": "lit", "value": "/dashboard" } }
+  ],
+  "else": [
+    { "do": "navigate", "url": { "expr": "lit", "value": "/login" } }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"if\"", required: true, description: "Step type identifier." },
+  { name: "condition", type: "Expression", required: true, description: "Expression that evaluates to a boolean." },
+  { name: "then", type: "ActionStep[]", required: true, description: "Steps to execute when condition is true." },
+  { name: "else", type: "ActionStep[]", required: false, description: "Steps to execute when condition is false." }
+]} />
+
+### Examples
+
+```json
+// Conditional theme application
+{
+  "do": "if",
+  "condition": { "expr": "var", "name": "savedTheme" },
+  "then": [
+    { "do": "set", "target": "theme", "value": { "expr": "var", "name": "savedTheme" } },
+    {
+      "do": "dom",
+      "operation": "addClass",
+      "selector": { "expr": "lit", "value": "html" },
+      "value": { "expr": "var", "name": "savedTheme" }
+    }
+  ]
+}
+
+// Validation before submit
+{
+  "do": "if",
+  "condition": {
+    "expr": "bin",
+    "op": "!=",
+    "left": { "expr": "state", "name": "email" },
+    "right": { "expr": "lit", "value": "" }
+  },
+  "then": [
+    { "do": "fetch", "url": { "expr": "lit", "value": "/api/submit" }, "method": "POST" }
+  ],
+  "else": [
+    { "do": "set", "target": "error", "value": { "expr": "lit", "value": "Email is required" } }
+  ]
+}
+```

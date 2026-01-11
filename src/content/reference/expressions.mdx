@@ -389,3 +389,213 @@ Both `get` and `var` with `path` can access nested properties. Use `get` when th
   }
 }
 ```
+
+## Route Expression
+
+Accesses route parameters, query strings, or the current path in routed applications.
+
+```json
+{ "expr": "route", "name": "id" }
+{ "expr": "route", "name": "search", "source": "query" }
+{ "expr": "route", "source": "path" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"route\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: false, description: "Name of the route parameter or query parameter." },
+  { name: "source", type: "\"param\" | \"query\" | \"path\"", required: false, default: "\"param\"", description: "Source of the route value." }
+]} />
+
+### Source Types
+
+| Source | Description | Example URL | Expression |
+|--------|-------------|-------------|------------|
+| `param` | Dynamic path segment | `/posts/123` | `{ "expr": "route", "name": "id" }` |
+| `query` | URL query parameter | `/search?q=test` | `{ "expr": "route", "name": "q", "source": "query" }` |
+| `path` | Full current path | `/docs/intro` | `{ "expr": "route", "source": "path" }` |
+
+### Example
+
+```json
+{
+  "route": {
+    "path": "/blog/[slug]"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "h1",
+    "children": [{
+      "kind": "text",
+      "value": { "expr": "route", "name": "slug" }
+    }]
+  }
+}
+```
+
+## Index Expression
+
+Dynamically accesses array elements or object properties using a computed key.
+
+```json
+{
+  "expr": "index",
+  "base": { "expr": "state", "name": "items" },
+  "key": { "expr": "state", "name": "selectedIndex" }
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"index\"", required: true, description: "Expression type identifier." },
+  { name: "base", type: "Expression", required: true, description: "Base expression (array or object)." },
+  { name: "key", type: "Expression", required: true, description: "Key expression (number for arrays, string for objects)." }
+]} />
+
+### Array Access
+
+```json
+{
+  "expr": "index",
+  "base": { "expr": "state", "name": "users" },
+  "key": { "expr": "lit", "value": 0 }
+}
+```
+
+### Object Access with Dynamic Key
+
+```json
+{
+  "expr": "index",
+  "base": { "expr": "import", "name": "translations" },
+  "key": { "expr": "state", "name": "currentLanguage" }
+}
+```
+
+<Callout type="tip">
+Use `index` when the key is dynamic (computed at runtime). Use `get` when the key is a static string known at compile time.
+</Callout>
+
+## Import Expression
+
+Accesses data from imported JSON files defined in the `imports` property.
+
+```json
+{ "expr": "import", "name": "config" }
+{ "expr": "import", "name": "config", "path": "siteName" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"import\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the import (key in the imports object)." },
+  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+]} />
+
+### Example
+
+```json
+{
+  "imports": {
+    "config": "../data/config.json",
+    "nav": "../data/navigation.json"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "header",
+    "children": [{
+      "kind": "text",
+      "value": { "expr": "import", "name": "config", "path": "siteName" }
+    }]
+  }
+}
+```
+
+## Data Expression
+
+Accesses data from build-time data sources (glob, file, or API). Used primarily with `@constela/start` for SSG.
+
+```json
+{ "expr": "data", "name": "post" }
+{ "expr": "data", "name": "post", "path": "frontmatter.title" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"data\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the data source (key in the data object)." },
+  { name: "path", type: "string", required: false, description: "Dot-notation path for nested property access." }
+]} />
+
+### Example with MDX Data Source
+
+```json
+{
+  "data": {
+    "docs": {
+      "type": "glob",
+      "pattern": "content/docs/*.mdx",
+      "transform": "mdx"
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "article",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h1",
+        "children": [{
+          "kind": "text",
+          "value": { "expr": "data", "name": "docs", "path": "frontmatter.title" }
+        }]
+      },
+      {
+        "kind": "markdown",
+        "content": { "expr": "data", "name": "docs", "path": "content" }
+      }
+    ]
+  }
+}
+```
+
+## Ref Expression
+
+References a DOM element by its `ref` attribute. Used for JavaScript interop.
+
+```json
+{ "expr": "ref", "name": "editorContainer" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"ref\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the ref (matches the ref attribute on an element)." }
+]} />
+
+### Example
+
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "ref": { "expr": "lit", "value": "editorContainer" }
+    }
+  },
+  "lifecycle": {
+    "onMount": "initEditor"
+  },
+  "actions": [{
+    "name": "initEditor",
+    "steps": [{
+      "do": "call",
+      "target": { "expr": "var", "name": "monaco", "path": "editor.create" },
+      "args": [
+        { "expr": "ref", "name": "editorContainer" },
+        { "expr": "lit", "value": { "language": "json" } }
+      ]
+    }]
+  }]
+}
+```
+
+<Callout type="note">
+The `ref` expression is primarily used with external JavaScript libraries that need direct DOM access, such as code editors, charts, or maps.
+</Callout>

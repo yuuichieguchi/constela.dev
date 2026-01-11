@@ -569,6 +569,77 @@ This example demonstrates:
 - **`replaceAt`** operation for toggling completion status
 - **`each`** loop with index for item-level operations
 
+## Lifecycle Hooks
+
+Lifecycle hooks allow you to execute actions at specific points in a component's or page's lifecycle.
+
+```json
+{
+  "lifecycle": {
+    "onMount": "initialize",
+    "onUnmount": "cleanup"
+  }
+}
+```
+
+### Available Hooks
+
+| Hook | Description |
+|------|-------------|
+| `onMount` | Executed when the component/page is mounted to the DOM |
+| `onUnmount` | Executed when the component/page is removed from the DOM |
+| `onRouteEnter` | Executed when entering a route (navigation) |
+| `onRouteLeave` | Executed when leaving a route (navigation) |
+
+### Example: Theme Initialization
+
+```json
+{
+  "lifecycle": {
+    "onMount": "loadTheme"
+  },
+  "actions": [
+    {
+      "name": "loadTheme",
+      "steps": [
+        {
+          "do": "storage",
+          "operation": "get",
+          "key": { "expr": "lit", "value": "theme" },
+          "storage": "local",
+          "result": "savedTheme",
+          "onSuccess": [
+            {
+              "do": "if",
+              "condition": { "expr": "var", "name": "savedTheme" },
+              "then": [
+                { "do": "set", "target": "theme", "value": { "expr": "var", "name": "savedTheme" } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Use `onMount` for initialization tasks like loading saved preferences, setting up external libraries, or fetching initial data. Use `onUnmount` to clean up resources and prevent memory leaks.
+</Callout>
+
+## Advanced Actions
+
+For more advanced action steps, see the [Actions Reference](/reference/actions):
+
+- **`storage`** - Read/write to localStorage or sessionStorage
+- **`dom`** - Direct DOM manipulation (addClass, removeClass, etc.)
+- **`import`** - Dynamic module loading from CDN
+- **`call`** - Call functions on imported JavaScript libraries
+- **`subscribe`** - Subscribe to events from external objects
+- **`dispose`** - Clean up resources and subscriptions
+- **`if`** - Conditional step execution
+
 ## Next Steps
 
 Learn how to make HTTP requests with [Fetch & Effects](/docs/fetch-effects).
