@@ -9,15 +9,16 @@ Actions define how your application responds to events. Each action has a name a
 
 ```json
 {
-  "actions": {
-    "submit": {
+  "actions": [
+    {
+      "name": "submit",
       "steps": [
         { "do": "set", "target": "loading", "value": { "expr": "lit", "value": true } },
         { "do": "update", "target": "items", "operation": "push", "value": { "expr": "state", "name": "newItem" } },
         { "do": "set", "target": "newItem", "value": { "expr": "lit", "value": "" } }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -137,13 +138,14 @@ Flip a boolean state value. Perfect for modals, dropdowns, and visibility toggle
   "state": {
     "modalOpen": { "type": "boolean", "initial": false }
   },
-  "actions": {
-    "toggleModal": {
+  "actions": [
+    {
+      "name": "toggleModal",
       "steps": [
         { "do": "update", "target": "modalOpen", "operation": "toggle" }
       ]
     }
-  },
+  ],
   "view": {
     "kind": "element",
     "tag": "div",
@@ -204,8 +206,9 @@ Shallow-merge properties into an object state. Ideal for form handling where you
       "initial": { "name": "", "email": "", "message": "" }
     }
   },
-  "actions": {
-    "updateName": {
+  "actions": [
+    {
+      "name": "updateName",
       "steps": [
         {
           "do": "update",
@@ -218,7 +221,7 @@ Shallow-merge properties into an object state. Ideal for form handling where you
         }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -353,8 +356,9 @@ With the action:
 
 ```json
 {
-  "actions": {
-    "updateInput": {
+  "actions": [
+    {
+      "name": "updateInput",
       "steps": [
         {
           "do": "set",
@@ -363,7 +367,7 @@ With the action:
         }
       ]
     }
-  }
+  ]
 }
 ```
 
@@ -421,8 +425,9 @@ Here's a complete example combining state, actions, events, and the new features
     },
     "newTodo": { "type": "string", "initial": "" }
   },
-  "actions": {
-    "updateNewTodo": {
+  "actions": [
+    {
+      "name": "updateNewTodo",
       "steps": [
         {
           "do": "set",
@@ -431,7 +436,8 @@ Here's a complete example combining state, actions, events, and the new features
         }
       ]
     },
-    "addTodo": {
+    {
+      "name": "addTodo",
       "steps": [
         {
           "do": "update",
@@ -449,7 +455,8 @@ Here's a complete example combining state, actions, events, and the new features
         }
       ]
     },
-    "toggleDone": {
+    {
+      "name": "toggleDone",
       "steps": [
         {
           "do": "update",
@@ -463,7 +470,8 @@ Here's a complete example combining state, actions, events, and the new features
         }
       ]
     },
-    "removeTodo": {
+    {
+      "name": "removeTodo",
       "steps": [
         {
           "do": "update",
@@ -473,7 +481,7 @@ Here's a complete example combining state, actions, events, and the new features
         }
       ]
     }
-  },
+  ],
   "view": {
     "kind": "element",
     "tag": "div",

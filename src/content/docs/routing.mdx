@@ -1,93 +1,129 @@
 ---
 title: Routing
-description: Add client-side routing
+description: File-based routing in Constela
 ---
 
-<Callout type="note">
-Routing is provided by `@constela/router`, a separate package. It is not part of the core DSL.
-</Callout>
+## File-Based Routing
 
-## Installation
+Constela uses file-based routing. Files in `src/routes/` automatically become routes based on their file names.
 
-Install the router package:
-
-```bash
-npm install @constela/router
-```
-
-## Creating a Router
-
-Use `createRouter` to set up client-side navigation:
-
-```javascript
-import { createApp } from '@constela/runtime';
-import { createRouter } from '@constela/router';
-
-const router = createRouter({
-  routes: [
-    { path: '/', component: 'HomePage' },
-    { path: '/about', component: 'AboutPage' },
-    { path: '/users/:id', component: 'UserPage' }
-  ]
-});
-
-const app = createApp(definition, { router });
-app.mount(document.getElementById('root'));
-```
+| File | Route |
+|------|-------|
+| `index.json` | `/` |
+| `about.json` | `/about` |
+| `users/index.json` | `/users` |
+| `users/[id].json` | `/users/:id` |
+| `docs/[...slug].json` | `/docs/*` |
 
 ## Route Definition
 
-Each route has:
+Each route file includes a `route` field that defines metadata:
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/users/:id",
+    "layout": "main",
+    "meta": {
+      "title": "User Profile",
+      "description": "View user details"
+    }
+  },
+  "view": { ... }
+}
+```
+
+### Route Fields
 
 | Field | Required | Description |
 |-------|----------|-------------|
 | `path` | Yes | URL path pattern |
-| `component` | Yes | Component name to render |
-| `exact` | No | Match path exactly (default: true) |
+| `layout` | No | Layout name to use |
+| `meta` | No | Page metadata (title, description) |
 
-```javascript
-const routes = [
-  { path: '/', component: 'HomePage', exact: true },
-  { path: '/products', component: 'ProductList' },
-  { path: '/products/:id', component: 'ProductDetail' },
-  { path: '/products/:id/reviews', component: 'ProductReviews' },
-  { path: '*', component: 'NotFound' }
-];
-```
+## Dynamic Routes
 
 ### Path Parameters
 
-Use `:paramName` syntax for dynamic segments:
+Use `[paramName]` in file names for dynamic segments:
 
-```javascript
-{ path: '/users/:userId', component: 'UserPage' }
-{ path: '/posts/:year/:month/:slug', component: 'BlogPost' }
+```
+src/routes/
+├── users/
+│   └── [id].json        → /users/:id
+└── posts/
+    └── [year]/
+        └── [slug].json  → /posts/:year/:slug
 ```
 
-### Wildcard Routes
+### Catch-All Routes
 
-Use `*` to catch all unmatched routes:
+Use `[...paramName]` for catch-all routes:
 
-```javascript
-{ path: '*', component: 'NotFoundPage' }
+```
+src/routes/
+└── docs/
+    └── [...slug].json   → /docs/*
 ```
 
-<Callout type="tip">
-Always place the wildcard route last in your routes array.
-</Callout>
+## Accessing Route Parameters
 
-## Navigation
-
-### Link Component
-
-Use the built-in `Link` component for navigation:
+Access route parameters using the `route` expression:
 
 ```json
 {
-  "kind": "component",
-  "name": "Link",
+  "kind": "text",
+  "value": { "expr": "route", "name": "id" }
+}
+```
+
+### Route Expression Sources
+
+| Source | Description | Example |
+|--------|-------------|---------|
+| `param` (default) | Dynamic path segments | `/users/:id` → `{ "expr": "route", "name": "id" }` |
+| `query` | URL query parameters | `?search=test` → `{ "expr": "route", "name": "search", "source": "query" }` |
+| `path` | Full current path | `{ "expr": "route", "source": "path" }` |
+
+### Query Parameters
+
+Access query string values with `source: "query"`:
+
+```json
+{
+  "kind": "text",
+  "value": { "expr": "route", "name": "search", "source": "query" }
+}
+```
+
+For a URL like `/products?category=electronics&page=2`:
+
+```json
+{
+  "kind": "element",
+  "tag": "div",
+  "children": [
+    {
+      "kind": "text",
+      "value": { "expr": "route", "name": "category", "source": "query" }
+    }
+  ]
+}
+```
+
+## Navigation
+
+### Link Element
+
+Use anchor elements for navigation:
+
+```json
+{
+  "kind": "element",
+  "tag": "a",
   "props": {
-    "to": { "expr": "lit", "value": "/about" }
+    "href": { "expr": "lit", "value": "/about" }
   },
   "children": [
     { "kind": "text", "value": { "expr": "lit", "value": "About Us" } }
@@ -97,7 +133,7 @@ Use the built-in `Link` component for navigation:
 
 ### Programmatic Navigation
 
-Navigate programmatically using the router action:
+Navigate programmatically using the `navigate` action step:
 
 ```json
 {
@@ -138,338 +174,9 @@ With dynamic paths:
 }
 ```
 
-## Accessing Route Parameters
-
-Access route parameters using the `route` expression:
-
-```json
-{
-  "kind": "text",
-  "value": { "expr": "route", "name": "id" }
-}
-```
-
-### Route Expression Sources
-
-The `route` expression supports different sources for accessing URL data:
-
-| Source | Description | Example |
-|--------|-------------|---------|
-| `param` (default) | Dynamic path segments | `/users/:id` → `{ "expr": "route", "name": "id" }` |
-| `query` | URL query parameters | `?search=test` → `{ "expr": "route", "name": "search", "source": "query" }` |
-| `path` | Full current path | `{ "expr": "route", "source": "path" }` |
-
-### Query Parameters
-
-Access query string values with `source: "query"`:
-
-```json
-{
-  "kind": "text",
-  "value": { "expr": "route", "name": "search", "source": "query" }
-}
-```
-
-For a URL like `/products?category=electronics&page=2`:
-
-```json
-{
-  "kind": "element",
-  "tag": "div",
-  "children": [
-    {
-      "kind": "text",
-      "value": { "expr": "route", "name": "category", "source": "query" }
-    }
-  ]
-}
-```
-
-### Current Path
-
-Access the full current path:
-
-```json
-{
-  "kind": "text",
-  "value": { "expr": "route", "source": "path" }
-}
-```
-
-### Example: User Profile Page
-
-```json
-{
-  "components": {
-    "UserPage": {
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "User Profile" } }
-            ]
-          },
-          {
-            "kind": "element",
-            "tag": "p",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "User ID: " } },
-              { "kind": "text", "value": { "expr": "route", "name": "id" } }
-            ]
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-## Router Outlet
-
-Use `RouterOutlet` to specify where route components render:
-
-```json
-{
-  "view": {
-    "kind": "element",
-    "tag": "div",
-    "children": [
-      {
-        "kind": "element",
-        "tag": "nav",
-        "children": [
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Home" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/about" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "About" } }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "component",
-        "name": "RouterOutlet"
-      }
-    ]
-  }
-}
-```
-
-## Complete Example: Multi-Page App
-
-```javascript
-// main.js
-import { createApp } from '@constela/runtime';
-import { createRouter } from '@constela/router';
-import definition from './app.json';
-
-const router = createRouter({
-  routes: [
-    { path: '/', component: 'HomePage' },
-    { path: '/products', component: 'ProductList' },
-    { path: '/products/:id', component: 'ProductDetail' },
-    { path: '/cart', component: 'CartPage' },
-    { path: '*', component: 'NotFound' }
-  ]
-});
-
-const app = createApp(definition, { router });
-app.mount(document.getElementById('root'));
-```
-
-```json
-{
-  "version": "1.0",
-  "components": {
-    "HomePage": {
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Welcome" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/products" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Browse Products" } }
-            ]
-          }
-        ]
-      }
-    },
-    "ProductList": {
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Products" } }
-            ]
-          },
-          {
-            "kind": "each",
-            "items": { "expr": "state", "name": "products" },
-            "as": "product",
-            "body": {
-              "kind": "component",
-              "name": "Link",
-              "props": {
-                "to": {
-                  "expr": "bin",
-                  "op": "+",
-                  "left": { "expr": "lit", "value": "/products/" },
-                  "right": { "expr": "var", "name": "product", "path": "id" }
-                }
-              },
-              "children": [
-                { "kind": "text", "value": { "expr": "var", "name": "product", "path": "name" } }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "ProductDetail": {
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Product Detail" } }
-            ]
-          },
-          {
-            "kind": "element",
-            "tag": "p",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Product ID: " } },
-              { "kind": "text", "value": { "expr": "route", "name": "id" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/products" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Back to Products" } }
-            ]
-          }
-        ]
-      }
-    },
-    "NotFound": {
-      "view": {
-        "kind": "element",
-        "tag": "div",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "h1",
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "404 - Page Not Found" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Go Home" } }
-            ]
-          }
-        ]
-      }
-    }
-  },
-  "state": {
-    "products": {
-      "type": "list",
-      "initial": [
-        { "id": "1", "name": "Product A" },
-        { "id": "2", "name": "Product B" },
-        { "id": "3", "name": "Product C" }
-      ]
-    }
-  },
-  "view": {
-    "kind": "element",
-    "tag": "div",
-    "children": [
-      {
-        "kind": "element",
-        "tag": "header",
-        "children": [
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Home" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/products" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Products" } }
-            ]
-          },
-          {
-            "kind": "component",
-            "name": "Link",
-            "props": { "to": { "expr": "lit", "value": "/cart" } },
-            "children": [
-              { "kind": "text", "value": { "expr": "lit", "value": "Cart" } }
-            ]
-          }
-        ]
-      },
-      {
-        "kind": "element",
-        "tag": "main",
-        "children": [
-          {
-            "kind": "component",
-            "name": "RouterOutlet"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
 ## Route Lifecycle Hooks
 
-Execute actions when entering or leaving routes using lifecycle hooks:
+Execute actions when entering or leaving routes:
 
 ```json
 {
@@ -491,8 +198,16 @@ Execute actions when entering or leaving routes using lifecycle hooks:
 
 ```json
 {
+  "version": "1.0",
+  "route": {
+    "path": "/users/:id"
+  },
   "lifecycle": {
     "onRouteEnter": "loadUserData"
+  },
+  "state": {
+    "user": { "type": "object", "initial": {} },
+    "loading": { "type": "boolean", "initial": true }
   },
   "actions": [
     {
@@ -511,18 +226,52 @@ Execute actions when entering or leaving routes using lifecycle hooks:
             "left": { "expr": "lit", "value": "/api/users/" },
             "right": { "expr": "route", "name": "id" }
           },
-          "result": "user",
-          "onSuccess": [
-            {
-              "do": "set",
-              "target": "loading",
-              "value": { "expr": "lit", "value": false }
-            }
-          ]
+          "onSuccess": {
+            "steps": [
+              {
+                "do": "set",
+                "target": "user",
+                "value": { "expr": "var", "name": "response" }
+              },
+              {
+                "do": "set",
+                "target": "loading",
+                "value": { "expr": "lit", "value": false }
+              }
+            ]
+          }
         }
       ]
     }
-  ]
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "loading" },
+        "then": {
+          "kind": "text",
+          "value": { "expr": "lit", "value": "Loading..." }
+        },
+        "else": {
+          "kind": "element",
+          "tag": "h1",
+          "children": [
+            {
+              "kind": "text",
+              "value": {
+                "expr": "get",
+                "base": { "expr": "state", "name": "user" },
+                "path": "name"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 }
 ```
 
@@ -530,14 +279,60 @@ Execute actions when entering or leaving routes using lifecycle hooks:
 Use `onRouteEnter` to fetch data specific to the route. Use `onRouteLeave` to save unsaved changes or clean up resources before navigating away.
 </Callout>
 
+## Layouts
+
+Use layouts to share common UI across multiple routes:
+
+```json
+{
+  "route": {
+    "path": "/dashboard",
+    "layout": "dashboard"
+  }
+}
+```
+
+Create a layout file at `src/layouts/dashboard.json`:
+
+```json
+{
+  "version": "1.0",
+  "type": "layout",
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "nav",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "a",
+            "props": { "href": { "expr": "lit", "value": "/" } },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Home" } }
+            ]
+          }
+        ]
+      },
+      { "kind": "slot" }
+    ]
+  }
+}
+```
+
+<Callout type="note">
+The `slot` node marks where the page content will be rendered within the layout.
+</Callout>
+
 ## Summary
 
-The `@constela/router` package provides:
+Constela's file-based routing provides:
 
-- **Declarative routing**: Define routes as a simple array
-- **Dynamic parameters**: Use `:param` syntax for URL parameters
-- **Link component**: Navigate without page reloads
+- **Automatic routes**: File structure defines URL structure
+- **Dynamic parameters**: Use `[param]` and `[...param]` syntax
+- **Route expressions**: Access params and query strings in views
 - **Programmatic navigation**: Navigate from actions
-- **RouterOutlet**: Control where content renders
-
-This keeps routing concerns separate from the core DSL while providing a seamless integration experience.
+- **Lifecycle hooks**: Load data on route enter/leave
+- **Layouts**: Share common UI across routes

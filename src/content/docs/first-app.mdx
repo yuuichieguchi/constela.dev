@@ -7,31 +7,37 @@ Let's build a classic counter application to understand Constela's core concepts
 
 ## The Counter App
 
-Here's the complete `app.json` for a counter:
+Here's the complete `src/routes/counter.json` for a counter:
 
 ```json
 {
   "version": "1.0",
+  "route": {
+    "path": "/counter"
+  },
   "state": {
     "count": { "type": "number", "initial": 0 }
   },
-  "actions": {
-    "increment": {
+  "actions": [
+    {
+      "name": "increment",
       "steps": [
         { "do": "update", "target": "count", "operation": "increment" }
       ]
     },
-    "decrement": {
+    {
+      "name": "decrement",
       "steps": [
         { "do": "update", "target": "count", "operation": "decrement" }
       ]
     },
-    "reset": {
+    {
+      "name": "reset",
       "steps": [
         { "do": "set", "target": "count", "value": { "expr": "lit", "value": 0 } }
       ]
     }
-  },
+  ],
   "view": {
     "kind": "element",
     "tag": "div",
@@ -123,18 +129,19 @@ State is automatically reactive. When state changes, the view updates automatica
 
 ```json
 {
-  "actions": {
-    "increment": {
+  "actions": [
+    {
+      "name": "increment",
       "steps": [
         { "do": "update", "target": "count", "operation": "increment" }
       ]
     }
-  }
+  ]
 }
 ```
 
 Actions define how state changes. Each action has:
-- A **name** (the key, e.g., `"increment"`)
+- A **name** field to identify the action
 - An array of **steps** that execute sequentially
 
 The `do` field specifies the step type:
@@ -165,42 +172,16 @@ View defines the UI structure. The `kind` field specifies the node type:
 
 ## Running the App
 
-### Using HTML
-
-Create `index.html`:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Counter App</title>
-  <script src="https://unpkg.com/@constela/runtime"></script>
-</head>
-<body>
-  <div id="app"></div>
-  <script>
-    fetch('./app.json')
-      .then(res => res.json())
-      .then(definition => {
-        Constela.createApp(definition).mount(document.getElementById('app'));
-      });
-  </script>
-</body>
-</html>
-```
-
-### Using the CLI
-
-If you have `@constela/cli` installed:
+Save the JSON above as `src/routes/counter.json` in your Constela project, then start the development server:
 
 ```bash
-constela serve app.json
+npm run dev
 ```
 
-This starts a development server with hot reloading.
+Open `http://localhost:3000/counter` to see your counter app in action.
 
 <Callout type="tip">
-Use the CLI for development. It provides helpful error messages and validates your JSON automatically.
+The development server provides hot reloading and helpful error messages when your JSON has issues.
 </Callout>
 
 ## What's Next?

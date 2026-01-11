@@ -3,181 +3,143 @@ title: Installation
 description: Install Constela packages
 ---
 
-## Package Overview
+## Quick Start
 
-Constela is distributed as multiple npm packages, each with a specific purpose:
-
-| Package | Purpose |
-|---------|---------|
-| `@constela/core` | Type definitions and JSON validation |
-| `@constela/compiler` | AST transformation and code generation |
-| `@constela/runtime` | DOM renderer and state management |
-| `@constela/router` | Client-side routing (optional) |
-| `@constela/server` | Server-side rendering (optional) |
-| `@constela/cli` | Command-line tools (optional) |
-| `@constela/start` | Full-stack meta-framework (optional) |
-
-## Installation
-
-### With SSR Support
+The fastest way to start with Constela is using `@constela/start`, a full-stack meta-framework.
 
 ```bash
-npm install @constela/server @constela/compiler @constela/runtime
+npm install @constela/start
 ```
 
-### Standalone (No framework)
+## Project Setup
 
-For client-side only usage without a framework:
+### 1. Create project structure
 
-```bash
-npm install @constela/core @constela/compiler @constela/runtime
+```
+my-constela-app/
+├── src/
+│   └── routes/
+│       └── index.json
+├── package.json
 ```
 
-### Optional packages
+### 2. Configure package.json
 
-```bash
-# Client-side routing
-npm install @constela/router
-
-# CLI tools
-npm install -g @constela/cli
-```
-
-## Package Details
-
-### @constela/core
-
-Provides TypeScript types and validation utilities for Constela JSON definitions.
-
-```typescript
-import { validateApp, type AppDefinition } from '@constela/core';
-
-const app: AppDefinition = {
-  version: '1.0',
-  state: { count: { type: 'number', initial: 0 } },
-  view: { kind: 'text', content: { expr: 'lit', value: 'Hello' } }
-};
-
-const result = validateApp(app);
-if (!result.valid) {
-  console.error(result.errors);
+```json
+{
+  "name": "my-constela-app",
+  "type": "module",
+  "scripts": {
+    "dev": "constela-start dev",
+    "build": "constela-start build",
+    "start": "constela-start start"
+  },
+  "dependencies": {
+    "@constela/start": "^1.2.23"
+  }
 }
 ```
 
-### @constela/compiler
+### 3. Create your first page
 
-Transforms Constela JSON into optimized JavaScript code.
-
-```typescript
-import { compile } from '@constela/compiler';
-
-const compiled = compile(appDefinition);
-// Returns JavaScript code as string
-```
-
-### @constela/runtime
-
-Renders compiled Constela apps to the DOM.
-
-```typescript
-import { createApp } from '@constela/runtime';
-
-const app = createApp(compiledCode);
-app.mount(document.getElementById('root'));
-```
-
-## Basic Project Setup
-
-<Callout type="tip">
-The simplest way to try Constela is with a single HTML file - no build tools required.
-</Callout>
-
-### Option 1: HTML + Script Tags
-
-Create an `index.html` file:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>My Constela App</title>
-  <script src="https://unpkg.com/@constela/runtime"></script>
-</head>
-<body>
-  <div id="app"></div>
-  <script type="application/json" id="app-definition">
-    {
-      "version": "1.0",
-      "state": {
-        "count": { "type": "number", "initial": 0 }
-      },
-      "view": {
-        "kind": "text",
-        "value": { "expr": "state", "name": "count" }
-      }
-    }
-  </script>
-  <script>
-    const definition = JSON.parse(
-      document.getElementById('app-definition').textContent
-    );
-    Constela.createApp(definition).mount(document.getElementById('app'));
-  </script>
-</body>
-</html>
-```
-
-### Option 2: Node.js Project
-
-1. Initialize a new project:
-
-```bash
-mkdir my-constela-app
-cd my-constela-app
-npm init -y
-npm install @constela/core @constela/compiler @constela/runtime
-```
-
-2. Create `app.json`:
+Create `src/routes/index.json`:
 
 ```json
 {
   "version": "1.0",
+  "route": {
+    "path": "/"
+  },
   "state": {
     "count": { "type": "number", "initial": 0 }
   },
-  "actions": {
-    "increment": {
+  "actions": [
+    {
+      "name": "increment",
       "steps": [
         { "do": "update", "target": "count", "operation": "increment" }
       ]
     }
-  },
+  ],
   "view": {
     "kind": "element",
-    "tag": "button",
-    "props": {
-      "onClick": { "event": "click", "action": "increment" }
-    },
+    "tag": "div",
     "children": [
       {
-        "kind": "text",
-        "value": { "expr": "state", "name": "count" }
+        "kind": "element",
+        "tag": "h1",
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Hello Constela!" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "p",
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Count: " } },
+          { "kind": "text", "value": { "expr": "state", "name": "count" } }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "increment" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Increment" } }
+        ]
       }
     ]
   }
 }
 ```
 
-3. Create `index.js`:
+### 4. Start development server
 
-```javascript
-import { readFileSync } from 'node:fs';
-import { compile } from '@constela/compiler';
+```bash
+npm run dev
+```
 
-const definition = JSON.parse(readFileSync('./app.json', 'utf-8'));
-const code = compile(definition);
-console.log(code);
+Open `http://localhost:3000` to see your app.
+
+## File-Based Routing
+
+Constela uses file-based routing. Files in `src/routes/` automatically become routes:
+
+| File | Route |
+|------|-------|
+| `index.json` | `/` |
+| `about.json` | `/about` |
+| `users/[id].json` | `/users/:id` |
+| `docs/[...slug].json` | `/docs/*` |
+
+## Package Overview
+
+<Callout type="note">
+Most users only need `@constela/start`. The other packages are used internally or for advanced use cases.
+</Callout>
+
+| Package | Purpose |
+|---------|---------|
+| `@constela/start` | Full-stack meta-framework (recommended) |
+| `@constela/core` | Type definitions and JSON validation |
+| `@constela/compiler` | AST transformation |
+| `@constela/runtime` | DOM renderer and state management |
+| `@constela/router` | Client-side routing |
+| `@constela/server` | Server-side rendering |
+
+## CLI Commands
+
+```bash
+# Development server with hot reload
+constela-start dev --port 3000
+
+# Production build
+constela-start build --outDir dist
+
+# Start production server
+constela-start start --port 3000
 ```
 
 ## Next Steps

@@ -267,8 +267,9 @@ Here's a complete example that fetches and displays a list of posts:
     "loading": { "type": "number", "initial": 0 },
     "error": { "type": "string", "initial": "" }
   },
-  "actions": {
-    "loadPosts": {
+  "actions": [
+    {
+      "name": "loadPosts",
       "steps": [
         {
           "do": "set",
@@ -315,7 +316,7 @@ Here's a complete example that fetches and displays a list of posts:
         }
       ]
     }
-  },
+  ],
   "view": {
     "kind": "element",
     "tag": "div",

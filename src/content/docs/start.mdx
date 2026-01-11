@@ -50,14 +50,16 @@ A typical `@constela/start` project has the following structure:
 ```
 my-app/
 ├── src/
-│   └── routes/
-│       ├── index.ts       # /
-│       ├── about.ts       # /about
-│       ├── users/
-│       │   ├── index.ts   # /users
-│       │   └── [id].ts    # /users/:id
-│       └── api/
-│           └── users.ts   # /api/users
+│   ├── routes/
+│   │   ├── index.json       # /
+│   │   ├── about.json       # /about
+│   │   ├── users/
+│   │   │   ├── index.json   # /users
+│   │   │   └── [id].json    # /users/:id
+│   │   └── api/
+│   │       └── users.ts     # /api/users (API route)
+│   └── layouts/
+│       └── main.json        # Layout definition
 ├── constela.config.ts
 └── package.json
 ```
@@ -68,33 +70,74 @@ Routes are determined by the file structure inside `src/routes/`:
 
 | File Path | Route |
 |-----------|-------|
-| `src/routes/index.ts` | `/` |
-| `src/routes/about.ts` | `/about` |
-| `src/routes/users/index.ts` | `/users` |
-| `src/routes/users/[id].ts` | `/users/:id` |
-| `src/routes/posts/[...slug].ts` | `/posts/*` (catch-all) |
+| `src/routes/index.json` | `/` |
+| `src/routes/about.json` | `/about` |
+| `src/routes/users/index.json` | `/users` |
+| `src/routes/users/[id].json` | `/users/:id` |
+| `src/routes/posts/[...slug].json` | `/posts/*` (catch-all) |
+
+### Page Definition
+
+Each page is a JSON file with the Constela DSL:
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/",
+    "layout": "main",
+    "meta": {
+      "title": "Home",
+      "description": "Welcome to my app"
+    }
+  },
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "state", "name": "count" } },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "increment" } },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "+1" } }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ### Dynamic Routes
 
 Use square brackets for dynamic segments:
 
-```typescript
-// src/routes/users/[id].ts
-import type { Program, RouteParams } from '@constela/start';
-
-export default function UserPage({ params }: RouteParams<{ id: string }>) {
-  return {
-    version: '1.0',
-    state: {},
-    actions: [],
-    view: {
-      kind: 'element',
-      tag: 'div',
-      children: [
-        { kind: 'text', value: { expr: 'lit', value: `User ID: ${params.id}` } }
-      ]
-    }
-  } satisfies Program;
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/users/:id"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "User ID: " } },
+      { "kind": "text", "value": { "expr": "route", "name": "id" } }
+    ]
+  }
 }
 ```
 
@@ -102,70 +145,47 @@ export default function UserPage({ params }: RouteParams<{ id: string }>) {
 
 Use `[...slug]` for catch-all routes:
 
-```typescript
-// src/routes/docs/[...slug].ts
-// Matches /docs/a, /docs/a/b, /docs/a/b/c, etc.
+```
+src/routes/docs/[...slug].json
+# Matches /docs/a, /docs/a/b, /docs/a/b/c, etc.
 ```
 
 ## SSR & Hydration
 
-`@constela/start` provides server-side rendering out of the box:
-
-### Page Component
-
-```typescript
-// src/routes/index.ts
-import type { Program } from '@constela/core';
-
-export default {
-  version: '1.0',
-  state: { count: { type: 'number', initial: 0 } },
-  actions: [
-    {
-      name: 'increment',
-      steps: [{ do: 'update', target: 'count', operation: 'increment' }]
-    }
-  ],
-  view: {
-    kind: 'element',
-    tag: 'div',
-    children: [
-      { kind: 'text', value: { expr: 'state', name: 'count' } },
-      {
-        kind: 'element',
-        tag: 'button',
-        props: { onClick: { event: 'click', action: 'increment' } },
-        children: [{ kind: 'text', value: { expr: 'lit', value: '+1' } }]
-      }
-    ]
-  }
-} satisfies Program;
-```
+`@constela/start` provides server-side rendering out of the box. Pages defined in JSON are automatically SSR'd on the server and hydrated on the client for optimal performance and SEO.
 
 <Callout type="tip">
-Programs are automatically SSR'd on the server and hydrated on the client for optimal performance and SEO.
+No additional configuration is required for SSR. Just create your JSON route files and the framework handles the rest.
 </Callout>
 
 ## SSG (Static Site Generation)
 
-For static pages, export `getStaticPaths` to pre-render at build time:
+For static pages with dynamic routes, use the `getStaticPaths` field:
 
-```typescript
-// src/routes/posts/[slug].ts
-import type { Program, GetStaticPaths } from '@constela/start';
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await fetchPosts();
-  return posts.map(post => ({
-    params: { slug: post.slug }
-  }));
-};
-
-export default function PostPage({ params }) {
-  return {
-    version: '1.0',
-    // ... program definition
-  } satisfies Program;
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/posts/:slug",
+    "getStaticPaths": {
+      "source": "posts",
+      "params": {
+        "slug": {
+          "expr": "get",
+          "base": { "expr": "var", "name": "item" },
+          "path": "slug"
+        }
+      }
+    }
+  },
+  "data": {
+    "posts": {
+      "type": "glob",
+      "pattern": "content/posts/*.mdx",
+      "transform": "mdx"
+    }
+  },
+  "view": { ... }
 }
 ```
 
@@ -181,7 +201,7 @@ npx constela-start build
 
 ## API Routes
 
-Create API endpoints by exporting HTTP method handlers:
+Create API endpoints by creating TypeScript files with HTTP method handlers:
 
 ```typescript
 // src/routes/api/users.ts
@@ -209,6 +229,10 @@ export async function DELETE({ params }: APIContext) {
   return new Response(null, { status: 204 });
 }
 ```
+
+<Callout type="note">
+API routes require TypeScript because they contain server-side logic that cannot be expressed in JSON.
+</Callout>
 
 ### APIContext
 
@@ -351,8 +375,8 @@ export default defineConfig({
 
 `@constela/start` provides:
 
-- **Zero-config development**: Just create routes and start building
+- **Zero-config development**: Just create JSON routes and start building
 - **File-based routing**: Intuitive directory-to-URL mapping
 - **Full-stack capabilities**: SSR, SSG, and API routes in one framework
 - **Edge-ready**: Deploy anywhere with platform-specific adapters
-- **Type-safe**: Full TypeScript support throughout
+- **JSON-first pages**: Define pages in Constela JSON DSL, use TypeScript only for server logic
