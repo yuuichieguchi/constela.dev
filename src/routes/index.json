@@ -585,6 +585,173 @@
                             "children": [
                               {
                                 "kind": "element",
+                                "tag": "circle",
+                                "props": {
+                                  "cx": { "expr": "lit", "value": "12" },
+                                  "cy": { "expr": "lit", "value": "12" },
+                                  "r": { "expr": "lit", "value": "10" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "polyline",
+                                "props": {
+                                  "points": { "expr": "lit", "value": "12 6 12 12 16 14" }
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": { "class": { "expr": "lit", "value": "text-base font-semibold text-foreground" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Deploy Time" } }]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "space-y-3" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": {
+                              "class": { "expr": "lit", "value": "flex items-center gap-3" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "class": { "expr": "lit", "value": "w-20 text-xs text-muted-foreground" } },
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Constela" } }]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": {
+                                  "class": { "expr": "lit", "value": "flex-1 h-3 bg-muted rounded-full overflow-hidden" },
+                                  "role": { "expr": "lit", "value": "progressbar" },
+                                  "aria-valuenow": { "expr": "lit", "value": "16" },
+                                  "aria-valuemin": { "expr": "lit", "value": "0" },
+                                  "aria-valuemax": { "expr": "lit", "value": "100" },
+                                  "aria-label": { "expr": "lit", "value": "Constela deploy time: 10s" }
+                                },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "div",
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-primary rounded-full" } }
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "class": { "expr": "lit", "value": "w-16 text-xs text-right text-foreground font-medium" } },
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "10s" } }]
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": {
+                              "class": { "expr": "lit", "value": "flex items-center gap-3" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "class": { "expr": "lit", "value": "w-20 text-xs text-muted-foreground" } },
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Next.js" } }]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "flex-1 h-3 bg-muted rounded-full overflow-hidden" } },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "div",
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "class": { "expr": "lit", "value": "w-16 text-xs text-right text-muted-foreground" } },
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "50s" } }]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "svg",
+                            "props": {
+                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
+                              "fill": { "expr": "lit", "value": "currentColor" },
+                              "class": { "expr": "lit", "value": "h-4 w-4" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
+                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
+                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
+                                }
+                              }
+                            ]
+                          },
+                          { "kind": "text", "value": { "expr": "lit", "value": "5.0x faster" } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "mb-4 flex items-center gap-2" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "svg",
+                            "props": {
+                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                              "fill": { "expr": "lit", "value": "none" },
+                              "stroke": { "expr": "lit", "value": "currentColor" },
+                              "stroke-width": { "expr": "lit", "value": "2" },
+                              "class": { "expr": "lit", "value": "h-5 w-5 text-primary" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
                                 "tag": "path",
                                 "props": {
                                   "d": { "expr": "lit", "value": "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" }
@@ -728,173 +895,6 @@
                             ]
                           },
                           { "kind": "text", "value": { "expr": "lit", "value": "5.1x lighter" } }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "div",
-                    "props": {
-                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
-                    },
-                    "children": [
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mb-4 flex items-center gap-2" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                              "fill": { "expr": "lit", "value": "none" },
-                              "stroke": { "expr": "lit", "value": "currentColor" },
-                              "stroke-width": { "expr": "lit", "value": "2" },
-                              "class": { "expr": "lit", "value": "h-5 w-5 text-primary" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "circle",
-                                "props": {
-                                  "cx": { "expr": "lit", "value": "12" },
-                                  "cy": { "expr": "lit", "value": "12" },
-                                  "r": { "expr": "lit", "value": "10" }
-                                }
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "polyline",
-                                "props": {
-                                  "points": { "expr": "lit", "value": "12 6 12 12 16 14" }
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-base font-semibold text-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Deploy Time" } }]
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "space-y-3" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": {
-                              "class": { "expr": "lit", "value": "flex items-center gap-3" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "w-20 text-xs text-muted-foreground" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Constela" } }]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "div",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "flex-1 h-3 bg-muted rounded-full overflow-hidden" },
-                                  "role": { "expr": "lit", "value": "progressbar" },
-                                  "aria-valuenow": { "expr": "lit", "value": "16" },
-                                  "aria-valuemin": { "expr": "lit", "value": "0" },
-                                  "aria-valuemax": { "expr": "lit", "value": "100" },
-                                  "aria-label": { "expr": "lit", "value": "Constela deploy time: 10s" }
-                                },
-                                "children": [
-                                  {
-                                    "kind": "element",
-                                    "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-primary rounded-full" } }
-                                  }
-                                ]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "w-16 text-xs text-right text-foreground font-medium" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "10s" } }]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": {
-                              "class": { "expr": "lit", "value": "flex items-center gap-3" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "w-20 text-xs text-muted-foreground" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Next.js" } }]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "div",
-                                "props": { "class": { "expr": "lit", "value": "flex-1 h-3 bg-muted rounded-full overflow-hidden" } },
-                                "children": [
-                                  {
-                                    "kind": "element",
-                                    "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
-                                  }
-                                ]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "w-16 text-xs text-right text-muted-foreground" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "50s" } }]
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
-                              "fill": { "expr": "lit", "value": "currentColor" },
-                              "class": { "expr": "lit", "value": "h-4 w-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "path",
-                                "props": {
-                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
-                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
-                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
-                                }
-                              }
-                            ]
-                          },
-                          { "kind": "text", "value": { "expr": "lit", "value": "5.0x faster" } }
                         ]
                       }
                     ]
