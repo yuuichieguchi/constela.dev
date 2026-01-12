@@ -333,7 +333,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[18%] bg-primary rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[14%] bg-primary rounded-full" } }
                                   }
                                 ]
                               },
@@ -366,7 +366,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-full bg-muted-foreground/30 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -508,7 +508,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[37%] bg-primary rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[30%] bg-primary rounded-full" } }
                                   }
                                 ]
                               },
@@ -541,7 +541,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-full bg-muted-foreground/30 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -683,7 +683,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[19%] bg-primary rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-primary rounded-full" } }
                                   }
                                 ]
                               },
@@ -716,7 +716,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-full bg-muted-foreground/30 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -850,7 +850,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[20%] bg-primary rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-primary rounded-full" } }
                                   }
                                 ]
                               },
@@ -883,7 +883,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-full bg-muted-foreground/30 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[80%] bg-zinc-400 dark:bg-zinc-500 rounded-full" } }
                                   }
                                 ]
                               },
