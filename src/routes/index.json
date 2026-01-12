@@ -232,8 +232,40 @@
                           {
                             "kind": "element",
                             "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Build Time" } }]
+                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm font-medium text-foreground" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "svg",
+                                "props": {
+                                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                  "fill": { "expr": "lit", "value": "none" },
+                                  "stroke": { "expr": "lit", "value": "currentColor" },
+                                  "stroke-width": { "expr": "lit", "value": "2" },
+                                  "class": { "expr": "lit", "value": "h-5 w-5" }
+                                },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "circle",
+                                    "props": {
+                                      "cx": { "expr": "lit", "value": "12" },
+                                      "cy": { "expr": "lit", "value": "12" },
+                                      "r": { "expr": "lit", "value": "10" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "polyline",
+                                    "props": {
+                                      "points": { "expr": "lit", "value": "12 6 12 12 16 14" }
+                                    }
+                                  }
+                                ]
+                              },
+                              { "kind": "text", "value": { "expr": "lit", "value": "Build Time" } }
+                            ]
                           },
                           {
                             "kind": "element",
@@ -367,8 +399,48 @@
                           {
                             "kind": "element",
                             "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "node_modules Size" } }]
+                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm font-medium text-foreground" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "svg",
+                                "props": {
+                                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                  "fill": { "expr": "lit", "value": "none" },
+                                  "stroke": { "expr": "lit", "value": "currentColor" },
+                                  "stroke-width": { "expr": "lit", "value": "2" },
+                                  "class": { "expr": "lit", "value": "h-5 w-5" }
+                                },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "path",
+                                    "props": {
+                                      "d": { "expr": "lit", "value": "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "polyline",
+                                    "props": {
+                                      "points": { "expr": "lit", "value": "3.27 6.96 12 12.01 20.73 6.96" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "line",
+                                    "props": {
+                                      "x1": { "expr": "lit", "value": "12" },
+                                      "y1": { "expr": "lit", "value": "22.08" },
+                                      "x2": { "expr": "lit", "value": "12" },
+                                      "y2": { "expr": "lit", "value": "12" }
+                                    }
+                                  }
+                                ]
+                              },
+                              { "kind": "text", "value": { "expr": "lit", "value": "node_modules Size" } }
+                            ]
                           },
                           {
                             "kind": "element",
@@ -502,8 +574,48 @@
                           {
                             "kind": "element",
                             "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Output Size" } }]
+                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm font-medium text-foreground" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "svg",
+                                "props": {
+                                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                  "fill": { "expr": "lit", "value": "none" },
+                                  "stroke": { "expr": "lit", "value": "currentColor" },
+                                  "stroke-width": { "expr": "lit", "value": "2" },
+                                  "class": { "expr": "lit", "value": "h-5 w-5" }
+                                },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "path",
+                                    "props": {
+                                      "d": { "expr": "lit", "value": "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "polyline",
+                                    "props": {
+                                      "points": { "expr": "lit", "value": "3.27 6.96 12 12.01 20.73 6.96" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "line",
+                                    "props": {
+                                      "x1": { "expr": "lit", "value": "12" },
+                                      "y1": { "expr": "lit", "value": "22.08" },
+                                      "x2": { "expr": "lit", "value": "12" },
+                                      "y2": { "expr": "lit", "value": "12" }
+                                    }
+                                  }
+                                ]
+                              },
+                              { "kind": "text", "value": { "expr": "lit", "value": "Output Size" } }
+                            ]
                           },
                           {
                             "kind": "element",
@@ -637,8 +749,40 @@
                           {
                             "kind": "element",
                             "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Deploy Time" } }]
+                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm font-medium text-foreground" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "svg",
+                                "props": {
+                                  "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                                  "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                  "fill": { "expr": "lit", "value": "none" },
+                                  "stroke": { "expr": "lit", "value": "currentColor" },
+                                  "stroke-width": { "expr": "lit", "value": "2" },
+                                  "class": { "expr": "lit", "value": "h-5 w-5" }
+                                },
+                                "children": [
+                                  {
+                                    "kind": "element",
+                                    "tag": "circle",
+                                    "props": {
+                                      "cx": { "expr": "lit", "value": "12" },
+                                      "cy": { "expr": "lit", "value": "12" },
+                                      "r": { "expr": "lit", "value": "10" }
+                                    }
+                                  },
+                                  {
+                                    "kind": "element",
+                                    "tag": "polyline",
+                                    "props": {
+                                      "points": { "expr": "lit", "value": "12 6 12 12 16 14" }
+                                    }
+                                  }
+                                ]
+                              },
+                              { "kind": "text", "value": { "expr": "lit", "value": "Deploy Time" } }
+                            ]
                           },
                           {
                             "kind": "element",
