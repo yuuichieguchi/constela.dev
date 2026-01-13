@@ -1265,6 +1265,205 @@
                         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "JSON Pointer paths pinpoint exact error locations. Debug faster with precise, actionable messages." } }]
                       }
                     ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "group rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "svg",
+                            "props": {
+                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                              "fill": { "expr": "lit", "value": "none" },
+                              "stroke": { "expr": "lit", "value": "currentColor" },
+                              "stroke-width": { "expr": "lit", "value": "2" },
+                              "stroke-linecap": { "expr": "lit", "value": "round" },
+                              "stroke-linejoin": { "expr": "lit", "value": "round" },
+                              "class": { "expr": "lit", "value": "h-6 w-6" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "d": { "expr": "lit", "value": "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" }
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Style System" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm leading-relaxed text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "CVA-like style presets with variants. Type-safe, compile-time validated, Tailwind-friendly." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "group rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "svg",
+                            "props": {
+                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                              "fill": { "expr": "lit", "value": "none" },
+                              "stroke": { "expr": "lit", "value": "currentColor" },
+                              "stroke-width": { "expr": "lit", "value": "2" },
+                              "stroke-linecap": { "expr": "lit", "value": "round" },
+                              "stroke-linejoin": { "expr": "lit", "value": "round" },
+                              "class": { "expr": "lit", "value": "h-6 w-6" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "d": { "expr": "lit", "value": "M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "polyline",
+                                "props": {
+                                  "points": { "expr": "lit", "value": "3.29 7 12 12 20.71 7" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "line",
+                                "props": {
+                                  "x1": { "expr": "lit", "value": "12" },
+                                  "y1": { "expr": "lit", "value": "22" },
+                                  "x2": { "expr": "lit", "value": "12" },
+                                  "y2": { "expr": "lit", "value": "12" }
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Builder API" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm leading-relaxed text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "TypeScript builder for programmatic AST construction. Perfect for AI tools and code generation." } }]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": {
+                      "class": { "expr": "lit", "value": "group rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": {
+                          "class": { "expr": "lit", "value": "mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground" }
+                        },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "svg",
+                            "props": {
+                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
+                              "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                              "fill": { "expr": "lit", "value": "none" },
+                              "stroke": { "expr": "lit", "value": "currentColor" },
+                              "stroke-width": { "expr": "lit", "value": "2" },
+                              "stroke-linecap": { "expr": "lit", "value": "round" },
+                              "stroke-linejoin": { "expr": "lit", "value": "round" },
+                              "class": { "expr": "lit", "value": "h-6 w-6" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "circle",
+                                "props": {
+                                  "cx": { "expr": "lit", "value": "11" },
+                                  "cy": { "expr": "lit", "value": "11" },
+                                  "r": { "expr": "lit", "value": "8" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "d": { "expr": "lit", "value": "m21 21-4.3-4.3" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "d": { "expr": "lit", "value": "M11 8v6" }
+                                }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "path",
+                                "props": {
+                                  "d": { "expr": "lit", "value": "M8 11h6" }
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "h3",
+                        "props": { "class": { "expr": "lit", "value": "text-lg font-semibold text-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Smart Errors" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "p",
+                        "props": { "class": { "expr": "lit", "value": "mt-2 text-sm leading-relaxed text-muted-foreground" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "\"Did you mean?\" suggestions for typos. Errors point to exact JSON locations with fix hints." } }]
+                      }
+                    ]
                   }
                 ]
               }

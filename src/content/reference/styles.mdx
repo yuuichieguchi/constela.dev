@@ -1,0 +1,185 @@
+---
+title: Style System
+description: CVA-like style presets with variants for type-safe styling
+---
+
+## Overview
+
+Constela's style system provides a type-safe way to define reusable style presets with variants, similar to CVA (Class Variance Authority) or Tailwind Variants. Styles are validated at compile time, ensuring all variant combinations are valid.
+
+## Defining Styles
+
+Define styles in the `styles` object at the root of your program:
+
+```json
+{
+  "version": "1.0",
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded font-medium transition-colors",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white hover:bg-blue-600",
+          "secondary": "bg-gray-200 text-gray-800 hover:bg-gray-300",
+          "ghost": "bg-transparent hover:bg-gray-100"
+        },
+        "size": {
+          "sm": "text-sm h-8 px-3",
+          "md": "text-base h-10 px-4",
+          "lg": "text-lg h-12 px-6"
+        }
+      },
+      "defaultVariants": {
+        "variant": "primary",
+        "size": "md"
+      }
+    }
+  }
+}
+```
+
+## Style Properties
+
+<PropsTable items={[
+  { name: "base", type: "string", required: true, description: "Base classes always applied to the element." },
+  { name: "variants", type: "Record<string, Record<string, string>>", required: false, description: "Variant definitions with their corresponding class values." },
+  { name: "defaultVariants", type: "Record<string, string>", required: false, description: "Default variant selections when not explicitly specified." }
+]} />
+
+## Using Styles
+
+Use the `style` expression to apply a style preset:
+
+```json
+{
+  "kind": "element",
+  "tag": "button",
+  "props": {
+    "className": {
+      "expr": "style",
+      "name": "button",
+      "variants": {
+        "variant": { "expr": "lit", "value": "secondary" },
+        "size": { "expr": "lit", "value": "lg" }
+      }
+    }
+  },
+  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Click me" } }]
+}
+```
+
+This produces the class string: `px-4 py-2 rounded font-medium transition-colors bg-gray-200 text-gray-800 hover:bg-gray-300 text-lg h-12 px-6`
+
+## Dynamic Variants
+
+Combine with state for dynamic styling:
+
+```json
+{
+  "state": {
+    "isLoading": { "type": "boolean", "initial": false }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": {
+      "className": {
+        "expr": "style",
+        "name": "button",
+        "variants": {
+          "variant": {
+            "expr": "cond",
+            "if": { "expr": "state", "name": "isLoading" },
+            "then": { "expr": "lit", "value": "ghost" },
+            "else": { "expr": "lit", "value": "primary" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Multiple Style Presets
+
+Define multiple style presets for different components:
+
+```json
+{
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded font-medium",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        }
+      },
+      "defaultVariants": { "variant": "primary" }
+    },
+    "badge": {
+      "base": "inline-flex items-center rounded-full px-2 py-1 text-xs font-medium",
+      "variants": {
+        "variant": {
+          "default": "bg-gray-100 text-gray-800",
+          "success": "bg-green-100 text-green-800",
+          "error": "bg-red-100 text-red-800",
+          "warning": "bg-yellow-100 text-yellow-800"
+        }
+      },
+      "defaultVariants": { "variant": "default" }
+    },
+    "input": {
+      "base": "block w-full rounded-md border px-3 py-2 text-sm",
+      "variants": {
+        "state": {
+          "default": "border-gray-300 focus:border-blue-500 focus:ring-blue-500",
+          "error": "border-red-500 focus:border-red-500 focus:ring-red-500"
+        }
+      },
+      "defaultVariants": { "state": "default" }
+    }
+  }
+}
+```
+
+## Validation
+
+The compiler validates all style usage at compile time:
+
+- **UNDEFINED_STYLE**: Raised when referencing a style preset that doesn't exist
+- **UNDEFINED_VARIANT**: Raised when using a variant key or value that isn't defined
+
+<Callout type="tip">
+Enable `--verbose` flag in the CLI to see resolved class strings during development.
+</Callout>
+
+## Best Practices
+
+1. **Use semantic names**: Name styles by purpose (button, card, badge) not appearance (blue-box, large-text)
+
+2. **Keep base minimal**: Put conditional classes in variants, not in base
+
+3. **Set defaults**: Always define `defaultVariants` for required variants to avoid runtime errors
+
+4. **Group related styles**: Use consistent variant names (variant, size, state) across components
+
+5. **Avoid duplication**: Extract common patterns into shared style presets
+
+## Integration with Tailwind CSS
+
+Constela's style system works seamlessly with Tailwind CSS. Configure your `tailwind.config.js` to scan Constela files:
+
+```javascript
+module.exports = {
+  content: [
+    './src/**/*.{json,mdx}',
+    './src/routes/**/*.json',
+    './src/components/**/*.json'
+  ]
+}
+```
+
+<Callout type="note">
+Tailwind's JIT compiler will generate only the classes used in your style definitions, keeping your CSS bundle small.
+</Callout>

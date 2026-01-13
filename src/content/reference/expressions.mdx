@@ -599,3 +599,97 @@ References a DOM element by its `ref` attribute. Used for JavaScript interop.
 <Callout type="note">
 The `ref` expression is primarily used with external JavaScript libraries that need direct DOM access, such as code editors, charts, or maps.
 </Callout>
+
+## Style Expression
+
+Applies style presets with variants, similar to CVA (Class Variance Authority) or Tailwind Variants.
+
+```json
+{
+  "expr": "style",
+  "name": "button",
+  "variants": {
+    "variant": { "expr": "lit", "value": "primary" },
+    "size": { "expr": "lit", "value": "lg" }
+  }
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"style\"", required: true, description: "Expression type identifier." },
+  { name: "name", type: "string", required: true, description: "Name of the style preset defined in the styles object." },
+  { name: "variants", type: "Record<string, Expression>", required: false, description: "Variant selections to apply. Values can be literal or dynamic expressions." }
+]} />
+
+### Example
+
+```json
+{
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded font-medium",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        },
+        "size": {
+          "sm": "text-sm",
+          "md": "text-base",
+          "lg": "text-lg"
+        }
+      },
+      "defaultVariants": {
+        "variant": "primary",
+        "size": "md"
+      }
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": {
+      "className": {
+        "expr": "style",
+        "name": "button",
+        "variants": {
+          "variant": { "expr": "lit", "value": "primary" }
+        }
+      }
+    },
+    "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Click me" } }]
+  }
+}
+```
+
+### Dynamic Variants
+
+Combine with state for dynamic styling:
+
+```json
+{
+  "state": {
+    "isActive": { "type": "boolean", "initial": false }
+  },
+  "view": {
+    "props": {
+      "className": {
+        "expr": "style",
+        "name": "button",
+        "variants": {
+          "variant": {
+            "expr": "cond",
+            "if": { "expr": "state", "name": "isActive" },
+            "then": { "expr": "lit", "value": "primary" },
+            "else": { "expr": "lit", "value": "secondary" }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+<Callout type="tip">
+Style expressions are resolved at compile time when all variants are static literals. Dynamic variants are resolved at runtime. See the [Style System](/reference/styles) reference for complete documentation.
+</Callout>

@@ -303,6 +303,8 @@ npx constela
 | `constela build <file>` | Compile a program to JavaScript |
 | `constela dev <file>` | Start development server with hot reload |
 | `constela validate <file>` | Validate a program without building |
+| `constela validate --all <dir>` | Validate all JSON files in a directory |
+| `constela inspect <file>` | Visualize program structure |
 | `constela init` | Initialize a new Constela project |
 
 ### Build Command
@@ -316,6 +318,10 @@ Options:
 - `--minify, -m`: Minify output
 - `--sourcemap, -s`: Generate source map
 - `--target, -t`: Module format (esm, cjs, iife)
+- `--json`: Output result as JSON (for AI tool integration)
+- `--watch, -w`: Watch for changes and rebuild automatically
+- `--verbose, -v`: Show detailed progress (timing for each pass)
+- `--debug`: Show internal debug information
 
 ### Dev Command
 
@@ -331,9 +337,81 @@ Options:
 
 ```bash
 constela validate app.json
+constela validate --all src/
 ```
 
-Validates the program and reports any errors without generating output.
+Options:
+- `--all`: Validate all JSON files in the specified directory
+- `--json`: Output errors as structured JSON
+- `--verbose, -v`: Show detailed validation info
+
+Validates the program and reports any errors without generating output. Error messages include "Did you mean?" suggestions for typos:
+
+```
+Error [UNDEFINED_STATE] at /view/children/0/value/name
+
+  Undefined state reference: 'count'
+
+  Did you mean 'counter'?
+```
+
+### Inspect Command
+
+```bash
+constela inspect app.json
+constela inspect --state --json app.json
+```
+
+Options:
+- `--json`: Output as JSON
+- `--state`: Show only state section
+- `--actions`: Show only actions section
+- `--verbose, -v`: Show all details
+
+Shows program structure including state fields, actions, components, and dependencies.
+
+## @constela/builder
+
+For those who prefer TypeScript over writing JSON directly, we've added a Builder API.
+
+```bash
+npm install @constela/builder
+```
+
+### Example
+
+```typescript
+import {
+  createProgram, numberField, action, increment,
+  button, text, state, onClick
+} from '@constela/builder';
+
+const counter = createProgram({
+  state: { count: numberField(0) },
+  actions: [action('increment', [increment('count')])],
+  view: button({ onClick: onClick('increment') }, [text(state('count'))])
+});
+```
+
+### 40+ Builder Functions
+
+Covers all DSL elements:
+
+| Category | Functions |
+|----------|-----------|
+| Expression | `lit`, `state`, `variable`, `bin`, `cond`, `get`, `add`, `eq`, `and`, `or`, etc. |
+| State | `numberField`, `stringField`, `booleanField`, `listField`, `objectField` |
+| Action | `action`, `set`, `update`, `increment`, `push`, `fetch`, `navigate`, etc. |
+| View | `element`, `div`, `button`, `text`, `ifNode`, `each`, `component`, `slot` |
+| Event | `onClick`, `onInput`, `onChange`, `onSubmit` |
+
+### Same Benefits as JSON
+
+Even when written in TypeScript, it gets converted to JSON. That means:
+
+- **Compile-time error detection** - Errors if you reference undefined state or actions
+- **"Did you mean?" suggestions** - Typos get corrected with helpful hints
+- **Structured error output** - AI integration with `--json` flag works seamlessly
 
 ## @constela/start
 

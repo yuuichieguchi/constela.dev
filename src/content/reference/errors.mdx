@@ -360,6 +360,76 @@ Currently, only version "1.0" is supported.
 In fetch `onSuccess` handlers, use `result` to access the response data. In `onError` handlers, use `error` to access error information.
 </Callout>
 
+## UNDEFINED_STYLE
+
+**When it occurs:** A style expression references a style preset that does not exist.
+
+**Common causes:**
+- Typo in style name
+- Style not defined in `styles` object
+- Case sensitivity issues
+
+**How to fix:**
+
+```json
+// Error: UNDEFINED_STYLE for "buttons"
+{
+  "styles": {
+    "button": { ... }
+  },
+  "view": {
+    "props": {
+      "className": { "expr": "style", "name": "buttons" }  // Typo!
+    }
+  }
+}
+
+// Fixed: Use correct style name
+{
+  "props": {
+    "className": { "expr": "style", "name": "button" }
+  }
+}
+```
+
+## UNDEFINED_VARIANT
+
+**When it occurs:** A style expression specifies a variant key or value that does not exist in the style preset.
+
+**Common causes:**
+- Typo in variant key or value
+- Using a variant not defined in the style
+- Case sensitivity issues
+
+**How to fix:**
+
+```json
+// Error: UNDEFINED_VARIANT for "xlarge" in style "button"
+{
+  "styles": {
+    "button": {
+      "variants": {
+        "size": { "sm": "...", "md": "...", "lg": "..." }
+      }
+    }
+  },
+  "view": {
+    "props": {
+      "className": {
+        "expr": "style",
+        "name": "button",
+        "variants": { "size": { "expr": "lit", "value": "xlarge" } }
+      }
+    }
+  }
+}
+
+// Fixed: Use valid variant value
+{
+  "variants": { "size": { "expr": "lit", "value": "lg" } }
+}
+```
+
 ## Debugging Tips
 
 1. **Read the full error message**: Error messages include the location and context of the issue.

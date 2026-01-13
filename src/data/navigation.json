@@ -35,6 +35,7 @@
         { "title": "View Nodes", "href": "/reference/nodes" },
         { "title": "Expressions", "href": "/reference/expressions" },
         { "title": "Actions", "href": "/reference/actions" },
+        { "title": "Style System", "href": "/reference/styles" },
         { "title": "Error Codes", "href": "/reference/errors" },
         { "title": "Packages", "href": "/reference/packages" }
       ]
