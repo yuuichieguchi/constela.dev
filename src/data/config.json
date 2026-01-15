@@ -3,7 +3,7 @@
   "site": {
     "name": "Constela",
     "description": "A compiler-first UI language for vibecoding",
-    "url": "https://constela.dev",
+    "url": "https://constela-dev.vercel.app",
     "author": "Yuuichi Eguchi",
     "keywords": ["UI", "DSL", "compiler", "vibecoding", "AI", "JSON", "declarative"]
   }

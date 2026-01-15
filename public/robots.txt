@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://constela-dev.vercel.app/sitemap.xml
