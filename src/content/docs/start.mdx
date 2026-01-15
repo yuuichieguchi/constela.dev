@@ -158,6 +158,51 @@ src/routes/docs/[...slug].json
 No additional configuration is required for SSR. Just create your JSON route files and the framework handles the rest.
 </Callout>
 
+## SSR Style Evaluation
+
+Starting from `@constela/server` v4.1.0, style expressions defined in your JSON routes are evaluated during server-side rendering. Define styles at the root of your program and use them in views:
+
+```json
+{
+  "version": "1.0",
+  "route": { "path": "/" },
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        }
+      },
+      "defaultVariants": { "variant": "primary" }
+    }
+  },
+  "state": {},
+  "actions": [],
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": {
+      "className": { "expr": "style", "name": "button" }
+    },
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
+    ]
+  }
+}
+```
+
+The SSR output includes the resolved class string:
+
+```html
+<button class="px-4 py-2 rounded bg-blue-500 text-white">Click me</button>
+```
+
+<Callout type="tip">
+Style expressions are evaluated at render time, producing static class strings in the HTML output. This ensures consistent styling between SSR and client hydration.
+</Callout>
+
 ## SSG (Static Site Generation)
 
 For static pages with dynamic routes, use the `getStaticPaths` field:

@@ -234,6 +234,50 @@ async function generateHtml() {
 `@constela/server` is framework-agnostic. Use it with Express, Hono, Fastify, or any Node.js/Bun/Deno server.
 </Callout>
 
+### RenderOptions
+
+`renderToString` accepts an optional second parameter for customization:
+
+```typescript
+interface RenderOptions {
+  route?: {
+    params?: Record<string, string>;
+    query?: Record<string, string>;
+    path?: string;
+  };
+  imports?: Record<string, unknown>;
+  styles?: Record<string, StylePreset>;  // v4.1.0+
+}
+
+interface StylePreset {
+  base: string;
+  variants?: Record<string, Record<string, string>>;
+  defaultVariants?: Record<string, string>;
+}
+```
+
+### SSR Style Evaluation (v4.1.0+)
+
+Pass style presets via the `styles` option to evaluate style expressions on the server:
+
+```typescript
+const html = await renderToString(result.program, {
+  styles: {
+    button: {
+      base: 'px-4 py-2 rounded',
+      variants: {
+        variant: {
+          primary: 'bg-blue-500 text-white',
+          secondary: 'bg-gray-200 text-gray-800',
+        },
+      },
+      defaultVariants: { variant: 'primary' },
+    },
+  },
+});
+// Output: <button class="px-4 py-2 rounded bg-blue-500 text-white">...</button>
+```
+
 ### Integration with Next.js
 
 For Next.js projects, use `@constela/server` in Server Components:
