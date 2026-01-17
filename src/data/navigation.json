@@ -17,7 +17,8 @@
         { "title": "Fetch & Effects", "href": "/docs/fetch-effects" },
         { "title": "Components", "href": "/docs/components" },
         { "title": "Routing", "href": "/docs/routing" },
-        { "title": "Design Principles", "href": "/docs/design-principles" }
+        { "title": "Design Principles", "href": "/docs/design-principles" },
+        { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" }
       ]
     },
     {
@@ -76,10 +77,14 @@
     },
     "/docs/design-principles": {
       "prev": { "title": "Routing", "href": "/docs/routing" },
+      "next": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" }
+    },
+    "/docs/vibe-coding": {
+      "prev": { "title": "Design Principles", "href": "/docs/design-principles" },
       "next": { "title": "@constela/start", "href": "/docs/start" }
     },
     "/docs/start": {
-      "prev": { "title": "Design Principles", "href": "/docs/design-principles" },
+      "prev": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
       "next": null
     }
   }
