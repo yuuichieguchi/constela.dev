@@ -1,60 +1,41 @@
 {
   "version": "1.0",
   "state": {
-    "liked1": { "type": "boolean", "initial": false },
-    "liked2": { "type": "boolean", "initial": false },
-    "liked3": { "type": "boolean", "initial": false },
-    "likes1": { "type": "number", "initial": 12 },
-    "likes2": { "type": "number", "initial": 8 },
-    "likes3": { "type": "number", "initial": 5 }
+    "comments": {
+      "type": "list",
+      "initial": [
+        { "id": 1, "name": "Sarah Chen", "avatar": "from-indigo-400 to-purple-500", "time": "2h", "text": "This is amazing! Great work on the new feature.", "liked": false, "likes": 12 },
+        { "id": 2, "name": "Alex Kim", "avatar": "from-emerald-400 to-cyan-500", "time": "5h", "text": "Can't wait to try this out!", "liked": false, "likes": 8 },
+        { "id": 3, "name": "Jordan Lee", "avatar": "from-orange-400 to-rose-500", "time": "1d", "text": "Love the clean API design.", "liked": false, "likes": 5 }
+      ]
+    }
   },
   "actions": {
-    "toggleLike1": {
-      "name": "toggleLike1",
+    "toggleLike": {
+      "name": "toggleLike",
       "steps": [
         {
           "do": "if",
-          "condition": { "expr": "state", "name": "liked1" },
-          "then": [
-            { "do": "update", "target": "likes1", "operation": "decrement" }
-          ],
-          "else": [
-            { "do": "update", "target": "likes1", "operation": "increment" }
-          ]
+          "condition": { "expr": "var", "name": "payload", "path": "liked" },
+          "then": [{
+            "do": "setPath",
+            "target": "comments",
+            "path": { "expr": "lit", "value": [{ "expr": "var", "name": "payload", "path": "index" }, "likes"] },
+            "value": { "expr": "bin", "op": "-", "left": { "expr": "var", "name": "payload", "path": "likes" }, "right": { "expr": "lit", "value": 1 } }
+          }],
+          "else": [{
+            "do": "setPath",
+            "target": "comments",
+            "path": { "expr": "lit", "value": [{ "expr": "var", "name": "payload", "path": "index" }, "likes"] },
+            "value": { "expr": "bin", "op": "+", "left": { "expr": "var", "name": "payload", "path": "likes" }, "right": { "expr": "lit", "value": 1 } }
+          }]
         },
-        { "do": "update", "target": "liked1", "operation": "toggle" }
-      ]
-    },
-    "toggleLike2": {
-      "name": "toggleLike2",
-      "steps": [
         {
-          "do": "if",
-          "condition": { "expr": "state", "name": "liked2" },
-          "then": [
-            { "do": "update", "target": "likes2", "operation": "decrement" }
-          ],
-          "else": [
-            { "do": "update", "target": "likes2", "operation": "increment" }
-          ]
-        },
-        { "do": "update", "target": "liked2", "operation": "toggle" }
-      ]
-    },
-    "toggleLike3": {
-      "name": "toggleLike3",
-      "steps": [
-        {
-          "do": "if",
-          "condition": { "expr": "state", "name": "liked3" },
-          "then": [
-            { "do": "update", "target": "likes3", "operation": "decrement" }
-          ],
-          "else": [
-            { "do": "update", "target": "likes3", "operation": "increment" }
-          ]
-        },
-        { "do": "update", "target": "liked3", "operation": "toggle" }
+          "do": "setPath",
+          "target": "comments",
+          "path": { "expr": "lit", "value": [{ "expr": "var", "name": "payload", "path": "index" }, "liked"] },
+          "value": { "expr": "not", "operand": { "expr": "var", "name": "payload", "path": "liked" } }
+        }
       ]
     }
   },
@@ -116,304 +97,128 @@
                 "props": { "class": { "expr": "lit", "value": "space-y-3 mb-4 max-h-48 overflow-y-auto pr-1" } },
                 "children": [
                   {
-                    "kind": "element",
-                    "tag": "div",
-                    "props": { "class": { "expr": "lit", "value": "flex gap-3 p-3 bg-gray-50 rounded-lg" } },
-                    "children": [
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex-shrink-0" } }
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "flex-1 min-w-0" } },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 mb-1" } },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-gray-900" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Sarah Chen" } }]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-xs text-gray-400" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "2h" } }]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "p",
-                            "props": { "class": { "expr": "lit", "value": "text-sm text-gray-600 mb-2" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "This is amazing! Great work on the new feature." } }]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "button",
-                            "props": {
-                              "class": {
-                                "expr": "cond",
-                                "if": { "expr": "state", "name": "liked1" },
-                                "then": { "expr": "lit", "value": "flex items-center gap-1.5 text-rose-500 text-xs font-medium transition-colors" },
-                                "else": { "expr": "lit", "value": "flex items-center gap-1.5 text-gray-400 hover:text-rose-500 text-xs transition-colors" }
-                              },
-                              "onClick": { "event": "click", "action": "toggleLike1" }
-                            },
-                            "children": [
-                              {
-                                "kind": "if",
-                                "condition": { "expr": "state", "name": "liked1" },
-                                "then": {
+                    "kind": "each",
+                    "items": { "expr": "state", "name": "comments" },
+                    "as": "comment",
+                    "index": "i",
+                    "key": { "expr": "var", "name": "comment", "path": "id" },
+                    "body": {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "class": { "expr": "lit", "value": "flex gap-3 p-3 bg-gray-50 rounded-lg" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": {
+                            "class": {
+                              "expr": "concat",
+                              "items": [
+                                { "expr": "lit", "value": "w-8 h-8 rounded-full bg-gradient-to-br " },
+                                { "expr": "var", "name": "comment", "path": "avatar" },
+                                { "expr": "lit", "value": " flex-shrink-0" }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "class": { "expr": "lit", "value": "flex-1 min-w-0" } },
+                          "children": [
+                            {
+                              "kind": "element",
+                              "tag": "div",
+                              "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 mb-1" } },
+                              "children": [
+                                {
                                   "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "currentColor" }
-                                  },
-                                  "children": [{
-                                    "kind": "element",
-                                    "tag": "path",
-                                    "props": {
-                                      "d": { "expr": "lit", "value": "m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" }
-                                    }
-                                  }]
+                                  "tag": "span",
+                                  "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-gray-900" } },
+                                  "children": [{ "kind": "text", "value": { "expr": "var", "name": "comment", "path": "name" } }]
                                 },
-                                "else": {
+                                {
                                   "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "none" },
-                                    "stroke": { "expr": "lit", "value": "currentColor" },
-                                    "stroke-width": { "expr": "lit", "value": "1.5" }
-                                  },
-                                  "children": [{
-                                    "kind": "element",
-                                    "tag": "path",
-                                    "props": {
-                                      "stroke-linecap": { "expr": "lit", "value": "round" },
-                                      "stroke-linejoin": { "expr": "lit", "value": "round" },
-                                      "d": { "expr": "lit", "value": "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" }
-                                    }
-                                  }]
+                                  "tag": "span",
+                                  "props": { "class": { "expr": "lit", "value": "text-xs text-gray-400" } },
+                                  "children": [{ "kind": "text", "value": { "expr": "var", "name": "comment", "path": "time" } }]
+                                }
+                              ]
+                            },
+                            {
+                              "kind": "element",
+                              "tag": "p",
+                              "props": { "class": { "expr": "lit", "value": "text-sm text-gray-600 mb-2" } },
+                              "children": [{ "kind": "text", "value": { "expr": "var", "name": "comment", "path": "text" } }]
+                            },
+                            {
+                              "kind": "element",
+                              "tag": "button",
+                              "props": {
+                                "class": {
+                                  "expr": "cond",
+                                  "if": { "expr": "var", "name": "comment", "path": "liked" },
+                                  "then": { "expr": "lit", "value": "flex items-center gap-1.5 text-rose-500 text-xs font-medium transition-colors" },
+                                  "else": { "expr": "lit", "value": "flex items-center gap-1.5 text-gray-400 hover:text-rose-500 text-xs transition-colors" }
+                                },
+                                "onClick": {
+                                  "event": "click",
+                                  "action": "toggleLike",
+                                  "payload": {
+                                    "index": { "expr": "var", "name": "i" },
+                                    "liked": { "expr": "var", "name": "comment", "path": "liked" },
+                                    "likes": { "expr": "var", "name": "comment", "path": "likes" }
+                                  }
                                 }
                               },
-                              { "kind": "text", "value": { "expr": "state", "name": "likes1" } }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "div",
-                    "props": { "class": { "expr": "lit", "value": "flex gap-3 p-3 bg-gray-50 rounded-lg" } },
-                    "children": [
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex-shrink-0" } }
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "flex-1 min-w-0" } },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 mb-1" } },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-gray-900" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Alex Kim" } }]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-xs text-gray-400" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5h" } }]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "p",
-                            "props": { "class": { "expr": "lit", "value": "text-sm text-gray-600 mb-2" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Can't wait to try this out!" } }]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "button",
-                            "props": {
-                              "class": {
-                                "expr": "cond",
-                                "if": { "expr": "state", "name": "liked2" },
-                                "then": { "expr": "lit", "value": "flex items-center gap-1.5 text-rose-500 text-xs font-medium transition-colors" },
-                                "else": { "expr": "lit", "value": "flex items-center gap-1.5 text-gray-400 hover:text-rose-500 text-xs transition-colors" }
-                              },
-                              "onClick": { "event": "click", "action": "toggleLike2" }
-                            },
-                            "children": [
-                              {
-                                "kind": "if",
-                                "condition": { "expr": "state", "name": "liked2" },
-                                "then": {
-                                  "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "currentColor" }
-                                  },
-                                  "children": [{
+                              "children": [
+                                {
+                                  "kind": "if",
+                                  "condition": { "expr": "var", "name": "comment", "path": "liked" },
+                                  "then": {
                                     "kind": "element",
-                                    "tag": "path",
+                                    "tag": "svg",
                                     "props": {
-                                      "d": { "expr": "lit", "value": "m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" }
-                                    }
-                                  }]
+                                      "class": { "expr": "lit", "value": "w-4 h-4" },
+                                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                      "fill": { "expr": "lit", "value": "currentColor" }
+                                    },
+                                    "children": [{
+                                      "kind": "element",
+                                      "tag": "path",
+                                      "props": {
+                                        "d": { "expr": "lit", "value": "m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" }
+                                      }
+                                    }]
+                                  },
+                                  "else": {
+                                    "kind": "element",
+                                    "tag": "svg",
+                                    "props": {
+                                      "class": { "expr": "lit", "value": "w-4 h-4" },
+                                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                                      "fill": { "expr": "lit", "value": "none" },
+                                      "stroke": { "expr": "lit", "value": "currentColor" },
+                                      "stroke-width": { "expr": "lit", "value": "1.5" }
+                                    },
+                                    "children": [{
+                                      "kind": "element",
+                                      "tag": "path",
+                                      "props": {
+                                        "stroke-linecap": { "expr": "lit", "value": "round" },
+                                        "stroke-linejoin": { "expr": "lit", "value": "round" },
+                                        "d": { "expr": "lit", "value": "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" }
+                                      }
+                                    }]
+                                  }
                                 },
-                                "else": {
-                                  "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "none" },
-                                    "stroke": { "expr": "lit", "value": "currentColor" },
-                                    "stroke-width": { "expr": "lit", "value": "1.5" }
-                                  },
-                                  "children": [{
-                                    "kind": "element",
-                                    "tag": "path",
-                                    "props": {
-                                      "stroke-linecap": { "expr": "lit", "value": "round" },
-                                      "stroke-linejoin": { "expr": "lit", "value": "round" },
-                                      "d": { "expr": "lit", "value": "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" }
-                                    }
-                                  }]
-                                }
-                              },
-                              { "kind": "text", "value": { "expr": "state", "name": "likes2" } }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "div",
-                    "props": { "class": { "expr": "lit", "value": "flex gap-3 p-3 bg-gray-50 rounded-lg" } },
-                    "children": [
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-rose-500 flex-shrink-0" } }
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "flex-1 min-w-0" } },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 mb-1" } },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-gray-900" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Jordan Lee" } }]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "span",
-                                "props": { "class": { "expr": "lit", "value": "text-xs text-gray-400" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "1d" } }]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "p",
-                            "props": { "class": { "expr": "lit", "value": "text-sm text-gray-600 mb-2" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Love the clean API design." } }]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "button",
-                            "props": {
-                              "class": {
-                                "expr": "cond",
-                                "if": { "expr": "state", "name": "liked3" },
-                                "then": { "expr": "lit", "value": "flex items-center gap-1.5 text-rose-500 text-xs font-medium transition-colors" },
-                                "else": { "expr": "lit", "value": "flex items-center gap-1.5 text-gray-400 hover:text-rose-500 text-xs transition-colors" }
-                              },
-                              "onClick": { "event": "click", "action": "toggleLike3" }
-                            },
-                            "children": [
-                              {
-                                "kind": "if",
-                                "condition": { "expr": "state", "name": "liked3" },
-                                "then": {
-                                  "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "currentColor" }
-                                  },
-                                  "children": [{
-                                    "kind": "element",
-                                    "tag": "path",
-                                    "props": {
-                                      "d": { "expr": "lit", "value": "m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" }
-                                    }
-                                  }]
-                                },
-                                "else": {
-                                  "kind": "element",
-                                  "tag": "svg",
-                                  "props": {
-                                    "class": { "expr": "lit", "value": "w-4 h-4" },
-                                    "viewBox": { "expr": "lit", "value": "0 0 24 24" },
-                                    "fill": { "expr": "lit", "value": "none" },
-                                    "stroke": { "expr": "lit", "value": "currentColor" },
-                                    "stroke-width": { "expr": "lit", "value": "1.5" }
-                                  },
-                                  "children": [{
-                                    "kind": "element",
-                                    "tag": "path",
-                                    "props": {
-                                      "stroke-linecap": { "expr": "lit", "value": "round" },
-                                      "stroke-linejoin": { "expr": "lit", "value": "round" },
-                                      "d": { "expr": "lit", "value": "M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" }
-                                    }
-                                  }]
-                                }
-                              },
-                              { "kind": "text", "value": { "expr": "state", "name": "likes3" } }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
+                                { "kind": "text", "value": { "expr": "var", "name": "comment", "path": "likes" } }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
                   }
                 ]
               }

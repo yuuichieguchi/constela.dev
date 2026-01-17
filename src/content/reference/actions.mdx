@@ -842,14 +842,13 @@ Conditionally executes steps based on a condition.
 
 ## SetPath Step
 
-Updates a specific field within a nested object or array item. Unlike `set` which replaces the entire target, `setPath` allows surgical updates to deeply nested state.
+Updates a value at a specific path within a nested object or array. Unlike `set` which replaces the entire target, `setPath` allows surgical updates to deeply nested state.
 
 ```json
 {
   "do": "setPath",
   "target": "todos",
-  "path": { "expr": "var", "name": "index" },
-  "field": "completed",
+  "path": { "expr": "lit", "value": [0, "completed"] },
   "value": { "expr": "lit", "value": true }
 }
 ```
@@ -857,9 +856,8 @@ Updates a specific field within a nested object or array item. Unlike `set` whic
 <PropsTable items={[
   { name: "do", type: "\"setPath\"", required: true, description: "Step type identifier." },
   { name: "target", type: "string", required: true, description: "State field containing the array or object." },
-  { name: "path", type: "Expression", required: true, description: "Expression that evaluates to an index (for arrays) or key (for objects)." },
-  { name: "field", type: "string", required: true, description: "Name of the field to update within the item." },
-  { name: "value", type: "Expression", required: true, description: "New value for the field." }
+  { name: "path", type: "Expression", required: true, description: "Expression that evaluates to a path. Can be a string (dot notation like \"address.city\"), an array of keys/indices, or an array containing expressions for dynamic segments." },
+  { name: "value", type: "Expression", required: true, description: "New value to set at the path." }
 ]} />
 
 ### Why Use setPath?
@@ -874,34 +872,38 @@ The `setPath` step solves a common problem: updating a single field in an array 
 ### Examples
 
 ```json
-// Toggle completion status of a todo item
+// Toggle completion status of a todo item (dynamic index from payload)
 {
   "do": "setPath",
   "target": "todos",
-  "path": { "expr": "var", "name": "index" },
-  "field": "completed",
+  "path": { "expr": "lit", "value": [{ "expr": "var", "name": "index" }, "completed"] },
   "value": {
-    "expr": "un",
-    "op": "!",
-    "arg": { "expr": "var", "name": "todo", "path": "completed" }
+    "expr": "not",
+    "operand": { "expr": "var", "name": "todo", "path": "completed" }
   }
 }
 
-// Update username in a nested user object
+// Update username in a nested user object (literal index)
 {
   "do": "setPath",
   "target": "users",
-  "path": { "expr": "lit", "value": 0 },
-  "field": "profile.name",
+  "path": { "expr": "lit", "value": [0, "profile", "name"] },
   "value": { "expr": "state", "name": "newName" }
 }
 
-// Update score for a specific player
+// Update using dot notation string path
+{
+  "do": "setPath",
+  "target": "config",
+  "path": { "expr": "lit", "value": "settings.display.theme" },
+  "value": { "expr": "lit", "value": "dark" }
+}
+
+// Update score for a specific player (dynamic index)
 {
   "do": "setPath",
   "target": "players",
-  "path": { "expr": "var", "name": "playerId" },
-  "field": "score",
+  "path": { "expr": "lit", "value": [{ "expr": "var", "name": "playerId" }, "score"] },
   "value": {
     "expr": "bin",
     "op": "+",
