@@ -780,6 +780,70 @@ Manually disposes of a resource (cleanup subscriptions, destroy editors, etc.).
 Always dispose of external resources in the `onUnmount` lifecycle hook to prevent memory leaks.
 </Callout>
 
+## Clipboard Step
+
+Provides access to the system clipboard for reading and writing text content.
+
+```json
+{
+  "do": "clipboard",
+  "operation": "write",
+  "value": { "expr": "state", "name": "textToCopy" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"clipboard\"", required: true, description: "Step type identifier." },
+  { name: "operation", type: "\"write\" | \"read\"", required: true, description: "Clipboard operation to perform." },
+  { name: "value", type: "Expression", required: false, description: "Value to write to clipboard (required for 'write' operation)." },
+  { name: "result", type: "string", required: false, description: "Variable name to store read result (for 'read' operation)." },
+  { name: "onSuccess", type: "ActionStep[]", required: false, description: "Steps to execute on successful clipboard operation." },
+  { name: "onError", type: "ActionStep[]", required: false, description: "Steps to execute if clipboard operation fails. Error is available as 'error' variable." }
+]} />
+
+### Example: Copy to Clipboard
+
+```json
+{
+  "name": "copyLink",
+  "steps": [
+    {
+      "do": "clipboard",
+      "operation": "write",
+      "value": { "expr": "state", "name": "shareUrl" },
+      "onSuccess": [
+        { "do": "set", "target": "copied", "value": { "expr": "lit", "value": true } }
+      ],
+      "onError": [
+        { "do": "set", "target": "copyError", "value": { "expr": "var", "name": "error", "path": "message" } }
+      ]
+    }
+  ]
+}
+```
+
+### Example: Paste from Clipboard
+
+```json
+{
+  "name": "pasteText",
+  "steps": [
+    {
+      "do": "clipboard",
+      "operation": "read",
+      "result": "clipboardText",
+      "onSuccess": [
+        { "do": "set", "target": "inputValue", "value": { "expr": "var", "name": "clipboardText" } }
+      ]
+    }
+  ]
+}
+```
+
+<Callout type="warning">
+Clipboard access requires user permission in most browsers. The operation may fail if the user denies permission or if the page is not in a secure context (HTTPS).
+</Callout>
+
 ## If Step
 
 Conditionally executes steps based on a condition.
@@ -944,14 +1008,7 @@ Sends a message through a WebSocket connection. See [Connections](/reference/con
     {
       "do": "send",
       "connection": "chat",
-      "data": {
-        "expr": "obj",
-        "properties": {
-          "type": { "expr": "lit", "value": "message" },
-          "text": { "expr": "state", "name": "messageInput" },
-          "user": { "expr": "state", "name": "username" }
-        }
-      }
+      "data": { "expr": "state", "name": "messageInput" }
     },
     {
       "do": "set",
@@ -975,9 +1032,7 @@ Closes a WebSocket connection. See [Connections](/reference/connections) for ful
 
 <PropsTable items={[
   { name: "do", type: "\"close\"", required: true, description: "Step type identifier." },
-  { name: "connection", type: "string", required: true, description: "Name of the connection to close." },
-  { name: "code", type: "Expression", required: false, default: "1000", description: "WebSocket close status code." },
-  { name: "reason", type: "Expression", required: false, description: "Human-readable close reason." }
+  { name: "connection", type: "string", required: true, description: "Name of the connection to close." }
 ]} />
 
 ### Example
@@ -988,9 +1043,7 @@ Closes a WebSocket connection. See [Connections](/reference/connections) for ful
   "steps": [
     {
       "do": "close",
-      "connection": "chat",
-      "code": { "expr": "lit", "value": 1000 },
-      "reason": { "expr": "lit", "value": "User logged out" }
+      "connection": "chat"
     },
     {
       "do": "set",

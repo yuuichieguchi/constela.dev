@@ -693,3 +693,66 @@ Combine with state for dynamic styling:
 <Callout type="tip">
 Style expressions are resolved at compile time when all variants are static literals. Dynamic variants are resolved at runtime. See the [Style System](/reference/styles) reference for complete documentation.
 </Callout>
+
+## Concat Expression
+
+Concatenates multiple expressions into a single string. Each expression is evaluated and converted to a string, then joined together.
+
+```json
+{
+  "expr": "concat",
+  "items": [
+    { "expr": "lit", "value": "Hello, " },
+    { "expr": "var", "name": "user", "path": "name" },
+    { "expr": "lit", "value": "!" }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"concat\"", required: true, description: "Expression type identifier." },
+  { name: "items", type: "Expression[]", required: true, description: "Array of expressions to concatenate. Each is evaluated and converted to string." }
+]} />
+
+### Dynamic Class Names
+
+A common use case is building dynamic CSS class names:
+
+```json
+{
+  "kind": "element",
+  "tag": "div",
+  "props": {
+    "class": {
+      "expr": "concat",
+      "items": [
+        { "expr": "lit", "value": "avatar rounded-full " },
+        { "expr": "var", "name": "user", "path": "avatarSize" },
+        { "expr": "lit", "value": " " },
+        { "expr": "var", "name": "user", "path": "avatarColor" }
+      ]
+    }
+  }
+}
+```
+
+### Combining with Conditionals
+
+```json
+{
+  "expr": "concat",
+  "items": [
+    { "expr": "lit", "value": "btn " },
+    {
+      "expr": "cond",
+      "if": { "expr": "state", "name": "isActive" },
+      "then": { "expr": "lit", "value": "btn-active" },
+      "else": { "expr": "lit", "value": "btn-inactive" }
+    }
+  ]
+}
+```
+
+<Callout type="note">
+Null and undefined values are converted to empty strings. All other values are converted using JavaScript's `String()` function.
+</Callout>
