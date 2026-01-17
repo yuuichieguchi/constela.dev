@@ -435,7 +435,7 @@
                     "props": {
                       "type": { "expr": "lit", "value": "text" },
                       "placeholder": { "expr": "lit", "value": "Add a comment..." },
-                      "class": { "expr": "lit", "value": "flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" },
+                      "class": { "expr": "lit", "value": "flex-1 px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" },
                       "value": { "expr": "state", "name": "newComment" },
                       "onInput": { "event": "input", "action": "setComment", "payload": { "expr": "var", "name": "value" } }
                     }
