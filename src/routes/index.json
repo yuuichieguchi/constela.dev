@@ -183,7 +183,7 @@
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "absolute inset-0 bg-gradient-to-b from-indigo-500/[0.02] via-transparent to-purple-500/[0.02]" }
+              "class": { "expr": "lit", "value": "hidden" }
             }
           },
           {
@@ -930,7 +930,7 @@
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "absolute inset-0 bg-gradient-to-b from-background via-indigo-950/10 to-background" }
+              "class": { "expr": "lit", "value": "hidden" }
             }
           },
           {
