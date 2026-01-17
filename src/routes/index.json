@@ -392,7 +392,7 @@
                         "props": {
                           "class": {
                             "expr": "lit",
-                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-indigo-500 to-purple-500 bg-clip-text text-transparent opacity-20"
+                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:right-0 sm:-bottom-6 md:right-0 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-indigo-500 to-purple-500 bg-clip-text text-transparent opacity-20 dark:opacity-10"
                           },
                           "aria-hidden": {
                             "expr": "lit",
@@ -694,7 +694,7 @@
                         "props": {
                           "class": {
                             "expr": "lit",
-                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-20"
+                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:right-0 sm:-bottom-6 md:right-0 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-20 dark:opacity-10"
                           },
                           "aria-hidden": {
                             "expr": "lit",
@@ -1010,7 +1010,7 @@
                         "props": {
                           "class": {
                             "expr": "lit",
-                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-blue-500 to-cyan-500 bg-clip-text text-transparent opacity-20"
+                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:right-0 sm:-bottom-6 md:right-0 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-blue-500 to-cyan-500 bg-clip-text text-transparent opacity-20 dark:opacity-10"
                           },
                           "aria-hidden": {
                             "expr": "lit",
@@ -1312,7 +1312,7 @@
                         "props": {
                           "class": {
                             "expr": "lit",
-                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent opacity-20"
+                            "value": "pointer-events-none select-none absolute right-2 -bottom-4 sm:right-0 sm:-bottom-6 md:right-0 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent opacity-20 dark:opacity-10"
                           },
                           "aria-hidden": {
                             "expr": "lit",
