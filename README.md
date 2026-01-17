@@ -1,6 +1,6 @@
 # Constela Documentation Site
 
-The official documentation site for [Constela](https://constela-dev.vercel.app/) - a compiler-first UI language for vibecoding.
+The official documentation site for [Constela](https://constela.dev/) - a compiler-first UI language for vibecoding.
 
 ## Pages
 

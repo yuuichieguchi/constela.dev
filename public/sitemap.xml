@@ -1,122 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://constela-dev.vercel.app/</loc>
+    <loc>https://constela.dev/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/playground</loc>
+    <loc>https://constela.dev/playground</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/examples</loc>
+    <loc>https://constela.dev/examples</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/examples/counter</loc>
+    <loc>https://constela.dev/examples/counter</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/examples/todo-list</loc>
+    <loc>https://constela.dev/examples/todo-list</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/examples/fetch-list</loc>
+    <loc>https://constela.dev/examples/fetch-list</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/examples/router</loc>
+    <loc>https://constela.dev/examples/router</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs</loc>
+    <loc>https://constela.dev/docs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/start</loc>
+    <loc>https://constela.dev/docs/start</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/installation</loc>
+    <loc>https://constela.dev/docs/installation</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/first-app</loc>
+    <loc>https://constela.dev/docs/first-app</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/design-principles</loc>
+    <loc>https://constela.dev/docs/design-principles</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/components</loc>
+    <loc>https://constela.dev/docs/components</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/state-expressions</loc>
+    <loc>https://constela.dev/docs/state-expressions</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/actions-events</loc>
+    <loc>https://constela.dev/docs/actions-events</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/fetch-effects</loc>
+    <loc>https://constela.dev/docs/fetch-effects</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/docs/routing</loc>
+    <loc>https://constela.dev/docs/routing</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference</loc>
+    <loc>https://constela.dev/reference</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/nodes</loc>
+    <loc>https://constela.dev/reference/nodes</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/expressions</loc>
+    <loc>https://constela.dev/reference/expressions</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/actions</loc>
+    <loc>https://constela.dev/reference/actions</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/errors</loc>
+    <loc>https://constela.dev/reference/errors</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/packages</loc>
+    <loc>https://constela.dev/reference/packages</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://constela-dev.vercel.app/reference/styles</loc>
+    <loc>https://constela.dev/reference/styles</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
