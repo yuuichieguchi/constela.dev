@@ -138,7 +138,7 @@
         "kind": "element",
         "tag": "header",
         "props": {
-          "class": { "expr": "lit", "value": "fixed top-0 left-0 right-0 z-40 h-[var(--header-height)] border-b border-transparent bg-background dark:bg-[#030712]/80 dark:backdrop-blur-md" }
+          "class": { "expr": "lit", "value": "fixed top-0 left-0 right-0 z-40 h-[var(--header-height)] border-b border-transparent bg-background" }
         },
         "children": [
           {

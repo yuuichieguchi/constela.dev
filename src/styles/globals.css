@@ -337,3 +337,9 @@ body {
 .animate-live-pulse {
   animation: live-pulse 2s ease-in-out infinite;
 }
+
+/* Header glassmorphism effect for dark mode */
+.dark header {
+  background-color: rgba(3, 7, 18, 0.8);
+  backdrop-filter: blur(12px);
+}
