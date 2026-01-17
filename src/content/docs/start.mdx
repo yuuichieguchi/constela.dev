@@ -244,6 +244,26 @@ npx constela-start build
 # ...
 ```
 
+## MDX Security
+
+MDX attribute expressions are validated at compile time to prevent code injection. Dangerous patterns like `require()`, `eval()`, or `window` will throw explicit errors:
+
+```mdx
+<!-- Error: MDX attribute contains disallowed pattern: require -->
+<Button data={require("module")} />
+```
+
+However, these words are allowed inside string literals:
+
+```mdx
+<!-- OK: "require" is inside a string literal -->
+<PropsTable items={[{ description: "operations that require one" }]} />
+```
+
+<Callout type="tip">
+This compile-time validation catches security issues early, preventing silent failures that could cause runtime bugs.
+</Callout>
+
 ## API Routes
 
 Create API endpoints by creating TypeScript files with HTTP method handlers:
