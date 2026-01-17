@@ -1,0 +1,385 @@
+---
+title: Connections
+description: WebSocket connections for real-time communication in Constela
+---
+
+## Overview
+
+Connections enable real-time bidirectional communication through WebSocket. Define connections at the root level of your Constela program to establish persistent connections with WebSocket servers.
+
+```json
+{
+  "connections": {
+    "chat": {
+      "url": { "expr": "lit", "value": "wss://api.example.com/ws" },
+      "onMessage": "handleMessage",
+      "onOpen": "onConnected",
+      "onClose": "onDisconnected",
+      "onError": "onConnectionError"
+    }
+  }
+}
+```
+
+## WebSocket Connection Definition
+
+<PropsTable items={[
+  { name: "url", type: "Expression", required: true, description: "WebSocket server URL. Supports dynamic URLs via expressions." },
+  { name: "onMessage", type: "string", required: false, description: "Action name to execute when a message is received." },
+  { name: "onOpen", type: "string", required: false, description: "Action name to execute when the connection opens." },
+  { name: "onClose", type: "string", required: false, description: "Action name to execute when the connection closes." },
+  { name: "onError", type: "string", required: false, description: "Action name to execute when an error occurs." }
+]} />
+
+## Event Handlers
+
+### onMessage
+
+Called when a message is received from the server. The message data is available via the `message` parameter.
+
+```json
+{
+  "name": "handleMessage",
+  "steps": [
+    {
+      "do": "update",
+      "target": "messages",
+      "operation": "push",
+      "value": { "expr": "param", "name": "message" }
+    }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "message", type: "any", required: true, description: "The parsed message data from the WebSocket. JSON messages are automatically parsed." }
+]} />
+
+### onOpen
+
+Called when the WebSocket connection is successfully established.
+
+```json
+{
+  "name": "onConnected",
+  "steps": [
+    {
+      "do": "set",
+      "target": "isConnected",
+      "value": { "expr": "lit", "value": true }
+    }
+  ]
+}
+```
+
+### onClose
+
+Called when the WebSocket connection is closed. The close event details are available via the `event` parameter.
+
+```json
+{
+  "name": "onDisconnected",
+  "steps": [
+    {
+      "do": "set",
+      "target": "isConnected",
+      "value": { "expr": "lit", "value": false }
+    }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "event.code", type: "number", required: true, description: "WebSocket close code (e.g., 1000 for normal closure)." },
+  { name: "event.reason", type: "string", required: true, description: "Human-readable close reason." }
+]} />
+
+### onError
+
+Called when a WebSocket error occurs.
+
+```json
+{
+  "name": "onConnectionError",
+  "steps": [
+    {
+      "do": "set",
+      "target": "error",
+      "value": { "expr": "lit", "value": "Connection failed" }
+    }
+  ]
+}
+```
+
+## Sending Messages
+
+### send Step
+
+Sends a message through a WebSocket connection.
+
+```json
+{
+  "do": "send",
+  "connection": "chat",
+  "data": { "expr": "state", "name": "messageInput" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"send\"", required: true, description: "Step type identifier." },
+  { name: "connection", type: "string", required: true, description: "Name of the connection to send through." },
+  { name: "data", type: "Expression", required: true, description: "Data to send. Objects are automatically JSON stringified." }
+]} />
+
+### close Step
+
+Closes a WebSocket connection.
+
+```json
+{
+  "do": "close",
+  "connection": "chat"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"close\"", required: true, description: "Step type identifier." },
+  { name: "connection", type: "string", required: true, description: "Name of the connection to close." },
+  { name: "code", type: "Expression", required: false, description: "Close status code (default: 1000)." },
+  { name: "reason", type: "Expression", required: false, description: "Human-readable close reason." }
+]} />
+
+## Dynamic URLs
+
+Connection URLs can be dynamically constructed using expressions:
+
+```json
+{
+  "connections": {
+    "room": {
+      "url": {
+        "expr": "bin",
+        "op": "+",
+        "left": { "expr": "lit", "value": "wss://api.example.com/rooms/" },
+        "right": { "expr": "state", "name": "roomId" }
+      },
+      "onMessage": "handleRoomMessage"
+    }
+  }
+}
+```
+
+<Callout type="note">
+When using dynamic URLs, the connection is established when the component mounts. If the URL expression depends on state that changes, you may need to manage reconnection manually.
+</Callout>
+
+## Complete Example: Chat Application
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "messages": { "type": "list", "initial": [] },
+    "messageInput": { "type": "string", "initial": "" },
+    "isConnected": { "type": "boolean", "initial": false },
+    "username": { "type": "string", "initial": "Anonymous" }
+  },
+  "connections": {
+    "chat": {
+      "url": { "expr": "lit", "value": "wss://chat.example.com/ws" },
+      "onMessage": "receiveMessage",
+      "onOpen": "onConnected",
+      "onClose": "onDisconnected"
+    }
+  },
+  "actions": [
+    {
+      "name": "receiveMessage",
+      "steps": [
+        {
+          "do": "update",
+          "target": "messages",
+          "operation": "push",
+          "value": { "expr": "param", "name": "message" }
+        }
+      ]
+    },
+    {
+      "name": "onConnected",
+      "steps": [
+        {
+          "do": "set",
+          "target": "isConnected",
+          "value": { "expr": "lit", "value": true }
+        }
+      ]
+    },
+    {
+      "name": "onDisconnected",
+      "steps": [
+        {
+          "do": "set",
+          "target": "isConnected",
+          "value": { "expr": "lit", "value": false }
+        }
+      ]
+    },
+    {
+      "name": "sendMessage",
+      "steps": [
+        {
+          "do": "send",
+          "connection": "chat",
+          "data": {
+            "expr": "obj",
+            "properties": {
+              "user": { "expr": "state", "name": "username" },
+              "text": { "expr": "state", "name": "messageInput" },
+              "timestamp": { "expr": "call", "fn": "Date.now" }
+            }
+          }
+        },
+        {
+          "do": "set",
+          "target": "messageInput",
+          "value": { "expr": "lit", "value": "" }
+        }
+      ]
+    },
+    {
+      "name": "updateInput",
+      "steps": [
+        {
+          "do": "set",
+          "target": "messageInput",
+          "value": { "expr": "param", "name": "event", "path": "target.value" }
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "class": { "expr": "lit", "value": "chat-container" } },
+    "children": [
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "isConnected" },
+        "then": {
+          "kind": "text",
+          "value": { "expr": "lit", "value": "Connected" }
+        },
+        "else": {
+          "kind": "text",
+          "value": { "expr": "lit", "value": "Disconnected" }
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": { "class": { "expr": "lit", "value": "messages" } },
+        "children": [
+          {
+            "kind": "each",
+            "items": { "expr": "state", "name": "messages" },
+            "as": "msg",
+            "key": { "expr": "var", "name": "msg", "path": "timestamp" },
+            "body": {
+              "kind": "element",
+              "tag": "div",
+              "props": { "class": { "expr": "lit", "value": "message" } },
+              "children": [
+                {
+                  "kind": "text",
+                  "value": {
+                    "expr": "bin",
+                    "op": "+",
+                    "left": {
+                      "expr": "bin",
+                      "op": "+",
+                      "left": { "expr": "var", "name": "msg", "path": "user" },
+                      "right": { "expr": "lit", "value": ": " }
+                    },
+                    "right": { "expr": "var", "name": "msg", "path": "text" }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "input",
+        "props": {
+          "type": { "expr": "lit", "value": "text" },
+          "value": { "expr": "state", "name": "messageInput" },
+          "onInput": { "event": "input", "action": "updateInput" },
+          "placeholder": { "expr": "lit", "value": "Type a message..." }
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "sendMessage" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Send" } }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Advanced: TypedStateStore Integration
+
+<Callout type="warning">
+This section describes advanced runtime internals. The API may change between versions. For most use cases, the `send` and `close` action steps provide a simpler and more declarative approach.
+</Callout>
+
+When integrating with external JavaScript libraries that need direct WebSocket access, you can obtain the underlying WebSocket instance through the runtime's `TypedStateStore`. This is typically only needed when:
+
+- Interfacing with libraries that require a native WebSocket object
+- Implementing custom binary protocols
+- Building debugging/monitoring tools
+
+The `$store` variable provides access to the runtime's state store, which manages all connections. Use `getConnection` to retrieve a connection by name:
+
+```json
+{
+  "actions": [
+    {
+      "name": "handleComplexMessage",
+      "steps": [
+        {
+          "do": "call",
+          "target": { "expr": "var", "name": "$store", "path": "getConnection" },
+          "args": [{ "expr": "lit", "value": "chat" }],
+          "result": "wsConnection",
+          "onSuccess": [
+            {
+              "do": "call",
+              "target": { "expr": "var", "name": "wsConnection", "path": "send" },
+              "args": [{ "expr": "state", "name": "complexData" }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### TypedStateStore Methods
+
+| Method | Description |
+|--------|-------------|
+| `getConnection(name)` | Returns the WebSocket instance for the named connection |
+| `getState(name)` | Returns the current value of a state field |
+| `setState(name, value)` | Updates a state field programmatically |
+
+<Callout type="note">
+The `$store` variable is automatically available in all action contexts. It provides low-level access to the runtime state management system.
+</Callout>

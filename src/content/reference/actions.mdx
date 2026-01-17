@@ -839,3 +839,162 @@ Conditionally executes steps based on a condition.
   ]
 }
 ```
+
+## SetPath Step
+
+Updates a specific field within a nested object or array item. Unlike `set` which replaces the entire target, `setPath` allows surgical updates to deeply nested state.
+
+```json
+{
+  "do": "setPath",
+  "target": "todos",
+  "path": { "expr": "var", "name": "index" },
+  "field": "completed",
+  "value": { "expr": "lit", "value": true }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"setPath\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "string", required: true, description: "State field containing the array or object." },
+  { name: "path", type: "Expression", required: true, description: "Expression that evaluates to an index (for arrays) or key (for objects)." },
+  { name: "field", type: "string", required: true, description: "Name of the field to update within the item." },
+  { name: "value", type: "Expression", required: true, description: "New value for the field." }
+]} />
+
+### Why Use setPath?
+
+The `setPath` step solves a common problem: updating a single field in an array item without replacing the entire item. This is more efficient and preserves other fields.
+
+| Approach | Code | Result |
+|----------|------|--------|
+| `replaceAt` | Replaces entire item | Loses other fields unless you rebuild the object |
+| `setPath` | Updates single field | Preserves all other fields automatically |
+
+### Examples
+
+```json
+// Toggle completion status of a todo item
+{
+  "do": "setPath",
+  "target": "todos",
+  "path": { "expr": "var", "name": "index" },
+  "field": "completed",
+  "value": {
+    "expr": "un",
+    "op": "!",
+    "arg": { "expr": "var", "name": "todo", "path": "completed" }
+  }
+}
+
+// Update username in a nested user object
+{
+  "do": "setPath",
+  "target": "users",
+  "path": { "expr": "lit", "value": 0 },
+  "field": "profile.name",
+  "value": { "expr": "state", "name": "newName" }
+}
+
+// Update score for a specific player
+{
+  "do": "setPath",
+  "target": "players",
+  "path": { "expr": "var", "name": "playerId" },
+  "field": "score",
+  "value": {
+    "expr": "bin",
+    "op": "+",
+    "left": { "expr": "var", "name": "player", "path": "score" },
+    "right": { "expr": "lit", "value": 10 }
+  }
+}
+```
+
+<Callout type="tip">
+Use `setPath` inside `each` loops where you have access to both the item and its index, enabling inline editing without complex state reconstruction.
+</Callout>
+
+## Send Step
+
+Sends a message through a WebSocket connection. See [Connections](/reference/connections) for full WebSocket documentation.
+
+```json
+{
+  "do": "send",
+  "connection": "chat",
+  "data": { "expr": "state", "name": "messageInput" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"send\"", required: true, description: "Step type identifier." },
+  { name: "connection", type: "string", required: true, description: "Name of the connection to send through (must match a key in connections)." },
+  { name: "data", type: "Expression", required: true, description: "Data to send. Objects are automatically JSON stringified." }
+]} />
+
+### Example
+
+```json
+{
+  "name": "sendChatMessage",
+  "steps": [
+    {
+      "do": "send",
+      "connection": "chat",
+      "data": {
+        "expr": "obj",
+        "properties": {
+          "type": { "expr": "lit", "value": "message" },
+          "text": { "expr": "state", "name": "messageInput" },
+          "user": { "expr": "state", "name": "username" }
+        }
+      }
+    },
+    {
+      "do": "set",
+      "target": "messageInput",
+      "value": { "expr": "lit", "value": "" }
+    }
+  ]
+}
+```
+
+## Close Step
+
+Closes a WebSocket connection. See [Connections](/reference/connections) for full WebSocket documentation.
+
+```json
+{
+  "do": "close",
+  "connection": "chat"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"close\"", required: true, description: "Step type identifier." },
+  { name: "connection", type: "string", required: true, description: "Name of the connection to close." },
+  { name: "code", type: "Expression", required: false, default: "1000", description: "WebSocket close status code." },
+  { name: "reason", type: "Expression", required: false, description: "Human-readable close reason." }
+]} />
+
+### Example
+
+```json
+{
+  "name": "disconnectChat",
+  "steps": [
+    {
+      "do": "close",
+      "connection": "chat",
+      "code": { "expr": "lit", "value": 1000 },
+      "reason": { "expr": "lit", "value": "User logged out" }
+    },
+    {
+      "do": "set",
+      "target": "isConnected",
+      "value": { "expr": "lit", "value": false }
+    }
+  ]
+}
+```

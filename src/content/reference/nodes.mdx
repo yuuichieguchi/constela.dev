@@ -168,6 +168,82 @@ Iterates over an array and renders content for each item.
 }
 ```
 
+### The Key Property
+
+The `key` property provides a stable identity for each item in the list. This is essential for the reconciliation algorithm to efficiently update the DOM when the list changes.
+
+#### Why Keys Matter
+
+When a list is re-rendered, Constela needs to determine which elements have been added, removed, or moved. Without keys, the only option is to compare elements by their position (index), which leads to inefficient updates and bugs.
+
+| Scenario | Without Key | With Key |
+|----------|-------------|----------|
+| Item added at start | Re-renders all elements | Only inserts new element |
+| Item removed from middle | Re-renders all following elements | Only removes that element |
+| Items reordered | Re-renders all changed positions | Moves existing DOM nodes |
+| Input state preservation | Input values shift to wrong items | Input values stay with their items |
+
+#### Key Best Practices
+
+1. **Use unique, stable identifiers**: Database IDs, UUIDs, or other persistent identifiers work best.
+
+```json
+// Good: Stable ID from data
+"key": { "expr": "var", "name": "todo", "path": "id" }
+
+// Bad: Index changes when items are reordered
+"key": { "expr": "var", "name": "index" }
+```
+
+2. **Avoid using index as key** unless the list is static and will never be reordered.
+
+3. **Keys must be unique** among siblings. Duplicate keys cause undefined behavior.
+
+#### How Reconciliation Works
+
+Constela's reconciliation algorithm uses keys to minimize DOM operations:
+
+1. **Build key maps**: Creates a mapping of keys to existing DOM elements
+2. **Identify changes**: Compares old and new key sets to find additions, removals, and moves
+3. **Apply minimal updates**: Reorders existing elements, inserts new ones, and removes deleted ones
+
+This key-based approach ensures that:
+- Existing DOM nodes are reused when possible
+- Form input values and focus states are preserved
+- Animations and transitions work correctly across updates
+- Performance remains optimal even with large lists
+
+#### Example: Preserving Input State
+
+Without proper keys, input values can shift incorrectly when items are added or removed:
+
+```json
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "todos" },
+  "as": "todo",
+  "index": "i",
+  "key": { "expr": "var", "name": "todo", "path": "id" },
+  "body": {
+    "kind": "element",
+    "tag": "li",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "input",
+        "props": {
+          "type": { "expr": "lit", "value": "text" },
+          "value": { "expr": "var", "name": "todo", "path": "title" },
+          "onInput": { "event": "input", "action": "updateTodo", "payload": { "index": { "expr": "var", "name": "i" } } }
+        }
+      }
+    ]
+  }
+}
+```
+
+With the `id`-based key, even if a todo is removed from the middle of the list, the input values for the remaining items stay correctly associated with their respective todos.
+
 ## Component Node
 
 Renders a reusable component with props.

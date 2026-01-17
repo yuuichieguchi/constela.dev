@@ -26,6 +26,7 @@ Every Constela program is a single JSON object that follows a specific schema. T
   { name: "actions", type: "ActionDefinition[]", required: true, description: "Array of action definitions that describe how state changes." },
   { name: "view", type: "ViewNode", required: true, description: "The root view node that describes the UI structure." },
   { name: "components", type: "Record<string, ComponentDef>", required: false, description: "Reusable component definitions. Keys are component names." },
+  { name: "connections", type: "Record<string, ConnectionDef>", required: false, description: "WebSocket connection definitions. Keys are connection names. See Connections reference." },
   { name: "imports", type: "Record<string, string>", required: false, description: "Static data imports. Keys are imported data names, values are relative paths to JSON files." },
   { name: "externalImports", type: "Record<string, string>", required: false, description: "External module imports from CDN. Keys are module names, values are CDN URLs." },
   { name: "lifecycle", type: "LifecycleHooks", required: false, description: "Lifecycle hook definitions for mount, unmount, and route events." },
