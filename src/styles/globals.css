@@ -16,16 +16,30 @@
   --header-height: 64px;
 }
 
+/* Dark mode - Indigo/Purple palette */
 .dark {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --border: #3f3f46;
-  --primary: #3b82f6;
-  --primary-foreground: #ffffff;
-  --card: #18181b;
-  --card-foreground: #fafafa;
+  --background: #030712;
+  --foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: #334155;
+  --primary: #818cf8;
+  --primary-foreground: #030712;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+}
+
+/* Accent colors for gradients */
+:root {
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-cyan: #22d3ee;
+}
+
+.dark {
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  --accent-cyan: #22d3ee;
 }
 
 @theme inline {
@@ -221,4 +235,45 @@ body {
 
 .constela-code .group:hover .constela-copy-btn {
   opacity: 1;
+}
+
+/* Gradient text utilities */
+.text-gradient-primary {
+  background: linear-gradient(to right, var(--primary), var(--accent-purple), var(--accent-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* CSS Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 10s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-delayed,
+  .animate-pulse-glow {
+    animation: none;
+  }
 }
