@@ -190,7 +190,7 @@
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "relative mx-auto max-w-4xl" }
+              "class": { "expr": "lit", "value": "relative mx-auto max-w-6xl" }
             },
             "children": [
               {
@@ -226,16 +226,25 @@
                 "kind": "element",
                 "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2" }
+                  "class": { "expr": "lit", "value": "mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2" }
                 },
                 "children": [
                   {
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                      "class": { "expr": "lit", "value": "relative overflow-hidden rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30" }
                     },
                     "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-indigo-500 to-purple-500 bg-clip-text text-transparent opacity-20" },
+                          "aria-hidden": { "expr": "lit", "value": "true" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.6x faster" } }]
+                      },
                       {
                         "kind": "element",
                         "tag": "div",
@@ -362,37 +371,6 @@
                             ]
                           }
                         ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
-                              "fill": { "expr": "lit", "value": "currentColor" },
-                              "class": { "expr": "lit", "value": "h-4 w-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "path",
-                                "props": {
-                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
-                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
-                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
-                                }
-                              }
-                            ]
-                          },
-                          { "kind": "text", "value": { "expr": "lit", "value": "5.6x faster" } }
-                        ]
                       }
                     ]
                   },
@@ -400,9 +378,18 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                      "class": { "expr": "lit", "value": "relative overflow-hidden rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30" }
                     },
                     "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-20" },
+                          "aria-hidden": { "expr": "lit", "value": "true" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "2.7x lighter" } }]
+                      },
                       {
                         "kind": "element",
                         "tag": "div",
@@ -491,7 +478,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[30%] bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[30%] bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -537,37 +524,6 @@
                             ]
                           }
                         ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
-                              "fill": { "expr": "lit", "value": "currentColor" },
-                              "class": { "expr": "lit", "value": "h-4 w-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "path",
-                                "props": {
-                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
-                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
-                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
-                                }
-                              }
-                            ]
-                          },
-                          { "kind": "text", "value": { "expr": "lit", "value": "2.7x lighter" } }
-                        ]
                       }
                     ]
                   },
@@ -575,9 +531,18 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                      "class": { "expr": "lit", "value": "relative overflow-hidden rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30" }
                     },
                     "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-blue-500 to-cyan-500 bg-clip-text text-transparent opacity-20" },
+                          "aria-hidden": { "expr": "lit", "value": "true" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.0x faster" } }]
+                      },
                       {
                         "kind": "element",
                         "tag": "div",
@@ -658,7 +623,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -704,37 +669,6 @@
                             ]
                           }
                         ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
-                              "fill": { "expr": "lit", "value": "currentColor" },
-                              "class": { "expr": "lit", "value": "h-4 w-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "path",
-                                "props": {
-                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
-                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
-                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
-                                }
-                              }
-                            ]
-                          },
-                          { "kind": "text", "value": { "expr": "lit", "value": "5.0x faster" } }
-                        ]
                       }
                     ]
                   },
@@ -742,9 +676,18 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "rounded-xl border border-border bg-background p-6 transition-all hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5" }
+                      "class": { "expr": "lit", "value": "relative overflow-hidden rounded-3xl border border-border/50 bg-card/80 backdrop-blur-xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/30" }
                     },
                     "children": [
+                      {
+                        "kind": "element",
+                        "tag": "span",
+                        "props": {
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent opacity-20" },
+                          "aria-hidden": { "expr": "lit", "value": "true" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.1x lighter" } }]
+                      },
                       {
                         "kind": "element",
                         "tag": "div",
@@ -833,7 +776,7 @@
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" } }
+                                    "props": { "class": { "expr": "lit", "value": "h-full w-[16%] bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full" } }
                                   }
                                 ]
                               },
@@ -878,37 +821,6 @@
                               }
                             ]
                           }
-                        ]
-                      },
-                      {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": {
-                          "class": { "expr": "lit", "value": "mt-4 flex items-center gap-1 text-sm font-semibold text-primary" }
-                        },
-                        "children": [
-                          {
-                            "kind": "element",
-                            "tag": "svg",
-                            "props": {
-                              "xmlns": { "expr": "lit", "value": "http://www.w3.org/2000/svg" },
-                              "viewBox": { "expr": "lit", "value": "0 0 20 20" },
-                              "fill": { "expr": "lit", "value": "currentColor" },
-                              "class": { "expr": "lit", "value": "h-4 w-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "path",
-                                "props": {
-                                  "fill-rule": { "expr": "lit", "value": "evenodd" },
-                                  "d": { "expr": "lit", "value": "M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" },
-                                  "clip-rule": { "expr": "lit", "value": "evenodd" }
-                                }
-                              }
-                            ]
-                          },
-                          { "kind": "text", "value": { "expr": "lit", "value": "5.1x lighter" } }
                         ]
                       }
                     ]
