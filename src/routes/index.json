@@ -1013,7 +1013,7 @@
                             "kind": "element",
                             "tag": "div",
                             "props": {
-                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-56 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/30 blur-3xl" }
+                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-[322px] w-[552px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/30 blur-3xl" }
                             }
                           },
                           {
@@ -1024,7 +1024,7 @@
                               "aria-hidden": { "expr": "lit", "value": "true" }
                             },
                             "children": [
-                              { "kind": "text", "value": { "expr": "lit", "value": "1" } }
+                              { "kind": "text", "value": { "expr": "lit", "value": "01" } }
                             ]
                           },
                           {
@@ -1130,7 +1130,7 @@
                             "kind": "element",
                             "tag": "div",
                             "props": {
-                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-56 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/30 blur-3xl" }
+                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-[322px] w-[552px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-500/30 blur-3xl" }
                             }
                           },
                           {
@@ -1141,7 +1141,7 @@
                               "aria-hidden": { "expr": "lit", "value": "true" }
                             },
                             "children": [
-                              { "kind": "text", "value": { "expr": "lit", "value": "2" } }
+                              { "kind": "text", "value": { "expr": "lit", "value": "02" } }
                             ]
                           },
                           {
@@ -1245,7 +1245,7 @@
                             "kind": "element",
                             "tag": "div",
                             "props": {
-                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-56 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/30 blur-3xl" }
+                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-[322px] w-[552px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/30 blur-3xl" }
                             }
                           },
                           {
@@ -1256,7 +1256,7 @@
                               "aria-hidden": { "expr": "lit", "value": "true" }
                             },
                             "children": [
-                              { "kind": "text", "value": { "expr": "lit", "value": "3" } }
+                              { "kind": "text", "value": { "expr": "lit", "value": "03" } }
                             ]
                           },
                           {
@@ -1367,7 +1367,7 @@
                             "kind": "element",
                             "tag": "div",
                             "props": {
-                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-56 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/30 blur-3xl" }
+                              "class": { "expr": "lit", "value": "absolute left-1/2 top-1/2 h-[322px] w-[552px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500/30 blur-3xl" }
                             }
                           },
                           {
@@ -1378,7 +1378,7 @@
                               "aria-hidden": { "expr": "lit", "value": "true" }
                             },
                             "children": [
-                              { "kind": "text", "value": { "expr": "lit", "value": "4" } }
+                              { "kind": "text", "value": { "expr": "lit", "value": "04" } }
                             ]
                           },
                           {
