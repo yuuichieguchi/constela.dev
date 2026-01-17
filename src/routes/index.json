@@ -32,7 +32,7 @@
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "absolute inset-0 -z-10 overflow-hidden" }
+              "class": { "expr": "lit", "value": "absolute inset-0 z-0 overflow-hidden" }
             },
             "children": [
               {
@@ -62,7 +62,7 @@
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "mx-auto max-w-4xl text-center" }
+              "class": { "expr": "lit", "value": "relative z-10 mx-auto max-w-4xl text-center" }
             },
             "children": [
               {
