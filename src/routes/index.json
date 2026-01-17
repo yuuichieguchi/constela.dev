@@ -1413,7 +1413,7 @@
                       "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
                     },
                     "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "A simple counter in Constela. Declarative state, typed actions, and reactive views in pure JSON." } }
+                      { "kind": "text", "value": { "expr": "lit", "value": "Interactive like buttons with conditional rendering. Declarative state, typed actions, and reactive views in pure JSON." } }
                     ]
                   }
                 ]
@@ -1429,7 +1429,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "code-demo-panel group relative overflow-hidden rounded-xl border border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl shadow-black/10 glass-inner-glow" }
+                      "class": { "expr": "lit", "value": "code-demo-panel group relative flex flex-col overflow-hidden rounded-xl border border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl shadow-black/10 glass-inner-glow" }
                     },
                     "children": [
                       {
@@ -1467,7 +1467,7 @@
                             "kind": "element",
                             "tag": "span",
                             "props": { "class": { "expr": "lit", "value": "flex-1 text-center text-sm font-medium text-muted-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "counter.constela.json" } }]
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "comments.constela.json" } }]
                           },
                           {
                             "kind": "element",
@@ -1477,16 +1477,9 @@
                         ]
                       },
                       {
-                        "kind": "element",
-                        "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "max-h-[400px] overflow-auto" } },
-                        "children": [
-                          {
-                            "kind": "code",
-                            "content": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"increment\" }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"decrement\" }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"count\" } },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"increment\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"+\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"decrement\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"-\" } }]\n      }\n    ]\n  }\n}" },
-                            "language": { "expr": "lit", "value": "json" }
-                          }
-                        ]
+                        "kind": "code",
+                        "content": { "expr": "lit", "value": "{\n  \"state\": {\n    \"liked\": { \"type\": \"boolean\", \"initial\": false },\n    \"likes\": { \"type\": \"number\", \"initial\": 12 }\n  },\n  \"actions\": {\n    \"toggleLike\": {\n      \"steps\": [\n        {\n          \"do\": \"if\",\n          \"condition\": { \"expr\": \"state\", \"name\": \"liked\" },\n          \"then\": [{ \"do\": \"update\", \"target\": \"likes\", \"operation\": \"decrement\" }],\n          \"else\": [{ \"do\": \"update\", \"target\": \"likes\", \"operation\": \"increment\" }]\n        },\n        { \"do\": \"update\", \"target\": \"liked\", \"operation\": \"toggle\" }\n      ]\n    }\n  },\n  \"view\": {\n    \"tag\": \"button\",\n    \"onClick\": \"toggleLike\",\n    \"children\": [\n      { \"kind\": \"if\", \"condition\": { \"state\": \"liked\" },\n        \"then\": { \"tag\": \"svg\", \"fill\": \"currentColor\" },\n        \"else\": { \"tag\": \"svg\", \"stroke\": \"currentColor\" }\n      },\n      { \"kind\": \"text\", \"value\": { \"state\": \"likes\" } }\n    ]\n  }\n}" },
+                        "language": { "expr": "lit", "value": "json" }
                       }
                     ]
                   },
@@ -1554,9 +1547,9 @@
                               "class": { "expr": "lit", "value": "text-center text-sm text-muted-foreground" }
                             },
                             "children": [
-                              { "kind": "text", "value": { "expr": "lit", "value": "This preview demonstrates the counter's behavior." } },
+                              { "kind": "text", "value": { "expr": "lit", "value": "Click the heart icons to like/unlike comments." } },
                               { "kind": "element", "tag": "br" },
-                              { "kind": "text", "value": { "expr": "lit", "value": "The actual Constela runtime compiles and renders the JSON on the left." } }
+                              { "kind": "text", "value": { "expr": "lit", "value": "The Constela runtime renders the JSON code on the left." } }
                             ]
                           }
                         ]
