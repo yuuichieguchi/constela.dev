@@ -240,7 +240,7 @@
                         "kind": "element",
                         "tag": "span",
                         "props": {
-                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-indigo-500 to-purple-500 bg-clip-text text-transparent opacity-20" },
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-indigo-500 to-purple-500 bg-clip-text text-transparent opacity-20" },
                           "aria-hidden": { "expr": "lit", "value": "true" }
                         },
                         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.6x faster" } }]
@@ -385,7 +385,7 @@
                         "kind": "element",
                         "tag": "span",
                         "props": {
-                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-20" },
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-20" },
                           "aria-hidden": { "expr": "lit", "value": "true" }
                         },
                         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "2.7x lighter" } }]
@@ -538,7 +538,7 @@
                         "kind": "element",
                         "tag": "span",
                         "props": {
-                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-blue-500 to-cyan-500 bg-clip-text text-transparent opacity-20" },
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-blue-500 to-cyan-500 bg-clip-text text-transparent opacity-20" },
                           "aria-hidden": { "expr": "lit", "value": "true" }
                         },
                         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.0x faster" } }]
@@ -683,7 +683,7 @@
                         "kind": "element",
                         "tag": "span",
                         "props": {
-                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-4 -bottom-8 text-[80px] md:text-[100px] font-black bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent opacity-20" },
+                          "class": { "expr": "lit", "value": "pointer-events-none select-none absolute -right-2 -bottom-4 sm:-right-3 sm:-bottom-6 md:-right-4 md:-bottom-8 text-[40px] sm:text-[50px] md:text-[80px] lg:text-[100px] font-black bg-gradient-to-br from-violet-500 to-fuchsia-500 bg-clip-text text-transparent opacity-20" },
                           "aria-hidden": { "expr": "lit", "value": "true" }
                         },
                         "children": [{ "kind": "text", "value": { "expr": "lit", "value": "5.1x lighter" } }]
