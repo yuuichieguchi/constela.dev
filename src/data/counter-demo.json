@@ -6,8 +6,7 @@
     "liked3": { "type": "boolean", "initial": false },
     "likes1": { "type": "number", "initial": 12 },
     "likes2": { "type": "number", "initial": 8 },
-    "likes3": { "type": "number", "initial": 5 },
-    "newComment": { "type": "string", "initial": "" }
+    "likes3": { "type": "number", "initial": 5 }
   },
   "actions": {
     "toggleLike1": {
@@ -56,12 +55,6 @@
           ]
         },
         { "do": "update", "target": "liked3", "operation": "toggle" }
-      ]
-    },
-    "setComment": {
-      "name": "setComment",
-      "steps": [
-        { "do": "set", "target": "newComment", "value": { "expr": "var", "name": "value" } }
       ]
     }
   },
@@ -421,32 +414,6 @@
                         ]
                       }
                     ]
-                  }
-                ]
-              },
-              {
-                "kind": "element",
-                "tag": "div",
-                "props": { "class": { "expr": "lit", "value": "flex gap-2" } },
-                "children": [
-                  {
-                    "kind": "element",
-                    "tag": "input",
-                    "props": {
-                      "type": { "expr": "lit", "value": "text" },
-                      "placeholder": { "expr": "lit", "value": "Add a comment..." },
-                      "class": { "expr": "lit", "value": "flex-1 px-3 py-2 text-sm text-gray-900 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" },
-                      "value": { "expr": "state", "name": "newComment" },
-                      "onInput": { "event": "input", "action": "setComment", "payload": { "expr": "var", "name": "value" } }
-                    }
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "button",
-                    "props": {
-                      "class": { "expr": "lit", "value": "px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors" }
-                    },
-                    "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Post" } }]
                   }
                 ]
               }
