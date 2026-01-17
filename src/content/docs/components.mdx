@@ -166,6 +166,110 @@ Use `slot` to allow components to receive children.
 Slots are powerful for creating layout components like cards, modals, and containers.
 </Callout>
 
+## Component Local State
+
+Components can have their own independent local state that is not shared between instances.
+
+```json
+{
+  "components": {
+    "Accordion": {
+      "params": { "title": { "type": "string" } },
+      "localState": {
+        "isExpanded": { "type": "boolean", "initial": false }
+      },
+      "localActions": [
+        {
+          "name": "toggle",
+          "steps": [{ "do": "update", "target": "isExpanded", "operation": "toggle" }]
+        }
+      ],
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "button",
+            "props": { "onClick": { "event": "click", "action": "toggle" } },
+            "children": [
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "if",
+            "condition": { "expr": "state", "name": "isExpanded" },
+            "then": { "kind": "slot" }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Local State
+
+Define component-scoped state using `localState`. The syntax is the same as global `state`:
+
+```json
+{
+  "localState": {
+    "isOpen": { "type": "boolean", "initial": false },
+    "count": { "type": "number", "initial": 0 },
+    "items": { "type": "list", "initial": [] }
+  }
+}
+```
+
+<Callout type="note">
+Each instance of a component has its own independent local state. Opening one accordion doesn't affect others.
+</Callout>
+
+### Local Actions
+
+Use `localActions` to define actions that operate on local state:
+
+```json
+{
+  "localActions": [
+    {
+      "name": "increment",
+      "steps": [{ "do": "update", "target": "count", "operation": "increment" }]
+    },
+    {
+      "name": "reset",
+      "steps": [{ "do": "set", "target": "count", "value": { "expr": "lit", "value": 0 } }]
+    }
+  ]
+}
+```
+
+<Callout type="warning">
+Local actions can only use `set`, `update`, and `setPath` steps. Steps like `fetch`, `navigate`, and `storage` are not allowed in local actions.
+</Callout>
+
+### Accessing Local State
+
+Access local state using the same `state` expression:
+
+```json
+{
+  "kind": "text",
+  "value": { "expr": "state", "name": "isExpanded" }
+}
+```
+
+Within a component, `state` expressions first check local state, then fall back to global state.
+
+### Use Cases
+
+- **Accordions**: Each section manages its own expanded/collapsed state
+- **Dropdowns**: Independent open/close state per dropdown
+- **Form fields**: Validation state per input
+- **Toggle buttons**: Each button tracks its own on/off state
+- **Tooltips**: Show/hide state per tooltip
+
 ## Component Composition
 
 Components can use other components.

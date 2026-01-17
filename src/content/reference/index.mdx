@@ -58,10 +58,12 @@ Each state field specifies a type and initial value.
 
 ## Component Definition
 
-Components allow you to create reusable UI pieces.
+Components allow you to create reusable UI pieces with optional local state.
 
 <PropsTable items={[
-  { name: "params", type: "Record<string, ParamDef>", required: true, description: "Component parameter definitions with types and optional defaults." },
+  { name: "params", type: "Record<string, ParamDef>", required: false, description: "Component parameter definitions with types and optional defaults." },
+  { name: "localState", type: "Record<string, StateField>", required: false, description: "Component-scoped state. Each instance maintains its own independent state." },
+  { name: "localActions", type: "LocalActionDefinition[]", required: false, description: "Actions that operate on local state. Only set, update, and setPath steps are allowed." },
   { name: "view", type: "ViewNode", required: true, description: "The view tree for this component." }
 ]} />
 
@@ -90,6 +92,46 @@ Components allow you to create reusable UI pieces.
         },
         "children": [
           { "kind": "text", "value": { "expr": "param", "name": "label" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Example Component with Local State
+
+```json
+{
+  "components": {
+    "Accordion": {
+      "params": { "title": { "type": "string" } },
+      "localState": {
+        "isExpanded": { "type": "boolean", "initial": false }
+      },
+      "localActions": [
+        {
+          "name": "toggle",
+          "steps": [{ "do": "update", "target": "isExpanded", "operation": "toggle" }]
+        }
+      ],
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "button",
+            "props": { "onClick": { "event": "click", "action": "toggle" } },
+            "children": [
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "if",
+            "condition": { "expr": "state", "name": "isExpanded" },
+            "then": { "kind": "slot" }
+          }
         ]
       }
     }
