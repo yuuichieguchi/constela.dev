@@ -34,7 +34,7 @@
     "props": {
       "class": {
         "expr": "lit",
-        "value": "flex flex-col items-center justify-center gap-6"
+        "value": "w-full max-w-xs mx-auto"
       }
     },
     "children": [
@@ -44,72 +44,190 @@
         "props": {
           "class": {
             "expr": "lit",
-            "value": "text-6xl font-bold tabular-nums text-foreground"
-          }
-        },
-        "children": [
-          {
-            "kind": "text",
-            "value": {
-              "expr": "state",
-              "name": "count"
-            }
-          }
-        ]
-      },
-      {
-        "kind": "element",
-        "tag": "div",
-        "props": {
-          "class": {
-            "expr": "lit",
-            "value": "flex gap-4"
+            "value": "rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 p-6 shadow-xl ring-1 ring-white/10"
           }
         },
         "children": [
           {
             "kind": "element",
-            "tag": "button",
+            "tag": "div",
             "props": {
               "class": {
                 "expr": "lit",
-                "value": "flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
-              },
-              "onClick": {
-                "event": "click",
-                "action": "decrement"
+                "value": "flex items-center justify-between mb-4"
               }
             },
             "children": [
               {
-                "kind": "text",
-                "value": {
-                  "expr": "lit",
-                  "value": "-"
-                }
+                "kind": "element",
+                "tag": "span",
+                "props": {
+                  "class": {
+                    "expr": "lit",
+                    "value": "text-sm font-medium text-slate-400"
+                  }
+                },
+                "children": [
+                  {
+                    "kind": "text",
+                    "value": {
+                      "expr": "lit",
+                      "value": "Counter"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "span",
+                "props": {
+                  "class": {
+                    "expr": "lit",
+                    "value": "inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-400 ring-1 ring-inset ring-emerald-500/20"
+                  }
+                },
+                "children": [
+                  {
+                    "kind": "text",
+                    "value": {
+                      "expr": "lit",
+                      "value": "Live"
+                    }
+                  }
+                ]
               }
             ]
           },
           {
             "kind": "element",
-            "tag": "button",
+            "tag": "div",
             "props": {
               "class": {
                 "expr": "lit",
-                "value": "flex h-12 w-12 items-center justify-center rounded-lg border border-border text-xl font-semibold transition-colors hover:bg-muted"
-              },
-              "onClick": {
-                "event": "click",
-                "action": "increment"
+                "value": "flex items-center justify-center py-8"
               }
             },
             "children": [
               {
-                "kind": "text",
-                "value": {
-                  "expr": "lit",
-                  "value": "+"
-                }
+                "kind": "element",
+                "tag": "span",
+                "props": {
+                  "class": {
+                    "expr": "lit",
+                    "value": "text-6xl font-bold tabular-nums tracking-tight text-white"
+                  }
+                },
+                "children": [
+                  {
+                    "kind": "text",
+                    "value": {
+                      "expr": "state",
+                      "name": "count"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": {
+                "expr": "lit",
+                "value": "flex gap-3"
+              }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "button",
+                "props": {
+                  "class": {
+                    "expr": "lit",
+                    "value": "flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-colors"
+                  },
+                  "onClick": {
+                    "event": "click",
+                    "action": "decrement"
+                  }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "class": { "expr": "lit", "value": "h-5 w-5" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke": { "expr": "lit", "value": "currentColor" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "path",
+                        "props": {
+                          "stroke-linecap": { "expr": "lit", "value": "round" },
+                          "stroke-linejoin": { "expr": "lit", "value": "round" },
+                          "d": { "expr": "lit", "value": "M5 12h14" }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "text",
+                    "value": {
+                      "expr": "lit",
+                      "value": "Decrease"
+                    }
+                  }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "button",
+                "props": {
+                  "class": {
+                    "expr": "lit",
+                    "value": "flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-colors"
+                  },
+                  "onClick": {
+                    "event": "click",
+                    "action": "increment"
+                  }
+                },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "svg",
+                    "props": {
+                      "class": { "expr": "lit", "value": "h-5 w-5" },
+                      "fill": { "expr": "lit", "value": "none" },
+                      "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                      "stroke-width": { "expr": "lit", "value": "2" },
+                      "stroke": { "expr": "lit", "value": "currentColor" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "path",
+                        "props": {
+                          "stroke-linecap": { "expr": "lit", "value": "round" },
+                          "stroke-linejoin": { "expr": "lit", "value": "round" },
+                          "d": { "expr": "lit", "value": "M12 4.5v15m7.5-7.5h-15" }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "text",
+                    "value": {
+                      "expr": "lit",
+                      "value": "Increase"
+                    }
+                  }
+                ]
               }
             ]
           }

@@ -1379,7 +1379,7 @@
         "kind": "element",
         "tag": "section",
         "props": {
-          "class": { "expr": "lit", "value": "px-6 py-16 sm:py-24" }
+          "class": { "expr": "lit", "value": "relative px-6 py-16 sm:py-24 overflow-hidden" }
         },
         "children": [
           {
@@ -1429,41 +1429,62 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "group relative overflow-hidden rounded-xl border border-border bg-muted" }
+                      "class": { "expr": "lit", "value": "code-demo-panel group relative overflow-hidden rounded-xl border border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl shadow-black/10 glass-inner-glow" }
                     },
                     "children": [
                       {
                         "kind": "element",
                         "tag": "div",
                         "props": {
-                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border px-4 py-2" }
+                          "class": { "expr": "lit", "value": "flex items-center gap-4 border-b border-border/40 px-4 py-3" }
                         },
                         "children": [
                           {
                             "kind": "element",
+                            "tag": "div",
+                            "props": {
+                              "class": { "expr": "lit", "value": "flex items-center gap-2" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "h-3 w-3 rounded-full bg-red-500/80" } }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "h-3 w-3 rounded-full bg-yellow-500/80" } }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "h-3 w-3 rounded-full bg-green-500/80" } }
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "element",
                             "tag": "span",
-                            "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
+                            "props": { "class": { "expr": "lit", "value": "flex-1 text-center text-sm font-medium text-muted-foreground" } },
                             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "counter.constela.json" } }]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "w-14" } }
                           }
                         ]
                       },
                       {
                         "kind": "element",
                         "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "max-h-[400px] overflow-auto p-4" } },
+                        "props": { "class": { "expr": "lit", "value": "max-h-[400px] overflow-auto" } },
                         "children": [
                           {
-                            "kind": "element",
-                            "tag": "pre",
-                            "props": { "class": { "expr": "lit", "value": "text-sm leading-relaxed" } },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "code",
-                                "props": { "class": { "expr": "lit", "value": "font-mono text-foreground" } },
-                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"increment\" }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"decrement\" }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"count\" } },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"increment\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"+\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"decrement\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"-\" } }]\n      }\n    ]\n  }\n}" } }]
-                              }
-                            ]
+                            "kind": "code",
+                            "content": { "expr": "lit", "value": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"count\": { \"type\": \"number\", \"initial\": 0 }\n  },\n  \"actions\": [\n    {\n      \"name\": \"increment\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"increment\" }\n      ]\n    },\n    {\n      \"name\": \"decrement\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"count\", \"operation\": \"decrement\" }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"count\" } },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"increment\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"+\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"onClick\": { \"event\": \"click\", \"action\": \"decrement\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"-\" } }]\n      }\n    ]\n  }\n}" },
+                            "language": { "expr": "lit", "value": "json" }
                           }
                         ]
                       }
@@ -1473,21 +1494,41 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "flex flex-col overflow-hidden rounded-xl border border-border bg-background" }
+                      "class": { "expr": "lit", "value": "flex flex-col overflow-hidden rounded-xl border border-border/40 bg-card/60 backdrop-blur-xl shadow-2xl shadow-black/10 glass-inner-glow" }
                     },
                     "children": [
                       {
                         "kind": "element",
                         "tag": "div",
                         "props": {
-                          "class": { "expr": "lit", "value": "border-b border-border px-4 py-2" }
+                          "class": { "expr": "lit", "value": "flex items-center justify-between border-b border-border/40 px-4 py-3" }
                         },
                         "children": [
                           {
                             "kind": "element",
+                            "tag": "div",
+                            "props": {
+                              "class": { "expr": "lit", "value": "flex items-center gap-2" }
+                            },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "h-2 w-2 rounded-full bg-green-500 animate-live-pulse" } }
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "class": { "expr": "lit", "value": "text-xs font-medium text-green-500" } },
+                                "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Live" } }]
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "element",
                             "tag": "span",
                             "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } },
-                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Live Preview" } }]
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Preview" } }]
                           }
                         ]
                       },

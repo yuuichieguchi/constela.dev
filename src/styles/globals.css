@@ -278,7 +278,45 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-float-delayed,
-  .animate-pulse-glow {
+  .animate-pulse-glow,
+  .animate-number-glow {
     animation: none;
   }
+}
+
+/* Code demo panel glassmorphism */
+.code-demo-panel .constela-code pre {
+  background: transparent !important;
+  border: none !important;
+  padding: 1.25rem !important;
+  margin: 0 !important;
+  font-size: 0.8rem !important;
+  line-height: 1.8 !important;
+}
+
+/* Inner glow effect for glassmorphism cards */
+.glass-inner-glow {
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Counter number glow animation */
+@keyframes number-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(129, 140, 248, 0.3); }
+  50% { text-shadow: 0 0 40px rgba(129, 140, 248, 0.5); }
+}
+
+.animate-number-glow {
+  animation: number-glow 3s ease-in-out infinite;
+}
+
+/* Live indicator pulse */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-live-pulse {
+  animation: live-pulse 2s ease-in-out infinite;
 }
