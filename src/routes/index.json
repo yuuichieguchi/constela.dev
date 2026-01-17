@@ -5,7 +5,13 @@
     "layout": "main",
     "meta": {
       "title": "Constela - A compiler-first UI language",
-      "description": "A compiler-first UI language for vibecoding"
+      "description": "A compiler-first UI language for vibecoding",
+      "og:title": "Constela - A compiler-first UI language",
+      "og:description": "A compiler-first UI language for vibecoding",
+      "og:image": "https://constela.dev/og-image.png",
+      "og:url": "https://constela.dev/",
+      "og:type": "website",
+      "twitter:card": "summary_large_image"
     }
   },
   "imports": {

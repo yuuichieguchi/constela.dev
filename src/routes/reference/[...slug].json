@@ -9,7 +9,13 @@
     },
     "meta": {
       "title": "Reference - Constela",
-      "description": "API Reference for Constela DSL"
+      "description": "API Reference for Constela DSL",
+      "og:title": "Reference - Constela",
+      "og:description": "API Reference for Constela DSL",
+      "og:image": "https://constela.dev/og-image.png",
+      "og:url": "https://constela.dev/reference",
+      "og:type": "website",
+      "twitter:card": "summary_large_image"
     }
   },
   "imports": {

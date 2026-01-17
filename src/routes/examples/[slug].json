@@ -5,7 +5,13 @@
     "layout": "main",
     "meta": {
       "title": "Example - Constela",
-      "description": "Interactive example showcasing Constela features."
+      "description": "Interactive example showcasing Constela features.",
+      "og:title": "Example - Constela",
+      "og:description": "Example - Constela",
+      "og:image": "https://constela.dev/og-image.png",
+      "og:url": "https://constela.dev/examples",
+      "og:type": "website",
+      "twitter:card": "summary_large_image"
     }
   },
   "imports": {

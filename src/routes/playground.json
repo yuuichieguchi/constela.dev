@@ -11,7 +11,13 @@
     "layout": "main",
     "meta": {
       "title": "Playground - Constela",
-      "description": "Interactive playground for Constela DSL"
+      "description": "Interactive playground for Constela DSL",
+      "og:title": "Playground - Constela",
+      "og:description": "Interactive playground for Constela DSL",
+      "og:image": "https://constela.dev/og-image.png",
+      "og:url": "https://constela.dev/playground",
+      "og:type": "website",
+      "twitter:card": "summary_large_image"
     }
   },
   "imports": {
