@@ -9,52 +9,7 @@
     "theme": { "type": "string", "initial": { "expr": "cookie", "key": "theme", "default": "dark" } },
     "mobileMenuOpen": { "type": "boolean", "initial": false }
   },
-  "lifecycle": {
-    "onMount": "loadTheme"
-  },
   "actions": [
-    {
-      "name": "loadTheme",
-      "steps": [
-        {
-          "do": "storage",
-          "operation": "get",
-          "key": { "expr": "lit", "value": "theme" },
-          "storage": "local",
-          "result": "savedTheme",
-          "onSuccess": [
-            {
-              "do": "if",
-              "condition": { "expr": "var", "name": "savedTheme" },
-              "then": [
-                {
-                  "do": "set",
-                  "target": "theme",
-                  "value": { "expr": "var", "name": "savedTheme" }
-                },
-                {
-                  "do": "dom",
-                  "operation": "removeClass",
-                  "selector": { "expr": "lit", "value": "html" },
-                  "value": {
-                    "expr": "cond",
-                    "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "savedTheme" }, "right": { "expr": "lit", "value": "dark" } },
-                    "then": { "expr": "lit", "value": "light" },
-                    "else": { "expr": "lit", "value": "dark" }
-                  }
-                },
-                {
-                  "do": "dom",
-                  "operation": "addClass",
-                  "selector": { "expr": "lit", "value": "html" },
-                  "value": { "expr": "var", "name": "savedTheme" }
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
     {
       "name": "toggleTheme",
       "steps": [
@@ -67,13 +22,6 @@
             "then": { "expr": "lit", "value": "light" },
             "else": { "expr": "lit", "value": "dark" }
           }
-        },
-        {
-          "do": "storage",
-          "operation": "set",
-          "key": { "expr": "lit", "value": "theme" },
-          "value": { "expr": "state", "name": "theme" },
-          "storage": "local"
         },
         {
           "do": "dom",
