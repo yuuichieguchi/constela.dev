@@ -2,9 +2,9 @@
   "version": "1.0",
   "externalImports": {
     "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm",
-    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.7.0/+esm",
-    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.7.1/+esm",
-    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@0.10.2/+esm"
+    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.12.0/+esm",
+    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.11.1/+esm",
+    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@0.16.0/+esm"
   },
   "route": {
     "path": "/playground",
@@ -180,8 +180,7 @@
                           "do": "set",
                           "target": "messageType",
                           "value": { "expr": "lit", "value": "success" }
-                        }
-                      ],
+                        }                      ],
                       "else": [
                         {
                           "do": "set",
@@ -192,8 +191,7 @@
                           "do": "set",
                           "target": "messageType",
                           "value": { "expr": "lit", "value": "error" }
-                        }
-                      ]
+                        }                      ]
                     }
                   ]
                 }
@@ -208,8 +206,7 @@
                   "do": "set",
                   "target": "messageType",
                   "value": { "expr": "lit", "value": "error" }
-                }
-              ]
+                }              ]
             }
           ],
           "onError": [
@@ -222,8 +219,7 @@
               "do": "set",
               "target": "messageType",
               "value": { "expr": "lit", "value": "error" }
-            }
-          ]
+            }          ]
         }
       ]
     },
@@ -300,8 +296,7 @@
                               "do": "set",
                               "target": "messageType",
                               "value": { "expr": "lit", "value": "success" }
-                            }
-                          ],
+                            }                          ],
                           "else": [
                             {
                               "do": "set",
@@ -312,8 +307,7 @@
                               "do": "set",
                               "target": "messageType",
                               "value": { "expr": "lit", "value": "error" }
-                            }
-                          ]
+                            }                          ]
                         }
                       ]
                     }
@@ -328,8 +322,7 @@
                       "do": "set",
                       "target": "messageType",
                       "value": { "expr": "lit", "value": "error" }
-                    }
-                  ]
+                    }                  ]
                 }
               ],
               "onError": [
@@ -342,8 +335,7 @@
                   "do": "set",
                   "target": "messageType",
                   "value": { "expr": "lit", "value": "error" }
-                }
-              ]
+                }              ]
             }
           ],
           "onError": [
@@ -356,8 +348,7 @@
               "do": "set",
               "target": "messageType",
               "value": { "expr": "lit", "value": "error" }
-            }
-          ]
+            }          ]
         }
       ]
     },
