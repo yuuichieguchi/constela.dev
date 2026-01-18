@@ -343,3 +343,12 @@ body {
   background-color: rgba(3, 7, 18, 0.8);
   backdrop-filter: blur(12px);
 }
+
+/* Theme toggle icon visibility */
+/* Dark mode (default): show sun, hide moon */
+.theme-icon-sun { display: block; }
+.theme-icon-moon { display: none; }
+
+/* Light mode: show moon, hide sun */
+html:not(.dark) .theme-icon-sun { display: none; }
+html:not(.dark) .theme-icon-moon { display: block; }
