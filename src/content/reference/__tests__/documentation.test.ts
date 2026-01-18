@@ -84,28 +84,28 @@ describe('Constela Documentation Updates', () => {
       );
     });
 
-    it('should have @constela/compiler ^0.9.0', () => {
-      expect(packageJson.dependencies['@constela/compiler']).toBe('^0.9.0');
+    it('should have @constela/compiler ^0.11.1', () => {
+      expect(packageJson.dependencies['@constela/compiler']).toBe('^0.11.1');
     });
 
-    it('should have @constela/core ^0.9.0', () => {
-      expect(packageJson.dependencies['@constela/core']).toBe('^0.9.0');
+    it('should have @constela/core ^0.12.0', () => {
+      expect(packageJson.dependencies['@constela/core']).toBe('^0.12.0');
     });
 
-    it('should have @constela/router ^10.0.0', () => {
-      expect(packageJson.dependencies['@constela/router']).toBe('^10.0.0');
+    it('should have @constela/router ^13.0.0', () => {
+      expect(packageJson.dependencies['@constela/router']).toBe('^13.0.0');
     });
 
-    it('should have @constela/runtime ^0.12.0', () => {
-      expect(packageJson.dependencies['@constela/runtime']).toBe('^0.12.0');
+    it('should have @constela/runtime ^0.15.2', () => {
+      expect(packageJson.dependencies['@constela/runtime']).toBe('^0.15.2');
     });
 
-    it('should have @constela/server ^5.0.0', () => {
-      expect(packageJson.dependencies['@constela/server']).toBe('^5.0.0');
+    it('should have @constela/server ^8.0.1', () => {
+      expect(packageJson.dependencies['@constela/server']).toBe('^8.0.1');
     });
 
-    it('should have @constela/start ^1.3.1', () => {
-      expect(packageJson.dependencies['@constela/start']).toBe('^1.3.1');
+    it('should have @constela/start ^1.5.5', () => {
+      expect(packageJson.dependencies['@constela/start']).toBe('^1.5.5');
     });
   });
 
