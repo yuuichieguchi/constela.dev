@@ -16,16 +16,16 @@ importers:
         version: 0.12.0
       '@constela/router':
         specifier: ^13.0.0
-        version: 13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.0)
+        version: 13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.1)
       '@constela/runtime':
-        specifier: ^0.15.0
-        version: 0.15.0
+        specifier: ^0.15.1
+        version: 0.15.1
       '@constela/server':
         specifier: ^8.0.0
         version: 8.0.0(@constela/compiler@0.11.1)(@constela/core@0.12.0)
       '@constela/start':
-        specifier: ^1.5.2
-        version: 1.5.2(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.5.4
+        version: 1.5.4(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.18)
@@ -115,8 +115,8 @@ packages:
       '@constela/compiler': ^0.11.1
       '@constela/runtime': ^0.15.0
 
-  '@constela/runtime@0.15.0':
-    resolution: {integrity: sha512-NQ2qBjOZaoViQWBTL1ditSYjMVwTyxqQF2b/meGHX59zsA27l/5LgYKVoUP1UxrCF++EO4wjpo19q9iidlWHxg==}
+  '@constela/runtime@0.15.1':
+    resolution: {integrity: sha512-RS64cssDCP2+zz9eTfq09DpigWn1i+ogkXba/wZAzZ3e5uo5p6fhAui0x2LFjhZBT6w4DBnoy8G1d5WYiyvPsA==}
     engines: {node: '>=20.0.0'}
 
   '@constela/server@8.0.0':
@@ -126,8 +126,8 @@ packages:
       '@constela/compiler': ^0.11.1
       '@constela/core': ^0.12.0
 
-  '@constela/start@1.5.2':
-    resolution: {integrity: sha512-Q9CtDvAE3JEzKcXz+E9cRbkwZ1MelenNFNOzGg3k9qZg2n8SCP0V9lKGkBQ6xhhqzghsAgICBIQvebGCh3cvWQ==}
+  '@constela/start@1.5.4':
+    resolution: {integrity: sha512-r5O1OE0JO6oaV7JzZVezQ1Hig/924CIwnVADzFv73mkJ7y3WrdnGjtmIMVMH+9ii0RfvWMslpyW40fePk5yj7A==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -2135,12 +2135,12 @@ snapshots:
 
   '@constela/core@0.12.0': {}
 
-  '@constela/router@13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.0)':
+  '@constela/router@13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.1)':
     dependencies:
       '@constela/compiler': 0.11.1
-      '@constela/runtime': 0.15.0
+      '@constela/runtime': 0.15.1
 
-  '@constela/runtime@0.15.0':
+  '@constela/runtime@0.15.1':
     dependencies:
       '@constela/compiler': 0.11.1
       '@constela/core': 0.12.0
@@ -2163,12 +2163,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@constela/start@1.5.2(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
+  '@constela/start@1.5.4(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
       '@constela/compiler': 0.11.1
       '@constela/core': 0.12.0
-      '@constela/router': 13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.0)
-      '@constela/runtime': 0.15.0
+      '@constela/router': 13.0.0(@constela/compiler@0.11.1)(@constela/runtime@0.15.1)
+      '@constela/runtime': 0.15.1
       '@constela/server': 8.0.0(@constela/compiler@0.11.1)(@constela/core@0.12.0)
       '@tailwindcss/postcss': 4.1.18
       commander: 12.1.0
