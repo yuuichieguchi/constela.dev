@@ -1,0 +1,198 @@
+---
+title: Hot Module Replacement
+description: Live reloading with state preservation during development
+---
+
+Hot Module Replacement (HMR) lets you see changes instantly without losing application state. Edit your JSON file, save it, and the browser updates automatically.
+
+<Callout type="tip">
+HMR is automatically enabled when running `npx constela dev`. No configuration required.
+</Callout>
+
+## Getting Started
+
+Start the development server:
+
+```bash
+npx constela dev
+```
+
+You'll see:
+
+```
+[Constela] Dev server started at http://localhost:3000
+[Constela] HMR server started at ws://localhost:24678
+```
+
+Now edit any JSON file in your `src/routes/` directory and save. Changes appear instantly.
+
+## What HMR Preserves
+
+When you save a JSON file, your application state is preserved:
+
+- Form input values
+- Counter values
+- Toggle states
+- Scroll position
+- Any other state defined in your JSON
+
+## Examples
+
+### Changing Button Text
+
+You have a counter at 10 and want to update the label.
+
+**Before:**
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Count: " } },
+      { "kind": "text", "value": { "expr": "state", "name": "count" } }
+    ]
+  }
+}
+```
+
+**After:**
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Clicks: " } },
+      { "kind": "text", "value": { "expr": "state", "name": "count" } }
+    ]
+  }
+}
+```
+
+Save the file. The button now shows "Clicks: 10". The count wasn't reset.
+
+### Adding New State
+
+Add new state fields without losing existing values.
+
+**Before:**
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  }
+}
+```
+
+**After:**
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 },
+    "message": { "type": "string", "initial": "Hello!" }
+  }
+}
+```
+
+The `count` value is preserved. The new `message` field uses its initial value.
+
+### Changing State Types
+
+If you change a state field's type:
+
+```json
+{
+  "state": {
+    "count": { "type": "string", "initial": "" }
+  }
+}
+```
+
+Constela detects the mismatch and shows a warning:
+
+```
+[HMR] Type mismatch for state 'count': number -> string. Using new initial value.
+```
+
+The new initial value is used to prevent type errors.
+
+## State Preservation Rules
+
+| Scenario | Behavior |
+|----------|----------|
+| Same key, same type | Previous value is restored |
+| Same key, different type | Warning logged, new initial value used |
+| New key added | New initial value used |
+| Key removed | Old value is discarded |
+
+<Callout type="note">
+Type mismatches are handled gracefully. Your app continues to work with the new initial value, allowing you to iterate quickly.
+</Callout>
+
+## What Triggers HMR
+
+HMR updates when you save:
+
+- Route JSON files (`src/routes/**/*.json`)
+- Component JSON files
+- Layout JSON files (`src/layouts/**/*.json`)
+
+## What Requires Full Reload
+
+These changes require a full page reload:
+
+- TypeScript files (API routes, middleware)
+- Configuration files (`constela.config.ts`)
+- Adding new route files
+
+## Error Handling
+
+When your JSON has an error, Constela shows an error overlay:
+
+```
+┌────────────────────────────────────────────┐
+│            Compilation Error               │
+│                                            │
+│  /src/routes/index.json                    │
+│                                            │
+│  ┌────────────────────────────────────┐   │
+│  │ UNDEFINED_STATE                     │   │
+│  │ Undefined state reference: 'cont'   │   │
+│  │ at view.children[0].value.name      │   │
+│  │                                     │   │
+│  │ Did you mean 'count'?               │   │
+│  └────────────────────────────────────┘   │
+│                                            │
+└────────────────────────────────────────────┘
+```
+
+The overlay shows:
+
+- **File path**: Which file has the error
+- **Error code**: `UNDEFINED_STATE`, `SCHEMA_INVALID`, etc.
+- **Error message**: What went wrong
+- **JSON path**: Where in the JSON structure (e.g., `view.children[0].value.name`)
+- **Suggestion**: "Did you mean 'count'?" when applicable
+
+<Callout type="tip">
+Fix the error and save. The overlay disappears automatically when compilation succeeds.
+</Callout>
+
+## Auto-Reconnect
+
+If the WebSocket connection is lost (e.g., server restart), the client automatically reconnects:
+
+- Initial delay: 1 second
+- Maximum delay: 30 seconds
+- Doubles after each failed attempt
+
+## Summary
+
+Constela's HMR provides:
+
+- **Zero config**: Just run `npx constela dev`
+- **Instant feedback**: Changes appear in ~50ms
+- **State preservation**: Form inputs, counters, and UI state survive updates
+- **Clear errors**: Overlay shows exactly what's wrong and how to fix it
+- **Auto-reconnect**: Connection loss is handled gracefully

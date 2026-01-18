@@ -24,7 +24,8 @@
     {
       "title": "Framework",
       "items": [
-        { "title": "@constela/start", "href": "/docs/start" }
+        { "title": "@constela/start", "href": "/docs/start" },
+        { "title": "HMR", "href": "/docs/hmr" }
       ]
     }
   ],
@@ -86,6 +87,10 @@
     },
     "/docs/start": {
       "prev": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
+      "next": { "title": "HMR", "href": "/docs/hmr" }
+    },
+    "/docs/hmr": {
+      "prev": { "title": "@constela/start", "href": "/docs/start" },
       "next": null
     }
   }
