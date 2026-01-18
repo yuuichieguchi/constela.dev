@@ -33,6 +33,31 @@ Text values.
 }
 ```
 
+#### Cookie Expression for Initial Value
+
+String state can use a **cookie expression** to read the initial value from cookies. This is SSR/SSG-safe and works for theme persistence, user preferences, etc.
+
+```json
+{
+  "state": {
+    "theme": {
+      "type": "string",
+      "initial": { "expr": "cookie", "key": "theme", "default": "dark" }
+    }
+  }
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `expr` | `"cookie"` | Expression type identifier |
+| `key` | `string` | Cookie name to read |
+| `default` | `string` | Fallback value when cookie is not set |
+
+<Callout type="tip">
+Cookie expressions are evaluated during SSR/SSG, so the initial HTML already contains the correct value. This prevents flash of incorrect content (e.g., theme flicker).
+</Callout>
+
 ### list
 
 Arrays of values.

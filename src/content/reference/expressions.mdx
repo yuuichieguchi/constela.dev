@@ -508,6 +508,51 @@ Accesses data from imported JSON files defined in the `imports` property.
 }
 ```
 
+## Cookie Expression
+
+Reads a value from cookies. Primarily used in state `initial` for SSR/SSG-safe persistence (e.g., theme preference).
+
+```json
+{ "expr": "cookie", "key": "theme", "default": "dark" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"cookie\"", required: true, description: "Expression type identifier." },
+  { name: "key", type: "string", required: true, description: "Cookie name to read." },
+  { name: "default", type: "string", required: true, description: "Fallback value when cookie is not set." }
+]} />
+
+### Usage in State Initial
+
+Cookie expressions are designed for state initialization, enabling SSR/SSG-safe persistence:
+
+```json
+{
+  "state": {
+    "theme": {
+      "type": "string",
+      "initial": { "expr": "cookie", "key": "theme", "default": "dark" }
+    }
+  }
+}
+```
+
+### How It Works
+
+| Environment | Behavior |
+|-------------|----------|
+| SSR/SSG | Reads cookie from HTTP request headers |
+| Client | Reads cookie from `document.cookie` |
+| No cookie | Returns the `default` value |
+
+<Callout type="tip">
+Cookie expressions solve the "theme flash" problem. Since the cookie is read during SSR, the initial HTML already contains the correct theme, preventing a flash of the wrong theme on page load.
+</Callout>
+
+<Callout type="note">
+When using cookie expressions, the cookie value takes precedence over localStorage. This ensures consistency between SSR and client-side rendering.
+</Callout>
+
 ## Data Expression
 
 Accesses data from build-time data sources (glob, file, or API). Used primarily with `@constela/start` for SSG.
