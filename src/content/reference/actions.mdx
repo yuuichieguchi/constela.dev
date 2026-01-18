@@ -1053,3 +1053,183 @@ Closes a WebSocket connection. See [Connections](/reference/connections) for ful
   ]
 }
 ```
+
+## Delay Step
+
+Executes steps after a specified delay. Useful for notifications, animations, and timed operations.
+
+```json
+{
+  "do": "delay",
+  "ms": { "expr": "lit", "value": 2000 },
+  "then": [
+    { "do": "set", "target": "message", "value": { "expr": "lit", "value": "Delayed!" } }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"delay\"", required: true, description: "Step type identifier." },
+  { name: "ms", type: "Expression", required: true, description: "Expression that evaluates to delay duration in milliseconds." },
+  { name: "then", type: "ActionStep[]", required: true, description: "Steps to execute after the delay." }
+]} />
+
+### Example: Auto-hide Notification
+
+```json
+{
+  "name": "showNotification",
+  "steps": [
+    { "do": "set", "target": "notification", "value": { "expr": "lit", "value": "Saved!" } },
+    {
+      "do": "delay",
+      "ms": { "expr": "lit", "value": 3000 },
+      "then": [
+        { "do": "set", "target": "notification", "value": { "expr": "lit", "value": "" } }
+      ]
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Delay timers are automatically cleaned up when the component unmounts, preventing memory leaks.
+</Callout>
+
+## Interval Step
+
+Executes an action repeatedly at a specified interval. Returns a timer ID that can be used with `clearTimer`.
+
+```json
+{
+  "do": "interval",
+  "ms": { "expr": "lit", "value": 5000 },
+  "action": "fetchData",
+  "result": "timerId"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"interval\"", required: true, description: "Step type identifier." },
+  { name: "ms", type: "Expression", required: true, description: "Expression that evaluates to interval duration in milliseconds." },
+  { name: "action", type: "string", required: true, description: "Name of the action to execute on each interval." },
+  { name: "result", type: "string", required: false, description: "State field to store the timer ID for later clearing." }
+]} />
+
+### Example: Polling for Updates
+
+```json
+{
+  "name": "startPolling",
+  "steps": [
+    {
+      "do": "interval",
+      "ms": { "expr": "lit", "value": 5000 },
+      "action": "fetchLatestData",
+      "result": "pollingTimerId"
+    }
+  ]
+}
+```
+
+<Callout type="note">
+Interval timers are automatically cleaned up when the component unmounts. Store the timer ID in `result` if you need to stop it manually with `clearTimer`.
+</Callout>
+
+## ClearTimer Step
+
+Stops a running timer (delay or interval) by its ID.
+
+```json
+{
+  "do": "clearTimer",
+  "target": { "expr": "state", "name": "timerId" }
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"clearTimer\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "Expression", required: true, description: "Expression that evaluates to the timer ID to clear." }
+]} />
+
+### Example: Stop Polling
+
+```json
+{
+  "name": "stopPolling",
+  "steps": [
+    { "do": "clearTimer", "target": { "expr": "state", "name": "pollingTimerId" } }
+  ]
+}
+```
+
+### Example: Cancel Pending Delay
+
+```json
+{
+  "name": "cancelNotification",
+  "steps": [
+    { "do": "clearTimer", "target": { "expr": "state", "name": "notificationTimerId" } },
+    { "do": "set", "target": "notification", "value": { "expr": "lit", "value": "" } }
+  ]
+}
+```
+
+## Focus Step
+
+Controls focus on form elements. Supports focus, blur, and select operations.
+
+```json
+{
+  "do": "focus",
+  "target": { "expr": "ref", "name": "emailInput" },
+  "operation": "focus"
+}
+```
+
+<PropsTable items={[
+  { name: "do", type: "\"focus\"", required: true, description: "Step type identifier." },
+  { name: "target", type: "Expression", required: true, description: "Expression that evaluates to a ref name or DOM element." },
+  { name: "operation", type: "\"focus\" | \"blur\" | \"select\"", required: true, description: "Focus operation to perform." }
+]} />
+
+### Focus Operations
+
+| Operation | Description | Works With |
+|-----------|-------------|------------|
+| `focus` | Sets focus on the element | All focusable elements |
+| `blur` | Removes focus from the element | All focusable elements |
+| `select` | Selects all text in the element | Input and textarea elements |
+
+### Examples
+
+```json
+// Focus an input when form opens
+{
+  "name": "openForm",
+  "steps": [
+    { "do": "set", "target": "isFormOpen", "value": { "expr": "lit", "value": true } },
+    { "do": "focus", "target": { "expr": "ref", "name": "firstInput" }, "operation": "focus" }
+  ]
+}
+
+// Select all text for easy replacement
+{
+  "name": "selectCode",
+  "steps": [
+    { "do": "focus", "target": { "expr": "ref", "name": "codeInput" }, "operation": "select" }
+  ]
+}
+
+// Blur when pressing Escape
+{
+  "name": "handleEscape",
+  "steps": [
+    { "do": "focus", "target": { "expr": "ref", "name": "searchInput" }, "operation": "blur" }
+  ]
+}
+```
+
+<Callout type="tip">
+Use `focus` with lifecycle hooks like `onMount` to auto-focus form fields when a modal or form opens.
+</Callout>

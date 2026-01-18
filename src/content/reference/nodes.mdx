@@ -418,3 +418,125 @@ Renders code with VS Code-quality syntax highlighting powered by Shiki.
   "content": { "expr": "state", "name": "codeSnippet" }
 }
 ```
+
+## Portal Node
+
+Renders children to a different location in the DOM, outside the normal component tree. Ideal for modals, tooltips, and dropdowns.
+
+```json
+{
+  "kind": "portal",
+  "target": "body",
+  "children": [
+    { "kind": "element", "tag": "div", "children": [...] }
+  ]
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"portal\"", required: true, description: "Node type identifier." },
+  { name: "target", type: "string", required: true, description: "Target location: \"body\", \"head\", or a CSS selector." },
+  { name: "children", type: "ViewNode[]", required: true, description: "Child nodes to render at the target location." }
+]} />
+
+### Target Options
+
+| Target | Description |
+|--------|-------------|
+| `"body"` | Renders to `document.body` |
+| `"head"` | Renders to `document.head` (for meta tags, etc.) |
+| CSS selector | Renders to matching element (e.g., `"#modal-root"`) |
+
+### Example: Modal Dialog
+
+```json
+{
+  "state": {
+    "isModalOpen": { "type": "boolean", "initial": false }
+  },
+  "actions": [
+    {
+      "name": "openModal",
+      "steps": [{ "do": "set", "target": "isModalOpen", "value": { "expr": "lit", "value": true } }]
+    },
+    {
+      "name": "closeModal",
+      "steps": [{ "do": "set", "target": "isModalOpen", "value": { "expr": "lit", "value": false } }]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "openModal" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Open Modal" } }]
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "isModalOpen" },
+        "then": {
+          "kind": "portal",
+          "target": "body",
+          "children": [{
+            "kind": "element",
+            "tag": "div",
+            "props": { "className": { "expr": "lit", "value": "fixed inset-0 bg-black/50 flex items-center justify-center" } },
+            "children": [{
+              "kind": "element",
+              "tag": "div",
+              "props": { "className": { "expr": "lit", "value": "bg-white p-6 rounded-lg" } },
+              "children": [
+                { "kind": "text", "value": { "expr": "lit", "value": "Modal Content" } },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": { "onClick": { "event": "click", "action": "closeModal" } },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Close" } }]
+                }
+              ]
+            }]
+          }]
+        }
+      }
+    ]
+  }
+}
+```
+
+### Example: Tooltip
+
+```json
+{
+  "kind": "portal",
+  "target": "#tooltip-root",
+  "children": [{
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "className": { "expr": "lit", "value": "absolute bg-gray-800 text-white px-2 py-1 rounded text-sm" },
+      "style": {
+        "expr": "concat",
+        "items": [
+          { "expr": "lit", "value": "left: " },
+          { "expr": "state", "name": "tooltipX" },
+          { "expr": "lit", "value": "px; top: " },
+          { "expr": "state", "name": "tooltipY" },
+          { "expr": "lit", "value": "px;" }
+        ]
+      }
+    },
+    "children": [{ "kind": "text", "value": { "expr": "state", "name": "tooltipText" } }]
+  }]
+}
+```
+
+<Callout type="tip">
+Portal children are cleaned up automatically when the portal node is removed from the tree. Use portals for any content that needs to break out of CSS stacking contexts or overflow constraints.
+</Callout>
+
+<Callout type="note">
+When using a CSS selector as the target, the element must exist in the DOM. If not found, children are not rendered. Consider adding a dedicated container element like `<div id="modal-root"></div>` to your HTML template.
+</Callout>

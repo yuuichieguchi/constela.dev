@@ -756,3 +756,114 @@ A common use case is building dynamic CSS class names:
 <Callout type="note">
 Null and undefined values are converted to empty strings. All other values are converted using JavaScript's `String()` function.
 </Callout>
+
+## Validity Expression
+
+Accesses HTML5 Constraint Validation API for form elements. Returns validation state from the browser's built-in validation.
+
+```json
+{ "expr": "validity", "ref": "emailInput", "property": "valid" }
+{ "expr": "validity", "ref": "emailInput", "property": "message" }
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"validity\"", required: true, description: "Expression type identifier." },
+  { name: "ref", type: "string", required: true, description: "Name of the ref on the form element to check validity for." },
+  { name: "property", type: "string", required: false, default: "\"valid\"", description: "Validity property to access. Defaults to 'valid'." }
+]} />
+
+### Validity Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `valid` | boolean | `true` if all constraints pass |
+| `valueMissing` | boolean | `true` if required field is empty |
+| `typeMismatch` | boolean | `true` if value doesn't match type (email, url, etc.) |
+| `patternMismatch` | boolean | `true` if value doesn't match pattern attribute |
+| `tooLong` | boolean | `true` if value exceeds maxLength |
+| `tooShort` | boolean | `true` if value is under minLength |
+| `rangeUnderflow` | boolean | `true` if number is below min |
+| `rangeOverflow` | boolean | `true` if number exceeds max |
+| `stepMismatch` | boolean | `true` if value doesn't match step |
+| `customError` | boolean | `true` if custom validity was set |
+| `message` | string | Browser's localized validation message |
+
+### Example: Email Validation
+
+```json
+{
+  "state": {},
+  "actions": [],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "input",
+        "ref": "emailInput",
+        "props": {
+          "type": { "expr": "lit", "value": "email" },
+          "required": { "expr": "lit", "value": true },
+          "placeholder": { "expr": "lit", "value": "Enter your email" }
+        }
+      },
+      {
+        "kind": "if",
+        "condition": {
+          "expr": "not",
+          "operand": { "expr": "validity", "ref": "emailInput", "property": "valid" }
+        },
+        "then": {
+          "kind": "element",
+          "tag": "span",
+          "props": { "className": { "expr": "lit", "value": "text-red-500 text-sm" } },
+          "children": [{
+            "kind": "text",
+            "value": { "expr": "validity", "ref": "emailInput", "property": "message" }
+          }]
+        }
+      }
+    ]
+  }
+}
+```
+
+### Example: Password Strength
+
+```json
+{
+  "kind": "element",
+  "tag": "input",
+  "ref": "passwordInput",
+  "props": {
+    "type": { "expr": "lit", "value": "password" },
+    "minLength": { "expr": "lit", "value": 8 },
+    "pattern": { "expr": "lit", "value": ".*[A-Z].*" }
+  }
+},
+{
+  "kind": "if",
+  "condition": { "expr": "validity", "ref": "passwordInput", "property": "tooShort" },
+  "then": {
+    "kind": "text",
+    "value": { "expr": "lit", "value": "Password must be at least 8 characters" }
+  }
+},
+{
+  "kind": "if",
+  "condition": { "expr": "validity", "ref": "passwordInput", "property": "patternMismatch" },
+  "then": {
+    "kind": "text",
+    "value": { "expr": "lit", "value": "Password must contain an uppercase letter" }
+  }
+}
+```
+
+<Callout type="tip">
+The validity expression reads directly from the browser's Constraint Validation API, so all standard HTML5 validation attributes (`required`, `pattern`, `minLength`, `maxLength`, `min`, `max`, `type`, `step`) work automatically.
+</Callout>
+
+<Callout type="note">
+Validity is evaluated lazily on each render. The element must exist in the DOM for validity to be checked. If the ref doesn't exist yet, `valid` returns `true` and `message` returns an empty string.
+</Callout>

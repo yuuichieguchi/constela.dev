@@ -647,6 +647,178 @@ For more advanced action steps, see the [Actions Reference](/reference/actions):
 - **`subscribe`** - Subscribe to events from external objects
 - **`dispose`** - Clean up resources and subscriptions
 - **`if`** - Conditional step execution
+- **`delay`** - Execute steps after a delay
+- **`interval`** - Execute action periodically
+- **`clearTimer`** - Stop a running timer
+- **`focus`** - Focus, blur, or select form elements
+
+## Timer Actions
+
+Execute actions with time delays or at regular intervals.
+
+### delay
+
+Execute steps after a specified delay:
+
+```json
+{
+  "do": "delay",
+  "ms": { "expr": "lit", "value": 3000 },
+  "then": [
+    { "do": "set", "target": "notification", "value": { "expr": "lit", "value": "" } }
+  ]
+}
+```
+
+### interval
+
+Execute an action repeatedly:
+
+```json
+{
+  "do": "interval",
+  "ms": { "expr": "lit", "value": 5000 },
+  "action": "fetchLatestData",
+  "result": "pollingTimerId"
+}
+```
+
+### clearTimer
+
+Stop a running timer:
+
+```json
+{ "do": "clearTimer", "target": { "expr": "state", "name": "pollingTimerId" } }
+```
+
+## Event Handler Options
+
+### Debounce
+
+Wait for a pause in events before executing. Ideal for search inputs:
+
+```json
+{
+  "onInput": {
+    "event": "input",
+    "action": "search",
+    "debounce": 300
+  }
+}
+```
+
+### Throttle
+
+Limit execution frequency. Ideal for scroll or resize handlers:
+
+```json
+{
+  "onScroll": {
+    "event": "scroll",
+    "action": "trackScroll",
+    "throttle": 100
+  }
+}
+```
+
+### IntersectionObserver
+
+Detect when an element becomes visible:
+
+```json
+{
+  "onIntersect": {
+    "event": "intersect",
+    "action": "loadMore",
+    "options": {
+      "threshold": 0.5,
+      "rootMargin": "100px"
+    }
+  }
+}
+```
+
+## Event Data
+
+Event handlers have access to various data depending on the event type.
+
+### Input Events
+
+```json
+{ "expr": "var", "name": "value" }    // Input value
+{ "expr": "var", "name": "checked" }  // Checkbox checked state
+```
+
+### Keyboard Events
+
+```json
+{ "expr": "var", "name": "key" }      // Key pressed (e.g., "Enter", "a")
+{ "expr": "var", "name": "code" }     // Physical key code
+{ "expr": "var", "name": "ctrlKey" }  // Ctrl key held
+{ "expr": "var", "name": "shiftKey" } // Shift key held
+{ "expr": "var", "name": "altKey" }   // Alt key held
+{ "expr": "var", "name": "metaKey" }  // Command/Windows key held
+```
+
+### Mouse Events
+
+```json
+{ "expr": "var", "name": "clientX" }  // X position in viewport
+{ "expr": "var", "name": "clientY" }  // Y position in viewport
+{ "expr": "var", "name": "pageX" }    // X position in document
+{ "expr": "var", "name": "pageY" }    // Y position in document
+{ "expr": "var", "name": "button" }   // Mouse button (0=left, 1=middle, 2=right)
+```
+
+### Touch Events
+
+```json
+{ "expr": "var", "name": "touches" }  // Array of touch points
+```
+
+Each touch point contains `clientX`, `clientY`, `pageX`, `pageY`.
+
+### Scroll Events
+
+```json
+{ "expr": "var", "name": "scrollTop" }  // Vertical scroll position
+{ "expr": "var", "name": "scrollLeft" } // Horizontal scroll position
+```
+
+### File Input Events
+
+```json
+{ "expr": "var", "name": "files" }  // Array of file info
+```
+
+Each file contains `name`, `size`, `type`.
+
+### Example: Keyboard Shortcuts
+
+```json
+{
+  "name": "handleKeydown",
+  "steps": [
+    {
+      "do": "if",
+      "condition": {
+        "expr": "bin",
+        "op": "&&",
+        "left": { "expr": "var", "name": "ctrlKey" },
+        "right": {
+          "expr": "bin",
+          "op": "==",
+          "left": { "expr": "var", "name": "key" },
+          "right": { "expr": "lit", "value": "s" }
+        }
+      },
+      "then": [
+        { "do": "set", "target": "isSaving", "value": { "expr": "lit", "value": true } }
+      ]
+    }
+  ]
+}
+```
 
 ## Next Steps
 
