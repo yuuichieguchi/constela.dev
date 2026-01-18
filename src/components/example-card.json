@@ -6,7 +6,9 @@
         "title": { "type": "string", "required": true },
         "description": { "type": "string", "required": true },
         "href": { "type": "string", "required": true },
-        "features": { "type": "json", "required": false }
+        "featuresPreview": { "type": "json", "required": false },
+        "featuresExtra": { "type": "json", "required": false },
+        "featuresExtraCount": { "type": "number", "required": false }
       },
       "view": {
         "kind": "element",
@@ -38,26 +40,85 @@
           },
           {
             "kind": "if",
-            "condition": { "expr": "param", "name": "features" },
+            "condition": { "expr": "param", "name": "featuresPreview" },
             "then": {
               "kind": "element",
               "tag": "div",
               "props": {
-                "class": { "expr": "lit", "value": "mt-4 flex flex-wrap gap-2" }
+                "class": { "expr": "lit", "value": "mt-4 flex flex-wrap gap-2 group/chips" }
               },
               "children": [
                 {
                   "kind": "each",
-                  "items": { "expr": "param", "name": "features" },
+                  "items": { "expr": "param", "name": "featuresPreview" },
                   "as": "feature",
                   "body": {
                     "kind": "element",
                     "tag": "span",
                     "props": {
-                      "class": { "expr": "lit", "value": "rounded-full bg-muted px-2.5 py-0.5 text-xs" }
+                      "class": {
+                        "expr": "cond",
+                        "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "state" } },
+                        "then": { "expr": "lit", "value": "rounded-full backdrop-blur-md bg-purple-400/10 border border-purple-400/20 px-3 py-1 text-xs font-medium text-purple-300 shadow-sm transition-all hover:bg-purple-400/20 hover:border-purple-400/30" },
+                        "else": {
+                          "expr": "cond",
+                          "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "action" } },
+                          "then": { "expr": "lit", "value": "rounded-full backdrop-blur-md bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 text-xs font-medium text-cyan-300 shadow-sm transition-all hover:bg-cyan-400/20 hover:border-cyan-400/30" },
+                          "else": {
+                            "expr": "cond",
+                            "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "component" } },
+                            "then": { "expr": "lit", "value": "rounded-full backdrop-blur-md bg-pink-400/10 border border-pink-400/20 px-3 py-1 text-xs font-medium text-pink-300 shadow-sm transition-all hover:bg-pink-400/20 hover:border-pink-400/30" },
+                            "else": { "expr": "lit", "value": "rounded-full backdrop-blur-md bg-white/5 border border-white/10 px-3 py-1 text-xs font-medium text-gray-300 shadow-sm transition-all hover:bg-white/10 hover:border-white/20" }
+                          }
+                        }
+                      }
                     },
                     "children": [
-                      { "kind": "text", "value": { "expr": "var", "name": "feature" } }
+                      { "kind": "text", "value": { "expr": "var", "name": "feature", "path": "name" } }
+                    ]
+                  }
+                },
+                {
+                  "kind": "each",
+                  "items": { "expr": "param", "name": "featuresExtra" },
+                  "as": "feature",
+                  "body": {
+                    "kind": "element",
+                    "tag": "span",
+                    "props": {
+                      "class": {
+                        "expr": "cond",
+                        "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "state" } },
+                        "then": { "expr": "lit", "value": "hidden group-hover/chips:inline-flex rounded-full backdrop-blur-md bg-purple-400/10 border border-purple-400/20 px-3 py-1 text-xs font-medium text-purple-300 shadow-sm transition-all hover:bg-purple-400/20 hover:border-purple-400/30" },
+                        "else": {
+                          "expr": "cond",
+                          "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "action" } },
+                          "then": { "expr": "lit", "value": "hidden group-hover/chips:inline-flex rounded-full backdrop-blur-md bg-cyan-400/10 border border-cyan-400/20 px-3 py-1 text-xs font-medium text-cyan-300 shadow-sm transition-all hover:bg-cyan-400/20 hover:border-cyan-400/30" },
+                          "else": {
+                            "expr": "cond",
+                            "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "feature", "path": "category" }, "right": { "expr": "lit", "value": "component" } },
+                            "then": { "expr": "lit", "value": "hidden group-hover/chips:inline-flex rounded-full backdrop-blur-md bg-pink-400/10 border border-pink-400/20 px-3 py-1 text-xs font-medium text-pink-300 shadow-sm transition-all hover:bg-pink-400/20 hover:border-pink-400/30" },
+                            "else": { "expr": "lit", "value": "hidden group-hover/chips:inline-flex rounded-full backdrop-blur-md bg-white/5 border border-white/10 px-3 py-1 text-xs font-medium text-gray-300 shadow-sm transition-all hover:bg-white/10 hover:border-white/20" }
+                          }
+                        }
+                      }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "var", "name": "feature", "path": "name" } }
+                    ]
+                  }
+                },
+                {
+                  "kind": "if",
+                  "condition": { "expr": "bin", "op": ">", "left": { "expr": "param", "name": "featuresExtraCount" }, "right": { "expr": "lit", "value": 0 } },
+                  "then": {
+                    "kind": "element",
+                    "tag": "span",
+                    "props": {
+                      "class": { "expr": "lit", "value": "group-hover/chips:hidden rounded-full backdrop-blur-md bg-white/5 border border-dashed border-white/20 px-2.5 py-1 text-xs text-muted-foreground cursor-pointer hover:bg-white/10 hover:border-white/30" }
+                    },
+                    "children": [
+                      { "kind": "text", "value": { "expr": "bin", "op": "+", "left": { "expr": "lit", "value": "+" }, "right": { "expr": "param", "name": "featuresExtraCount" } } }
                     ]
                   }
                 }

@@ -4,7 +4,15 @@
       "slug": "counter",
       "title": "Counter",
       "description": "A basic counter example demonstrating state management with increment, decrement, and reset actions.",
-      "features": ["Number state", "Actions with steps", "Click event handlers", "State updates (increment, decrement, set)"],
+      "featuresPreview": [
+        { "name": "Number state", "category": "state" },
+        { "name": "Actions with steps", "category": "action" },
+        { "name": "Click event handlers", "category": "action" }
+      ],
+      "featuresExtra": [
+        { "name": "State updates", "category": "state" }
+      ],
+      "featuresExtraCount": 1,
       "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run counter.json"],
       "code": {
         "version": "1.0",
@@ -96,7 +104,17 @@
       "slug": "todo-list",
       "title": "Todo List",
       "description": "A todo list example demonstrating list state management, input binding, and iteration with the each loop.",
-      "features": ["List state", "String state", "Input binding with onInput", "Each loop for iteration", "List operations (push, remove)", "Action payload passing"],
+      "featuresPreview": [
+        { "name": "List state", "category": "state" },
+        { "name": "String state", "category": "state" },
+        { "name": "Input binding", "category": "action" }
+      ],
+      "featuresExtra": [
+        { "name": "Each loop", "category": "default" },
+        { "name": "List operations", "category": "action" },
+        { "name": "Payload passing", "category": "action" }
+      ],
+      "featuresExtraCount": 3,
       "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run todo-list.json"],
       "code": {
         "version": "1.0",
@@ -211,7 +229,17 @@
       "slug": "fetch-list",
       "title": "Fetch List",
       "description": "An example demonstrating how to fetch data from an API with loading states and error handling.",
-      "features": ["Fetch step for HTTP requests", "Loading state management", "onSuccess and onError handlers", "Conditional rendering with if", "Object property access with path", "Binary expressions for comparison"],
+      "featuresPreview": [
+        { "name": "Fetch step", "category": "action" },
+        { "name": "Loading state", "category": "state" },
+        { "name": "onSuccess/onError", "category": "action" }
+      ],
+      "featuresExtra": [
+        { "name": "Conditional rendering", "category": "default" },
+        { "name": "Object path access", "category": "default" },
+        { "name": "Binary expressions", "category": "default" }
+      ],
+      "featuresExtraCount": 3,
       "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run fetch-list.json"],
       "code": {
         "version": "1.0",
@@ -325,7 +353,17 @@
       "slug": "router",
       "title": "Router",
       "description": "A multi-page routing example demonstrating navigation, nested routes, and dynamic parameters.",
-      "features": ["@constela/router package", "Route definitions", "Link component for navigation", "Nested routes with Outlet", "Dynamic route parameters", "Route param expressions"],
+      "featuresPreview": [
+        { "name": "@constela/router", "category": "component" },
+        { "name": "Route definitions", "category": "component" },
+        { "name": "Link component", "category": "component" }
+      ],
+      "featuresExtra": [
+        { "name": "Nested routes", "category": "component" },
+        { "name": "Dynamic params", "category": "default" },
+        { "name": "Param expressions", "category": "default" }
+      ],
+      "featuresExtraCount": 3,
       "runCommands": ["npm install @constela/core @constela/runtime @constela/router", "npx constela dev"],
       "note": "This example requires the @constela/router package and uses TypeScript instead of the JSON DSL for router configuration.",
       "code": {
@@ -416,7 +454,16 @@
       "slug": "portals-observers-validity",
       "title": "Portals, Timers, Observers & Validity",
       "description": "Demo of Portals, Timers (auto-close modal), Intersection Observer, and Form Validity.",
-      "features": ["Portal for modal rendering", "Timer for auto-close", "Intersection Observer for scroll detection", "Form validity expressions", "Conditional styling"],
+      "featuresPreview": [
+        { "name": "Portal", "category": "component" },
+        { "name": "Timer", "category": "component" },
+        { "name": "Intersection Observer", "category": "component" }
+      ],
+      "featuresExtra": [
+        { "name": "Form validity", "category": "default" },
+        { "name": "Conditional styling", "category": "default" }
+      ],
+      "featuresExtraCount": 2,
       "runCommands": ["npm install @constela/core @constela/runtime", "npx constela run advanced-features.json"],
       "code": {
         "version": "1.0",
