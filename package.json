@@ -15,10 +15,10 @@
   "dependencies": {
     "@constela/compiler": "^0.11.1",
     "@constela/core": "^0.12.0",
-    "@constela/router": "^13.0.0",
-    "@constela/runtime": "^0.15.2",
+    "@constela/router": "^14.0.0",
+    "@constela/runtime": "^0.16.0",
     "@constela/server": "^8.0.1",
-    "@constela/start": "^1.5.5",
+    "@constela/start": "^1.6.0",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
