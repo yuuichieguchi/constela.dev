@@ -1,0 +1,69 @@
+---
+title: 'Route Parameters'
+description: Working with dynamic route parameters
+---
+
+Route parameters allow you to capture dynamic segments from the URL.
+
+## Defining Dynamic Routes
+
+Use `:paramName` syntax in route paths:
+
+```typescript
+const router = createRouter({
+  routes: [
+    { path: '/users/:id', program: userProgram },
+    { path: '/posts/:category/:slug', program: postProgram }
+  ]
+});
+```
+
+## Accessing Parameters in Programs
+
+Route parameters are automatically extracted and available via the `param` expression:
+
+```json
+{
+  "kind": "text",
+  "value": { "expr": "param", "name": "id" }
+}
+```
+
+## Multiple Parameters
+
+For routes with multiple dynamic segments:
+
+```json
+{
+  "version": "1.0",
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Category: " } },
+      { "kind": "text", "value": { "expr": "param", "name": "category" } },
+      { "kind": "text", "value": { "expr": "lit", "value": ", Slug: " } },
+      { "kind": "text", "value": { "expr": "param", "name": "slug" } }
+    ]
+  }
+}
+```
+
+## Optional Parameters
+
+Optional parameters can be handled with conditional rendering:
+
+```json
+{
+  "kind": "if",
+  "condition": { "expr": "param", "name": "tab" },
+  "then": {
+    "kind": "text",
+    "value": { "expr": "param", "name": "tab" }
+  },
+  "else": {
+    "kind": "text",
+    "value": { "expr": "lit", "value": "default" }
+  }
+}
+```

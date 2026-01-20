@@ -1,0 +1,85 @@
+---
+title: 'File-based Routing'
+description: Automatic route generation from directory structure in @constela/start
+---
+
+Routes are determined by the file structure inside `src/routes/`:
+
+## Route Mapping
+
+| File Path | Route |
+|-----------|-------|
+| `src/routes/index.json` | `/` |
+| `src/routes/about.json` | `/about` |
+| `src/routes/users/index.json` | `/users` |
+| `src/routes/users/[id].json` | `/users/:id` |
+| `src/routes/posts/[...slug].json` | `/posts/*` (catch-all) |
+
+## Page Definition
+
+Each page is a JSON file with the Constela DSL:
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/",
+    "layout": "main",
+    "meta": {
+      "title": "Home",
+      "description": "Welcome to my app"
+    }
+  },
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "state", "name": "count" } },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "increment" } },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "+1" } }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Route Configuration
+
+The `route` object supports the following properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `path` | `string` | The URL path for this route |
+| `layout` | `string` | Name of the layout to use |
+| `meta` | `object` | SEO metadata (title, description, etc.) |
+
+## Layouts
+
+Layouts are defined in `src/layouts/` and can be referenced by name:
+
+```json
+{
+  "route": {
+    "path": "/dashboard",
+    "layout": "admin"
+  }
+}
+```
+
+This will use `src/layouts/admin.json` as the layout wrapper.

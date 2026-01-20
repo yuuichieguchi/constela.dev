@@ -1,0 +1,69 @@
+---
+title: 'SSR'
+description: Server-Side Rendering in @constela/start
+---
+
+`@constela/start` provides server-side rendering out of the box. Pages defined in JSON are automatically SSR'd on the server and hydrated on the client for optimal performance and SEO.
+
+<Callout type="tip">
+No additional configuration is required for SSR. Just create your JSON route files and the framework handles the rest.
+</Callout>
+
+## How It Works
+
+1. When a request comes in, the server renders the page to HTML
+2. The HTML is sent to the client with embedded hydration data
+3. The client hydrates the page, making it interactive
+4. Subsequent navigation uses client-side routing
+
+## SSR Style Evaluation
+
+Starting from `@constela/server` v4.1.0, style expressions defined in your JSON routes are evaluated during server-side rendering. Define styles at the root of your program and use them in views:
+
+```json
+{
+  "version": "1.0",
+  "route": { "path": "/" },
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        }
+      },
+      "defaultVariants": { "variant": "primary" }
+    }
+  },
+  "state": {},
+  "actions": [],
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": {
+      "className": { "expr": "style", "name": "button" }
+    },
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
+    ]
+  }
+}
+```
+
+The SSR output includes the resolved class string:
+
+```html
+<button class="px-4 py-2 rounded bg-blue-500 text-white">Click me</button>
+```
+
+<Callout type="tip">
+Style expressions are evaluated at render time, producing static class strings in the HTML output. This ensures consistent styling between SSR and client hydration.
+</Callout>
+
+## Benefits of SSR
+
+- **SEO**: Search engines can crawl your content
+- **Performance**: Faster Time to First Contentful Paint (FCP)
+- **Accessibility**: Content is available without JavaScript
+- **Social sharing**: Open Graph meta tags work correctly

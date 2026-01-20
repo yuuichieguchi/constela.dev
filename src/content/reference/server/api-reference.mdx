@@ -1,0 +1,53 @@
+---
+title: 'API Reference'
+description: Key exports and types from @constela/server
+---
+
+## Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `renderToString` | Renders a CompiledProgram to HTML string for SSR (async) |
+
+## renderToString
+
+Renders a compiled Constela program to an HTML string:
+
+```typescript
+async function renderToString(
+  program: CompiledProgram,
+  options?: RenderOptions
+): Promise<string>;
+```
+
+## RenderOptions
+
+```typescript
+interface RenderOptions {
+  route?: {
+    params?: Record<string, string>;
+    query?: Record<string, string>;
+    path?: string;
+  };
+  imports?: Record<string, unknown>;
+  styles?: Record<string, StylePreset>;  // v4.1.0+
+}
+```
+
+## StylePreset
+
+```typescript
+interface StylePreset {
+  base: string;
+  variants?: Record<string, Record<string, string>>;
+  defaultVariants?: Record<string, string>;
+}
+```
+
+## Features
+
+| Feature | Library | Description |
+|---------|---------|-------------|
+| Markdown parsing | marked | GFM-compatible Markdown parser |
+| Syntax highlighting | shiki | VS Code-quality code highlighting at build time |
+| XSS protection | DOMPurify | HTML sanitization for security |

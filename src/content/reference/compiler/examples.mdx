@@ -1,0 +1,59 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/compiler
+---
+
+## Basic Compilation
+
+```typescript
+import { compile } from '@constela/compiler';
+import type { Program } from '@constela/core';
+
+const program: Program = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  actions: [],
+  view: { kind: 'text', value: { expr: 'state', name: 'count' } }
+};
+
+const result = compile(program, {
+  target: 'esm',
+  minify: true
+});
+
+if (result.ok) {
+  console.log(result.code);
+} else {
+  console.error(result.errors);
+}
+```
+
+## With Source Maps
+
+```typescript
+const result = compile(program, {
+  target: 'esm',
+  sourcemap: true
+});
+
+if (result.ok) {
+  // Write the compiled code
+  fs.writeFileSync('dist/app.js', result.code);
+
+  // Write the source map
+  fs.writeFileSync('dist/app.js.map', result.sourcemap);
+}
+```
+
+## Different Output Formats
+
+```typescript
+// ES Modules (default)
+const esmResult = compile(program, { target: 'esm' });
+
+// CommonJS
+const cjsResult = compile(program, { target: 'cjs' });
+
+// IIFE (for browser <script> tags)
+const iifeResult = compile(program, { target: 'iife' });
+```

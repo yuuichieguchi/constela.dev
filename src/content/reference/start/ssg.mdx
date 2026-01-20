@@ -1,0 +1,98 @@
+---
+title: 'SSG'
+description: Static Site Generation in @constela/start
+---
+
+For static pages with dynamic routes, use the `getStaticPaths` field to pre-render pages at build time.
+
+## Basic Usage
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/posts/:slug",
+    "getStaticPaths": {
+      "source": "posts",
+      "params": {
+        "slug": {
+          "expr": "get",
+          "base": { "expr": "var", "name": "item" },
+          "path": "slug"
+        }
+      }
+    }
+  },
+  "data": {
+    "posts": {
+      "type": "glob",
+      "pattern": "content/posts/*.mdx",
+      "transform": "mdx"
+    }
+  },
+  "view": { ... }
+}
+```
+
+## Build Output
+
+When you run the build command:
+
+```bash
+npx constela-start build
+```
+
+It generates static HTML files:
+
+```
+dist/posts/hello-world.html
+dist/posts/another-post.html
+...
+```
+
+## Data Sources
+
+SSG can pull data from various sources:
+
+### File System (Glob)
+
+```json
+{
+  "data": {
+    "posts": {
+      "type": "glob",
+      "pattern": "content/posts/*.mdx",
+      "transform": "mdx"
+    }
+  }
+}
+```
+
+### Static Data
+
+```json
+{
+  "data": {
+    "categories": {
+      "type": "static",
+      "value": [
+        { "slug": "tech", "name": "Technology" },
+        { "slug": "design", "name": "Design" }
+      ]
+    }
+  }
+}
+```
+
+## When to Use SSG
+
+SSG is ideal for:
+
+- **Blog posts**: Content that changes infrequently
+- **Documentation**: Static reference pages
+- **Marketing pages**: Landing pages and product pages
+- **Portfolio sites**: Showcasing static content
+
+<Callout type="tip">
+For dynamic content that changes frequently, use SSR instead. You can mix SSR and SSG in the same application.
+</Callout>

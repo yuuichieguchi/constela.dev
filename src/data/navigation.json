@@ -17,15 +17,9 @@
         { "title": "Fetch & Effects", "href": "/docs/fetch-effects" },
         { "title": "Components", "href": "/docs/components" },
         { "title": "Routing", "href": "/docs/routing" },
-        { "title": "Design Principles", "href": "/docs/design-principles" },
-        { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" }
-      ]
-    },
-    {
-      "title": "Framework",
-      "items": [
-        { "title": "@constela/start", "href": "/docs/start" },
         { "title": "HMR", "href": "/docs/hmr" },
+        { "title": "Design Principles", "href": "/docs/design-principles" },
+        { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
         { "title": "SEO", "href": "/docs/seo" }
       ]
     }
@@ -40,8 +34,97 @@
         { "title": "Actions", "href": "/reference/actions" },
         { "title": "Connections", "href": "/reference/connections" },
         { "title": "Style System", "href": "/reference/styles" },
-        { "title": "Error Codes", "href": "/reference/errors" },
-        { "title": "Packages", "href": "/reference/packages" }
+        { "title": "Error Codes", "href": "/reference/errors" }
+      ]
+    },
+    {
+      "title": "@constela/core",
+      "items": [
+        { "title": "Overview", "href": "/reference/core" },
+        { "title": "Installation", "href": "/reference/core/installation" },
+        { "title": "API Reference", "href": "/reference/core/api-reference" },
+        { "title": "Examples", "href": "/reference/core/examples" }
+      ]
+    },
+    {
+      "title": "@constela/compiler",
+      "items": [
+        { "title": "Overview", "href": "/reference/compiler" },
+        { "title": "Installation", "href": "/reference/compiler/installation" },
+        { "title": "API Reference", "href": "/reference/compiler/api-reference" },
+        { "title": "Examples", "href": "/reference/compiler/examples" }
+      ]
+    },
+    {
+      "title": "@constela/runtime",
+      "items": [
+        { "title": "Overview", "href": "/reference/runtime" },
+        { "title": "Installation", "href": "/reference/runtime/installation" },
+        { "title": "API Reference", "href": "/reference/runtime/api-reference" },
+        { "title": "Examples", "href": "/reference/runtime/examples" }
+      ]
+    },
+    {
+      "title": "@constela/router",
+      "items": [
+        { "title": "Overview", "href": "/reference/router" },
+        { "title": "Installation", "href": "/reference/router/installation" },
+        { "title": "API Reference", "href": "/reference/router/api-reference" },
+        { "title": "Examples", "href": "/reference/router/examples" },
+        { "title": "Route Parameters", "href": "/reference/router/route-parameters" }
+      ]
+    },
+    {
+      "title": "@constela/server",
+      "items": [
+        { "title": "Overview", "href": "/reference/server" },
+        { "title": "Installation", "href": "/reference/server/installation" },
+        { "title": "API Reference", "href": "/reference/server/api-reference" },
+        { "title": "Examples", "href": "/reference/server/examples" },
+        { "title": "SSR Style Evaluation", "href": "/reference/server/ssr-style-evaluation" }
+      ]
+    },
+    {
+      "title": "@constela/cli",
+      "items": [
+        { "title": "Overview", "href": "/reference/cli" },
+        { "title": "Installation", "href": "/reference/cli/installation" },
+        { "title": "API Reference", "href": "/reference/cli/api-reference" },
+        { "title": "Examples", "href": "/reference/cli/examples" },
+        { "title": "Commands", "href": "/reference/cli/commands" }
+      ]
+    },
+    {
+      "title": "@constela/builder",
+      "items": [
+        { "title": "Overview", "href": "/reference/builder" },
+        { "title": "Installation", "href": "/reference/builder/installation" },
+        { "title": "API Reference", "href": "/reference/builder/api-reference" },
+        { "title": "Examples", "href": "/reference/builder/examples" }
+      ]
+    },
+    {
+      "title": "@constela/start",
+      "items": [
+        { "title": "Overview", "href": "/reference/start" },
+        {
+          "title": "Routing",
+          "items": [
+            { "title": "File-based Routing", "href": "/reference/start/file-based-routing" },
+            { "title": "Dynamic Routes", "href": "/reference/start/dynamic-routes" },
+            { "title": "Catch-all Routes", "href": "/reference/start/catch-all-routes" }
+          ]
+        },
+        {
+          "title": "Rendering",
+          "items": [
+            { "title": "SSR", "href": "/reference/start/ssr" },
+            { "title": "SSG", "href": "/reference/start/ssg" }
+          ]
+        },
+        { "title": "API Routes", "href": "/reference/start/api-routes" },
+        { "title": "Middleware", "href": "/reference/start/middleware" },
+        { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" }
       ]
     }
   ],
@@ -76,26 +159,212 @@
     },
     "/docs/routing": {
       "prev": { "title": "Components", "href": "/docs/components" },
+      "next": { "title": "HMR", "href": "/docs/hmr" }
+    },
+    "/docs/hmr": {
+      "prev": { "title": "Routing", "href": "/docs/routing" },
       "next": { "title": "Design Principles", "href": "/docs/design-principles" }
     },
     "/docs/design-principles": {
-      "prev": { "title": "Routing", "href": "/docs/routing" },
+      "prev": { "title": "HMR", "href": "/docs/hmr" },
       "next": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" }
     },
     "/docs/vibe-coding": {
       "prev": { "title": "Design Principles", "href": "/docs/design-principles" },
-      "next": { "title": "@constela/start", "href": "/docs/start" }
-    },
-    "/docs/start": {
-      "prev": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
-      "next": { "title": "HMR", "href": "/docs/hmr" }
-    },
-    "/docs/hmr": {
-      "prev": { "title": "@constela/start", "href": "/docs/start" },
       "next": { "title": "SEO", "href": "/docs/seo" }
     },
     "/docs/seo": {
-      "prev": { "title": "HMR", "href": "/docs/hmr" },
+      "prev": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
+      "next": null
+    }
+  },
+  "referencePagination": {
+    "/reference": {
+      "prev": null,
+      "next": { "title": "View Nodes", "href": "/reference/nodes" }
+    },
+    "/reference/nodes": {
+      "prev": { "title": "DSL Root", "href": "/reference" },
+      "next": { "title": "Expressions", "href": "/reference/expressions" }
+    },
+    "/reference/expressions": {
+      "prev": { "title": "View Nodes", "href": "/reference/nodes" },
+      "next": { "title": "Actions", "href": "/reference/actions" }
+    },
+    "/reference/actions": {
+      "prev": { "title": "Expressions", "href": "/reference/expressions" },
+      "next": { "title": "Connections", "href": "/reference/connections" }
+    },
+    "/reference/connections": {
+      "prev": { "title": "Actions", "href": "/reference/actions" },
+      "next": { "title": "Style System", "href": "/reference/styles" }
+    },
+    "/reference/styles": {
+      "prev": { "title": "Connections", "href": "/reference/connections" },
+      "next": { "title": "Error Codes", "href": "/reference/errors" }
+    },
+    "/reference/errors": {
+      "prev": { "title": "Style System", "href": "/reference/styles" },
+      "next": { "title": "@constela/core", "href": "/reference/core" }
+    },
+    "/reference/core": {
+      "prev": { "title": "Error Codes", "href": "/reference/errors" },
+      "next": { "title": "Installation", "href": "/reference/core/installation" }
+    },
+    "/reference/core/installation": {
+      "prev": { "title": "@constela/core", "href": "/reference/core" },
+      "next": { "title": "API Reference", "href": "/reference/core/api-reference" }
+    },
+    "/reference/core/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/core/installation" },
+      "next": { "title": "Examples", "href": "/reference/core/examples" }
+    },
+    "/reference/core/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/core/api-reference" },
+      "next": { "title": "@constela/compiler", "href": "/reference/compiler" }
+    },
+    "/reference/compiler": {
+      "prev": { "title": "Examples", "href": "/reference/core/examples" },
+      "next": { "title": "Installation", "href": "/reference/compiler/installation" }
+    },
+    "/reference/compiler/installation": {
+      "prev": { "title": "@constela/compiler", "href": "/reference/compiler" },
+      "next": { "title": "API Reference", "href": "/reference/compiler/api-reference" }
+    },
+    "/reference/compiler/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/compiler/installation" },
+      "next": { "title": "Examples", "href": "/reference/compiler/examples" }
+    },
+    "/reference/compiler/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/compiler/api-reference" },
+      "next": { "title": "@constela/runtime", "href": "/reference/runtime" }
+    },
+    "/reference/runtime": {
+      "prev": { "title": "Examples", "href": "/reference/compiler/examples" },
+      "next": { "title": "Installation", "href": "/reference/runtime/installation" }
+    },
+    "/reference/runtime/installation": {
+      "prev": { "title": "@constela/runtime", "href": "/reference/runtime" },
+      "next": { "title": "API Reference", "href": "/reference/runtime/api-reference" }
+    },
+    "/reference/runtime/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/runtime/installation" },
+      "next": { "title": "Examples", "href": "/reference/runtime/examples" }
+    },
+    "/reference/runtime/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/runtime/api-reference" },
+      "next": { "title": "@constela/router", "href": "/reference/router" }
+    },
+    "/reference/router": {
+      "prev": { "title": "Examples", "href": "/reference/runtime/examples" },
+      "next": { "title": "Installation", "href": "/reference/router/installation" }
+    },
+    "/reference/router/installation": {
+      "prev": { "title": "@constela/router", "href": "/reference/router" },
+      "next": { "title": "API Reference", "href": "/reference/router/api-reference" }
+    },
+    "/reference/router/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/router/installation" },
+      "next": { "title": "Examples", "href": "/reference/router/examples" }
+    },
+    "/reference/router/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/router/api-reference" },
+      "next": { "title": "Route Parameters", "href": "/reference/router/route-parameters" }
+    },
+    "/reference/router/route-parameters": {
+      "prev": { "title": "Examples", "href": "/reference/router/examples" },
+      "next": { "title": "@constela/server", "href": "/reference/server" }
+    },
+    "/reference/server": {
+      "prev": { "title": "Route Parameters", "href": "/reference/router/route-parameters" },
+      "next": { "title": "Installation", "href": "/reference/server/installation" }
+    },
+    "/reference/server/installation": {
+      "prev": { "title": "@constela/server", "href": "/reference/server" },
+      "next": { "title": "API Reference", "href": "/reference/server/api-reference" }
+    },
+    "/reference/server/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/server/installation" },
+      "next": { "title": "Examples", "href": "/reference/server/examples" }
+    },
+    "/reference/server/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/server/api-reference" },
+      "next": { "title": "SSR Style Evaluation", "href": "/reference/server/ssr-style-evaluation" }
+    },
+    "/reference/server/ssr-style-evaluation": {
+      "prev": { "title": "Examples", "href": "/reference/server/examples" },
+      "next": { "title": "@constela/cli", "href": "/reference/cli" }
+    },
+    "/reference/cli": {
+      "prev": { "title": "SSR Style Evaluation", "href": "/reference/server/ssr-style-evaluation" },
+      "next": { "title": "Installation", "href": "/reference/cli/installation" }
+    },
+    "/reference/cli/installation": {
+      "prev": { "title": "@constela/cli", "href": "/reference/cli" },
+      "next": { "title": "API Reference", "href": "/reference/cli/api-reference" }
+    },
+    "/reference/cli/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/cli/installation" },
+      "next": { "title": "Examples", "href": "/reference/cli/examples" }
+    },
+    "/reference/cli/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/cli/api-reference" },
+      "next": { "title": "Commands", "href": "/reference/cli/commands" }
+    },
+    "/reference/cli/commands": {
+      "prev": { "title": "Examples", "href": "/reference/cli/examples" },
+      "next": { "title": "@constela/builder", "href": "/reference/builder" }
+    },
+    "/reference/builder": {
+      "prev": { "title": "Commands", "href": "/reference/cli/commands" },
+      "next": { "title": "Installation", "href": "/reference/builder/installation" }
+    },
+    "/reference/builder/installation": {
+      "prev": { "title": "@constela/builder", "href": "/reference/builder" },
+      "next": { "title": "API Reference", "href": "/reference/builder/api-reference" }
+    },
+    "/reference/builder/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/builder/installation" },
+      "next": { "title": "Examples", "href": "/reference/builder/examples" }
+    },
+    "/reference/builder/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/builder/api-reference" },
+      "next": { "title": "@constela/start", "href": "/reference/start" }
+    },
+    "/reference/start": {
+      "prev": { "title": "Examples", "href": "/reference/builder/examples" },
+      "next": { "title": "File-based Routing", "href": "/reference/start/file-based-routing" }
+    },
+    "/reference/start/file-based-routing": {
+      "prev": { "title": "@constela/start", "href": "/reference/start" },
+      "next": { "title": "Dynamic Routes", "href": "/reference/start/dynamic-routes" }
+    },
+    "/reference/start/dynamic-routes": {
+      "prev": { "title": "File-based Routing", "href": "/reference/start/file-based-routing" },
+      "next": { "title": "Catch-all Routes", "href": "/reference/start/catch-all-routes" }
+    },
+    "/reference/start/catch-all-routes": {
+      "prev": { "title": "Dynamic Routes", "href": "/reference/start/dynamic-routes" },
+      "next": { "title": "SSR", "href": "/reference/start/ssr" }
+    },
+    "/reference/start/ssr": {
+      "prev": { "title": "Catch-all Routes", "href": "/reference/start/catch-all-routes" },
+      "next": { "title": "SSG", "href": "/reference/start/ssg" }
+    },
+    "/reference/start/ssg": {
+      "prev": { "title": "SSR", "href": "/reference/start/ssr" },
+      "next": { "title": "API Routes", "href": "/reference/start/api-routes" }
+    },
+    "/reference/start/api-routes": {
+      "prev": { "title": "SSG", "href": "/reference/start/ssg" },
+      "next": { "title": "Middleware", "href": "/reference/start/middleware" }
+    },
+    "/reference/start/middleware": {
+      "prev": { "title": "API Routes", "href": "/reference/start/api-routes" },
+      "next": { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" }
+    },
+    "/reference/start/edge-runtime": {
+      "prev": { "title": "Middleware", "href": "/reference/start/middleware" },
       "next": null
     }
   }

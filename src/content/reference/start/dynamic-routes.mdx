@@ -1,0 +1,74 @@
+---
+title: 'Dynamic Routes'
+description: Dynamic route segments with parameters in @constela/start
+---
+
+Use square brackets for dynamic segments in your route file names.
+
+## Basic Dynamic Route
+
+Create a file named `[id].json` to capture a dynamic segment:
+
+```
+src/routes/users/[id].json → /users/:id
+```
+
+## Accessing Route Parameters
+
+Route parameters are available via the `route` expression:
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/users/:id"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "User ID: " } },
+      { "kind": "text", "value": { "expr": "route", "name": "id" } }
+    ]
+  }
+}
+```
+
+## Multiple Dynamic Segments
+
+You can have multiple dynamic segments in a single route:
+
+```
+src/routes/posts/[category]/[slug].json → /posts/:category/:slug
+```
+
+Access each parameter by name:
+
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Category: " } },
+      { "kind": "text", "value": { "expr": "route", "name": "category" } },
+      { "kind": "text", "value": { "expr": "lit", "value": ", Slug: " } },
+      { "kind": "text", "value": { "expr": "route", "name": "slug" } }
+    ]
+  }
+}
+```
+
+## Nested Dynamic Routes
+
+Combine static and dynamic segments:
+
+```
+src/routes/
+├── users/
+│   ├── index.json        # /users
+│   ├── [id].json         # /users/:id
+│   └── [id]/
+│       ├── posts.json    # /users/:id/posts
+│       └── settings.json # /users/:id/settings
+```

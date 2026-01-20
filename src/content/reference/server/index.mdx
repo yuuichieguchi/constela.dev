@@ -1,0 +1,33 @@
+---
+title: '@constela/server'
+description: Server-Side Rendering (SSR) for any JavaScript server environment
+---
+
+`@constela/server` is the server-side rendering package for rendering Constela programs to HTML strings in any JavaScript server environment.
+
+## Features
+
+- **SSR Rendering** - Render Constela programs to HTML strings
+- **Framework Agnostic** - Works with Express, Hono, Fastify, or any server
+- **Markdown & Syntax Highlighting** - GFM support with Shiki highlighting
+- **XSS Protection** - Built-in HTML sanitization with DOMPurify
+
+## Quick Start
+
+```typescript
+import { compile } from '@constela/compiler';
+import { renderToString } from '@constela/server';
+
+const program = { version: '1.0', view: { kind: 'text', value: { expr: 'lit', value: 'Hello SSR' } } };
+
+const result = compile(program);
+const html = await renderToString(result.program);
+// <span>Hello SSR</span>
+```
+
+## Next Steps
+
+- [Installation](/reference/server/installation) - Install the package
+- [API Reference](/reference/server/api-reference) - Full API documentation
+- [Examples](/reference/server/examples) - SSR examples
+- [SSR Style Evaluation](/reference/server/ssr-style-evaluation) - Server-side style processing

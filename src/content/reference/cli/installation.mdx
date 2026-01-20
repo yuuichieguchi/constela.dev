@@ -1,0 +1,33 @@
+---
+title: 'Installation'
+description: How to install @constela/cli
+---
+
+## Global Installation
+
+```bash
+npm install -g @constela/cli
+```
+
+## Using npx
+
+```bash
+npx constela <command>
+```
+
+## Local Installation
+
+```bash
+npm install --save-dev @constela/cli
+```
+
+Then add scripts to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "constela build src/app.json",
+    "dev": "constela dev src/app.json"
+  }
+}
+```

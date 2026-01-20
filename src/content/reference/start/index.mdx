@@ -1,0 +1,44 @@
+---
+title: '@constela/start'
+description: Full-stack meta-framework for Constela applications
+---
+
+`@constela/start` is the meta-framework for building full-stack Constela applications with file-based routing, SSR, SSG, and edge runtime support.
+
+## Features
+
+- **File-based Routing** - Routes generated automatically from `src/routes/` directory
+- **SSR & SSG** - Server-side rendering and static site generation out of the box
+- **API Routes** - Full support for GET/POST/PUT/DELETE/PATCH endpoints
+- **Edge Runtime** - Deploy to Cloudflare Workers, Vercel Edge, or Deno
+- **HMR** - Hot Module Replacement for instant feedback during development
+
+## Quick Start
+
+```bash
+# Create a new project
+npx create-constela my-app
+cd my-app
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Constela Ecosystem
+
+| SolidJS | Constela | Purpose |
+|---------|----------|---------|
+| solid-js | @constela/core | Core type definitions |
+| solid-js/web | @constela/runtime | Client-side renderer |
+| solid-js/server | @constela/server | SSR renderer |
+| SolidStart | @constela/start | Meta-framework |
+
+## Next Steps
+
+- [File-based Routing](/reference/start/file-based-routing) - Route configuration
+- [SSR](/reference/start/ssr) - Server-side rendering
+- [API Routes](/reference/start/api-routes) - Building API endpoints
+- [Edge Runtime](/reference/start/edge-runtime) - Deployment options

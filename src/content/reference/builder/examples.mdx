@@ -1,0 +1,79 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/builder
+---
+
+## Counter Example
+
+```typescript
+import {
+  createProgram, numberField, action, increment,
+  button, text, state, onClick
+} from '@constela/builder';
+
+const counter = createProgram({
+  state: { count: numberField(0) },
+  actions: [action('increment', [increment('count')])],
+  view: button({ onClick: onClick('increment') }, [text(state('count'))])
+});
+```
+
+## Todo List Example
+
+```typescript
+import {
+  createProgram, stringField, listField,
+  action, set, push, remove,
+  div, input, button, text, each, ifNode,
+  state, variable, lit, eq, onInput, onClick, onSubmit
+} from '@constela/builder';
+
+const todoApp = createProgram({
+  state: {
+    newTodo: stringField(''),
+    todos: listField([])
+  },
+  actions: [
+    action('updateInput', [
+      set('newTodo', variable('payload'))
+    ]),
+    action('addTodo', [
+      push('todos', state('newTodo')),
+      set('newTodo', lit(''))
+    ]),
+    action('removeTodo', [
+      remove('todos', variable('payload'))
+    ])
+  ],
+  view: div({ class: lit('todo-app') }, [
+    div({ class: lit('input-group') }, [
+      input({
+        type: lit('text'),
+        value: state('newTodo'),
+        onInput: onInput('updateInput')
+      }),
+      button({ onClick: onClick('addTodo') }, [
+        text(lit('Add'))
+      ])
+    ]),
+    each({
+      items: state('todos'),
+      as: 'todo',
+      body: div({ class: lit('todo-item') }, [
+        text(variable('todo')),
+        button({ onClick: onClick('removeTodo', variable('index')) }, [
+          text(lit('×'))
+        ])
+      ])
+    })
+  ])
+});
+```
+
+## Same Benefits as JSON
+
+Even when written in TypeScript, it gets converted to JSON. That means:
+
+- **Compile-time error detection** - Errors if you reference undefined state or actions
+- **"Did you mean?" suggestions** - Typos get corrected with helpful hints
+- **Structured error output** - AI integration with `--json` flag works seamlessly

@@ -1,0 +1,81 @@
+---
+title: 'API Reference'
+description: Builder functions for creating Constela programs
+---
+
+## 40+ Builder Functions
+
+Covers all DSL elements:
+
+| Category | Functions |
+|----------|-----------|
+| Expression | `lit`, `state`, `variable`, `bin`, `cond`, `get`, `add`, `eq`, `and`, `or`, etc. |
+| State | `numberField`, `stringField`, `booleanField`, `listField`, `objectField` |
+| Action | `action`, `set`, `update`, `increment`, `push`, `fetch`, `navigate`, etc. |
+| View | `element`, `div`, `button`, `text`, `ifNode`, `each`, `component`, `slot` |
+| Event | `onClick`, `onInput`, `onChange`, `onSubmit` |
+
+## Expression Functions
+
+### lit
+
+Create a literal value:
+
+```typescript
+lit('Hello')  // { expr: 'lit', value: 'Hello' }
+lit(42)       // { expr: 'lit', value: 42 }
+```
+
+### state
+
+Reference a state field:
+
+```typescript
+state('count')  // { expr: 'state', name: 'count' }
+```
+
+### bin
+
+Binary operations:
+
+```typescript
+add(state('a'), state('b'))  // a + b
+eq(state('status'), lit('active'))  // status === 'active'
+```
+
+## State Functions
+
+```typescript
+numberField(0)           // { type: 'number', initial: 0 }
+stringField('')          // { type: 'string', initial: '' }
+booleanField(false)      // { type: 'boolean', initial: false }
+listField([])            // { type: 'list', initial: [] }
+objectField({})          // { type: 'object', initial: {} }
+```
+
+## View Functions
+
+```typescript
+div({ class: lit('container') }, [
+  text(lit('Hello')),
+  button({ onClick: onClick('submit') }, [
+    text(lit('Submit'))
+  ])
+])
+```
+
+## Action Functions
+
+```typescript
+action('increment', [
+  increment('count')
+])
+
+action('fetchUser', [
+  fetch({
+    url: lit('/api/user'),
+    method: lit('GET'),
+    onSuccess: [set('user', get('response', 'data'))]
+  })
+])
+```

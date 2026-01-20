@@ -1,0 +1,57 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/core
+---
+
+## Basic Validation
+
+```typescript
+import { Program, validateProgram } from '@constela/core';
+
+const program: Program = {
+  version: "1.0",
+  state: { count: { type: "number", initial: 0 } },
+  actions: [],
+  view: { kind: "text", content: { expr: "state", name: "count" } }
+};
+
+const result = validateProgram(program);
+if (result.success) {
+  console.log('Valid program!');
+} else {
+  console.error('Validation errors:', result.errors);
+}
+```
+
+## Type-Safe Program Definition
+
+```typescript
+import type { Program, ViewNode, ActionDefinition } from '@constela/core';
+
+const view: ViewNode = {
+  kind: 'element',
+  tag: 'button',
+  props: {
+    onClick: { event: 'click', action: 'increment' }
+  },
+  children: [
+    { kind: 'text', value: { expr: 'lit', value: 'Click me' } }
+  ]
+};
+
+const actions: ActionDefinition[] = [
+  {
+    name: 'increment',
+    steps: [
+      { do: 'update', target: 'count', operation: 'increment' }
+    ]
+  }
+];
+
+const program: Program = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  actions,
+  view
+};
+```

@@ -1,0 +1,48 @@
+---
+title: 'API Reference'
+description: Key exports and types from @constela/core
+---
+
+## Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `Program` | TypeScript type for the root program structure |
+| `ViewNode` | Union type for all view node types |
+| `Expression` | Union type for all expression types |
+| `ActionDefinition` | Type for action definitions |
+| `ActionStep` | Union type for all step types |
+| `validateProgram` | Function to validate a program against the schema |
+| `ProgramSchema` | Zod schema for runtime validation |
+
+## Type Definitions
+
+### Program
+
+The root type for a Constela program:
+
+```typescript
+interface Program {
+  version: string;
+  state?: Record<string, StateField>;
+  actions?: ActionDefinition[];
+  view: ViewNode;
+  components?: Record<string, ComponentDefinition>;
+  styles?: Record<string, StylePreset>;
+  imports?: Record<string, string>;
+  connections?: Record<string, ConnectionDefinition>;
+}
+```
+
+### validateProgram
+
+Validates a program against the Constela schema:
+
+```typescript
+function validateProgram(program: unknown): ValidationResult;
+
+interface ValidationResult {
+  success: boolean;
+  errors?: ValidationError[];
+}
+```

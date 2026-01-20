@@ -1,0 +1,50 @@
+---
+title: 'API Reference'
+description: Key exports and types from @constela/router
+---
+
+## Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `createRouter` | Creates a router instance |
+| `Route` | Route configuration type |
+| `RouterOptions` | Router configuration options |
+
+## createRouter
+
+Creates a new router instance:
+
+```typescript
+function createRouter(options: RouterOptions): Router;
+```
+
+## RouterOptions
+
+```typescript
+interface RouterOptions {
+  routes: Route[];
+  base?: string;
+}
+```
+
+## Route
+
+```typescript
+interface Route {
+  path: string;
+  program: Program | CompiledProgram;
+}
+```
+
+## Router Interface
+
+```typescript
+interface Router {
+  start(): void;
+  stop(): void;
+  navigate(path: string): void;
+  onNavigate(callback: (program: Program) => void): void;
+  getCurrentPath(): string;
+}
+```

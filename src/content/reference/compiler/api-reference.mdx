@@ -1,0 +1,41 @@
+---
+title: 'API Reference'
+description: Key exports and types from @constela/compiler
+---
+
+## Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `compile` | Main compilation function |
+| `CompileOptions` | Configuration options for compilation |
+| `CompileResult` | Result containing generated code |
+| `transform` | AST transformation utilities |
+
+## compile
+
+The main compilation function:
+
+```typescript
+function compile(program: Program, options?: CompileOptions): CompileResult;
+```
+
+## CompileOptions
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `target` | `"esm" \| "cjs" \| "iife"` | `"esm"` | Output module format |
+| `minify` | `boolean` | `false` | Minify the output |
+| `sourcemap` | `boolean` | `false` | Generate source maps |
+
+## CompileResult
+
+```typescript
+interface CompileResult {
+  ok: boolean;
+  code?: string;
+  program?: CompiledProgram;
+  errors?: CompileError[];
+  sourcemap?: string;
+}
+```

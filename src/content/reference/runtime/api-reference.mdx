@@ -1,0 +1,46 @@
+---
+title: 'API Reference'
+description: Key exports and types from @constela/runtime
+---
+
+## Key Exports
+
+| Export | Description |
+|--------|-------------|
+| `createApp` | Creates an application instance |
+| `mount` | Mounts the app to a DOM element |
+| `hydrate` | Hydrates server-rendered HTML |
+
+## createApp
+
+Creates a new Constela application instance:
+
+```typescript
+function createApp(program: CompiledProgram): App;
+```
+
+## mount
+
+Mounts an application to a DOM element:
+
+```typescript
+function mount(app: App, container: HTMLElement): void;
+```
+
+## hydrate
+
+Hydrates a server-rendered application:
+
+```typescript
+function hydrate(app: App, container: HTMLElement): void;
+```
+
+## App Interface
+
+```typescript
+interface App {
+  destroy(): void;
+  getState(): Record<string, unknown>;
+  dispatch(action: string, payload?: unknown): void;
+}
+```

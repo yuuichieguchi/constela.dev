@@ -50,40 +50,110 @@
                           "items": { "expr": "var", "name": "section", "path": "items" },
                           "as": "item",
                           "body": {
-                            "kind": "element",
-                            "tag": "li",
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "a",
-                                "props": {
-                                  "href": { "expr": "var", "name": "item", "path": "href" },
-                                  "class": {
-                                    "expr": "cond",
-                                    "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "currentPath" }, "right": { "expr": "var", "name": "item", "path": "href" } },
-                                    "then": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors bg-primary/10 font-medium text-primary" },
-                                    "else": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" }
-                                  }
-                                },
-                                "children": [
-                                  { "kind": "text", "value": { "expr": "var", "name": "item", "path": "title" } },
-                                  {
-                                    "kind": "if",
-                                    "condition": { "expr": "var", "name": "item", "path": "badge" },
-                                    "then": {
-                                      "kind": "element",
-                                      "tag": "span",
-                                      "props": {
-                                        "class": { "expr": "lit", "value": "ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary" }
-                                      },
-                                      "children": [
-                                        { "kind": "text", "value": { "expr": "var", "name": "item", "path": "badge" } }
-                                      ]
+                            "kind": "if",
+                            "condition": { "expr": "var", "name": "item", "path": "href" },
+                            "then": {
+                              "kind": "element",
+                              "tag": "li",
+                              "children": [
+                                {
+                                  "kind": "element",
+                                  "tag": "a",
+                                  "props": {
+                                    "href": { "expr": "var", "name": "item", "path": "href" },
+                                    "class": {
+                                      "expr": "cond",
+                                      "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "currentPath" }, "right": { "expr": "var", "name": "item", "path": "href" } },
+                                      "then": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors bg-primary/10 font-medium text-primary" },
+                                      "else": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" }
                                     }
-                                  }
-                                ]
-                              }
-                            ]
+                                  },
+                                  "children": [
+                                    { "kind": "text", "value": { "expr": "var", "name": "item", "path": "title" } },
+                                    {
+                                      "kind": "if",
+                                      "condition": { "expr": "var", "name": "item", "path": "badge" },
+                                      "then": {
+                                        "kind": "element",
+                                        "tag": "span",
+                                        "props": {
+                                          "class": { "expr": "lit", "value": "ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary" }
+                                        },
+                                        "children": [
+                                          { "kind": "text", "value": { "expr": "var", "name": "item", "path": "badge" } }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            "else": {
+                              "kind": "element",
+                              "tag": "li",
+                              "children": [
+                                {
+                                  "kind": "element",
+                                  "tag": "span",
+                                  "props": {
+                                    "class": { "expr": "lit", "value": "block font-semibold text-xs text-muted-foreground uppercase tracking-wide mt-4 mb-2 ml-3" }
+                                  },
+                                  "children": [
+                                    { "kind": "text", "value": { "expr": "var", "name": "item", "path": "title" } }
+                                  ]
+                                },
+                                {
+                                  "kind": "element",
+                                  "tag": "ul",
+                                  "props": {
+                                    "class": { "expr": "lit", "value": "pl-3 space-y-1" }
+                                  },
+                                  "children": [
+                                    {
+                                      "kind": "each",
+                                      "items": { "expr": "var", "name": "item", "path": "items" },
+                                      "as": "subItem",
+                                      "body": {
+                                        "kind": "element",
+                                        "tag": "li",
+                                        "children": [
+                                          {
+                                            "kind": "element",
+                                            "tag": "a",
+                                            "props": {
+                                              "href": { "expr": "var", "name": "subItem", "path": "href" },
+                                              "class": {
+                                                "expr": "cond",
+                                                "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "currentPath" }, "right": { "expr": "var", "name": "subItem", "path": "href" } },
+                                                "then": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors bg-primary/10 font-medium text-primary" },
+                                                "else": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" }
+                                              }
+                                            },
+                                            "children": [
+                                              { "kind": "text", "value": { "expr": "var", "name": "subItem", "path": "title" } },
+                                              {
+                                                "kind": "if",
+                                                "condition": { "expr": "var", "name": "subItem", "path": "badge" },
+                                                "then": {
+                                                  "kind": "element",
+                                                  "tag": "span",
+                                                  "props": {
+                                                    "class": { "expr": "lit", "value": "ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary" }
+                                                  },
+                                                  "children": [
+                                                    { "kind": "text", "value": { "expr": "var", "name": "subItem", "path": "badge" } }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
                           }
                         }
                       ]

@@ -1,0 +1,40 @@
+---
+title: '@constela/router'
+description: Client-side routing for multi-page Constela applications
+---
+
+`@constela/router` is the client-side routing package for building multi-page Constela applications with dynamic routes and seamless navigation.
+
+## Features
+
+- **Client-side Routing** - Navigate between pages without full page reloads
+- **Dynamic Routes** - Support for route parameters (`:id`, `:slug`, etc.)
+- **History Integration** - Works with browser back/forward buttons
+- **Navigation Events** - Hook into route changes for analytics or transitions
+
+## Quick Start
+
+```typescript
+import { createRouter } from '@constela/router';
+import { createApp, mount } from '@constela/runtime';
+
+const router = createRouter({
+  routes: [
+    { path: '/', program: homeProgram },
+    { path: '/users/:id', program: userProgram }
+  ]
+});
+
+router.onNavigate((program) => {
+  mount(createApp(program), document.getElementById('app')!);
+});
+
+router.start();
+```
+
+## Next Steps
+
+- [Installation](/reference/router/installation) - Install the package
+- [API Reference](/reference/router/api-reference) - Full API documentation
+- [Examples](/reference/router/examples) - Routing examples
+- [Route Parameters](/reference/router/route-parameters) - Working with dynamic segments

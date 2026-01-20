@@ -1,0 +1,71 @@
+---
+title: 'SSR Style Evaluation'
+description: Evaluating style expressions during server-side rendering (v4.1.0+)
+---
+
+Starting from `@constela/server` v4.1.0, style expressions defined in your programs are evaluated during server-side rendering.
+
+## How It Works
+
+Pass style presets via the `styles` option to evaluate style expressions on the server:
+
+```typescript
+const html = await renderToString(result.program, {
+  styles: {
+    button: {
+      base: 'px-4 py-2 rounded',
+      variants: {
+        variant: {
+          primary: 'bg-blue-500 text-white',
+          secondary: 'bg-gray-200 text-gray-800',
+        },
+      },
+      defaultVariants: { variant: 'primary' },
+    },
+  },
+});
+// Output: <button class="px-4 py-2 rounded bg-blue-500 text-white">...</button>
+```
+
+## Defining Styles in Programs
+
+Define styles at the root of your program and use them in views:
+
+```json
+{
+  "version": "1.0",
+  "route": { "path": "/" },
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        }
+      },
+      "defaultVariants": { "variant": "primary" }
+    }
+  },
+  "view": {
+    "kind": "element",
+    "tag": "button",
+    "props": {
+      "className": { "expr": "style", "name": "button" }
+    },
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
+    ]
+  }
+}
+```
+
+## Benefits
+
+<Callout type="tip">
+Style expressions are evaluated at render time, producing static class strings in the HTML output. This ensures consistent styling between SSR and client hydration.
+</Callout>
+
+- **No Flash of Unstyled Content**: Styles are resolved server-side
+- **Consistent Hydration**: Client receives pre-computed class strings
+- **Better Performance**: No runtime style computation on the client

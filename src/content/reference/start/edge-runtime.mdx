@@ -1,0 +1,112 @@
+---
+title: 'Edge Runtime'
+description: Deploying @constela/start to edge platforms
+---
+
+`@constela/start` supports deployment to edge platforms for global low-latency performance.
+
+## Cloudflare Workers
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'cloudflare',
+  // Cloudflare-specific options
+});
+```
+
+Deploy with Wrangler:
+
+```bash
+npx constela-start build --target cloudflare
+npx wrangler deploy
+```
+
+## Vercel Edge
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'vercel',
+  edge: true
+});
+```
+
+Deploy with Vercel CLI:
+
+```bash
+npx constela-start build --target vercel
+vercel deploy
+```
+
+## Deno Deploy
+
+```typescript
+// constela.config.ts
+import { defineConfig } from '@constela/start';
+
+export default defineConfig({
+  target: 'deno'
+});
+```
+
+Deploy with Deno:
+
+```bash
+npx constela-start build --target deno
+deployctl deploy
+```
+
+## Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `target` | `'node' \| 'cloudflare' \| 'vercel' \| 'deno'` | Deployment target |
+| `edge` | `boolean` | Enable edge runtime (Vercel) |
+| `ssr` | `boolean` | Enable server-side rendering (default: true) |
+| `prerender` | `string[]` | Routes to pre-render at build time |
+
+## Environment Bindings
+
+Access platform-specific bindings via `APIContext.env`:
+
+```typescript
+// Cloudflare Workers
+export async function GET({ env }: APIContext) {
+  const value = await env.KV.get('key');
+  return Response.json({ value });
+}
+```
+
+## MDX Security
+
+MDX attribute expressions are validated at compile time to prevent code injection. Dangerous patterns like `require()`, `eval()`, or `window` will throw explicit errors:
+
+```mdx
+<!-- Error: MDX attribute contains disallowed pattern: require -->
+<Button data={require("module")} />
+```
+
+However, these words are allowed inside string literals:
+
+```mdx
+<!-- OK: "require" is inside a string literal -->
+<PropsTable items={[{ description: "operations that require one" }]} />
+```
+
+<Callout type="tip">
+This compile-time validation catches security issues early, preventing silent failures that could cause runtime bugs.
+</Callout>
+
+## Platform Comparison
+
+| Feature | Cloudflare | Vercel Edge | Deno Deploy |
+|---------|------------|-------------|-------------|
+| Cold start | ~0ms | ~0ms | ~0ms |
+| KV Storage | Yes (Workers KV) | Yes (Edge Config) | Yes (Deno KV) |
+| Cron | Yes | Yes | Yes |
+| Websockets | Yes | Limited | Yes |

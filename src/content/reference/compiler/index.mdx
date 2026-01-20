@@ -1,0 +1,33 @@
+---
+title: '@constela/compiler'
+description: AST transformation and code generation for Constela programs
+---
+
+`@constela/compiler` is the AST transformation and code generation package that converts Constela JSON programs into optimized JavaScript.
+
+## Features
+
+- **Compilation** - Transform Constela JSON programs into optimized JavaScript
+- **Multiple Targets** - Output to ESM, CommonJS, or IIFE formats
+- **Source Maps** - Optional source map generation for debugging
+- **Minification** - Built-in minification support
+
+## Quick Start
+
+```typescript
+import { compile } from '@constela/compiler';
+
+const program = {
+  version: '1.0',
+  view: { kind: 'text', value: { expr: 'lit', value: 'Hello' } }
+};
+
+const result = compile(program, { target: 'esm', minify: true });
+console.log(result.code);
+```
+
+## Next Steps
+
+- [Installation](/reference/compiler/installation) - Install the package
+- [API Reference](/reference/compiler/api-reference) - Full API documentation
+- [Examples](/reference/compiler/examples) - Compilation examples

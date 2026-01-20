@@ -531,7 +531,7 @@
         "kind": "element",
         "tag": "main",
         "props": {
-          "class": { "expr": "lit", "value": "pt-[var(--header-height)] lg:pl-[var(--sidebar-width)]" }
+          "class": { "expr": "lit", "value": "min-h-[calc(100vh-var(--header-height))] pt-[var(--header-height)] lg:pl-[var(--sidebar-width)]" }
         },
         "children": [
           { "kind": "slot" }

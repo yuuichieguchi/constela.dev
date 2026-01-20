@@ -1,0 +1,111 @@
+---
+title: 'Commands'
+description: Detailed documentation for all CLI commands
+---
+
+## build
+
+Compile a Constela program to JavaScript.
+
+```bash
+constela build app.json --output dist/app.js --minify
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--output, -o` | Output file path |
+| `--minify, -m` | Minify output |
+| `--sourcemap, -s` | Generate source map |
+| `--target, -t` | Module format (esm, cjs, iife) |
+| `--json` | Output result as JSON (for AI tool integration) |
+| `--watch, -w` | Watch for changes and rebuild automatically |
+| `--verbose, -v` | Show detailed progress (timing for each pass) |
+| `--debug` | Show internal debug information |
+
+---
+
+## dev
+
+Start the development server with hot reload.
+
+```bash
+constela dev app.json --port 3000
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--port, -p` | Dev server port (default: 3000) |
+| `--open, -o` | Open browser automatically |
+
+---
+
+## validate
+
+Validate a program without building. Error messages include "Did you mean?" suggestions for typos.
+
+```bash
+constela validate app.json
+constela validate --all src/
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--all` | Validate all JSON files in the specified directory |
+| `--json` | Output errors as structured JSON |
+| `--verbose, -v` | Show detailed validation info |
+
+### Example Output
+
+```
+Error [UNDEFINED_STATE] at /view/children/0/value/name
+
+  Undefined state reference: 'count'
+
+  Did you mean 'counter'?
+```
+
+---
+
+## inspect
+
+Visualize program structure including state fields, actions, components, and dependencies.
+
+```bash
+constela inspect app.json
+constela inspect --state --json app.json
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--json` | Output as JSON |
+| `--state` | Show only state section |
+| `--actions` | Show only actions section |
+| `--verbose, -v` | Show all details |
+
+---
+
+## init
+
+Initialize a new Constela project.
+
+```bash
+constela init my-app
+```
+
+Creates a new directory with a basic project structure:
+
+```
+my-app/
+├── src/
+│   └── app.json
+├── package.json
+└── README.md
+```

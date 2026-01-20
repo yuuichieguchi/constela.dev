@@ -1,0 +1,61 @@
+---
+title: 'Catch-all Routes'
+description: Catch-all route segments for matching multiple path segments
+---
+
+Use `[...slug]` for catch-all routes that match any number of path segments.
+
+## Basic Catch-all
+
+```
+src/routes/docs/[...slug].json
+```
+
+This matches:
+- `/docs/a`
+- `/docs/a/b`
+- `/docs/a/b/c`
+- And so on...
+
+## Accessing Catch-all Parameters
+
+The catch-all parameter contains the full matched path as a string:
+
+```json
+{
+  "version": "1.0",
+  "route": {
+    "path": "/docs/*"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Path: " } },
+      { "kind": "text", "value": { "expr": "route", "name": "slug" } }
+    ]
+  }
+}
+```
+
+For URL `/docs/getting-started/installation`, `slug` will be `"getting-started/installation"`.
+
+## Use Cases
+
+Catch-all routes are useful for:
+
+- **Documentation sites**: Where content is nested in folders
+- **Blog posts**: With hierarchical categories
+- **File browsers**: Displaying nested directory structures
+- **404 pages**: Catching all unmatched routes
+
+## Priority
+
+Catch-all routes have the lowest priority. More specific routes are matched first:
+
+```
+src/routes/docs/
+├── index.json        # /docs (highest priority)
+├── intro.json        # /docs/intro
+└── [...slug].json    # /docs/* (lowest priority)
+```

@@ -1,0 +1,34 @@
+---
+title: '@constela/runtime'
+description: Browser runtime for rendering and reactivity
+---
+
+`@constela/runtime` is the browser runtime that powers Constela applications with fine-grained reactivity and efficient DOM updates.
+
+## Features
+
+- **Fine-grained Reactivity** - Only updates what changed, no virtual DOM diffing
+- **Event Delegation** - Efficient event handling with minimal listeners
+- **SSR Compatible** - Seamless hydration of server-rendered HTML
+- **Markdown & Syntax Highlighting** - Built-in GFM support with Shiki
+
+## Quick Start
+
+```typescript
+import { createApp, mount } from '@constela/runtime';
+
+const program = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  view: { kind: 'text', value: { expr: 'state', name: 'count' } }
+};
+
+const app = createApp(program);
+mount(app, document.getElementById('app')!);
+```
+
+## Next Steps
+
+- [Installation](/reference/runtime/installation) - Install the package
+- [API Reference](/reference/runtime/api-reference) - Full API documentation
+- [Examples](/reference/runtime/examples) - Usage patterns

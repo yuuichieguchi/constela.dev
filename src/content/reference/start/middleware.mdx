@@ -1,0 +1,113 @@
+---
+title: 'Middleware'
+description: Request middleware in @constela/start
+---
+
+Create middleware using the `next()` pattern, similar to Koa or Hono.
+
+## Global Middleware
+
+Create `src/middleware.ts` for global middleware that applies to all routes:
+
+```typescript
+// src/middleware.ts
+import type { MiddlewareHandler } from '@constela/start';
+
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  // Before request
+  console.log(`${ctx.request.method} ${ctx.request.url}`);
+
+  const start = Date.now();
+
+  // Call next middleware or route handler
+  const response = await next();
+
+  // After request
+  console.log(`Completed in ${Date.now() - start}ms`);
+
+  return response;
+};
+```
+
+## Route-specific Middleware
+
+Create middleware files prefixed with `_` to apply to specific routes:
+
+```typescript
+// src/routes/admin/_middleware.ts
+import type { MiddlewareHandler } from '@constela/start';
+
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  const token = ctx.request.headers.get('Authorization');
+
+  if (!isValidToken(token)) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  return next();
+};
+```
+
+<Callout type="note">
+Middleware files prefixed with `_` (e.g., `_middleware.ts`) apply to all routes in that directory and its subdirectories.
+</Callout>
+
+## Middleware Context
+
+The middleware context provides:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `request` | `Request` | The incoming request |
+| `env` | `object` | Environment bindings |
+| `params` | `Record<string, string>` | Route parameters |
+
+## Middleware Chain
+
+Middleware executes in order from global to route-specific:
+
+```
+src/middleware.ts (global)
+  ↓
+src/routes/_middleware.ts (routes root)
+  ↓
+src/routes/admin/_middleware.ts (admin routes)
+  ↓
+Route handler
+```
+
+## Common Middleware Patterns
+
+### Logging
+
+```typescript
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  const start = Date.now();
+  const response = await next();
+  console.log(`${ctx.request.method} ${ctx.request.url} - ${Date.now() - start}ms`);
+  return response;
+};
+```
+
+### Authentication
+
+```typescript
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  const token = ctx.request.headers.get('Authorization')?.replace('Bearer ', '');
+  if (!token || !await verifyToken(token)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  return next();
+};
+```
+
+### CORS
+
+```typescript
+export const middleware: MiddlewareHandler = async (ctx, next) => {
+  const response = await next();
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  return response;
+};
+```

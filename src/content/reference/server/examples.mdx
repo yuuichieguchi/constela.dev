@@ -1,0 +1,102 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/server
+---
+
+## Basic SSR
+
+```typescript
+import { compile } from '@constela/compiler';
+import { renderToString } from '@constela/server';
+
+const myProgram = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  view: { kind: 'text', value: { expr: 'state', name: 'count' } }
+};
+
+async function generateHtml() {
+  const result = compile(myProgram);
+  if (!result.ok) throw new Error('Compile failed');
+
+  const content = await renderToString(result.program);
+
+  return `
+    <!DOCTYPE html>
+    <html>
+      <body>
+        <div id="app">${content}</div>
+        <script type="module">
+          import { createApp } from '@constela/runtime';
+          import program from './program.js';
+          createApp(program, document.getElementById('app'));
+        </script>
+      </body>
+    </html>
+  `;
+}
+```
+
+## With Route Parameters
+
+```typescript
+const html = await renderToString(result.program, {
+  route: {
+    params: { id: '123' },
+    query: { sort: 'asc' },
+    path: '/users/123'
+  }
+});
+```
+
+## Integration with Next.js
+
+For Next.js projects, use `@constela/server` in Server Components:
+
+```typescript
+// app/page.tsx (Server Component)
+import { compile } from '@constela/compiler';
+import { renderToString } from '@constela/server';
+import { ConstelaClient } from './ConstelaClient';
+
+const myProgram = { /* ... */ };
+
+export default async function Page() {
+  const result = compile(myProgram);
+  if (!result.ok) throw new Error('Compile failed');
+
+  const ssrHtml = await renderToString(result.program);
+
+  return (
+    <div>
+      <h1>My App</h1>
+      <ConstelaClient program={result.program} ssrHtml={ssrHtml} />
+    </div>
+  );
+}
+```
+
+```typescript
+// ConstelaClient.tsx (Client Component)
+'use client';
+import { useEffect, useRef } from 'react';
+import { createApp } from '@constela/runtime';
+import type { CompiledProgram } from '@constela/compiler';
+
+interface Props {
+  program: CompiledProgram;
+  ssrHtml: string;
+}
+
+export function ConstelaClient({ program, ssrHtml }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const app = createApp(program, ref.current);
+    return () => app.destroy();
+  }, [program]);
+
+  return <div ref={ref} dangerouslySetInnerHTML={{ __html: ssrHtml }} />;
+}
+```

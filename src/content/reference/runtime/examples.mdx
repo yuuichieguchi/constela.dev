@@ -1,0 +1,54 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/runtime
+---
+
+## Basic Usage
+
+```typescript
+import { createApp, mount } from '@constela/runtime';
+import type { Program } from '@constela/core';
+
+const program: Program = {
+  version: '1.0',
+  state: { count: { type: 'number', initial: 0 } },
+  actions: [
+    {
+      name: 'increment',
+      steps: [{ do: 'update', target: 'count', operation: 'increment' }]
+    }
+  ],
+  view: {
+    kind: 'element',
+    tag: 'button',
+    props: { onClick: { event: 'click', action: 'increment' } },
+    children: [{ kind: 'text', value: { expr: 'state', name: 'count' } }]
+  }
+};
+
+const app = createApp(program);
+mount(app, document.getElementById('app')!);
+```
+
+## Hydration (SSR)
+
+```typescript
+import { createApp, hydrate } from '@constela/runtime';
+
+// Server-rendered HTML is already in the DOM
+const container = document.getElementById('app')!;
+
+// Hydrate to make it interactive
+const app = createApp(program);
+hydrate(app, container);
+```
+
+## Cleanup
+
+```typescript
+const app = createApp(program);
+mount(app, document.getElementById('app')!);
+
+// Later, when unmounting
+app.destroy();
+```

@@ -1,0 +1,34 @@
+---
+title: '@constela/builder'
+description: TypeScript Builder API for creating Constela programs
+---
+
+`@constela/builder` is the TypeScript Builder API for those who prefer writing Constela programs with full IDE support and type safety.
+
+## Features
+
+- **Type-Safe** - Full TypeScript support with autocomplete and error checking
+- **Fluent API** - Chainable methods for building programs naturally
+- **40+ Functions** - Covers all DSL elements: expressions, state, actions, views
+- **Same Benefits** - Compile-time error detection and "Did you mean?" suggestions
+
+## Quick Start
+
+```typescript
+import {
+  createProgram, numberField, action, increment,
+  button, text, state, onClick
+} from '@constela/builder';
+
+const counter = createProgram({
+  state: { count: numberField(0) },
+  actions: [action('increment', [increment('count')])],
+  view: button({ onClick: onClick('increment') }, [text(state('count'))])
+});
+```
+
+## Next Steps
+
+- [Installation](/reference/builder/installation) - Install the package
+- [API Reference](/reference/builder/api-reference) - All builder functions
+- [Examples](/reference/builder/examples) - Complex examples

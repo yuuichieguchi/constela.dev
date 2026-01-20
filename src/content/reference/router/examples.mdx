@@ -1,0 +1,48 @@
+---
+title: 'Examples'
+description: Usage examples for @constela/router
+---
+
+## Basic Routing
+
+```typescript
+import { createRouter } from '@constela/router';
+import { createApp, mount } from '@constela/runtime';
+
+const router = createRouter({
+  routes: [
+    { path: '/', program: homeProgram },
+    { path: '/about', program: aboutProgram },
+    { path: '/contact', program: contactProgram }
+  ]
+});
+
+router.onNavigate((program) => {
+  const app = createApp(program);
+  mount(app, document.getElementById('app')!);
+});
+
+router.start();
+```
+
+## With Base Path
+
+```typescript
+const router = createRouter({
+  base: '/app',
+  routes: [
+    { path: '/', program: homeProgram },      // /app/
+    { path: '/users', program: usersProgram } // /app/users
+  ]
+});
+```
+
+## Programmatic Navigation
+
+```typescript
+// Navigate to a route
+router.navigate('/about');
+
+// Navigate with params
+router.navigate('/users/123');
+```

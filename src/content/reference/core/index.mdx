@@ -1,0 +1,33 @@
+---
+title: '@constela/core'
+description: Core type definitions, schema validation, and utilities for Constela
+---
+
+`@constela/core` is the foundational package containing type definitions, schema validation, and core utilities shared across all Constela packages.
+
+## Features
+
+- **TypeScript Types** - Complete type definitions for Program, ViewNode, Expression, Action, and all DSL elements
+- **Schema Validation** - Zod-based runtime validation with detailed error messages
+- **Core Utilities** - Helper functions for working with Constela programs
+
+## Quick Start
+
+```typescript
+import { Program, validateProgram } from '@constela/core';
+
+const program: Program = {
+  version: "1.0",
+  state: { count: { type: "number", initial: 0 } },
+  view: { kind: "text", value: { expr: "state", name: "count" } }
+};
+
+const result = validateProgram(program);
+console.log(result.success ? 'Valid!' : result.errors);
+```
+
+## Next Steps
+
+- [Installation](/reference/core/installation) - Install the package
+- [API Reference](/reference/core/api-reference) - Full API documentation
+- [Examples](/reference/core/examples) - Usage patterns and recipes
