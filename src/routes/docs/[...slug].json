@@ -72,7 +72,7 @@
                 "tag": "a",
                 "props": {
                   "href": { "expr": "param", "name": "prev", "path": "href" },
-                  "class": { "expr": "lit", "value": "group flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground" }
+                  "class": { "expr": "lit", "value": "group flex items-center gap-3 rounded-xl border border-border/30 bg-card/50 backdrop-blur-sm px-5 py-4 text-sm text-muted-foreground transition-all duration-200 hover:bg-primary/5 hover:border-primary/30 hover:text-foreground hover:shadow-lg hover:shadow-primary/5" }
                 },
                 "children": [
                   {
@@ -134,7 +134,7 @@
                 "tag": "a",
                 "props": {
                   "href": { "expr": "param", "name": "next", "path": "href" },
-                  "class": { "expr": "lit", "value": "group flex items-center gap-2 text-right text-sm text-muted-foreground transition-colors hover:text-foreground" }
+                  "class": { "expr": "lit", "value": "group flex items-center gap-3 rounded-xl border border-border/30 bg-card/50 backdrop-blur-sm px-5 py-4 text-right text-sm text-muted-foreground transition-all duration-200 hover:bg-primary/5 hover:border-primary/30 hover:text-foreground hover:shadow-lg hover:shadow-primary/5" }
                 },
                 "children": [
                   {
@@ -193,45 +193,54 @@
     "kind": "element",
     "tag": "div",
     "props": {
-      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-12" }
+      "class": { "expr": "lit", "value": "mx-auto max-w-4xl px-6 py-16 lg:py-24" }
     },
     "children": [
       {
         "kind": "element",
         "tag": "article",
         "props": {
-          "class": { "expr": "lit", "value": "prose prose-slate dark:prose-invert max-w-none" }
+          "class": { "expr": "lit", "value": "prose prose-slate dark:prose-invert prose-docs max-w-none" }
         },
         "children": [
           {
             "kind": "element",
-            "tag": "h1",
+            "tag": "header",
             "props": {
-              "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+              "class": { "expr": "lit", "value": "mb-12 pb-8 border-b border-border/30" }
             },
             "children": [
-              { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.title" } }
-            ]
-          },
-          {
-            "kind": "if",
-            "condition": { "expr": "data", "name": "docs", "path": "frontmatter.description" },
-            "then": {
-              "kind": "element",
-              "tag": "p",
-              "props": {
-                "class": { "expr": "lit", "value": "mt-2 text-lg text-muted-foreground" }
+              {
+                "kind": "element",
+                "tag": "h1",
+                "props": {
+                  "class": { "expr": "lit", "value": "text-4xl lg:text-5xl font-bold tracking-tight text-foreground" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.title" } }
+                ]
               },
-              "children": [
-                { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.description" } }
-              ]
-            }
+              {
+                "kind": "if",
+                "condition": { "expr": "data", "name": "docs", "path": "frontmatter.description" },
+                "then": {
+                  "kind": "element",
+                  "tag": "p",
+                  "props": {
+                    "class": { "expr": "lit", "value": "mt-4 text-lg text-muted-foreground" }
+                  },
+                  "children": [
+                    { "kind": "text", "value": { "expr": "data", "name": "docs", "path": "frontmatter.description" } }
+                  ]
+                }
+              }
+            ]
           },
           {
             "kind": "element",
             "tag": "div",
             "props": {
-              "class": { "expr": "lit", "value": "mt-8" }
+              "class": { "expr": "lit", "value": "" }
             },
             "children": [
               { "kind": "slot", "name": "mdx-content" }

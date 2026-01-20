@@ -355,3 +355,110 @@ body {
 /* Light mode: show moon, hide sun */
 html:not(.dark) .theme-icon-sun { display: none; }
 html:not(.dark) .theme-icon-moon { display: block; }
+
+/* ===========================================
+   Docs/Reference Visual Enhancement
+   =========================================== */
+
+/* 1.1 Background animation for Docs */
+@keyframes docs-gradient-shift {
+  0%, 100% { opacity: 0.4; transform: translate(0, 0) scale(1); }
+  50% { opacity: 0.6; transform: translate(20px, -20px) scale(1.05); }
+}
+
+.animate-docs-bg {
+  animation: docs-gradient-shift 25s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-docs-bg { animation: none; }
+}
+
+/* 1.2 Sidebar link styles */
+.sidebar-link {
+  transition: all 0.2s ease;
+}
+
+.sidebar-link:hover {
+  transform: translateX(4px);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 8%, transparent), transparent);
+}
+
+.sidebar-link-active {
+  position: relative;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 10%, transparent), color-mix(in srgb, var(--accent-purple) 5%, transparent), transparent);
+}
+
+.sidebar-link-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: linear-gradient(180deg, var(--primary), var(--accent-purple));
+  border-radius: 0 2px 2px 0;
+}
+
+/* 1.3 Prose heading enhancements for Docs */
+.prose-docs h1 {
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.prose-docs h2 {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.prose-docs h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 4px;
+  height: 1.1em;
+  background: linear-gradient(180deg, var(--primary), var(--accent-purple));
+  border-radius: 2px;
+}
+
+/* 1.4 Link micro-interactions for Docs */
+.prose-docs a {
+  text-decoration: none;
+  position: relative;
+}
+
+.prose-docs a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent-purple));
+  transition: width 0.3s ease;
+}
+
+.prose-docs a:hover::after {
+  width: 100%;
+}
+
+/* 1.5 Code block enhancements for Docs */
+.prose-docs pre {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--primary) 5%, transparent);
+  transition: all 0.3s ease;
+}
+
+.prose-docs pre:hover {
+  border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 0 20px color-mix(in srgb, var(--primary) 10%, transparent);
+}

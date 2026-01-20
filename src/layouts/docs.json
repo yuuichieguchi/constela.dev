@@ -88,9 +88,34 @@
     "children": [
       {
         "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "fixed inset-0 z-0 pointer-events-none overflow-hidden" },
+          "aria-hidden": { "expr": "lit", "value": "true" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-primary/8 via-purple-500/5 to-transparent blur-3xl animate-docs-bg" }
+            }
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "absolute top-1/2 -left-40 h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-purple-500/5 via-pink-500/3 to-transparent blur-3xl animate-docs-bg" },
+              "style": { "expr": "lit", "value": "animation-delay: 5s;" }
+            }
+          }
+        ]
+      },
+      {
+        "kind": "element",
         "tag": "header",
         "props": {
-          "class": { "expr": "lit", "value": "fixed top-0 left-0 right-0 z-40 h-[var(--header-height)] border-b border-transparent bg-background" }
+          "class": { "expr": "lit", "value": "fixed top-0 left-0 right-0 z-40 h-[var(--header-height)] border-b border-border/30 bg-background/80 backdrop-blur-xl" }
         },
         "children": [
           {
@@ -398,7 +423,7 @@
                                 "kind": "element",
                                 "tag": "h3",
                                 "props": {
-                                  "class": { "expr": "lit", "value": "mb-2 text-sm font-semibold text-foreground" }
+                                  "class": { "expr": "lit", "value": "mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground" }
                                 },
                                 "children": [
                                   { "kind": "text", "value": { "expr": "var", "name": "section", "path": "title" } }
@@ -456,7 +481,7 @@
         "kind": "element",
         "tag": "aside",
         "props": {
-          "class": { "expr": "lit", "value": "fixed left-0 top-[var(--header-height)] hidden h-[calc(100vh-var(--header-height))] w-[var(--sidebar-width)] overflow-y-auto border-r border-border bg-background p-6 lg:block" }
+          "class": { "expr": "lit", "value": "fixed left-0 top-[var(--header-height)] hidden h-[calc(100vh-var(--header-height))] w-[var(--sidebar-width)] overflow-y-auto border-r border-border/30 bg-background/95 backdrop-blur-sm p-6 lg:block" }
         },
         "children": [
           {
@@ -478,7 +503,7 @@
                       "kind": "element",
                       "tag": "h3",
                       "props": {
-                        "class": { "expr": "lit", "value": "mb-2 text-sm font-semibold text-foreground" }
+                        "class": { "expr": "lit", "value": "mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground" }
                       },
                       "children": [
                         { "kind": "text", "value": { "expr": "var", "name": "section", "path": "title" } }
@@ -507,8 +532,8 @@
                                   "class": {
                                     "expr": "cond",
                                     "if": { "expr": "bin", "op": "==", "left": { "expr": "param", "name": "currentPath" }, "right": { "expr": "var", "name": "item", "path": "href" } },
-                                    "then": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors bg-primary/10 font-medium text-primary" },
-                                    "else": { "expr": "lit", "value": "block rounded-md px-3 py-2 text-sm transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" }
+                                    "then": { "expr": "lit", "value": "sidebar-link-active block rounded-lg px-3 py-2 text-sm font-medium text-primary" },
+                                    "else": { "expr": "lit", "value": "sidebar-link block rounded-lg px-3 py-2 text-sm text-muted-foreground hover:text-foreground" }
                                   }
                                 },
                                 "children": [
