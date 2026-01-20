@@ -3,6 +3,12 @@
   "route": {
     "path": "/examples/:slug",
     "layout": "main",
+    "canonical": {
+      "expr": "bin",
+      "op": "+",
+      "left": { "expr": "lit", "value": "https://constela.dev" },
+      "right": { "expr": "route", "source": "path" }
+    },
     "meta": {
       "title": "Example - Constela",
       "description": "Interactive example showcasing Constela features.",

@@ -9,6 +9,7 @@
   "route": {
     "path": "/playground",
     "layout": "main",
+    "canonical": { "expr": "lit", "value": "https://constela.dev/playground" },
     "meta": {
       "title": "Playground - Constela",
       "description": "Interactive playground for Constela DSL",

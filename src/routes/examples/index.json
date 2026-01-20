@@ -3,6 +3,7 @@
   "route": {
     "path": "/examples",
     "layout": "main",
+    "canonical": { "expr": "lit", "value": "https://constela.dev/examples" },
     "meta": {
       "title": "Examples - Constela",
       "description": "Explore these examples to learn how to build UIs with Constela.",

@@ -7,6 +7,12 @@
       "navigation": { "expr": "import", "name": "nav", "path": "referenceNavigation" },
       "currentPath": { "expr": "route", "source": "path" }
     },
+    "canonical": {
+      "expr": "bin",
+      "op": "+",
+      "left": { "expr": "lit", "value": "https://constela.dev" },
+      "right": { "expr": "route", "source": "path" }
+    },
     "meta": {
       "title": "Reference - Constela",
       "description": "API Reference for Constela DSL",

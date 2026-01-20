@@ -3,6 +3,15 @@
   "route": {
     "path": "/",
     "layout": "main",
+    "canonical": { "expr": "lit", "value": "https://constela.dev/" },
+    "jsonLd": {
+      "type": "WebSite",
+      "properties": {
+        "name": { "expr": "lit", "value": "Constela" },
+        "url": { "expr": "lit", "value": "https://constela.dev" },
+        "description": { "expr": "lit", "value": "A compiler-first UI language for vibecoding" }
+      }
+    },
     "meta": {
       "title": "Constela - A compiler-first UI language",
       "description": "A compiler-first UI language for vibecoding",

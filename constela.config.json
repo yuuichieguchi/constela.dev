@@ -1,5 +1,8 @@
 {
   "css": "src/styles/globals.css",
   "cssContent": ["./src/**/*.{ts,tsx,json}"],
-  "layoutsDir": "src/layouts"
+  "layoutsDir": "src/layouts",
+  "seo": {
+    "lang": "en"
+  }
 }
