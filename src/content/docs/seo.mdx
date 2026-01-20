@@ -1,0 +1,250 @@
+---
+title: SEO
+description: Search engine optimization features in Constela
+---
+
+## Overview
+
+Constela provides built-in SEO features to optimize your site for search engines:
+
+- **lang attribute**: Set the HTML language
+- **Canonical URL**: Define the preferred URL for a page
+- **JSON-LD**: Add structured data for rich search results
+
+## HTML lang Attribute
+
+Set the `lang` attribute on the `<html>` element via `constela.config.json`:
+
+```json
+{
+  "seo": {
+    "lang": "en"
+  }
+}
+```
+
+**Output:** `<html lang="en">`
+
+### Supported Language Tags
+
+Constela supports the full BCP 47 specification:
+
+| Format | Example |
+|--------|---------|
+| Basic | `en`, `ja`, `zh` |
+| Regional | `en-US`, `ja-JP` |
+| Script | `zh-Hans-CN`, `zh-Hant-TW` |
+| Extended | `de-DE-u-co-phonebk` |
+
+## Canonical URL
+
+Set the canonical URL for a page using `route.canonical`:
+
+```json
+{
+  "route": {
+    "path": "/posts/:slug",
+    "canonical": {
+      "expr": "bin",
+      "op": "+",
+      "left": { "expr": "lit", "value": "https://example.com" },
+      "right": { "expr": "route", "source": "path" }
+    }
+  }
+}
+```
+
+For `/posts/hello-world`, this generates:
+
+```html
+<link rel="canonical" href="https://example.com/posts/hello-world">
+```
+
+<Callout type="tip">
+Use `{ "expr": "route", "source": "path" }` to get the current page path. This works correctly with dynamic routes during SSG build.
+</Callout>
+
+### Static Canonical URL
+
+For pages with a fixed canonical URL:
+
+```json
+{
+  "route": {
+    "canonical": { "expr": "lit", "value": "https://example.com/about" }
+  }
+}
+```
+
+## JSON-LD Structured Data
+
+Add Schema.org structured data using `route.jsonLd`:
+
+```json
+{
+  "route": {
+    "jsonLd": {
+      "type": "Article",
+      "properties": {
+        "headline": { "expr": "lit", "value": "My Article Title" },
+        "author": { "expr": "lit", "value": "John Doe" },
+        "datePublished": { "expr": "lit", "value": "2024-01-15" }
+      }
+    }
+  }
+}
+```
+
+**Output:**
+
+```html
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"My Article Title","author":"John Doe","datePublished":"2024-01-15"}
+</script>
+```
+
+### Dynamic Values
+
+Use expressions to generate dynamic JSON-LD values:
+
+```json
+{
+  "route": {
+    "path": "/posts/:slug",
+    "jsonLd": {
+      "type": "Article",
+      "properties": {
+        "headline": { "expr": "route", "name": "slug", "source": "param" },
+        "url": {
+          "expr": "bin",
+          "op": "+",
+          "left": { "expr": "lit", "value": "https://example.com" },
+          "right": { "expr": "route", "source": "path" }
+        }
+      }
+    }
+  }
+}
+```
+
+### Nested Objects
+
+Use `expr: "object"` for nested structures:
+
+```json
+{
+  "jsonLd": {
+    "type": "Article",
+    "properties": {
+      "headline": { "expr": "lit", "value": "My Article" },
+      "author": {
+        "expr": "object",
+        "type": "Person",
+        "properties": {
+          "name": { "expr": "lit", "value": "John Doe" },
+          "url": { "expr": "lit", "value": "https://example.com/authors/john" }
+        }
+      }
+    }
+  }
+}
+```
+
+**Output:**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "My Article",
+  "author": {
+    "@type": "Person",
+    "name": "John Doe",
+    "url": "https://example.com/authors/john"
+  }
+}
+```
+
+### Arrays
+
+Use `expr: "array"` for array values:
+
+```json
+{
+  "jsonLd": {
+    "type": "BreadcrumbList",
+    "properties": {
+      "itemListElement": {
+        "expr": "array",
+        "items": [
+          {
+            "expr": "object",
+            "type": "ListItem",
+            "properties": {
+              "position": { "expr": "lit", "value": 1 },
+              "name": { "expr": "lit", "value": "Home" },
+              "item": { "expr": "lit", "value": "https://example.com/" }
+            }
+          },
+          {
+            "expr": "object",
+            "type": "ListItem",
+            "properties": {
+              "position": { "expr": "lit", "value": 2 },
+              "name": { "expr": "lit", "value": "Blog" },
+              "item": { "expr": "lit", "value": "https://example.com/blog" }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Common Schema Types
+
+| Type | Use Case |
+|------|----------|
+| `Article` | Blog posts, news articles |
+| `WebPage` | General web pages |
+| `BreadcrumbList` | Navigation breadcrumbs |
+| `Organization` | Company information |
+| `Product` | E-commerce products |
+| `FAQPage` | FAQ pages |
+
+## Meta Tags
+
+In addition to SEO features, use `route.meta` for Open Graph and Twitter cards:
+
+```json
+{
+  "route": {
+    "title": { "expr": "lit", "value": "My Page Title" },
+    "meta": {
+      "description": { "expr": "lit", "value": "Page description" },
+      "og:title": { "expr": "lit", "value": "My Page Title" },
+      "og:description": { "expr": "lit", "value": "Page description" },
+      "og:image": { "expr": "lit", "value": "https://example.com/image.png" },
+      "twitter:card": { "expr": "lit", "value": "summary_large_image" }
+    }
+  }
+}
+```
+
+## Security
+
+All SEO features include built-in XSS protection:
+
+- **lang attribute**: Validated against BCP 47 format
+- **Canonical URL**: HTML special characters are escaped
+- **JSON-LD**: `</script>` sequences are Unicode-escaped to prevent injection
+
+## Summary
+
+| Feature | Configuration | Output |
+|---------|--------------|--------|
+| Language | `seo.lang` in config | `<html lang="...">` |
+| Canonical | `route.canonical` | `<link rel="canonical">` |
+| Structured Data | `route.jsonLd` | `<script type="application/ld+json">` |
+| Meta Tags | `route.meta` | `<meta>` tags |

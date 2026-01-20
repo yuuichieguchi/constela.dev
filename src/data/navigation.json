@@ -25,7 +25,8 @@
       "title": "Framework",
       "items": [
         { "title": "@constela/start", "href": "/docs/start" },
-        { "title": "HMR", "href": "/docs/hmr" }
+        { "title": "HMR", "href": "/docs/hmr" },
+        { "title": "SEO", "href": "/docs/seo" }
       ]
     }
   ],
@@ -91,6 +92,10 @@
     },
     "/docs/hmr": {
       "prev": { "title": "@constela/start", "href": "/docs/start" },
+      "next": { "title": "SEO", "href": "/docs/seo" }
+    },
+    "/docs/seo": {
+      "prev": { "title": "HMR", "href": "/docs/hmr" },
       "next": null
     }
   }
