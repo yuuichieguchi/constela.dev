@@ -5,7 +5,29 @@ description: Install Constela packages
 
 ## Quick Start
 
-The fastest way to start with Constela is using `@constela/start`, a full-stack meta-framework.
+The fastest way to start with Constela:
+
+```bash
+npx create-constela my-app
+cd my-app
+npm run dev
+```
+
+Open `http://localhost:3000` to see your app.
+
+### create-constela Options
+
+| Option | Description |
+|--------|-------------|
+| `--example <name>` | Use a specific example template |
+| `--list` | List available templates |
+| `--no-git` | Skip git initialization |
+| `--no-install` | Skip dependency installation |
+| `--package-manager <pm>` | Use npm, yarn, or pnpm |
+
+## Manual Installation
+
+If you prefer manual setup, install `@constela/start`:
 
 ```bash
 npm install @constela/start
@@ -117,11 +139,12 @@ Constela uses file-based routing. Files in `src/routes/` automatically become ro
 ## Package Overview
 
 <Callout type="note">
-Most users only need `@constela/start`. The other packages are used internally or for advanced use cases.
+Most users should start with `npx create-constela`. The packages below are used internally or for advanced use cases.
 </Callout>
 
 | Package | Purpose |
 |---------|---------|
+| `create-constela` | CLI scaffolding tool (`npx create-constela my-app`) |
 | `@constela/start` | Full-stack meta-framework (recommended) |
 | `@constela/core` | Type definitions and JSON validation |
 | `@constela/compiler` | AST transformation |
