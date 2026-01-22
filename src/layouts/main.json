@@ -83,6 +83,20 @@
     },
     "children": [
       {
+        "kind": "portal",
+        "target": "head",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "link",
+            "props": {
+              "rel": { "expr": "lit", "value": "icon" },
+              "href": { "expr": "lit", "value": "/favicon.ico" }
+            }
+          }
+        ]
+      },
+      {
         "kind": "element",
         "tag": "header",
         "props": {
