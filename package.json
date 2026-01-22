@@ -16,9 +16,9 @@
     "@constela/compiler": "^0.12.0",
     "@constela/core": "^0.13.0",
     "@constela/router": "^15.0.0",
-    "@constela/runtime": "^0.16.5",
+    "@constela/runtime": "^0.16.6",
     "@constela/server": "^9.0.0",
-    "@constela/start": "^1.8.5",
+    "@constela/start": "^1.8.8",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
