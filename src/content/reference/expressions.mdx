@@ -912,3 +912,149 @@ The validity expression reads directly from the browser's Constraint Validation 
 <Callout type="note">
 Validity is evaluated lazily on each render. The element must exist in the DOM for validity to be checked. If the ref doesn't exist yet, `valid` returns `true` and `message` returns an empty string.
 </Callout>
+
+## Call Expression
+
+Calls a method on arrays, strings, Math, or Date objects.
+
+### Syntax
+
+```json
+{
+  "expr": "call",
+  "target": <Expression>,
+  "method": "methodName",
+  "args": [<Expression>, ...]
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"call\"", required: true, description: "Expression type identifier." },
+  { name: "target", type: "Expression", required: true, description: "The target object (array, string, or Math/Date)." },
+  { name: "method", type: "string", required: true, description: "Method name to call." },
+  { name: "args", type: "Expression[]", required: false, description: "Arguments to pass to the method." }
+]} />
+
+### Array Methods
+
+| Method | Description |
+|--------|-------------|
+| `length` | Array length |
+| `at` | Element at index (supports negative) |
+| `includes` | Check if contains value |
+| `slice` | Extract portion |
+| `indexOf` | Find index of value |
+| `join` | Join elements to string |
+| `filter` | Filter with lambda |
+| `map` | Transform with lambda |
+| `find` | Find first matching |
+| `findIndex` | Find index of first matching |
+| `some` | Check if any match |
+| `every` | Check if all match |
+
+### String Methods
+
+| Method | Description |
+|--------|-------------|
+| `length` | String length |
+| `charAt` | Character at index |
+| `substring` | Extract substring |
+| `slice` | Extract portion |
+| `split` | Split to array |
+| `trim` | Remove whitespace |
+| `toUpperCase` | Convert to uppercase |
+| `toLowerCase` | Convert to lowercase |
+| `replace` | Replace first match |
+| `includes` | Check if contains |
+| `startsWith` | Check prefix |
+| `endsWith` | Check suffix |
+| `indexOf` | Find index |
+
+### Math Methods
+
+| Method | Description |
+|--------|-------------|
+| `min` | Minimum of values |
+| `max` | Maximum of values |
+| `round` | Round to nearest |
+| `floor` | Round down |
+| `ceil` | Round up |
+| `abs` | Absolute value |
+| `sqrt` | Square root |
+| `pow` | Power |
+| `random` | Random 0-1 |
+
+### Date Methods
+
+**Static:** `now`, `parse`
+
+**Instance:** `toISOString`, `getTime`, `getFullYear`, `getMonth`, `getDate`, `getHours`, `getMinutes`, `getSeconds`, `getMilliseconds`
+
+### Examples
+
+```json
+// Get array length
+{ "expr": "call", "target": { "expr": "state", "name": "items" }, "method": "length" }
+
+// Filter completed todos
+{
+  "expr": "call",
+  "target": { "expr": "state", "name": "todos" },
+  "method": "filter",
+  "args": [{
+    "expr": "lambda",
+    "param": "todo",
+    "body": { "expr": "get", "base": { "expr": "var", "name": "todo" }, "path": "completed" }
+  }]
+}
+
+// Math.max
+{
+  "expr": "call",
+  "target": { "expr": "var", "name": "Math" },
+  "method": "max",
+  "args": [{ "expr": "lit", "value": 10 }, { "expr": "state", "name": "count" }]
+}
+```
+
+## Lambda Expression
+
+Anonymous function for array methods like filter, map, find.
+
+### Syntax
+
+```json
+{
+  "expr": "lambda",
+  "param": "item",
+  "index": "i",
+  "body": <Expression>
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"lambda\"", required: true, description: "Expression type identifier." },
+  { name: "param", type: "string", required: true, description: "Parameter name for the current item." },
+  { name: "index", type: "string", required: false, description: "Optional parameter name for the current index." },
+  { name: "body", type: "Expression", required: true, description: "Expression to evaluate for each item." }
+]} />
+
+### Example
+
+```json
+{
+  "expr": "call",
+  "target": { "expr": "state", "name": "users" },
+  "method": "map",
+  "args": [{
+    "expr": "lambda",
+    "param": "user",
+    "index": "i",
+    "body": { "expr": "get", "base": { "expr": "var", "name": "user" }, "path": "name" }
+  }]
+}
+```
+
+<Callout type="tip">
+Lambda expressions are used with array methods like `filter`, `map`, `find`, `findIndex`, `some`, and `every`. The `param` variable is accessible inside the `body` expression via `var` expression.
+</Callout>
