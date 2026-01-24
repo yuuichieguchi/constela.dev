@@ -2,6 +2,7 @@
   "topNav": [
     { "title": "Docs", "href": "/docs" },
     { "title": "Reference", "href": "/reference" },
+    { "title": "UI", "href": "/ui" },
     { "title": "Examples", "href": "/examples" },
     { "title": "Playground", "href": "/playground" }
   ],
@@ -125,6 +126,16 @@
         { "title": "API Routes", "href": "/reference/start/api-routes" },
         { "title": "Middleware", "href": "/reference/start/middleware" },
         { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" }
+      ]
+    },
+    {
+      "title": "@constela/ui",
+      "items": [
+        { "title": "Overview", "href": "/reference/ui" },
+        { "title": "Installation", "href": "/reference/ui/installation" },
+        { "title": "Components", "href": "/reference/ui/components" },
+        { "title": "Style System", "href": "/reference/ui/style-system" },
+        { "title": "Catalog", "href": "/ui" }
       ]
     },
     {
@@ -375,6 +386,22 @@
     },
     "/reference/vscode-constela": {
       "prev": { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" },
+      "next": { "title": "@constela/ui", "href": "/reference/ui" }
+    },
+    "/reference/ui": {
+      "prev": { "title": "VSCode Extension", "href": "/reference/vscode-constela" },
+      "next": { "title": "Installation", "href": "/reference/ui/installation" }
+    },
+    "/reference/ui/installation": {
+      "prev": { "title": "@constela/ui", "href": "/reference/ui" },
+      "next": { "title": "Components", "href": "/reference/ui/components" }
+    },
+    "/reference/ui/components": {
+      "prev": { "title": "Installation", "href": "/reference/ui/installation" },
+      "next": { "title": "Style System", "href": "/reference/ui/style-system" }
+    },
+    "/reference/ui/style-system": {
+      "prev": { "title": "Components", "href": "/reference/ui/components" },
       "next": null
     }
   }

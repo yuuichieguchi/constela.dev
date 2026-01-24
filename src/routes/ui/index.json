@@ -1,0 +1,132 @@
+{
+  "version": "1.0",
+  "route": {
+    "path": "/ui",
+    "layout": "ui",
+    "canonical": { "expr": "lit", "value": "https://constela.dev/ui" },
+    "meta": {
+      "title": "UI Components - Constela",
+      "description": "Copy-paste UI components for Constela. 22 accessible components ready to use.",
+      "og:title": "UI Components - Constela",
+      "og:description": "Copy-paste UI components for Constela. 22 accessible components ready to use.",
+      "og:image": "https://constela.dev/og-image.png",
+      "og:url": "https://constela.dev/ui",
+      "og:type": "website",
+      "twitter:card": "summary_large_image",
+      "twitter:image": "https://constela.dev/og-image.png"
+    },
+    "layoutParams": {}
+  },
+  "imports": {
+    "uiData": "../../data/ui-components.json"
+  },
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "class": { "expr": "lit", "value": "p-6 lg:p-8" }
+    },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "header",
+        "props": {
+          "class": { "expr": "lit", "value": "mb-8" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "h1",
+            "props": {
+              "class": { "expr": "lit", "value": "text-3xl font-bold text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "UI Components" } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "p",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-2 text-muted-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Copy-paste components for Constela. Fully accessible and customizable." } }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "rounded-lg border border-border bg-card p-6" }
+        },
+        "children": [
+          {
+            "kind": "element",
+            "tag": "p",
+            "props": {
+              "class": { "expr": "lit", "value": "text-muted-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "Select a component from the sidebar to view its documentation and examples." } }
+            ]
+          },
+          {
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "mt-4 flex gap-4" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "lit", "value": "/reference/ui" },
+                  "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "Documentation" } }
+                ]
+              },
+              {
+                "kind": "element",
+                "tag": "a",
+                "props": {
+                  "href": { "expr": "lit", "value": "https://www.npmjs.com/package/@constela/ui" },
+                  "target": { "expr": "lit", "value": "_blank" },
+                  "class": { "expr": "lit", "value": "inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors" }
+                },
+                "children": [
+                  { "kind": "text", "value": { "expr": "lit", "value": "npm" } }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "props": {
+          "class": { "expr": "lit", "value": "mt-6 text-sm text-muted-foreground" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Install with: " } },
+          {
+            "kind": "element",
+            "tag": "code",
+            "props": {
+              "class": { "expr": "lit", "value": "bg-muted px-2 py-1 rounded text-foreground" }
+            },
+            "children": [
+              { "kind": "text", "value": { "expr": "lit", "value": "npm install @constela/ui" } }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

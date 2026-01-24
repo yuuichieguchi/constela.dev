@@ -1,0 +1,285 @@
+---
+title: Components
+description: All @constela/ui components reference
+---
+
+## Basic Components
+
+### Button
+
+Clickable button with multiple variants and sizes.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| variant | string | "default" | default, destructive, outline, secondary, ghost, link |
+| size | string | "default" | default, sm, lg, icon |
+| disabled | boolean | - | Disable the button |
+| type | string | - | HTML button type |
+| ariaLabel | string | - | ARIA label |
+
+**Example:**
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "variant": { "expr": "lit", "value": "outline" },
+    "size": { "expr": "lit", "value": "lg" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "lit", "value": "Submit" } }
+  ]
+}
+```
+
+### Input
+
+Text input field.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| value | string | Input value |
+| placeholder | string | Placeholder text |
+| disabled | boolean | Disable input |
+| required | boolean | Required field |
+| type | string | text, password, email, etc. |
+| name | string | Input name |
+| id | string | Input ID |
+| ariaLabel | string | ARIA label |
+
+### Textarea
+
+Multi-line text input.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| value | string | Textarea value |
+| placeholder | string | Placeholder text |
+| rows | number | Visible rows |
+| disabled | boolean | Disable textarea |
+| required | boolean | Required field |
+
+### Select
+
+Dropdown selection.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| value | string | Selected value |
+| disabled | boolean | Disable select |
+| required | boolean | Required field |
+| placeholder | string | Placeholder text |
+
+### Checkbox
+
+Checkbox input.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| checked | boolean | Checked state |
+| disabled | boolean | Disable checkbox |
+| required | boolean | Required field |
+| value | string | Checkbox value |
+
+### Radio
+
+Radio button for single selection within a group.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| checked | boolean | Selected state |
+| disabled | boolean | Disable radio |
+| name | string | Group name |
+| value | string | Radio value |
+
+### Switch
+
+Toggle switch.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| checked | boolean | On/off state |
+| disabled | boolean | Disable switch |
+
+---
+
+## Feedback Components
+
+### Alert
+
+Alert message with icon.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| variant | string | "default" | default, destructive |
+| title | string | - | Alert title |
+
+### Card
+
+Card container.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| variant | string | "default" | default, outline |
+
+### Badge
+
+Inline badge.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| variant | string | "default" | default, secondary, destructive, outline |
+
+### Skeleton
+
+Loading placeholder with animation.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| width | string | Skeleton width |
+| height | string | Skeleton height |
+
+### Avatar
+
+User avatar with fallback.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| src | string | - | Image URL |
+| alt | string | - | Alt text |
+| fallback | string | - | Fallback text |
+| size | string | "default" | default, sm, lg |
+
+---
+
+## Overlay Components
+
+### Dialog
+
+Modal dialog.
+
+**Params:**
+| Param | Type | Description |
+|-------|------|-------------|
+| open | boolean | Open state |
+| title | string | Dialog title |
+
+**Accessibility:** `role="dialog"`, `aria-modal="true"`
+
+### Tooltip
+
+Hover tooltip.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| content | string | - | Tooltip text |
+| position | string | "top" | top, right, bottom, left |
+
+**Accessibility:** `role="tooltip"`
+
+### Popover
+
+Click-triggered popover.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| open | boolean | - | Open state |
+| position | string | "bottom" | top, right, bottom, left |
+
+### Toast
+
+Notification toast.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| variant | string | "default" | default, success, error, warning, info |
+| title | string | - | Toast title |
+| description | string | - | Toast description |
+
+**Accessibility:** `role="alert"`, `aria-live="polite"`
+
+---
+
+## Navigation/Layout Components
+
+### Tabs
+
+Tab navigation.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| activeTab | string | - | Active tab ID |
+| variant | string | "default" | default, outline |
+
+**Accessibility:** `role="tablist"`
+
+### Breadcrumb
+
+Breadcrumb navigation.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| separator | string | "/" | Separator character |
+
+**Accessibility:** `aria-label="Breadcrumb"`
+
+### Pagination
+
+Page pagination.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| currentPage | number | - | Current page |
+| totalPages | number | - | Total pages |
+| size | string | "default" | default, sm, lg |
+
+**Accessibility:** `aria-label="Pagination"`
+
+### Container
+
+Max-width container.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| maxWidth | string | "lg" | sm, md, lg, xl, 2xl, full |
+
+### Grid
+
+CSS Grid layout.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| cols | string | "1" | 1, 2, 3, 4, 6, 12 |
+| gap | string | "md" | none, sm, md, lg |
+
+### Stack
+
+Flexbox stack.
+
+**Params:**
+| Param | Type | Default | Description |
+|-------|------|---------|-------------|
+| direction | string | "column" | row, column |
+| gap | string | "md" | none, sm, md, lg |
+| align | string | - | start, center, end, stretch |
+| justify | string | - | start, center, end, between |

@@ -1,0 +1,178 @@
+---
+title: Style System
+description: How the @constela/ui style system works
+---
+
+## Overview
+
+`@constela/ui` uses a CVA (Class Variance Authority) like style system. Each component has a style preset with:
+
+- **base** - Classes applied to all variants
+- **variants** - Named variant options
+- **defaultVariants** - Default values when props aren't specified
+
+## Style Preset Structure
+
+```json
+{
+  "buttonStyles": {
+    "base": "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50",
+    "variants": {
+      "variant": {
+        "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+        "destructive": "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        "outline": "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost": "hover:bg-accent hover:text-accent-foreground",
+        "link": "text-primary underline-offset-4 hover:underline"
+      },
+      "size": {
+        "default": "h-10 px-4 py-2",
+        "sm": "h-9 rounded-md px-3",
+        "lg": "h-11 rounded-md px-8",
+        "icon": "h-10 w-10"
+      }
+    },
+    "defaultVariants": {
+      "variant": "default",
+      "size": "default"
+    }
+  }
+}
+```
+
+## Using StyleExpr
+
+Components use `StyleExpr` to apply styles dynamically:
+
+```json
+{
+  "className": {
+    "expr": "style",
+    "preset": "buttonStyles",
+    "props": {
+      "variant": { "expr": "param", "name": "variant" },
+      "size": { "expr": "param", "name": "size" }
+    }
+  }
+}
+```
+
+The runtime:
+1. Starts with `base` classes
+2. Looks up each variant value in `variants`
+3. Falls back to `defaultVariants` for unspecified props
+4. Combines all classes
+
+## Customization
+
+### Adding Variants
+
+Add new options to existing variant categories:
+
+```json
+{
+  "variants": {
+    "variant": {
+      "success": "bg-green-500 text-white hover:bg-green-600"
+    }
+  }
+}
+```
+
+### Adding Variant Categories
+
+Create new variant dimensions:
+
+```json
+{
+  "variants": {
+    "rounded": {
+      "none": "rounded-none",
+      "sm": "rounded-sm",
+      "md": "rounded-md",
+      "lg": "rounded-lg",
+      "full": "rounded-full"
+    }
+  },
+  "defaultVariants": {
+    "rounded": "md"
+  }
+}
+```
+
+### Modifying Base
+
+Change base classes to affect all variants:
+
+```json
+{
+  "base": "inline-flex items-center justify-center font-bold uppercase tracking-wide"
+}
+```
+
+## Compound Variants
+
+For complex variant combinations, use compound variants:
+
+```json
+{
+  "compoundVariants": [
+    {
+      "variant": "outline",
+      "size": "sm",
+      "class": "border-2"
+    }
+  ]
+}
+```
+
+## CSS Variables
+
+Components reference CSS custom properties:
+
+| Variable | Description |
+|----------|-------------|
+| `--primary` | Primary color |
+| `--primary-foreground` | Text on primary |
+| `--secondary` | Secondary color |
+| `--destructive` | Error/danger color |
+| `--muted` | Muted backgrounds |
+| `--accent` | Accent color |
+| `--border` | Border color |
+| `--input` | Input border |
+| `--ring` | Focus ring |
+| `--background` | Page background |
+| `--foreground` | Default text |
+
+Define these in your CSS:
+
+```css
+:root {
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  /* ... */
+}
+```
+
+Use in Tailwind:
+
+```css
+.bg-primary {
+  background-color: hsl(var(--primary));
+}
+```
+
+## Dark Mode
+
+Toggle dark mode with a class on the root element:
+
+```css
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  /* ... dark values */
+}
+```
+
+Components automatically adapt when the `.dark` class is present.

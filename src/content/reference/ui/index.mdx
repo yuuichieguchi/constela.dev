@@ -1,0 +1,63 @@
+---
+title: '@constela/ui'
+description: Copy-paste UI components for Constela
+---
+
+`@constela/ui` provides 22 pre-built, accessible UI components written in Constela JSON DSL. Each component is designed to be copied directly into your project and customized as needed.
+
+## Features
+
+- **Copy-Paste Components** - Drop components directly into your project
+- **CVA-like Style System** - Variants, sizes, and default values
+- **Full Accessibility** - ARIA attributes and semantic HTML
+- **JSON-based** - No TypeScript knowledge required to customize
+
+## Components
+
+### Basic (7)
+Button, Input, Textarea, Select, Checkbox, Radio, Switch
+
+### Feedback (5)
+Alert, Card, Badge, Skeleton, Avatar
+
+### Overlay (4)
+Dialog, Tooltip, Popover, Toast
+
+### Navigation/Layout (6)
+Tabs, Breadcrumb, Pagination, Container, Grid, Stack
+
+## Quick Start
+
+```bash
+npm install @constela/ui
+```
+
+Copy the component files you need:
+
+```
+node_modules/@constela/ui/components/button/
+├── button.constela.json   # Component definition
+└── button.styles.json     # Style preset
+```
+
+Use in your Constela program:
+
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "variant": { "expr": "lit", "value": "default" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
+  ]
+}
+```
+
+## Next Steps
+
+- [Installation](/reference/ui/installation) - Detailed setup guide
+- [Components](/reference/ui/components) - All components reference
+- [Style System](/reference/ui/style-system) - How styling works
+- [Catalog](/ui) - Interactive component showcase

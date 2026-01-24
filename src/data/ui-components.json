@@ -1,0 +1,215 @@
+{
+  "components": [
+    {
+      "slug": "button",
+      "name": "Button",
+      "description": "Clickable button with variants and sizes",
+      "category": "basic",
+      "variants": ["default", "destructive", "outline", "secondary", "ghost", "link"],
+      "sizes": ["default", "sm", "lg", "icon"],
+      "params": ["variant", "size", "disabled", "type", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Button\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"size\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Click me\" } }\n  ]\n}"
+    },
+    {
+      "slug": "input",
+      "name": "Input",
+      "description": "Text input field with validation support",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["value", "placeholder", "disabled", "required", "type", "name", "id", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Input\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter text...\" },\n    \"type\": { \"expr\": \"lit\", \"value\": \"text\" }\n  }\n}"
+    },
+    {
+      "slug": "textarea",
+      "name": "Textarea",
+      "description": "Multi-line text input",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["value", "placeholder", "disabled", "required", "rows", "name", "id", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Textarea\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter message...\" },\n    \"rows\": { \"expr\": \"lit\", \"value\": 4 }\n  }\n}"
+    },
+    {
+      "slug": "select",
+      "name": "Select",
+      "description": "Dropdown selection",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["value", "disabled", "required", "placeholder", "name", "id", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Select\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Select option...\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"option\", \"props\": { \"value\": { \"expr\": \"lit\", \"value\": \"1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 1\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "checkbox",
+      "name": "Checkbox",
+      "description": "Checkbox input for boolean selection",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["checked", "disabled", "required", "name", "id", "ariaLabel", "value"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Checkbox\",\n  \"props\": {\n    \"checked\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n    \"ariaLabel\": { \"expr\": \"lit\", \"value\": \"Accept terms\" }\n  }\n}"
+    },
+    {
+      "slug": "radio",
+      "name": "Radio",
+      "description": "Radio button for single selection",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["checked", "disabled", "name", "value", "id", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Radio\",\n  \"props\": {\n    \"name\": { \"expr\": \"lit\", \"value\": \"options\" },\n    \"value\": { \"expr\": \"lit\", \"value\": \"option1\" },\n    \"checked\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option1\" } }\n  }\n}"
+    },
+    {
+      "slug": "switch",
+      "name": "Switch",
+      "description": "Toggle switch for on/off states",
+      "category": "basic",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["checked", "disabled", "name", "id", "ariaLabel"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Switch\",\n  \"props\": {\n    \"checked\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n    \"ariaLabel\": { \"expr\": \"lit\", \"value\": \"Enable notifications\" }\n  }\n}"
+    },
+    {
+      "slug": "alert",
+      "name": "Alert",
+      "description": "Alert message with icon",
+      "category": "feedback",
+      "variants": ["default", "destructive"],
+      "params": ["variant", "title"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Alert\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"title\": { \"expr\": \"lit\", \"value\": \"Heads up!\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This is an alert message.\" } }\n  ]\n}"
+    },
+    {
+      "slug": "card",
+      "name": "Card",
+      "description": "Card container for content",
+      "category": "feedback",
+      "variants": ["default", "outline"],
+      "params": ["variant", "className"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Card\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"h3\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card Title\" } }] },\n    { \"kind\": \"element\", \"tag\": \"p\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card content goes here.\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "badge",
+      "name": "Badge",
+      "description": "Inline badge for labels",
+      "category": "feedback",
+      "variants": ["default", "secondary", "destructive", "outline"],
+      "params": ["variant"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Badge\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"New\" } }\n  ]\n}"
+    },
+    {
+      "slug": "skeleton",
+      "name": "Skeleton",
+      "description": "Loading placeholder with animation",
+      "category": "feedback",
+      "params": ["width", "height", "className"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Skeleton\",\n  \"props\": {\n    \"width\": { \"expr\": \"lit\", \"value\": \"100%\" },\n    \"height\": { \"expr\": \"lit\", \"value\": \"20px\" }\n  }\n}"
+    },
+    {
+      "slug": "avatar",
+      "name": "Avatar",
+      "description": "User avatar with fallback",
+      "category": "feedback",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["src", "alt", "fallback", "size"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Avatar\",\n  \"props\": {\n    \"src\": { \"expr\": \"lit\", \"value\": \"/avatar.png\" },\n    \"alt\": { \"expr\": \"lit\", \"value\": \"User\" },\n    \"fallback\": { \"expr\": \"lit\", \"value\": \"JD\" }\n  }\n}"
+    },
+    {
+      "slug": "dialog",
+      "name": "Dialog",
+      "description": "Modal dialog with ARIA support",
+      "category": "overlay",
+      "params": ["open", "title"],
+      "accessibility": ["role=dialog", "aria-modal"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Dialog\",\n  \"props\": {\n    \"open\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n    \"title\": { \"expr\": \"lit\", \"value\": \"Confirm Action\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Are you sure you want to proceed?\" } }\n  ]\n}"
+    },
+    {
+      "slug": "tooltip",
+      "name": "Tooltip",
+      "description": "Hover tooltip",
+      "category": "overlay",
+      "positions": ["top", "right", "bottom", "left"],
+      "params": ["content", "position"],
+      "accessibility": ["role=tooltip"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Tooltip\",\n  \"props\": {\n    \"content\": { \"expr\": \"lit\", \"value\": \"This is a tooltip\" },\n    \"position\": { \"expr\": \"lit\", \"value\": \"top\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"button\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Hover me\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "popover",
+      "name": "Popover",
+      "description": "Click-triggered popover",
+      "category": "overlay",
+      "positions": ["top", "right", "bottom", "left"],
+      "params": ["open", "position"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Popover\",\n  \"props\": {\n    \"open\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n    \"position\": { \"expr\": \"lit\", \"value\": \"bottom\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Popover content\" } }\n  ]\n}"
+    },
+    {
+      "slug": "toast",
+      "name": "Toast",
+      "description": "Notification toast",
+      "category": "overlay",
+      "variants": ["default", "success", "error", "warning", "info"],
+      "params": ["variant", "title", "description"],
+      "accessibility": ["role=alert", "aria-live"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Toast\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"success\" },\n    \"title\": { \"expr\": \"lit\", \"value\": \"Success!\" },\n    \"description\": { \"expr\": \"lit\", \"value\": \"Your changes have been saved.\" }\n  }\n}"
+    },
+    {
+      "slug": "tabs",
+      "name": "Tabs",
+      "description": "Tab navigation",
+      "category": "navigation",
+      "variants": ["default", "outline"],
+      "params": ["activeTab", "variant"],
+      "accessibility": ["role=tablist"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Tabs\",\n  \"props\": {\n    \"activeTab\": { \"expr\": \"state\", \"name\": \"currentTab\" },\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"component\", \"name\": \"TabItem\", \"props\": { \"id\": { \"expr\": \"lit\", \"value\": \"tab1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tab 1\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "breadcrumb",
+      "name": "Breadcrumb",
+      "description": "Breadcrumb navigation",
+      "category": "navigation",
+      "params": ["separator"],
+      "accessibility": ["aria-label"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Breadcrumb\",\n  \"props\": {\n    \"separator\": { \"expr\": \"lit\", \"value\": \"/\" }\n  },\n  \"children\": [\n    { \"kind\": \"component\", \"name\": \"BreadcrumbItem\", \"props\": { \"href\": { \"expr\": \"lit\", \"value\": \"/\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Home\" } }] },\n    { \"kind\": \"component\", \"name\": \"BreadcrumbItem\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Current\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "pagination",
+      "name": "Pagination",
+      "description": "Page pagination",
+      "category": "navigation",
+      "sizes": ["default", "sm", "lg"],
+      "params": ["currentPage", "totalPages", "size"],
+      "accessibility": ["aria-label"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Pagination\",\n  \"props\": {\n    \"currentPage\": { \"expr\": \"state\", \"name\": \"page\" },\n    \"totalPages\": { \"expr\": \"lit\", \"value\": 10 },\n    \"size\": { \"expr\": \"lit\", \"value\": \"default\" }\n  }\n}"
+    },
+    {
+      "slug": "container",
+      "name": "Container",
+      "description": "Max-width container",
+      "category": "layout",
+      "sizes": ["sm", "md", "lg", "xl", "2xl", "full"],
+      "params": ["maxWidth", "className"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Container\",\n  \"props\": {\n    \"maxWidth\": { \"expr\": \"lit\", \"value\": \"lg\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Content here\" } }\n  ]\n}"
+    },
+    {
+      "slug": "grid",
+      "name": "Grid",
+      "description": "CSS Grid layout",
+      "category": "layout",
+      "cols": ["1", "2", "3", "4", "6", "12"],
+      "gaps": ["none", "sm", "md", "lg"],
+      "params": ["cols", "gap", "className"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Grid\",\n  \"props\": {\n    \"cols\": { \"expr\": \"lit\", \"value\": \"3\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 3\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "stack",
+      "name": "Stack",
+      "description": "Flexbox stack layout",
+      "category": "layout",
+      "directions": ["row", "column"],
+      "gaps": ["none", "sm", "md", "lg"],
+      "params": ["direction", "gap", "align", "justify", "className"],
+      "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Stack\",\n  \"props\": {\n    \"direction\": { \"expr\": \"lit\", \"value\": \"column\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" },\n    \"align\": { \"expr\": \"lit\", \"value\": \"center\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] }\n  ]\n}"
+    }
+  ],
+  "categories": [
+    { "id": "basic", "name": "Basic", "description": "Form inputs and buttons" },
+    { "id": "feedback", "name": "Feedback", "description": "Alerts, cards, and status indicators" },
+    { "id": "overlay", "name": "Overlay", "description": "Dialogs, tooltips, and popovers" },
+    { "id": "navigation", "name": "Navigation", "description": "Tabs, breadcrumbs, and pagination" },
+    { "id": "layout", "name": "Layout", "description": "Containers and layout primitives" }
+  ]
+}

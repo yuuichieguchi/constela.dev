@@ -1,0 +1,133 @@
+---
+title: Installation
+description: How to install and use @constela/ui
+---
+
+## Package Installation
+
+```bash
+npm install @constela/ui
+# or
+pnpm add @constela/ui
+# or
+yarn add @constela/ui
+```
+
+## Usage
+
+### 1. Copy Component Files
+
+Components are located in `node_modules/@constela/ui/components/`. Copy the component folder you need into your project:
+
+```
+your-project/
+├── src/
+│   ├── components/
+│   │   └── button/
+│   │       ├── button.constela.json
+│   │       └── button.styles.json
+│   └── routes/
+│       └── index.constela.json
+```
+
+### 2. Add Style Preset
+
+Add the style preset to your application's `styles` section:
+
+```json
+{
+  "styles": {
+    "button": {
+      "base": "inline-flex items-center justify-center ...",
+      "variants": {
+        "variant": {
+          "default": "bg-primary text-primary-foreground ..."
+        }
+      },
+      "defaultVariants": {
+        "variant": "default",
+        "size": "default"
+      }
+    }
+  }
+}
+```
+
+### 3. Register Component
+
+Add the component to your application's `components` section:
+
+```json
+{
+  "components": {
+    "Button": {
+      "params": {
+        "variant": { "type": "string", "required": false },
+        "size": { "type": "string", "required": false }
+      },
+      "view": { ... }
+    }
+  }
+}
+```
+
+### 4. Use Component
+
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "variant": { "expr": "lit", "value": "destructive" },
+    "size": { "expr": "lit", "value": "lg" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "lit", "value": "Delete" } }
+  ]
+}
+```
+
+## CSS Variables
+
+Components use CSS custom properties for theming. Add these to your global CSS:
+
+```css
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  /* ... dark mode values */
+}
+```
+
+## TypeScript Support
+
+For validation and type checking:
+
+```typescript
+import { validateComponent, validateStylePreset } from '@constela/ui';
+import type { ComponentDef, StylePreset } from '@constela/ui';
+
+// Validate component definition
+const result = validateComponent(myComponent);
+if (!result.valid) {
+  console.error(result.errors);
+}
+```
