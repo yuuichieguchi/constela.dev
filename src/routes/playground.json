@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "externalImports": {
-    "monaco-editor": "https://esm.sh/monaco-editor@0.52.0",
+    "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm",
     "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.14.0/+esm",
     "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.13.0/+esm",
     "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@0.17.1/+esm"
@@ -439,6 +439,20 @@
       "class": { "expr": "lit", "value": "mx-auto max-w-7xl px-6 py-8" }
     },
     "children": [
+      {
+        "kind": "portal",
+        "target": "head",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "link",
+            "props": {
+              "rel": { "expr": "lit", "value": "stylesheet" },
+              "href": { "expr": "lit", "value": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/min/vs/editor/editor.main.css" }
+            }
+          }
+        ]
+      },
       {
         "kind": "element",
         "tag": "div",
