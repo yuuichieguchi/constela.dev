@@ -440,20 +440,6 @@
     },
     "children": [
       {
-        "kind": "portal",
-        "target": "head",
-        "children": [
-          {
-            "kind": "element",
-            "tag": "link",
-            "props": {
-              "rel": { "expr": "lit", "value": "stylesheet" },
-              "href": { "expr": "lit", "value": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/min/vs/editor/editor.main.css" }
-            }
-          }
-        ]
-      },
-      {
         "kind": "element",
         "tag": "div",
         "props": {
