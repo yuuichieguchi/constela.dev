@@ -6,9 +6,9 @@
     "canonical": { "expr": "lit", "value": "https://constela.dev/ui" },
     "meta": {
       "title": "UI Components - Constela",
-      "description": "Copy-paste UI components for Constela. 22 accessible components ready to use.",
+      "description": "Copy-paste UI components for Constela. Accessible components ready to use.",
       "og:title": "UI Components - Constela",
-      "og:description": "Copy-paste UI components for Constela. 22 accessible components ready to use.",
+      "og:description": "Copy-paste UI components for Constela. Accessible components ready to use.",
       "og:image": "https://constela.dev/og-image.png",
       "og:url": "https://constela.dev/ui",
       "og:type": "website",
@@ -21,7 +21,8 @@
     "uiData": "../../data/ui-components.json"
   },
   "state": {
-    "copiedSlug": { "type": "string", "initial": "" }
+    "copiedSlug": { "type": "string", "initial": "" },
+    "tooltipVisible": { "type": "boolean", "initial": false }
   },
   "actions": [
     {
@@ -45,6 +46,14 @@
           ]
         }
       ]
+    },
+    {
+      "name": "showTooltip",
+      "steps": [{ "do": "set", "target": "tooltipVisible", "value": { "expr": "lit", "value": true } }]
+    },
+    {
+      "name": "hideTooltip",
+      "steps": [{ "do": "set", "target": "tooltipVisible", "value": { "expr": "lit", "value": false } }]
     }
   ],
   "view": {
@@ -129,7 +138,7 @@
                   "class": { "expr": "lit", "value": "text-xl text-muted-foreground mb-8" }
                 },
                 "children": [
-                  { "kind": "text", "value": { "expr": "lit", "value": "22 accessible, copy-paste components for Constela" } }
+                  { "kind": "text", "value": { "expr": "lit", "value": "Accessible, copy-paste components for Constela" } }
                 ]
               },
               {
@@ -261,15 +270,14 @@
                 "kind": "element",
                 "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min" }
+                  "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min p-8 rounded-3xl bg-card/50 backdrop-blur-xl" }
                 },
                 "children": [
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/card" },
-                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 lg:row-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 lg:row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -333,10 +341,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/avatar" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -363,10 +370,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/badge" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -383,10 +389,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/input" },
-                      "class": { "expr": "lit", "value": "lg:col-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "lg:col-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -419,10 +424,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/switch" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -468,10 +472,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/radio" },
-                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -526,10 +529,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/alert" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -544,10 +546,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/checkbox" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -572,10 +573,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/textarea" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -591,10 +591,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/button" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -611,10 +610,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/tabs" },
-                      "class": { "expr": "lit", "value": "md:col-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "md:col-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -632,10 +630,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/skeleton" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -659,10 +656,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/toast" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -678,10 +674,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/select" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -697,10 +692,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/dialog" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -725,10 +719,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/pagination" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -747,10 +740,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/breadcrumb" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
@@ -769,10 +761,9 @@
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/tooltip" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors flex items-center justify-center" }
+                      "class": { "expr": "lit", "value": "p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -780,19 +771,37 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "relative" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-10 left-1/2 -translate-x-1/2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add to library" } }] },
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-2 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" } } },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md border border-input px-3 py-1.5 text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Hover" } }] }
+                          {
+                            "kind": "if",
+                            "condition": { "expr": "state", "name": "tooltipVisible" },
+                            "then": {
+                              "kind": "element",
+                              "tag": "div",
+                              "children": [
+                                { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-10 left-1/2 -translate-x-1/2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add to library" } }] },
+                                { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-2 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" } } }
+                              ]
+                            }
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "button",
+                            "props": {
+                              "class": { "expr": "lit", "value": "rounded-md border border-input px-3 py-1.5 text-sm hover:bg-accent transition-colors" },
+                              "onMouseEnter": { "event": "mouseenter", "action": "showTooltip" },
+                              "onMouseLeave": { "event": "mouseleave", "action": "hideTooltip" }
+                            },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Hover" } }]
+                          }
                         ]
                       }
                     ]
                   },
                   {
                     "kind": "element",
-                    "tag": "a",
+                    "tag": "div",
                     "props": {
-                      "href": { "expr": "lit", "value": "/ui/popover" },
-                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                      "class": { "expr": "lit", "value": "p-4" }
                     },
                     "children": [
                       {
