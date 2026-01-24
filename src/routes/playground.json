@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "externalImports": {
-    "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm",
+    "monaco-editor": "https://esm.sh/monaco-editor@0.52.0",
     "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.14.0/+esm",
     "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.13.0/+esm",
     "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@0.17.1/+esm"
