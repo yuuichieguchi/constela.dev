@@ -462,3 +462,73 @@ html:not(.dark) .theme-icon-moon { display: block; }
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 0 20px color-mix(in srgb, var(--primary) 10%, transparent);
 }
+
+/* ===========================================
+   UI Components Index Page
+   =========================================== */
+
+/* Component card glow effect */
+.component-card {
+  position: relative;
+}
+
+.component-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.component-card:hover::before {
+  opacity: 0.15;
+}
+
+/* Component preview area */
+.component-preview {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--muted) 50%, transparent) 0%,
+    color-mix(in srgb, var(--muted) 30%, transparent) 100%
+  );
+}
+
+/* Skeleton animation for preview */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.animate-skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-skeleton {
+    animation: none;
+  }
+}
+
+/* Category accent bar colors */
+.category-accent-basic {
+  background: linear-gradient(180deg, #60a5fa, #3b82f6);
+}
+
+.category-accent-feedback {
+  background: linear-gradient(180deg, #4ade80, #22c55e);
+}
+
+.category-accent-overlay {
+  background: linear-gradient(180deg, #c084fc, #a855f7);
+}
+
+.category-accent-navigation {
+  background: linear-gradient(180deg, #fb923c, #f97316);
+}
+
+.category-accent-layout {
+  background: linear-gradient(180deg, #22d3ee, #06b6d4);
+}
