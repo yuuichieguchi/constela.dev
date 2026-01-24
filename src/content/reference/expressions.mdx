@@ -1058,3 +1058,118 @@ Anonymous function for array methods like filter, map, find.
 <Callout type="tip">
 Lambda expressions are used with array methods like `filter`, `map`, `find`, `findIndex`, `some`, and `every`. The `param` variable is accessible inside the `body` expression via `var` expression.
 </Callout>
+
+## Array Expression
+
+Constructs an array dynamically from expressions. Useful for building arrays where elements can be variables, function call results, or any other expression types.
+
+### Syntax
+
+```json
+{
+  "expr": "array",
+  "elements": [<Expression>, ...]
+}
+```
+
+<PropsTable items={[
+  { name: "expr", type: "\"array\"", required: true, description: "Expression type identifier." },
+  { name: "elements", type: "Expression[]", required: true, description: "Array of expressions to evaluate and include in the result array." }
+]} />
+
+### Basic Examples
+
+```json
+// Empty array
+{ "expr": "array", "elements": [] }
+
+// Array of literals
+{
+  "expr": "array",
+  "elements": [
+    { "expr": "lit", "value": 1 },
+    { "expr": "lit", "value": 2 },
+    { "expr": "lit", "value": 3 }
+  ]
+}
+
+// Array with state values
+{
+  "expr": "array",
+  "elements": [
+    { "expr": "state", "name": "config" },
+    { "expr": "state", "name": "theme" },
+    { "expr": "lit", "value": "default" }
+  ]
+}
+```
+
+### CodeMirror Extensions Pattern
+
+A common use case is building extension arrays for libraries like CodeMirror:
+
+```json
+// Equivalent to: [basicSetup, json()]
+{
+  "expr": "array",
+  "elements": [
+    { "expr": "var", "name": "basicSetup" },
+    {
+      "expr": "call",
+      "target": { "expr": "var", "name": "json" },
+      "method": "apply",
+      "args": []
+    }
+  ]
+}
+```
+
+### Nested Arrays
+
+```json
+// [[1, 2], [3, 4]]
+{
+  "expr": "array",
+  "elements": [
+    {
+      "expr": "array",
+      "elements": [
+        { "expr": "lit", "value": 1 },
+        { "expr": "lit", "value": 2 }
+      ]
+    },
+    {
+      "expr": "array",
+      "elements": [
+        { "expr": "lit", "value": 3 },
+        { "expr": "lit", "value": 4 }
+      ]
+    }
+  ]
+}
+```
+
+### Combining with Conditionals
+
+```json
+{
+  "expr": "array",
+  "elements": [
+    { "expr": "var", "name": "baseConfig" },
+    {
+      "expr": "cond",
+      "if": { "expr": "state", "name": "isDebug" },
+      "then": { "expr": "var", "name": "debugPlugin" },
+      "else": { "expr": "lit", "value": null }
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Array expressions are evaluated at runtime, so each element can be any expression type including state references, variable references, call results, or nested arrays.
+</Callout>
+
+<Callout type="note">
+Unlike literal arrays in `lit` expressions which are static, array expressions allow dynamic construction where elements can depend on runtime state or computed values.
+</Callout>
