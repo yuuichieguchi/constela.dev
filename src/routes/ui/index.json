@@ -25,28 +25,6 @@
   },
   "actions": [
     {
-      "name": "copyExample",
-      "steps": [
-        {
-          "do": "clipboard",
-          "operation": "write",
-          "value": { "expr": "var", "name": "payload", "path": "example" }
-        },
-        {
-          "do": "set",
-          "target": "copiedSlug",
-          "value": { "expr": "var", "name": "payload", "path": "slug" }
-        },
-        {
-          "do": "delay",
-          "ms": { "expr": "lit", "value": 2000 },
-          "then": [
-            { "do": "set", "target": "copiedSlug", "value": { "expr": "lit", "value": "" } }
-          ]
-        }
-      ]
-    },
-    {
       "name": "copyInstall",
       "steps": [
         {
@@ -152,45 +130,6 @@
                 },
                 "children": [
                   { "kind": "text", "value": { "expr": "lit", "value": "22 accessible, copy-paste components for Constela" } }
-                ]
-              },
-              {
-                "kind": "element",
-                "tag": "div",
-                "props": {
-                  "class": { "expr": "lit", "value": "flex flex-wrap justify-center gap-3 mb-8" }
-                },
-                "children": [
-                  {
-                    "kind": "element",
-                    "tag": "span",
-                    "props": {
-                      "class": { "expr": "lit", "value": "bg-primary/10 text-primary rounded-full px-4 py-1.5 text-sm font-medium" }
-                    },
-                    "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "22 Components" } }
-                    ]
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "span",
-                    "props": {
-                      "class": { "expr": "lit", "value": "bg-accent-purple/10 text-accent-purple rounded-full px-4 py-1.5 text-sm font-medium" }
-                    },
-                    "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "5 Categories" } }
-                    ]
-                  },
-                  {
-                    "kind": "element",
-                    "tag": "span",
-                    "props": {
-                      "class": { "expr": "lit", "value": "bg-accent-cyan/10 text-accent-cyan rounded-full px-4 py-1.5 text-sm font-medium" }
-                    },
-                    "children": [
-                      { "kind": "text", "value": { "expr": "lit", "value": "Accessible" } }
-                    ]
-                  }
                 ]
               },
               {
@@ -306,299 +245,579 @@
       },
       {
         "kind": "element",
-        "tag": "div",
+        "tag": "section",
         "props": {
-          "class": { "expr": "lit", "value": "px-6 pb-16 space-y-12" }
+          "class": { "expr": "lit", "value": "px-6 pb-16" }
         },
         "children": [
           {
-            "kind": "each",
-            "items": { "expr": "import", "name": "uiData", "path": "categories" },
-            "as": "category",
-            "body": {
-              "kind": "element",
-              "tag": "section",
-              "props": {},
-              "children": [
-                {
-                  "kind": "element",
-                  "tag": "div",
-                  "props": {
-                    "class": { "expr": "lit", "value": "flex items-start gap-3 mb-6" }
-                  },
-                  "children": [
-                    {
-                      "kind": "element",
-                      "tag": "div",
-                      "props": {
-                        "class": {
-                          "expr": "concat",
-                          "items": [
-                            { "expr": "lit", "value": "w-1 h-12 rounded-full category-accent-" },
-                            { "expr": "var", "name": "category", "path": "id" }
-                          ]
-                        }
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "element",
-                      "tag": "div",
-                      "props": {},
-                      "children": [
-                        {
-                          "kind": "element",
-                          "tag": "h2",
-                          "props": {
-                            "class": { "expr": "lit", "value": "text-xl font-semibold text-foreground" }
-                          },
-                          "children": [
-                            { "kind": "text", "value": { "expr": "var", "name": "category", "path": "name" } }
-                          ]
-                        },
-                        {
-                          "kind": "element",
-                          "tag": "p",
-                          "props": {
-                            "class": { "expr": "lit", "value": "text-sm text-muted-foreground" }
-                          },
-                          "children": [
-                            { "kind": "text", "value": { "expr": "var", "name": "category", "path": "description" } }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+            "kind": "element",
+            "tag": "div",
+            "props": {
+              "class": { "expr": "lit", "value": "max-w-6xl mx-auto" }
+            },
+            "children": [
+              {
+                "kind": "element",
+                "tag": "div",
+                "props": {
+                  "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-min" }
                 },
-                {
-                  "kind": "element",
-                  "tag": "div",
-                  "props": {
-                    "class": { "expr": "lit", "value": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" }
-                  },
-                  "children": [
-                    {
-                      "kind": "each",
-                      "items": { "expr": "import", "name": "uiData", "path": "components" },
-                      "as": "comp",
-                      "body": {
-                        "kind": "if",
-                        "condition": {
-                          "expr": "bin",
-                          "op": "==",
-                          "left": { "expr": "var", "name": "comp", "path": "category" },
-                          "right": { "expr": "var", "name": "category", "path": "id" }
-                        },
-                        "then": {
-                          "kind": "element",
-                          "tag": "a",
-                        "props": {
-                          "href": {
-                            "expr": "concat",
-                            "items": [
-                              { "expr": "lit", "value": "/ui/" },
-                              { "expr": "var", "name": "comp", "path": "slug" }
-                            ]
-                          },
-                          "class": { "expr": "lit", "value": "component-card group rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30" }
-                        },
+                "children": [
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/card" },
+                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 lg:row-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-4" } },
                         "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Payment Method" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "All transactions are secure and encrypted" } }] },
                           {
                             "kind": "element",
                             "tag": "div",
-                            "props": {
-                              "class": { "expr": "lit", "value": "flex items-center justify-between px-4 py-3 border-b border-border/30" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "h3",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "font-semibold text-foreground" }
-                                },
-                                "children": [
-                                  { "kind": "text", "value": { "expr": "var", "name": "comp", "path": "name" } }
-                                ]
-                              },
-                              {
-                                "kind": "element",
-                                "tag": "button",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "p-1.5 rounded-md opacity-0 group-hover:opacity-100 hover:bg-muted transition-all" },
-                                  "ariaLabel": { "expr": "lit", "value": "Copy example code" },
-                                  "onClick": {
-                                    "event": "click",
-                                    "action": "copyExample",
-                                    "payload": {
-                                      "slug": { "expr": "var", "name": "comp", "path": "slug" },
-                                      "example": { "expr": "var", "name": "comp", "path": "example" }
-                                    }
-                                  }
-                                },
-                                "children": [
-                                  {
-                                    "kind": "element",
-                                    "tag": "svg",
-                                    "props": {
-                                      "class": { "expr": "lit", "value": "w-4 h-4 text-muted-foreground" },
-                                      "fill": { "expr": "lit", "value": "none" },
-                                      "stroke": { "expr": "lit", "value": "currentColor" },
-                                      "viewBox": { "expr": "lit", "value": "0 0 24 24" }
-                                    },
-                                    "children": [
-                                      {
-                                        "kind": "element",
-                                        "tag": "path",
-                                        "props": {
-                                          "strokeLinecap": { "expr": "lit", "value": "round" },
-                                          "strokeLinejoin": { "expr": "lit", "value": "round" },
-                                          "strokeWidth": { "expr": "lit", "value": "2" },
-                                          "d": { "expr": "lit", "value": "M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" }
-                                        },
-                                        "children": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": {
-                              "class": { "expr": "lit", "value": "component-preview p-6 flex items-center justify-center min-h-[100px] border-b border-border/30" }
-                            },
+                            "props": { "class": { "expr": "lit", "value": "space-y-3" } },
                             "children": [
                               {
                                 "kind": "element",
                                 "tag": "div",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "flex items-center gap-2" }
-                                },
+                                "children": [
+                                  { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Name on Card" } }] },
+                                  { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "John Doe" }, "class": { "expr": "lit", "value": "mt-1.5 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } } }
+                                ]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "props": { "class": { "expr": "lit", "value": "grid grid-cols-3 gap-3" } },
                                 "children": [
                                   {
                                     "kind": "element",
                                     "tag": "div",
-                                    "props": {
-                                      "class": { "expr": "lit", "value": "w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center" }
-                                    },
+                                    "props": { "class": { "expr": "lit", "value": "col-span-2" } },
                                     "children": [
-                                      {
-                                        "kind": "element",
-                                        "tag": "svg",
-                                        "props": {
-                                          "class": { "expr": "lit", "value": "w-4 h-4 text-primary" },
-                                          "fill": { "expr": "lit", "value": "none" },
-                                          "stroke": { "expr": "lit", "value": "currentColor" },
-                                          "viewBox": { "expr": "lit", "value": "0 0 24 24" }
-                                        },
-                                        "children": [
-                                          {
-                                            "kind": "element",
-                                            "tag": "path",
-                                            "props": {
-                                              "strokeLinecap": { "expr": "lit", "value": "round" },
-                                              "strokeLinejoin": { "expr": "lit", "value": "round" },
-                                              "strokeWidth": { "expr": "lit", "value": "2" },
-                                              "d": { "expr": "lit", "value": "M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" }
-                                            },
-                                            "children": []
-                                          }
-                                        ]
-                                      }
+                                      { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Card Number" } }] },
+                                      { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "1234 5678 9012 3456" }, "class": { "expr": "lit", "value": "mt-1.5 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } } }
                                     ]
                                   },
                                   {
                                     "kind": "element",
-                                    "tag": "span",
-                                    "props": {
-                                      "class": { "expr": "lit", "value": "text-sm font-medium text-foreground" }
-                                    },
+                                    "tag": "div",
                                     "children": [
-                                      { "kind": "text", "value": { "expr": "var", "name": "comp", "path": "name" } }
+                                      { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "CVV" } }] },
+                                      { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "123" }, "class": { "expr": "lit", "value": "mt-1.5 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } } }
                                     ]
                                   }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "element",
-                            "tag": "div",
-                            "props": {
-                              "class": { "expr": "lit", "value": "p-4" }
-                            },
-                            "children": [
-                              {
-                                "kind": "element",
-                                "tag": "p",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "text-sm text-muted-foreground mb-3" }
-                                },
-                                "children": [
-                                  { "kind": "text", "value": { "expr": "var", "name": "comp", "path": "description" } }
                                 ]
                               },
                               {
                                 "kind": "element",
                                 "tag": "div",
-                                "props": {
-                                  "class": { "expr": "lit", "value": "flex flex-wrap gap-1.5" }
-                                },
+                                "props": { "class": { "expr": "lit", "value": "flex gap-4 pt-2" } },
                                 "children": [
+                                  { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "flex-1 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Submit" } }] },
+                                  { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "flex-1 rounded-md border border-input px-4 py-2 text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Cancel" } }] }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/avatar" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "flex flex-col items-center text-center" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "flex -space-x-2" } },
+                            "children": [
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "CN" } }] },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "LR" } }] },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "ER" } }] }
+                            ]
+                          },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "mt-4 font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "No Team Members" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Invite your team to collaborate." } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "mt-4 rounded-md border border-input px-3 py-1.5 text-sm font-medium hover:bg-accent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+ Invite Members" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/badge" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "flex flex-wrap gap-2" } },
+                        "children": [
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs" } }, "children": [{ "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" } } }, { "kind": "text", "value": { "expr": "lit", "value": "Syncing" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs" } }, "children": [{ "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "h-1.5 w-1.5 rounded-full bg-yellow-500 animate-pulse" } } }, { "kind": "text", "value": { "expr": "lit", "value": "Updating" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs" } }, "children": [{ "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" } } }, { "kind": "text", "value": { "expr": "lit", "value": "Loading" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/input" },
+                      "class": { "expr": "lit", "value": "lg:col-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-3" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "relative" } },
+                            "children": [
+                              { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "Search..." }, "class": { "expr": "lit", "value": "flex h-9 w-full rounded-md border border-input bg-transparent pl-8 pr-3 py-1 text-sm" } } },
+                              { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "🔍" } }] }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "flex" } },
+                            "children": [
+                              { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-flex items-center rounded-l-md border border-r-0 border-input bg-muted px-3 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "https://" } }] },
+                              { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "example.com" }, "class": { "expr": "lit", "value": "flex h-9 w-full rounded-r-md border border-input bg-transparent px-3 py-1 text-sm" } } }
+                            ]
+                          },
+                          { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "Ask, Search or Chat..." }, "class": { "expr": "lit", "value": "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/switch" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-4" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "flex items-center justify-between" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "children": [
+                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Two-factor authentication" } }] },
+                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Verify via email or phone." } }] }
+                                ]
+                              },
+                              { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Enable" } }] }
+                            ]
+                          },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "flex items-center justify-between" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "div",
+                                "children": [
+                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Wallpaper Tinting" } }] },
+                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Allow tinting." } }] }
+                                ]
+                              },
+                              { "kind": "element", "tag": "button", "props": { "role": { "expr": "lit", "value": "switch" }, "class": { "expr": "lit", "value": "relative inline-flex h-5 w-9 items-center rounded-full bg-primary" } }, "children": [{ "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-block h-4 w-4 transform rounded-full bg-white translate-x-4" } } }] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/radio" },
+                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-3" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Compute Environment" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Select the environment for your cluster." } }] },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "space-y-2 pt-2" } },
+                            "children": [
+                              {
+                                "kind": "element",
+                                "tag": "label",
+                                "props": { "class": { "expr": "lit", "value": "flex items-start gap-3 rounded-lg border bg-muted/50 p-3 cursor-pointer" } },
+                                "children": [
+                                  { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "radio" }, "checked": { "expr": "lit", "value": true }, "class": { "expr": "lit", "value": "mt-1 h-4 w-4" } } },
                                   {
-                                    "kind": "if",
-                                    "condition": { "expr": "var", "name": "comp", "path": "variants" },
-                                    "then": {
-                                      "kind": "each",
-                                      "items": { "expr": "var", "name": "comp", "path": "variants" },
-                                      "as": "variant",
-                                      "limit": 3,
-                                      "body": {
-                                        "kind": "element",
-                                        "tag": "span",
-                                        "props": {
-                                          "class": { "expr": "lit", "value": "bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full" }
-                                        },
-                                        "children": [
-                                          { "kind": "text", "value": { "expr": "var", "name": "variant" } }
-                                        ]
-                                      }
-                                    }
-                                  },
+                                    "kind": "element",
+                                    "tag": "div",
+                                    "children": [
+                                      { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Kubernetes" } }] },
+                                      { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Run GPU workloads on K8s." } }] }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "element",
+                                "tag": "label",
+                                "props": { "class": { "expr": "lit", "value": "flex items-start gap-3 rounded-lg border p-3 cursor-pointer opacity-60" } },
+                                "children": [
+                                  { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "radio" }, "class": { "expr": "lit", "value": "mt-1 h-4 w-4" } } },
                                   {
-                                    "kind": "if",
-                                    "condition": { "expr": "var", "name": "comp", "path": "sizes" },
-                                    "then": {
-                                      "kind": "each",
-                                      "items": { "expr": "var", "name": "comp", "path": "sizes" },
-                                      "as": "size",
-                                      "limit": 3,
-                                      "body": {
-                                        "kind": "element",
-                                        "tag": "span",
-                                        "props": {
-                                          "class": { "expr": "lit", "value": "bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded-full" }
-                                        },
-                                        "children": [
-                                          { "kind": "text", "value": { "expr": "var", "name": "size" } }
-                                        ]
-                                      }
-                                    }
+                                    "kind": "element",
+                                    "tag": "div",
+                                    "children": [
+                                      { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Virtual Machine" } }] },
+                                      { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Coming soon" } }] }
+                                    ]
                                   }
                                 ]
                               }
                             ]
                           }
                         ]
-                        }
                       }
-                    }
-                  ]
-                }
-              ]
-            }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/alert" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "role": { "expr": "lit", "value": "alert" }, "class": { "expr": "lit", "value": "rounded-lg border bg-muted/50 p-4" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "flex items-center gap-2" } }, "children": [{ "kind": "element", "tag": "span", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "✓" } }] }, { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Your profile has been verified." } }] }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/checkbox" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-3" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Billing Address" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Associated with your payment method" } }] },
+                          {
+                            "kind": "element",
+                            "tag": "label",
+                            "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 pt-2" } },
+                            "children": [
+                              { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "checkbox" }, "checked": { "expr": "lit", "value": true }, "class": { "expr": "lit", "value": "h-4 w-4 rounded" } } },
+                              { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Same as shipping address" } }] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/textarea" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-2" } },
+                        "children": [
+                          { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Comments" } }] },
+                          { "kind": "element", "tag": "textarea", "props": { "placeholder": { "expr": "lit", "value": "Add any additional comments" }, "rows": { "expr": "lit", "value": "3" }, "class": { "expr": "lit", "value": "flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm" } } }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/button" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "flex flex-wrap gap-2" } },
+                        "children": [
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Primary" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md border border-input bg-background px-4 py-2 text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Secondary" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Destructive" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/tabs" },
+                      "class": { "expr": "lit", "value": "md:col-span-2 rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "border-b" } },
+                        "children": [
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Account" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Password" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Team" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Billing" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/skeleton" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "flex items-center gap-4" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-12 w-12 rounded-full bg-muted animate-pulse" } } },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "space-y-2 flex-1" } },
+                            "children": [
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-4 w-3/4 rounded bg-muted animate-pulse" } } },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-4 w-1/2 rounded bg-muted animate-pulse" } } }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/toast" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-background p-4 shadow-lg" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Event has been created" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Sunday, December 03, 2023 at 9:00 AM" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/select" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "space-y-2" } },
+                        "children": [
+                          { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Framework" } }] },
+                          { "kind": "element", "tag": "select", "props": { "class": { "expr": "lit", "value": "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } }, "children": [{ "kind": "element", "tag": "option", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Next.js" } }] }, { "kind": "element", "tag": "option", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Remix" } }] }, { "kind": "element", "tag": "option", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Astro" } }] }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/dialog" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-background p-6 shadow-lg" } },
+                        "children": [
+                          { "kind": "element", "tag": "h3", "props": { "class": { "expr": "lit", "value": "font-semibold" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Are you sure?" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-2" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "This action cannot be undone." } }] },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "flex justify-end gap-2 mt-4" } },
+                            "children": [
+                              { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md border border-input px-3 py-1.5 text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Cancel" } }] },
+                              { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md bg-primary px-3 py-1.5 text-sm text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Continue" } }] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/pagination" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "nav",
+                        "props": { "class": { "expr": "lit", "value": "flex items-center justify-center gap-1" } },
+                        "children": [
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "h-8 w-8 rounded-md border text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "←" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "h-8 w-8 rounded-md bg-primary text-sm text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "1" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "h-8 w-8 rounded-md border text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "2" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "h-8 w-8 rounded-md border text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "3" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "h-8 w-8 rounded-md border text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "→" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/breadcrumb" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "nav",
+                        "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm" } },
+                        "children": [
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Home" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "/" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Components" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "/" } }] },
+                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Breadcrumb" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/tooltip" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors flex items-center justify-center" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "relative" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-10 left-1/2 -translate-x-1/2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add to library" } }] },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-2 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" } } },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md border border-input px-3 py-1.5 text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Hover" } }] }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "element",
+                    "tag": "a",
+                    "props": {
+                      "href": { "expr": "lit", "value": "/ui/popover" },
+                      "class": { "expr": "lit", "value": "rounded-xl border bg-card p-6 hover:border-foreground/20 transition-colors" }
+                    },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-background p-4 shadow-lg" } },
+                        "children": [
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dimensions" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Set the dimensions for the layer." } }] },
+                          {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "grid grid-cols-2 gap-2 mt-3" } },
+                            "children": [
+                              { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "value": { "expr": "lit", "value": "100%" }, "class": { "expr": "lit", "value": "h-8 rounded-md border border-input bg-transparent px-2 text-sm" } } },
+                              { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "value": { "expr": "lit", "value": "300px" }, "class": { "expr": "lit", "value": "h-8 rounded-md border border-input bg-transparent px-2 text-sm" } } }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
