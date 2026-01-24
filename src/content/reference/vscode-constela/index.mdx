@@ -1,0 +1,73 @@
+---
+title: VSCode Extension
+description: Official Visual Studio Code extension for Constela DSL with syntax highlighting, auto-completion, and real-time validation.
+---
+
+# VSCode Extension
+
+The official Visual Studio Code extension for Constela provides a rich editing experience for `.constela.json` files.
+
+## Installation
+
+Install from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=constela.vscode-constela):
+
+1. Open VSCode
+2. Go to Extensions (`Ctrl+Shift+X` / `Cmd+Shift+X`)
+3. Search for "Constela"
+4. Click Install
+
+## Features
+
+### Syntax Highlighting
+
+Full syntax highlighting for Constela DSL keywords:
+
+- **Expression types**: `lit`, `state`, `var`, `bin`, `not`, `cond`, `get`, `concat`, and more
+- **Action steps**: `set`, `update`, `fetch`, `navigate`, `delay`, `interval`, etc.
+- **View nodes**: `element`, `text`, `if`, `each`, `component`, `slot`, etc.
+
+### IntelliSense
+
+Smart auto-completion as you type:
+
+- Expression type completions
+- Action step completions
+- View node completions
+- State field name completions
+- Action name completions
+- Component name completions
+
+### Real-time Validation
+
+Errors appear instantly, powered by the Constela compiler:
+
+- JSON syntax errors
+- Missing required fields
+- Undefined state/action/component references
+- Type mismatches
+
+### Hover Documentation
+
+Hover over keywords to see:
+
+- Signature and structure
+- Description and usage
+- Available options
+
+### Go to Definition
+
+Use `Ctrl+Click` (or `Cmd+Click` on macOS) to navigate to:
+
+- State field definitions
+- Action definitions
+- Component definitions
+
+## File Association
+
+The extension automatically activates for files with the `.constela.json` extension.
+
+## Links
+
+- [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=constela.vscode-constela)
+- [GitHub Repository](https://github.com/yuuichieguchi/constela)
+- [Report Issues](https://github.com/yuuichieguchi/constela/issues)

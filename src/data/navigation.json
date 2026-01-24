@@ -126,6 +126,12 @@
         { "title": "Middleware", "href": "/reference/start/middleware" },
         { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" }
       ]
+    },
+    {
+      "title": "Editor",
+      "items": [
+        { "title": "VSCode Extension", "href": "/reference/vscode-constela" }
+      ]
     }
   ],
   "docsPagination": {
@@ -365,6 +371,10 @@
     },
     "/reference/start/edge-runtime": {
       "prev": { "title": "Middleware", "href": "/reference/start/middleware" },
+      "next": { "title": "VSCode Extension", "href": "/reference/vscode-constela" }
+    },
+    "/reference/vscode-constela": {
+      "prev": { "title": "Edge Runtime", "href": "/reference/start/edge-runtime" },
       "next": null
     }
   }
