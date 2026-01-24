@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "constela-start dev --css src/styles/globals.css --layoutsDir src/layouts",
+    "prebuild": "npx tsx scripts/check-playground-versions.cli.ts",
     "build": "constela-start build",
     "start": "constela-start start",
     "preview": "constela-start start",
