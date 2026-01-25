@@ -538,3 +538,54 @@ html:not(.dark) .theme-icon-moon { display: block; }
 .category-accent-layout {
   background: linear-gradient(180deg, #22d3ee, #06b6d4);
 }
+
+/* ===========================================
+   Sidebar Accordion Styles
+   =========================================== */
+
+.sidebar-section {
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-section summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  transition: color 0.2s;
+}
+
+.sidebar-section summary:hover {
+  color: var(--foreground);
+}
+
+.sidebar-section summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.sidebar-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-section summary::marker {
+  display: none;
+}
+
+.sidebar-section .chevron {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-section[open] .chevron {
+  transform: rotate(90deg);
+}

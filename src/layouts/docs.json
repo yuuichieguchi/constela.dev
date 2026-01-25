@@ -502,7 +502,7 @@
             "kind": "element",
             "tag": "nav",
             "props": {
-              "class": { "expr": "lit", "value": "space-y-6" }
+              "class": { "expr": "lit", "value": "space-y-2" }
             },
             "children": [
               {
@@ -511,23 +511,177 @@
                 "as": "section",
                 "body": {
                   "kind": "element",
-                  "tag": "div",
+                  "tag": "details",
+                  "props": {
+                    "class": { "expr": "lit", "value": "sidebar-section" },
+                    "open": {
+                      "expr": "call",
+                      "target": { "expr": "param", "name": "currentPath" },
+                      "method": "startsWith",
+                      "args": [
+                        {
+                          "expr": "cond",
+                          "if": {
+                            "expr": "bin",
+                            "op": "==",
+                            "left": { "expr": "var", "name": "section", "path": "title" },
+                            "right": { "expr": "lit", "value": "Reference" }
+                          },
+                          "then": { "expr": "lit", "value": "/reference" },
+                          "else": {
+                            "expr": "cond",
+                            "if": {
+                              "expr": "bin",
+                              "op": "==",
+                              "left": { "expr": "var", "name": "section", "path": "title" },
+                              "right": { "expr": "lit", "value": "@constela/core" }
+                            },
+                            "then": { "expr": "lit", "value": "/reference/core" },
+                            "else": {
+                              "expr": "cond",
+                              "if": {
+                                "expr": "bin",
+                                "op": "==",
+                                "left": { "expr": "var", "name": "section", "path": "title" },
+                                "right": { "expr": "lit", "value": "@constela/compiler" }
+                              },
+                              "then": { "expr": "lit", "value": "/reference/compiler" },
+                              "else": {
+                                "expr": "cond",
+                                "if": {
+                                  "expr": "bin",
+                                  "op": "==",
+                                  "left": { "expr": "var", "name": "section", "path": "title" },
+                                  "right": { "expr": "lit", "value": "@constela/runtime" }
+                                },
+                                "then": { "expr": "lit", "value": "/reference/runtime" },
+                                "else": {
+                                  "expr": "cond",
+                                  "if": {
+                                    "expr": "bin",
+                                    "op": "==",
+                                    "left": { "expr": "var", "name": "section", "path": "title" },
+                                    "right": { "expr": "lit", "value": "@constela/router" }
+                                  },
+                                  "then": { "expr": "lit", "value": "/reference/router" },
+                                  "else": {
+                                    "expr": "cond",
+                                    "if": {
+                                      "expr": "bin",
+                                      "op": "==",
+                                      "left": { "expr": "var", "name": "section", "path": "title" },
+                                      "right": { "expr": "lit", "value": "@constela/server" }
+                                    },
+                                    "then": { "expr": "lit", "value": "/reference/server" },
+                                    "else": {
+                                      "expr": "cond",
+                                      "if": {
+                                        "expr": "bin",
+                                        "op": "==",
+                                        "left": { "expr": "var", "name": "section", "path": "title" },
+                                        "right": { "expr": "lit", "value": "@constela/cli" }
+                                      },
+                                      "then": { "expr": "lit", "value": "/reference/cli" },
+                                      "else": {
+                                        "expr": "cond",
+                                        "if": {
+                                          "expr": "bin",
+                                          "op": "==",
+                                          "left": { "expr": "var", "name": "section", "path": "title" },
+                                          "right": { "expr": "lit", "value": "@constela/builder" }
+                                        },
+                                        "then": { "expr": "lit", "value": "/reference/builder" },
+                                        "else": {
+                                          "expr": "cond",
+                                          "if": {
+                                            "expr": "bin",
+                                            "op": "==",
+                                            "left": { "expr": "var", "name": "section", "path": "title" },
+                                            "right": { "expr": "lit", "value": "@constela/start" }
+                                          },
+                                          "then": { "expr": "lit", "value": "/reference/start" },
+                                          "else": {
+                                            "expr": "cond",
+                                            "if": {
+                                              "expr": "bin",
+                                              "op": "==",
+                                              "left": { "expr": "var", "name": "section", "path": "title" },
+                                              "right": { "expr": "lit", "value": "@constela/ui" }
+                                            },
+                                            "then": { "expr": "lit", "value": "/reference/ui" },
+                                            "else": {
+                                              "expr": "cond",
+                                              "if": {
+                                                "expr": "bin",
+                                                "op": "==",
+                                                "left": { "expr": "var", "name": "section", "path": "title" },
+                                                "right": { "expr": "lit", "value": "Editor" }
+                                              },
+                                              "then": { "expr": "lit", "value": "/reference/vscode" },
+                                              "else": {
+                                                "expr": "cond",
+                                                "if": {
+                                                  "expr": "bin",
+                                                  "op": "==",
+                                                  "left": { "expr": "var", "name": "section", "path": "title" },
+                                                  "right": { "expr": "lit", "value": "Get Started" }
+                                                },
+                                                "then": { "expr": "lit", "value": "/docs" },
+                                                "else": { "expr": "lit", "value": "/" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  },
                   "children": [
                     {
                       "kind": "element",
-                      "tag": "h3",
-                      "props": {
-                        "class": { "expr": "lit", "value": "mb-3 text-xs font-bold uppercase tracking-wider text-muted-foreground" }
-                      },
+                      "tag": "summary",
                       "children": [
-                        { "kind": "text", "value": { "expr": "var", "name": "section", "path": "title" } }
+                        {
+                          "kind": "element",
+                          "tag": "span",
+                          "children": [
+                            { "kind": "text", "value": { "expr": "var", "name": "section", "path": "title" } }
+                          ]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "svg",
+                          "props": {
+                            "class": { "expr": "lit", "value": "chevron" },
+                            "viewBox": { "expr": "lit", "value": "0 0 24 24" },
+                            "fill": { "expr": "lit", "value": "none" },
+                            "stroke": { "expr": "lit", "value": "currentColor" },
+                            "stroke-width": { "expr": "lit", "value": "2" }
+                          },
+                          "children": [
+                            {
+                              "kind": "element",
+                              "tag": "polyline",
+                              "props": {
+                                "points": { "expr": "lit", "value": "9 18 15 12 9 6" }
+                              }
+                            }
+                          ]
+                        }
                       ]
                     },
                     {
                       "kind": "element",
                       "tag": "ul",
                       "props": {
-                        "class": { "expr": "lit", "value": "space-y-1" }
+                        "class": { "expr": "lit", "value": "space-y-1 mt-2" }
                       },
                       "children": [
                         {
