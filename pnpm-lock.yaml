@@ -9,23 +9,23 @@ importers:
   .:
     dependencies:
       '@constela/compiler':
-        specifier: ^0.14.2
-        version: 0.14.2
+        specifier: ^0.14.4
+        version: 0.14.4
       '@constela/core':
         specifier: ^0.15.2
         version: 0.15.2
       '@constela/router':
         specifier: ^17.0.0
-        version: 17.0.0(@constela/compiler@0.14.2)(@constela/runtime@0.18.3)
+        version: 17.0.0(@constela/compiler@0.14.4)(@constela/runtime@0.19.2)
       '@constela/runtime':
-        specifier: ^0.18.3
-        version: 0.18.3
+        specifier: ^0.19.2
+        version: 0.19.2
       '@constela/server':
         specifier: ^11.0.1
-        version: 11.0.1(@constela/compiler@0.14.2)(@constela/core@0.15.2)
+        version: 11.0.1(@constela/compiler@0.14.4)(@constela/core@0.15.2)
       '@constela/start':
-        specifier: ^1.8.17
-        version: 1.8.17(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.8.21
+        version: 1.8.21(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.18)
@@ -100,8 +100,8 @@ packages:
     resolution: {integrity: sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==}
     engines: {node: '>=6.9.0'}
 
-  '@constela/compiler@0.14.2':
-    resolution: {integrity: sha512-cNtAkwivlx3z5TRWm2Gxr2vF5vYCHsB0ee0XEFN7Mv6teftOzqhG79wmuxtUSdzjABMd0a0lt88N0OLY2kCdNg==}
+  '@constela/compiler@0.14.4':
+    resolution: {integrity: sha512-gpzpV9cQ6nIb9vgNrgVXl1x7d244nsckzuOkG2+6CZXky0L6omN2FR4rBzROkCh+WcNybSzrql9Q1SH0vbgmQw==}
     engines: {node: '>=20.0.0'}
 
   '@constela/core@0.15.2':
@@ -115,8 +115,15 @@ packages:
       '@constela/compiler': ^0.14.0
       '@constela/runtime': ^0.18.0
 
-  '@constela/runtime@0.18.3':
-    resolution: {integrity: sha512-2AZ0hnd8BgDPGJZbaGF7mpx2bbTpQkXWPfhAKsdEDKd25JUr3N3vVEOO7Xv2DUyNVBLeYXbPfyvasbXg/JP6rg==}
+  '@constela/router@18.0.0':
+    resolution: {integrity: sha512-T9gO4j4jASkIma91r0vJy860CDgMjmc+caBDa09rq/2z7CQgNk3yku/15hGMSQNtmMQP74gliaLLLzrnypqMQg==}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      '@constela/compiler': ^0.14.2
+      '@constela/runtime': ^0.19.0
+
+  '@constela/runtime@0.19.2':
+    resolution: {integrity: sha512-Zm3REizAjpYsNjeFUdcQjne+HEHhFaofJ3ArmWRgq7abdOmS3LzGtUvZMB+V8juNKlNN2aks4W9oV8luqQUvLg==}
     engines: {node: '>=20.0.0'}
 
   '@constela/server@11.0.1':
@@ -126,8 +133,8 @@ packages:
       '@constela/compiler': ^0.14.0
       '@constela/core': ^0.15.0
 
-  '@constela/start@1.8.17':
-    resolution: {integrity: sha512-TuVFtOLmSi0oniIVrZRBcIVcQD7vKKBsJK6aLnFQSRzMpgSTTScgV0OeYRdZ3U8Zsfe5RwDwsJtCqd/Lu2lwhw==}
+  '@constela/start@1.8.21':
+    resolution: {integrity: sha512-rXF/khZIK5xzcwZJf7iW4UcE1BTIS+O4kROUxZx1zdOOa4Nwjqwm1yDl/2KK8vldnRLD3zQ+J04BrGAOhU3Y7g==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -2129,28 +2136,33 @@ snapshots:
 
   '@babel/runtime@7.28.4': {}
 
-  '@constela/compiler@0.14.2':
+  '@constela/compiler@0.14.4':
     dependencies:
       '@constela/core': 0.15.2
 
   '@constela/core@0.15.2': {}
 
-  '@constela/router@17.0.0(@constela/compiler@0.14.2)(@constela/runtime@0.18.3)':
+  '@constela/router@17.0.0(@constela/compiler@0.14.4)(@constela/runtime@0.19.2)':
     dependencies:
-      '@constela/compiler': 0.14.2
-      '@constela/runtime': 0.18.3
+      '@constela/compiler': 0.14.4
+      '@constela/runtime': 0.19.2
 
-  '@constela/runtime@0.18.3':
+  '@constela/router@18.0.0(@constela/compiler@0.14.4)(@constela/runtime@0.19.2)':
     dependencies:
-      '@constela/compiler': 0.14.2
+      '@constela/compiler': 0.14.4
+      '@constela/runtime': 0.19.2
+
+  '@constela/runtime@0.19.2':
+    dependencies:
+      '@constela/compiler': 0.14.4
       '@constela/core': 0.15.2
       dompurify: 3.3.1
       marked: 17.0.1
       shiki: 3.21.0
 
-  '@constela/server@11.0.1(@constela/compiler@0.14.2)(@constela/core@0.15.2)':
+  '@constela/server@11.0.1(@constela/compiler@0.14.4)(@constela/core@0.15.2)':
     dependencies:
-      '@constela/compiler': 0.14.2
+      '@constela/compiler': 0.14.4
       '@constela/core': 0.15.2
       isomorphic-dompurify: 2.35.0
       marked: 17.0.1
@@ -2163,13 +2175,13 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@constela/start@1.8.17(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
+  '@constela/start@1.8.21(@types/node@20.19.28)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
-      '@constela/compiler': 0.14.2
+      '@constela/compiler': 0.14.4
       '@constela/core': 0.15.2
-      '@constela/router': 17.0.0(@constela/compiler@0.14.2)(@constela/runtime@0.18.3)
-      '@constela/runtime': 0.18.3
-      '@constela/server': 11.0.1(@constela/compiler@0.14.2)(@constela/core@0.15.2)
+      '@constela/router': 18.0.0(@constela/compiler@0.14.4)(@constela/runtime@0.19.2)
+      '@constela/runtime': 0.19.2
+      '@constela/server': 11.0.1(@constela/compiler@0.14.4)(@constela/core@0.15.2)
       '@tailwindcss/postcss': 4.1.18
       commander: 12.1.0
       esbuild: 0.24.2
