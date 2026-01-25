@@ -19,7 +19,7 @@
     "@constela/router": "^17.0.0",
     "@constela/runtime": "^0.19.2",
     "@constela/server": "^11.0.1",
-    "@constela/start": "^1.8.21",
+    "@constela/start": "^1.8.22",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
