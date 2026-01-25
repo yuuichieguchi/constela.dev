@@ -13,6 +13,8 @@
   --border: #e4e4e7;
   --primary: #2563eb;
   --primary-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
   --card: #ffffff;
   --card-foreground: #171717;
   --sidebar-width: 280px;
@@ -28,6 +30,8 @@
   --border: #334155;
   --primary: #818cf8;
   --primary-foreground: #030712;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --card: #0f172a;
   --card-foreground: #f8fafc;
 }
@@ -53,6 +57,8 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --font-sans: var(--font-geist-sans);
