@@ -435,16 +435,30 @@
                           {
                             "kind": "element",
                             "tag": "div",
-                            "props": { "class": { "expr": "lit", "value": "flex -space-x-2" } },
+                            "props": { "class": { "expr": "lit", "value": "relative h-24 w-32 mx-auto" } },
                             "children": [
-                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "CN" } }] },
-                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "LR" } }] },
-                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "ER" } }] }
+                              {
+                                "kind": "element",
+                                "tag": "svg",
+                                "props": {
+                                  "class": { "expr": "lit", "value": "absolute inset-0 w-full h-full text-muted-foreground/30" },
+                                  "viewBox": { "expr": "lit", "value": "0 0 128 96" },
+                                  "fill": { "expr": "lit", "value": "none" }
+                                },
+                                "children": [
+                                  { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "64" }, "y1": { "expr": "lit", "value": "20" }, "x2": { "expr": "lit", "value": "32" }, "y2": { "expr": "lit", "value": "76" }, "stroke": { "expr": "lit", "value": "currentColor" }, "stroke-width": { "expr": "lit", "value": "2" }, "stroke-dasharray": { "expr": "lit", "value": "4 4" } } },
+                                  { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "64" }, "y1": { "expr": "lit", "value": "20" }, "x2": { "expr": "lit", "value": "96" }, "y2": { "expr": "lit", "value": "76" }, "stroke": { "expr": "lit", "value": "currentColor" }, "stroke-width": { "expr": "lit", "value": "2" }, "stroke-dasharray": { "expr": "lit", "value": "4 4" } } },
+                                  { "kind": "element", "tag": "line", "props": { "x1": { "expr": "lit", "value": "32" }, "y1": { "expr": "lit", "value": "76" }, "x2": { "expr": "lit", "value": "96" }, "y2": { "expr": "lit", "value": "76" }, "stroke": { "expr": "lit", "value": "currentColor" }, "stroke-width": { "expr": "lit", "value": "2" }, "stroke-dasharray": { "expr": "lit", "value": "4 4" } } }
+                                ]
+                              },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute top-0 left-1/2 -translate-x-1/2 h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background animate-pulse" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "CN" } }] },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute bottom-0 left-1/4 -translate-x-1/2 h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background animate-pulse [animation-delay:300ms]" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "LR" } }] },
+                              { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute bottom-0 right-1/4 translate-x-1/2 h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background animate-pulse [animation-delay:600ms]" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "ER" } }] }
                             ]
                           },
                           { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "mt-4 font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Start Collaborating" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add team members to your project." } }] },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "mt-4 rounded-md border border-input px-3 py-1.5 text-sm font-medium hover:bg-accent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+ Add Member" } }] }
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Build your network together." } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "mt-4 rounded-md border border-input px-3 py-1.5 text-sm font-medium hover:bg-accent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+ Invite" } }] }
                         ]
                       },
                       {
