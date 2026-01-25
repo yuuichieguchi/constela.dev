@@ -1,0 +1,782 @@
+---
+title: Language Specification for AI
+description: Complete Constela language specification for AI-assisted code generation
+---
+
+## How to Use This Page
+
+Copy the entire Markdown block below and paste it to your AI assistant (Claude, ChatGPT, etc.). The AI will then be able to generate valid Constela code.
+
+<Callout type="tip">
+Select all text inside the code block below, copy it, and paste it into your AI conversation.
+</Callout>
+
+---
+
+````markdown
+# Constela Language Specification
+
+Constela is a JSON-based declarative UI language. This specification provides everything you need to generate valid Constela code.
+
+## Key Principles
+
+1. ALL values must be wrapped in expressions
+2. Event handlers use a specific object structure
+3. State is typed and immutable (updates create new values)
+
+---
+
+## Program Structure
+
+Every Constela program has this root structure:
+
+```json
+{
+  "version": "1.0",
+  "state": { ... },
+  "actions": [ ... ],
+  "view": { ... },
+  "components": { ... },
+  "styles": { ... },
+  "imports": { ... },
+  "connections": { ... },
+  "lifecycle": { ... },
+  "route": { ... },
+  "data": { ... },
+  "externalImports": { ... }
+}
+```
+
+| Property | Required | Description |
+|----------|----------|-------------|
+| `version` | Yes | Always `"1.0"` |
+| `state` | Yes | State declarations object |
+| `actions` | Yes | Array of action definitions |
+| `view` | Yes | Root view node |
+| `components` | No | Reusable component definitions |
+| `styles` | No | CVA-style presets |
+| `imports` | No | Static JSON file imports |
+| `connections` | No | WebSocket connections |
+| `lifecycle` | No | Mount/unmount hooks |
+| `route` | No | Routing configuration |
+| `data` | No | Build-time data sources |
+| `externalImports` | No | External JS module URLs |
+
+---
+
+## State Declarations
+
+State fields are declared with type and initial value:
+
+```json
+{
+  "state": {
+    "count": { "type": "number", "initial": 0 },
+    "name": { "type": "string", "initial": "" },
+    "isOpen": { "type": "boolean", "initial": false },
+    "items": { "type": "list", "initial": [] },
+    "user": { "type": "object", "initial": { "name": "", "email": "" } }
+  }
+}
+```
+
+| Type | Initial Value Examples |
+|------|----------------------|
+| `number` | `0`, `100`, `-1` |
+| `string` | `""`, `"hello"` |
+| `boolean` | `true`, `false` |
+| `list` | `[]`, `[1, 2, 3]` |
+| `object` | `{}`, `{ "key": "value" }` |
+
+---
+
+## Expressions (20 types)
+
+All dynamic values in Constela use expressions.
+
+### Expression Quick Reference
+
+| Expression | Syntax | Use Case |
+|------------|--------|----------|
+| `lit` | `{ "expr": "lit", "value": X }` | Static/literal values |
+| `state` | `{ "expr": "state", "name": "N" }` | Access state fields |
+| `var` | `{ "expr": "var", "name": "N", "path": "P" }` | Loop variables, event data |
+| `param` | `{ "expr": "param", "name": "N", "path": "P" }` | Action parameters |
+| `bin` | `{ "expr": "bin", "op": "O", "left": L, "right": R }` | Binary operations |
+| `not` | `{ "expr": "not", "operand": E }` | Boolean negation |
+| `cond` | `{ "expr": "cond", "if": C, "then": T, "else": E }` | Conditional value |
+| `get` | `{ "expr": "get", "base": B, "path": "P" }` | Property access |
+| `route` | `{ "expr": "route", "name": "N", "source": "param\|query\|path" }` | Route parameters |
+| `index` | `{ "expr": "index", "base": B, "key": K }` | Dynamic array/object access |
+| `import` | `{ "expr": "import", "name": "N", "path": "P" }` | Imported JSON data |
+| `cookie` | `{ "expr": "cookie", "key": "K", "default": "D" }` | Cookie values |
+| `data` | `{ "expr": "data", "name": "N", "path": "P" }` | Build-time data sources |
+| `ref` | `{ "expr": "ref", "name": "N" }` | DOM element references |
+| `style` | `{ "expr": "style", "name": "N", "variants": V }` | Style presets |
+| `concat` | `{ "expr": "concat", "items": [...] }` | String concatenation |
+| `validity` | `{ "expr": "validity", "ref": "R", "property": "P" }` | Form validation |
+| `call` | `{ "expr": "call", "target": T, "method": "M", "args": A }` | Method calls |
+| `lambda` | `{ "expr": "lambda", "param": "P", "body": B }` | Anonymous functions |
+| `array` | `{ "expr": "array", "elements": [...] }` | Dynamic arrays |
+
+### Binary Operators
+
+`+`, `-`, `*`, `/`, `==`, `!=`, `<`, `<=`, `>`, `>=`, `&&`, `||`
+
+### Expression Examples
+
+```json
+// Literal value
+{ "expr": "lit", "value": "Hello" }
+{ "expr": "lit", "value": 42 }
+{ "expr": "lit", "value": true }
+
+// State access
+{ "expr": "state", "name": "count" }
+
+// Variable (loop item, event data)
+{ "expr": "var", "name": "item" }
+{ "expr": "var", "name": "item", "path": "title" }
+{ "expr": "var", "name": "event", "path": "target.value" }
+
+// Action parameter (inside action steps)
+{ "expr": "param", "name": "event", "path": "target.value" }
+
+// Binary operation
+{
+  "expr": "bin",
+  "op": "+",
+  "left": { "expr": "state", "name": "count" },
+  "right": { "expr": "lit", "value": 1 }
+}
+
+// Boolean negation
+{ "expr": "not", "operand": { "expr": "state", "name": "isLoading" } }
+
+// Conditional value (NOT for rendering - use if node for that)
+{
+  "expr": "cond",
+  "if": { "expr": "state", "name": "isAdmin" },
+  "then": { "expr": "lit", "value": "Admin" },
+  "else": { "expr": "lit", "value": "User" }
+}
+
+// Property access
+{
+  "expr": "get",
+  "base": { "expr": "state", "name": "user" },
+  "path": "profile.name"
+}
+
+// String concatenation
+{
+  "expr": "concat",
+  "items": [
+    { "expr": "lit", "value": "Hello, " },
+    { "expr": "state", "name": "name" },
+    { "expr": "lit", "value": "!" }
+  ]
+}
+
+// Method call
+{
+  "expr": "call",
+  "target": { "expr": "state", "name": "items" },
+  "method": "filter",
+  "args": [{
+    "expr": "lambda",
+    "param": "item",
+    "body": { "expr": "get", "base": { "expr": "var", "name": "item" }, "path": "active" }
+  }]
+}
+```
+
+---
+
+## View Nodes (9 types)
+
+### View Node Quick Reference
+
+| Node | Syntax | Purpose |
+|------|--------|---------|
+| `element` | `{ "kind": "element", "tag": "T", "props": P, "children": C }` | HTML elements |
+| `text` | `{ "kind": "text", "value": EXPR }` | Text content |
+| `if` | `{ "kind": "if", "condition": C, "then": T, "else": E }` | Conditional rendering |
+| `each` | `{ "kind": "each", "items": I, "as": "A", "index": "I", "key": K, "body": B }` | List iteration |
+| `component` | `{ "kind": "component", "name": "N", "props": P, "children": C }` | Reusable components |
+| `slot` | `{ "kind": "slot" }` | Children placeholder |
+| `markdown` | `{ "kind": "markdown", "content": EXPR }` | Markdown rendering |
+| `code` | `{ "kind": "code", "language": EXPR, "content": EXPR }` | Syntax highlighting |
+| `portal` | `{ "kind": "portal", "target": "T", "children": C }` | Render outside tree |
+
+### View Node Examples
+
+```json
+// Element with props and children
+{
+  "kind": "element",
+  "tag": "button",
+  "props": {
+    "className": { "expr": "lit", "value": "btn" },
+    "disabled": { "expr": "state", "name": "isLoading" },
+    "onClick": { "event": "click", "action": "handleClick" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "lit", "value": "Click me" } }
+  ]
+}
+
+// Text node (value MUST be an expression)
+{ "kind": "text", "value": { "expr": "lit", "value": "Hello" } }
+{ "kind": "text", "value": { "expr": "state", "name": "message" } }
+
+// Conditional rendering
+{
+  "kind": "if",
+  "condition": { "expr": "state", "name": "isLoggedIn" },
+  "then": { "kind": "text", "value": { "expr": "lit", "value": "Welcome!" } },
+  "else": { "kind": "text", "value": { "expr": "lit", "value": "Please log in" } }
+}
+
+// List iteration
+{
+  "kind": "each",
+  "items": { "expr": "state", "name": "todos" },
+  "as": "todo",
+  "index": "i",
+  "key": { "expr": "var", "name": "todo", "path": "id" },
+  "body": {
+    "kind": "element",
+    "tag": "li",
+    "children": [
+      { "kind": "text", "value": { "expr": "var", "name": "todo", "path": "title" } }
+    ]
+  }
+}
+
+// Component usage
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "label": { "expr": "lit", "value": "Submit" }
+  }
+}
+
+// Portal (render to body)
+{
+  "kind": "portal",
+  "target": "body",
+  "children": [
+    { "kind": "element", "tag": "div", "props": { "className": { "expr": "lit", "value": "modal" } }, "children": [...] }
+  ]
+}
+```
+
+---
+
+## Action Steps (19 types)
+
+Actions define responses to events. Each action has a name and array of steps.
+
+### Action Step Quick Reference
+
+| Step | Syntax | Purpose |
+|------|--------|---------|
+| `set` | `{ "do": "set", "target": "T", "value": V }` | Set state value |
+| `update` | `{ "do": "update", "target": "T", "operation": "O", "value": V }` | Update state with operation |
+| `fetch` | `{ "do": "fetch", "url": U, "method": "M", "body": B, "result": "R", "onSuccess": [], "onError": [] }` | HTTP request |
+| `navigate` | `{ "do": "navigate", "url": U, "target": "_self\|_blank" }` | Page navigation |
+| `storage` | `{ "do": "storage", "operation": "get\|set\|remove", "key": K, "storage": "local\|session" }` | Browser storage |
+| `dom` | `{ "do": "dom", "operation": "addClass\|removeClass\|toggleClass\|setAttribute", "selector": S }` | DOM manipulation |
+| `import` | `{ "do": "import", "module": "M", "result": "R", "onSuccess": [] }` | Dynamic JS import |
+| `call` | `{ "do": "call", "target": T, "args": A, "result": "R" }` | Call JS function |
+| `subscribe` | `{ "do": "subscribe", "target": T, "event": "E", "action": "A" }` | Event subscription |
+| `dispose` | `{ "do": "dispose", "target": T }` | Cleanup resources |
+| `clipboard` | `{ "do": "clipboard", "operation": "read\|write", "value": V, "result": "R" }` | Clipboard access |
+| `if` | `{ "do": "if", "condition": C, "then": [], "else": [] }` | Conditional steps |
+| `setPath` | `{ "do": "setPath", "target": "T", "path": P, "value": V }` | Update nested value |
+| `send` | `{ "do": "send", "connection": "C", "data": D }` | WebSocket send |
+| `close` | `{ "do": "close", "connection": "C" }` | WebSocket close |
+| `delay` | `{ "do": "delay", "ms": M, "then": [] }` | Delayed execution |
+| `interval` | `{ "do": "interval", "ms": M, "action": "A", "result": "R" }` | Repeated execution |
+| `clearTimer` | `{ "do": "clearTimer", "target": T }` | Stop timer |
+| `focus` | `{ "do": "focus", "target": T, "operation": "focus\|blur\|select" }` | Focus control |
+
+### Update Operations by State Type
+
+| State Type | Operations |
+|------------|------------|
+| `number` | `increment`, `decrement` |
+| `boolean` | `toggle` |
+| `list` | `push`, `pop`, `remove`, `replaceAt`, `insertAt`, `splice` |
+| `object` | `merge` |
+
+### Action Examples
+
+```json
+{
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [
+        { "do": "update", "target": "count", "operation": "increment" }
+      ]
+    },
+    {
+      "name": "updateInput",
+      "steps": [
+        {
+          "do": "set",
+          "target": "inputValue",
+          "value": { "expr": "param", "name": "event", "path": "target.value" }
+        }
+      ]
+    },
+    {
+      "name": "addTodo",
+      "steps": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "push",
+          "value": { "expr": "state", "name": "newTodo" }
+        },
+        {
+          "do": "set",
+          "target": "newTodo",
+          "value": { "expr": "lit", "value": "" }
+        }
+      ]
+    },
+    {
+      "name": "toggleTodo",
+      "steps": [
+        {
+          "do": "setPath",
+          "target": "todos",
+          "path": {
+            "expr": "array",
+            "elements": [
+              { "expr": "param", "name": "index" },
+              { "expr": "lit", "value": "completed" }
+            ]
+          },
+          "value": {
+            "expr": "not",
+            "operand": { "expr": "param", "name": "completed" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "fetchData",
+      "steps": [
+        { "do": "set", "target": "isLoading", "value": { "expr": "lit", "value": true } },
+        {
+          "do": "fetch",
+          "url": { "expr": "lit", "value": "https://api.example.com/data" },
+          "method": "GET",
+          "result": "data",
+          "onSuccess": [
+            { "do": "set", "target": "isLoading", "value": { "expr": "lit", "value": false } }
+          ],
+          "onError": [
+            { "do": "set", "target": "error", "value": { "expr": "param", "name": "error" } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## Event Handling
+
+Event handlers in element props use this structure:
+
+```json
+{
+  "props": {
+    "onClick": { "event": "click", "action": "handleClick" },
+    "onInput": { "event": "input", "action": "handleInput" },
+    "onSubmit": { "event": "submit", "action": "handleSubmit" },
+    "onKeyDown": { "event": "keydown", "action": "handleKeyDown" }
+  }
+}
+```
+
+### With Payload
+
+Pass additional data to the action:
+
+```json
+{
+  "onClick": {
+    "event": "click",
+    "action": "deleteItem",
+    "payload": {
+      "id": { "expr": "var", "name": "item", "path": "id" },
+      "index": { "expr": "var", "name": "i" }
+    }
+  }
+}
+```
+
+Access payload in action via `param`:
+
+```json
+{
+  "name": "deleteItem",
+  "steps": [
+    {
+      "do": "update",
+      "target": "items",
+      "operation": "splice",
+      "index": { "expr": "param", "name": "index" },
+      "deleteCount": { "expr": "lit", "value": 1 }
+    }
+  ]
+}
+```
+
+---
+
+## Components
+
+Define reusable components:
+
+```json
+{
+  "components": {
+    "Button": {
+      "params": {
+        "label": { "type": "string" },
+        "variant": { "type": "string", "default": "primary" }
+      },
+      "view": {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "className": { "expr": "param", "name": "variant" }
+        },
+        "children": [
+          { "kind": "text", "value": { "expr": "param", "name": "label" } },
+          { "kind": "slot" }
+        ]
+      }
+    }
+  }
+}
+```
+
+Use components:
+
+```json
+{
+  "kind": "component",
+  "name": "Button",
+  "props": {
+    "label": { "expr": "lit", "value": "Submit" },
+    "variant": { "expr": "lit", "value": "secondary" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "lit", "value": " →" } }
+  ]
+}
+```
+
+---
+
+## Styles (CVA Pattern)
+
+```json
+{
+  "styles": {
+    "button": {
+      "base": "px-4 py-2 rounded font-medium",
+      "variants": {
+        "variant": {
+          "primary": "bg-blue-500 text-white",
+          "secondary": "bg-gray-200 text-gray-800"
+        },
+        "size": {
+          "sm": "text-sm h-8",
+          "md": "text-base h-10",
+          "lg": "text-lg h-12"
+        }
+      },
+      "defaultVariants": {
+        "variant": "primary",
+        "size": "md"
+      }
+    }
+  }
+}
+```
+
+Use with style expression:
+
+```json
+{
+  "className": {
+    "expr": "style",
+    "name": "button",
+    "variants": {
+      "variant": { "expr": "lit", "value": "secondary" },
+      "size": { "expr": "lit", "value": "lg" }
+    }
+  }
+}
+```
+
+---
+
+## Lifecycle Hooks
+
+```json
+{
+  "lifecycle": {
+    "onMount": "initializeApp",
+    "onUnmount": "cleanup"
+  }
+}
+```
+
+---
+
+## WebSocket Connections
+
+```json
+{
+  "connections": {
+    "chat": {
+      "url": { "expr": "lit", "value": "wss://api.example.com/ws" },
+      "onMessage": "handleMessage",
+      "onOpen": "onConnected",
+      "onClose": "onDisconnected"
+    }
+  }
+}
+```
+
+Send: `{ "do": "send", "connection": "chat", "data": { "expr": "state", "name": "message" } }`
+Close: `{ "do": "close", "connection": "chat" }`
+
+---
+
+## Common Pitfalls
+
+### WRONG vs CORRECT
+
+| WRONG | CORRECT | Rule |
+|-------|---------|------|
+| `"value": "text"` | `"value": { "expr": "lit", "value": "text" }` | All values must be expressions |
+| `"onClick": "handleClick"` | `"onClick": { "event": "click", "action": "handleClick" }` | Event handlers are objects |
+| `"onClick": { "action": "handleClick" }` | `"onClick": { "event": "click", "action": "handleClick" }` | Must include `event` property |
+| `{ "expr": "state", "name": "item" }` in each | `{ "expr": "var", "name": "item" }` | Loop variables use `var` |
+| `{ "kind": "text", "value": "Hello" }` | `{ "kind": "text", "value": { "expr": "lit", "value": "Hello" } }` | Text value must be expression |
+| `{ "do": "update", "target": "count", "operation": "toggle" }` | Use `toggle` only for boolean | Match operation to state type |
+
+### if Node vs cond Expression
+
+| Purpose | Use |
+|---------|-----|
+| Conditionally **render** elements | `if` node |
+| Compute a **value** conditionally | `cond` expression |
+
+### state vs var vs param
+
+| Context | Expression |
+|---------|------------|
+| Top-level application state | `state` |
+| Inside `each` loop (item/index) | `var` |
+| Inside action steps (event data) | `param` with `name: "event"` |
+| Inside action steps (fetch result) | `param` with `name: "result"` |
+| Component params (in component view) | `param` |
+
+---
+
+## Complete Example: Counter
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [{ "do": "update", "target": "count", "operation": "increment" }]
+    },
+    {
+      "name": "decrement",
+      "steps": [{ "do": "update", "target": "count", "operation": "decrement" }]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "decrement" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "-" } }]
+      },
+      { "kind": "text", "value": { "expr": "state", "name": "count" } },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "increment" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+" } }]
+      }
+    ]
+  }
+}
+```
+
+## Complete Example: Todo List
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "todos": { "type": "list", "initial": [] },
+    "newTodo": { "type": "string", "initial": "" }
+  },
+  "actions": [
+    {
+      "name": "updateInput",
+      "steps": [
+        {
+          "do": "set",
+          "target": "newTodo",
+          "value": { "expr": "param", "name": "event", "path": "target.value" }
+        }
+      ]
+    },
+    {
+      "name": "addTodo",
+      "steps": [
+        {
+          "do": "if",
+          "condition": {
+            "expr": "bin",
+            "op": "!=",
+            "left": { "expr": "state", "name": "newTodo" },
+            "right": { "expr": "lit", "value": "" }
+          },
+          "then": [
+            {
+              "do": "update",
+              "target": "todos",
+              "operation": "push",
+              "value": {
+                "expr": "lit",
+                "value": { "id": 1, "title": "placeholder", "completed": false }
+              }
+            },
+            { "do": "set", "target": "newTodo", "value": { "expr": "lit", "value": "" } }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deleteTodo",
+      "steps": [
+        {
+          "do": "update",
+          "target": "todos",
+          "operation": "splice",
+          "index": { "expr": "param", "name": "index" },
+          "deleteCount": { "expr": "lit", "value": 1 }
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "input",
+        "props": {
+          "type": { "expr": "lit", "value": "text" },
+          "value": { "expr": "state", "name": "newTodo" },
+          "onInput": { "event": "input", "action": "updateInput" },
+          "placeholder": { "expr": "lit", "value": "Add a todo..." }
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": { "onClick": { "event": "click", "action": "addTodo" } },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "ul",
+        "children": [
+          {
+            "kind": "each",
+            "items": { "expr": "state", "name": "todos" },
+            "as": "todo",
+            "index": "i",
+            "key": { "expr": "var", "name": "todo", "path": "id" },
+            "body": {
+              "kind": "element",
+              "tag": "li",
+              "children": [
+                { "kind": "text", "value": { "expr": "var", "name": "todo", "path": "title" } },
+                {
+                  "kind": "element",
+                  "tag": "button",
+                  "props": {
+                    "onClick": {
+                      "event": "click",
+                      "action": "deleteTodo",
+                      "payload": { "index": { "expr": "var", "name": "i" } }
+                    }
+                  },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Delete" } }]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Critical Rules Summary
+
+1. **ALL values must be expressions**: `{ "expr": "lit", "value": X }`
+2. **Event handlers**: `{ "event": "E", "action": "A" }` (NOT just action name)
+3. **Loop variables use `var`**, not `state`
+4. **Action parameters use `param`**, not `var`
+5. **Text node value MUST be expression**
+6. **Match update operations to state type** (toggle for boolean, increment for number, etc.)
+7. **`if` node = render control**, `cond` expression = value computation
+````
+
+---
+
+## Next Steps
+
+After pasting the specification above to your AI:
+
+1. Describe your UI requirements
+2. Ask the AI to generate Constela JSON
+3. Run `constela dev` to validate the code
+4. Use compiler error messages to guide fixes
+
+See [Reference](/reference) for complete API documentation.

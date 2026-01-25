@@ -20,7 +20,7 @@
         { "title": "Routing", "href": "/docs/routing" },
         { "title": "HMR", "href": "/docs/hmr" },
         { "title": "Design Principles", "href": "/docs/design-principles" },
-        { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
+        { "title": "Language Specification for AI", "href": "/docs/language-spec" },
         { "title": "SEO", "href": "/docs/seo" }
       ]
     }
@@ -184,14 +184,14 @@
     },
     "/docs/design-principles": {
       "prev": { "title": "HMR", "href": "/docs/hmr" },
-      "next": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" }
+      "next": { "title": "Language Specification for AI", "href": "/docs/language-spec" }
     },
-    "/docs/vibe-coding": {
+    "/docs/language-spec": {
       "prev": { "title": "Design Principles", "href": "/docs/design-principles" },
       "next": { "title": "SEO", "href": "/docs/seo" }
     },
     "/docs/seo": {
-      "prev": { "title": "Vibe Coding with AI", "href": "/docs/vibe-coding" },
+      "prev": { "title": "Language Specification for AI", "href": "/docs/language-spec" },
       "next": null
     }
   },
