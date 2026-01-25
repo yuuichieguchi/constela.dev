@@ -270,14 +270,14 @@
                 "kind": "element",
                 "tag": "div",
                 "props": {
-                  "class": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min p-8 rounded-3xl bg-card/50 backdrop-blur-xl" }
+                  "class": { "expr": "lit", "value": "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[minmax(120px,auto)]" }
                 },
                 "children": [
                   {
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 lg:row-span-2 p-4" }
+                      "class": { "expr": "lit", "value": "col-span-2 row-span-3 p-4" }
                     },
                     "children": [
                       {
@@ -285,8 +285,8 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "space-y-4" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Payment Method" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "All transactions are secure and encrypted" } }] },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Checkout Form" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Complete your purchase securely" } }] },
                           {
                             "kind": "element",
                             "tag": "div",
@@ -296,7 +296,7 @@
                                 "kind": "element",
                                 "tag": "div",
                                 "children": [
-                                  { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Name on Card" } }] },
+                                  { "kind": "element", "tag": "label", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Full Name" } }] },
                                   { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" }, "placeholder": { "expr": "lit", "value": "John Doe" }, "class": { "expr": "lit", "value": "mt-1.5 flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm" } } }
                                 ]
                               },
@@ -343,7 +343,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -361,9 +361,9 @@
                               { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-medium ring-2 ring-background" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "ER" } }] }
                             ]
                           },
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "mt-4 font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "No Team Members" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Invite your team to collaborate." } }] },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "mt-4 rounded-md border border-input px-3 py-1.5 text-sm font-medium hover:bg-accent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+ Invite Members" } }] }
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "mt-4 font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Start Collaborating" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-sm text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add team members to your project." } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "mt-4 rounded-md border border-input px-3 py-1.5 text-sm font-medium hover:bg-accent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "+ Add Member" } }] }
                         ]
                       }
                     ]
@@ -372,7 +372,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -391,7 +391,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "lg:col-span-2 p-4" }
+                      "class": { "expr": "lit", "value": "col-span-2 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -426,7 +426,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -443,8 +443,8 @@
                                 "kind": "element",
                                 "tag": "div",
                                 "children": [
-                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Two-factor authentication" } }] },
-                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Verify via email or phone." } }] }
+                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Security Settings" } }] },
+                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Protect your account" } }] }
                                 ]
                               },
                               { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "rounded-md bg-primary px-3 py-1 text-xs font-medium text-primary-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Enable" } }] }
@@ -459,8 +459,8 @@
                                 "kind": "element",
                                 "tag": "div",
                                 "children": [
-                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Wallpaper Tinting" } }] },
-                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Allow tinting." } }] }
+                                  { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dark Mode" } }] },
+                                  { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Use dark theme" } }] }
                                 ]
                               },
                               { "kind": "element", "tag": "button", "props": { "role": { "expr": "lit", "value": "switch" }, "class": { "expr": "lit", "value": "relative inline-flex h-5 w-9 items-center rounded-full bg-primary" } }, "children": [{ "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "inline-block h-4 w-4 transform rounded-full bg-white translate-x-4" } } }] }
@@ -474,7 +474,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "md:col-span-2 lg:col-span-1 p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -482,8 +482,8 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "space-y-3" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Compute Environment" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Select the environment for your cluster." } }] },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Deployment Target" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Choose where to deploy your app." } }] },
                           {
                             "kind": "element",
                             "tag": "div",
@@ -500,7 +500,7 @@
                                     "tag": "div",
                                     "children": [
                                       { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Kubernetes" } }] },
-                                      { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Run GPU workloads on K8s." } }] }
+                                      { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Container-based deployment" } }] }
                                     ]
                                   }
                                 ]
@@ -531,7 +531,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -548,7 +548,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -556,15 +556,15 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "space-y-3" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Billing Address" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Associated with your payment method" } }] },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Shipping Info" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Where should we deliver?" } }] },
                           {
                             "kind": "element",
                             "tag": "label",
                             "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 pt-2" } },
                             "children": [
                               { "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "checkbox" }, "checked": { "expr": "lit", "value": true }, "class": { "expr": "lit", "value": "h-4 w-4 rounded" } } },
-                              { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Same as shipping address" } }] }
+                              { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Use default address" } }] }
                             ]
                           }
                         ]
@@ -575,7 +575,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -593,7 +593,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -612,7 +612,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "md:col-span-2 p-4" }
+                      "class": { "expr": "lit", "value": "col-span-2 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -632,7 +632,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -658,7 +658,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -666,8 +666,8 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-background p-4 shadow-lg" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Event has been created" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Sunday, December 03, 2023 at 9:00 AM" } }] }
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Changes saved" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Last updated just now" } }] }
                         ]
                       }
                     ]
@@ -676,7 +676,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4" }
                     },
                     "children": [
                       {
@@ -694,7 +694,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -721,7 +721,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -742,7 +742,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -763,7 +763,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4 flex items-center justify-center" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-1 p-4 flex items-center justify-center" }
                     },
                     "children": [
                       {
@@ -801,7 +801,7 @@
                     "kind": "element",
                     "tag": "div",
                     "props": {
-                      "class": { "expr": "lit", "value": "p-4" }
+                      "class": { "expr": "lit", "value": "col-span-1 row-span-2 p-4" }
                     },
                     "children": [
                       {
@@ -809,8 +809,8 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-background p-4 shadow-lg" } },
                         "children": [
-                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dimensions" } }] },
-                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Set the dimensions for the layer." } }] },
+                          { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "font-medium text-sm" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Layout Settings" } }] },
+                          { "kind": "element", "tag": "p", "props": { "class": { "expr": "lit", "value": "text-xs text-muted-foreground mt-1" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Customize the component size" } }] },
                           {
                             "kind": "element",
                             "tag": "div",
