@@ -24,7 +24,9 @@
     "copiedSlug": { "type": "string", "initial": "" },
     "tooltipVisible": { "type": "boolean", "initial": false },
     "switchChecked": { "type": "boolean", "initial": true },
-    "currentPage": { "type": "number", "initial": 1 }
+    "currentPage": { "type": "number", "initial": 1 },
+    "activeTab": { "type": "string", "initial": "account" },
+    "activeBreadcrumb": { "type": "string", "initial": "breadcrumb" }
   },
   "actions": [
     {
@@ -102,6 +104,34 @@
           }
         }
       ]
+    },
+    {
+      "name": "setTabAccount",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "account" } }]
+    },
+    {
+      "name": "setTabPassword",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "password" } }]
+    },
+    {
+      "name": "setTabTeam",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "team" } }]
+    },
+    {
+      "name": "setTabBilling",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "billing" } }]
+    },
+    {
+      "name": "setBreadcrumbHome",
+      "steps": [{ "do": "set", "target": "activeBreadcrumb", "value": { "expr": "lit", "value": "home" } }]
+    },
+    {
+      "name": "setBreadcrumbComponents",
+      "steps": [{ "do": "set", "target": "activeBreadcrumb", "value": { "expr": "lit", "value": "components" } }]
+    },
+    {
+      "name": "setBreadcrumbCurrent",
+      "steps": [{ "do": "set", "target": "activeBreadcrumb", "value": { "expr": "lit", "value": "breadcrumb" } }]
     }
   ],
   "view": {
@@ -510,10 +540,10 @@
                         "tag": "div",
                         "props": { "class": { "expr": "lit", "value": "border-b" } },
                         "children": [
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Account" } }] },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Password" } }] },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Team" } }] },
-                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Billing" } }] }
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeTab" }, "right": { "expr": "lit", "value": "account" } }, "then": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" }, "else": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setTabAccount" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Account" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeTab" }, "right": { "expr": "lit", "value": "password" } }, "then": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" }, "else": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setTabPassword" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Password" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeTab" }, "right": { "expr": "lit", "value": "team" } }, "then": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" }, "else": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setTabTeam" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Team" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeTab" }, "right": { "expr": "lit", "value": "billing" } }, "then": { "expr": "lit", "value": "border-b-2 border-primary px-4 py-2 text-sm font-medium" }, "else": { "expr": "lit", "value": "px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setTabBilling" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Billing" } }] }
                         ]
                       },
                       {
@@ -768,11 +798,11 @@
                         "tag": "nav",
                         "props": { "class": { "expr": "lit", "value": "flex items-center gap-2 text-sm" } },
                         "children": [
-                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Home" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeBreadcrumb" }, "right": { "expr": "lit", "value": "home" } }, "then": { "expr": "lit", "value": "font-medium text-foreground" }, "else": { "expr": "lit", "value": "text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setBreadcrumbHome" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Home" } }] },
                           { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "/" } }] },
-                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Components" } }] },
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeBreadcrumb" }, "right": { "expr": "lit", "value": "components" } }, "then": { "expr": "lit", "value": "font-medium text-foreground" }, "else": { "expr": "lit", "value": "text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setBreadcrumbComponents" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Components" } }] },
                           { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "text-muted-foreground" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "/" } }] },
-                          { "kind": "element", "tag": "span", "props": { "class": { "expr": "lit", "value": "font-medium" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Breadcrumb" } }] }
+                          { "kind": "element", "tag": "button", "props": { "class": { "expr": "cond", "if": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "activeBreadcrumb" }, "right": { "expr": "lit", "value": "breadcrumb" } }, "then": { "expr": "lit", "value": "font-medium text-foreground" }, "else": { "expr": "lit", "value": "text-muted-foreground hover:text-foreground transition-colors" } }, "onClick": { "event": "click", "action": "setBreadcrumbCurrent" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Breadcrumb" } }] }
                         ]
                       },
                       {
