@@ -515,20 +515,155 @@
                   "props": {
                     "class": { "expr": "lit", "value": "sidebar-section" },
                     "open": {
-                      "expr": "call",
-                      "target": { "expr": "param", "name": "currentPath" },
-                      "method": "startsWith",
-                      "args": [
-                        {
-                          "expr": "cond",
-                          "if": {
-                            "expr": "bin",
-                            "op": "==",
-                            "left": { "expr": "var", "name": "section", "path": "title" },
-                            "right": { "expr": "lit", "value": "Reference" }
+                      "expr": "cond",
+                      "if": {
+                        "expr": "bin",
+                        "op": "==",
+                        "left": { "expr": "var", "name": "section", "path": "title" },
+                        "right": { "expr": "lit", "value": "Reference" }
+                      },
+                      "then": {
+                        "expr": "bin",
+                        "op": "&&",
+                        "left": {
+                          "expr": "call",
+                          "target": { "expr": "param", "name": "currentPath" },
+                          "method": "startsWith",
+                          "args": [{ "expr": "lit", "value": "/reference" }]
+                        },
+                        "right": {
+                          "expr": "bin",
+                          "op": "&&",
+                          "left": {
+                            "expr": "not",
+                            "operand": {
+                              "expr": "call",
+                              "target": { "expr": "param", "name": "currentPath" },
+                              "method": "startsWith",
+                              "args": [{ "expr": "lit", "value": "/reference/core" }]
+                            }
                           },
-                          "then": { "expr": "lit", "value": "/reference" },
-                          "else": {
+                          "right": {
+                            "expr": "bin",
+                            "op": "&&",
+                            "left": {
+                              "expr": "not",
+                              "operand": {
+                                "expr": "call",
+                                "target": { "expr": "param", "name": "currentPath" },
+                                "method": "startsWith",
+                                "args": [{ "expr": "lit", "value": "/reference/compiler" }]
+                              }
+                            },
+                            "right": {
+                              "expr": "bin",
+                              "op": "&&",
+                              "left": {
+                                "expr": "not",
+                                "operand": {
+                                  "expr": "call",
+                                  "target": { "expr": "param", "name": "currentPath" },
+                                  "method": "startsWith",
+                                  "args": [{ "expr": "lit", "value": "/reference/runtime" }]
+                                }
+                              },
+                              "right": {
+                                "expr": "bin",
+                                "op": "&&",
+                                "left": {
+                                  "expr": "not",
+                                  "operand": {
+                                    "expr": "call",
+                                    "target": { "expr": "param", "name": "currentPath" },
+                                    "method": "startsWith",
+                                    "args": [{ "expr": "lit", "value": "/reference/router" }]
+                                  }
+                                },
+                                "right": {
+                                  "expr": "bin",
+                                  "op": "&&",
+                                  "left": {
+                                    "expr": "not",
+                                    "operand": {
+                                      "expr": "call",
+                                      "target": { "expr": "param", "name": "currentPath" },
+                                      "method": "startsWith",
+                                      "args": [{ "expr": "lit", "value": "/reference/server" }]
+                                    }
+                                  },
+                                  "right": {
+                                    "expr": "bin",
+                                    "op": "&&",
+                                    "left": {
+                                      "expr": "not",
+                                      "operand": {
+                                        "expr": "call",
+                                        "target": { "expr": "param", "name": "currentPath" },
+                                        "method": "startsWith",
+                                        "args": [{ "expr": "lit", "value": "/reference/cli" }]
+                                      }
+                                    },
+                                    "right": {
+                                      "expr": "bin",
+                                      "op": "&&",
+                                      "left": {
+                                        "expr": "not",
+                                        "operand": {
+                                          "expr": "call",
+                                          "target": { "expr": "param", "name": "currentPath" },
+                                          "method": "startsWith",
+                                          "args": [{ "expr": "lit", "value": "/reference/builder" }]
+                                        }
+                                      },
+                                      "right": {
+                                        "expr": "bin",
+                                        "op": "&&",
+                                        "left": {
+                                          "expr": "not",
+                                          "operand": {
+                                            "expr": "call",
+                                            "target": { "expr": "param", "name": "currentPath" },
+                                            "method": "startsWith",
+                                            "args": [{ "expr": "lit", "value": "/reference/start" }]
+                                          }
+                                        },
+                                        "right": {
+                                          "expr": "bin",
+                                          "op": "&&",
+                                          "left": {
+                                            "expr": "not",
+                                            "operand": {
+                                              "expr": "call",
+                                              "target": { "expr": "param", "name": "currentPath" },
+                                              "method": "startsWith",
+                                              "args": [{ "expr": "lit", "value": "/reference/ui" }]
+                                            }
+                                          },
+                                          "right": {
+                                            "expr": "not",
+                                            "operand": {
+                                              "expr": "call",
+                                              "target": { "expr": "param", "name": "currentPath" },
+                                              "method": "startsWith",
+                                              "args": [{ "expr": "lit", "value": "/reference/vscode" }]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "else": {
+                        "expr": "call",
+                        "target": { "expr": "param", "name": "currentPath" },
+                        "method": "startsWith",
+                        "args": [
+                          {
                             "expr": "cond",
                             "if": {
                               "expr": "bin",
@@ -639,8 +774,8 @@
                               }
                             }
                           }
-                        }
-                      ]
+                        ]
+                      }
                     }
                   },
                   "children": [
