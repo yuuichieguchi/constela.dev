@@ -488,6 +488,59 @@ Use components:
 }
 ```
 
+### Component Local State
+
+Components can have instance-scoped state using `localState` and `localActions`:
+
+```json
+{
+  "components": {
+    "Accordion": {
+      "params": { "title": { "type": "string" } },
+      "localState": {
+        "isExpanded": { "type": "boolean", "initial": false }
+      },
+      "localActions": [
+        {
+          "name": "toggle",
+          "steps": [{ "do": "update", "target": "isExpanded", "operation": "toggle" }]
+        }
+      ],
+      "view": {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          {
+            "kind": "element",
+            "tag": "button",
+            "props": { "onClick": { "event": "click", "action": "toggle" } },
+            "children": [
+              { "kind": "text", "value": { "expr": "param", "name": "title" } }
+            ]
+          },
+          {
+            "kind": "if",
+            "condition": { "expr": "state", "name": "isExpanded" },
+            "then": { "kind": "slot" }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+| Property | Description |
+|----------|-------------|
+| `localState` | State declarations scoped to component instance |
+| `localActions` | Actions that operate on local state |
+
+**Rules:**
+- Each component instance has independent local state
+- Local actions can only use `set`, `update`, `setPath` steps (no `fetch`, `navigate`, `storage`)
+- `state` expressions inside component check local state first, then fall back to global
+- Use cases: accordions, dropdowns, form fields, toggles, tooltips
+
 ---
 
 ## Styles (CVA Pattern)
@@ -592,6 +645,7 @@ Close: `{ "do": "close", "connection": "chat" }`
 | Context | Expression |
 |---------|------------|
 | Top-level application state | `state` |
+| Component local state | `state` (checks local first, then global) |
 | Inside `each` loop (item/index) | `var` |
 | Inside action steps (event data) | `param` with `name: "event"` |
 | Inside action steps (fetch result) | `param` with `name: "result"` |
