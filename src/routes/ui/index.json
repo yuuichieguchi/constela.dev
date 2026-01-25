@@ -764,20 +764,8 @@
                       {
                         "kind": "element",
                         "tag": "div",
-                        "props": { "class": { "expr": "lit", "value": "relative" } },
+                        "props": { "class": { "expr": "lit", "value": "relative inline-flex" } },
                         "children": [
-                          {
-                            "kind": "if",
-                            "condition": { "expr": "state", "name": "tooltipVisible" },
-                            "then": {
-                              "kind": "element",
-                              "tag": "div",
-                              "children": [
-                                { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-10 left-1/2 -translate-x-1/2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add to library" } }] },
-                                { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "absolute -top-2 left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" } } }
-                              ]
-                            }
-                          },
                           {
                             "kind": "element",
                             "tag": "button",
@@ -787,6 +775,29 @@
                               "onMouseLeave": { "event": "mouseleave", "action": "hideTooltip" }
                             },
                             "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Hover" } }]
+                          },
+                          {
+                            "kind": "if",
+                            "condition": { "expr": "state", "name": "tooltipVisible" },
+                            "then": {
+                              "kind": "element",
+                              "tag": "div",
+                              "props": {
+                                "class": { "expr": "lit", "value": "absolute bottom-full left-1/2 mb-2" },
+                                "style": { "expr": "lit", "value": "transform: translateX(-50%);" }
+                              },
+                              "children": [
+                                { "kind": "element", "tag": "div", "props": { "class": { "expr": "lit", "value": "rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap" } }, "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Add to library" } }] },
+                                {
+                                  "kind": "element",
+                                  "tag": "div",
+                                  "props": {
+                                    "class": { "expr": "lit", "value": "absolute top-full left-1/2 border-4 border-transparent border-t-primary" },
+                                    "style": { "expr": "lit", "value": "transform: translateX(-50%);" }
+                                  }
+                                }
+                              ]
+                            }
                           }
                         ]
                       },

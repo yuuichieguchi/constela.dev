@@ -11,7 +11,14 @@
   },
   "state": {
     "theme": { "type": "string", "initial": { "expr": "cookie", "key": "theme", "default": "dark" } },
-    "mobileMenuOpen": { "type": "boolean", "initial": false }
+    "mobileMenuOpen": { "type": "boolean", "initial": false },
+    "switchChecked": { "type": "boolean", "initial": true },
+    "tooltipVisible": { "type": "boolean", "initial": false },
+    "popoverOpen": { "type": "boolean", "initial": false },
+    "toastVisible": { "type": "boolean", "initial": false },
+    "activeTab": { "type": "string", "initial": "tab1" },
+    "activeBreadcrumb": { "type": "string", "initial": "current" },
+    "currentPage": { "type": "number", "initial": 1 }
   },
   "actions": [
     {
@@ -58,6 +65,83 @@
       "steps": [
         { "do": "set", "target": "mobileMenuOpen", "value": { "expr": "lit", "value": false } },
         { "do": "dom", "operation": "removeClass", "selector": { "expr": "lit", "value": "body" }, "value": { "expr": "lit", "value": "overflow-hidden" } }
+      ]
+    },
+    {
+      "name": "toggleSwitch",
+      "steps": [{ "do": "update", "target": "switchChecked", "operation": "toggle" }]
+    },
+    {
+      "name": "showTooltip",
+      "steps": [{ "do": "set", "target": "tooltipVisible", "value": { "expr": "lit", "value": true } }]
+    },
+    {
+      "name": "hideTooltip",
+      "steps": [{ "do": "set", "target": "tooltipVisible", "value": { "expr": "lit", "value": false } }]
+    },
+    {
+      "name": "togglePopover",
+      "steps": [{ "do": "update", "target": "popoverOpen", "operation": "toggle" }]
+    },
+    {
+      "name": "showToast",
+      "steps": [
+        { "do": "set", "target": "toastVisible", "value": { "expr": "lit", "value": true } },
+        { "do": "delay", "ms": { "expr": "lit", "value": 3000 }, "then": [{ "do": "set", "target": "toastVisible", "value": { "expr": "lit", "value": false } }] }
+      ]
+    },
+    {
+      "name": "setTab1",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "tab1" } }]
+    },
+    {
+      "name": "setTab2",
+      "steps": [{ "do": "set", "target": "activeTab", "value": { "expr": "lit", "value": "tab2" } }]
+    },
+    {
+      "name": "setBreadcrumbHome",
+      "steps": [{ "do": "set", "target": "activeBreadcrumb", "value": { "expr": "lit", "value": "home" } }]
+    },
+    {
+      "name": "setBreadcrumbCurrent",
+      "steps": [{ "do": "set", "target": "activeBreadcrumb", "value": { "expr": "lit", "value": "current" } }]
+    },
+    {
+      "name": "setPage1",
+      "steps": [{ "do": "set", "target": "currentPage", "value": { "expr": "lit", "value": 1 } }]
+    },
+    {
+      "name": "setPage2",
+      "steps": [{ "do": "set", "target": "currentPage", "value": { "expr": "lit", "value": 2 } }]
+    },
+    {
+      "name": "prevPage",
+      "steps": [
+        {
+          "do": "set",
+          "target": "currentPage",
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": ">", "left": { "expr": "state", "name": "currentPage" }, "right": { "expr": "lit", "value": 1 } },
+            "then": { "expr": "bin", "op": "-", "left": { "expr": "state", "name": "currentPage" }, "right": { "expr": "lit", "value": 1 } },
+            "else": { "expr": "lit", "value": 1 }
+          }
+        }
+      ]
+    },
+    {
+      "name": "nextPage",
+      "steps": [
+        {
+          "do": "set",
+          "target": "currentPage",
+          "value": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "<", "left": { "expr": "state", "name": "currentPage" }, "right": { "expr": "lit", "value": 2 } },
+            "then": { "expr": "bin", "op": "+", "left": { "expr": "state", "name": "currentPage" }, "right": { "expr": "lit", "value": 1 } },
+            "else": { "expr": "lit", "value": 2 }
+          }
+        }
       ]
     }
   ],
