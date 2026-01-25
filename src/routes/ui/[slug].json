@@ -9,16 +9,16 @@
     "meta": {
       "title": { "expr": "concat", "items": [{ "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "uiData", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "name" }, { "expr": "lit", "value": " - UI Components - Constela" }] },
       "description": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "uiData", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "description" }
-    },
-    "getStaticPaths": {
-      "source": { "expr": "import", "name": "uiData", "path": "components" },
-      "params": {
-        "slug": { "expr": "var", "name": "item", "path": "slug" }
-      }
     }
   },
   "imports": {
     "uiData": "../../data/ui-components.json"
+  },
+  "getStaticPaths": {
+    "source": { "expr": "import", "name": "uiData", "path": "components" },
+    "params": {
+      "slug": { "expr": "var", "name": "item", "path": "slug" }
+    }
   },
   "state": {
     "tooltipVisible": { "type": "boolean", "initial": false },
