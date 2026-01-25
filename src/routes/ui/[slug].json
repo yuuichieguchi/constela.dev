@@ -11,7 +11,7 @@
       "description": { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "uiData", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "description" }
     },
     "getStaticPaths": {
-      "source": "uiData",
+      "source": { "expr": "import", "name": "uiData", "path": "components" },
       "params": {
         "slug": { "expr": "var", "name": "item", "path": "slug" }
       }
