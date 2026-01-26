@@ -21,15 +21,17 @@ yarn add @constela/ai
 
 ## Environment Setup
 
-Set your API key for the provider you want to use:
+Create a `.env` file in your project root and add your API key:
 
-```bash
+```
 # For Anthropic (Claude)
-export ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_API_KEY=sk-ant-...
 
 # For OpenAI
-export OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=sk-...
 ```
+
+Make sure `.env` is in your `.gitignore` to avoid committing secrets.
 
 ## Verification
 
