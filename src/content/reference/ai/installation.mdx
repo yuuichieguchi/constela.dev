@@ -1,0 +1,72 @@
+---
+title: 'Installation'
+description: Install and configure @constela/ai
+---
+
+## Package Installation
+
+```bash
+npm install @constela/ai
+```
+
+Or with other package managers:
+
+```bash
+# pnpm
+pnpm add @constela/ai
+
+# yarn
+yarn add @constela/ai
+```
+
+## Environment Setup
+
+Set your API key for the provider you want to use:
+
+```bash
+# For Anthropic (Claude)
+export ANTHROPIC_API_KEY=sk-ant-...
+
+# For OpenAI
+export OPENAI_API_KEY=sk-...
+```
+
+## TypeScript Configuration
+
+`@constela/ai` is written in TypeScript and includes type definitions. No additional configuration is needed.
+
+```typescript
+import { createDslGenerator } from '@constela/ai';
+import type { DslGeneratorOptions, GenerateResult } from '@constela/ai';
+```
+
+## Verification
+
+Test your installation:
+
+```typescript
+import { createDslGenerator } from '@constela/ai';
+
+const generator = createDslGenerator({
+  provider: 'anthropic',
+});
+
+const result = await generator.generate({
+  prompt: 'A simple button component',
+  output: 'component',
+});
+
+console.log(result.validated ? 'Success!' : 'Validation failed');
+```
+
+## CLI Integration
+
+The `constela suggest` command is automatically available when you have `@constela/cli` installed:
+
+```bash
+# Ensure @constela/cli is installed
+npm install -D @constela/cli
+
+# Use the suggest command
+constela suggest app.json --aspect accessibility
+```

@@ -1,0 +1,324 @@
+---
+title: 'Examples'
+description: Usage patterns and examples for @constela/ai
+---
+
+## Basic Component Generation
+
+Generate a simple component from a description:
+
+```typescript
+import { createDslGenerator } from '@constela/ai';
+
+const generator = createDslGenerator({
+  provider: 'anthropic',
+});
+
+const result = await generator.generate({
+  prompt: 'A notification badge that shows a count',
+  output: 'component',
+});
+
+console.log(JSON.stringify(result.dsl, null, 2));
+```
+
+Output:
+
+```json
+{
+  "kind": "element",
+  "tag": "span",
+  "props": {
+    "className": { "expr": "lit", "value": "badge" }
+  },
+  "children": [
+    { "kind": "text", "value": { "expr": "param", "name": "count" } }
+  ]
+}
+```
+
+---
+
+## Full Page Generation
+
+Generate a complete page with state and actions:
+
+```typescript
+const result = await generator.generate({
+  prompt: 'A user profile page with avatar, name, bio, and edit button',
+  output: 'view',
+});
+```
+
+Output:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "isEditing": { "type": "boolean", "initial": false }
+  },
+  "actions": [
+    {
+      "name": "toggleEdit",
+      "steps": [
+        { "do": "update", "target": "isEditing", "operation": "toggle" }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": {
+      "className": { "expr": "lit", "value": "profile" }
+    },
+    "children": [...]
+  }
+}
+```
+
+---
+
+## With Context
+
+Provide context for more accurate generation:
+
+```typescript
+const generator = createDslGenerator({
+  provider: 'anthropic',
+  context: {
+    existingComponents: ['Button', 'Card', 'Input', 'Avatar'],
+    theme: {
+      primaryColor: '#3b82f6',
+      borderRadius: '8px',
+    },
+    schema: {
+      user: {
+        name: 'string',
+        email: 'string',
+        avatar: 'string',
+      },
+    },
+  },
+});
+
+const result = await generator.generate({
+  prompt: 'A user card showing avatar, name, and email using existing components',
+  output: 'component',
+});
+```
+
+---
+
+## Security Configuration
+
+Configure allowed tags and actions:
+
+```typescript
+const generator = createDslGenerator({
+  provider: 'anthropic',
+  security: {
+    allowedTags: ['div', 'span', 'button', 'input', 'a'],
+    allowedActions: ['set', 'update', 'navigate'],
+    allowedUrlPatterns: ['https://api.myapp.com/*'],
+    maxNestingDepth: 16,
+  },
+});
+```
+
+---
+
+## Build-time Data Source
+
+Use AI to generate content at build time in your DSL:
+
+```json
+{
+  "version": "1.0",
+  "data": {
+    "features": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "Create a features grid with 3 items: Fast, Secure, Scalable",
+      "output": "component"
+    }
+  },
+  "state": {},
+  "actions": [],
+  "view": {
+    "kind": "element",
+    "tag": "section",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "h2",
+        "children": [
+          { "kind": "text", "value": { "expr": "lit", "value": "Features" } }
+        ]
+      },
+      {
+        "kind": "component",
+        "name": "features",
+        "props": {}
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Runtime Generation
+
+Generate DSL in response to user input:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "userPrompt": { "type": "string", "initial": "" },
+    "generatedComponent": { "type": "object", "initial": {} },
+    "isLoading": { "type": "boolean", "initial": false },
+    "error": { "type": "string", "initial": "" }
+  },
+  "actions": [
+    {
+      "name": "updatePrompt",
+      "steps": [
+        {
+          "do": "set",
+          "target": "userPrompt",
+          "value": { "expr": "param", "name": "event", "path": "target.value" }
+        }
+      ]
+    },
+    {
+      "name": "generateComponent",
+      "steps": [
+        {
+          "do": "set",
+          "target": "isLoading",
+          "value": { "expr": "lit", "value": true }
+        },
+        {
+          "do": "set",
+          "target": "error",
+          "value": { "expr": "lit", "value": "" }
+        },
+        {
+          "do": "generate",
+          "provider": "anthropic",
+          "prompt": { "expr": "state", "name": "userPrompt" },
+          "output": "component",
+          "result": "generatedComponent",
+          "onSuccess": [
+            {
+              "do": "set",
+              "target": "isLoading",
+              "value": { "expr": "lit", "value": false }
+            }
+          ],
+          "onError": [
+            {
+              "do": "set",
+              "target": "isLoading",
+              "value": { "expr": "lit", "value": false }
+            },
+            {
+              "do": "set",
+              "target": "error",
+              "value": { "expr": "param", "name": "error", "path": "message" }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "textarea",
+        "props": {
+          "value": { "expr": "state", "name": "userPrompt" },
+          "onInput": { "event": "input", "action": "updatePrompt" },
+          "placeholder": { "expr": "lit", "value": "Describe your component..." }
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "generateComponent" },
+          "disabled": { "expr": "state", "name": "isLoading" }
+        },
+        "children": [
+          {
+            "kind": "text",
+            "value": {
+              "expr": "cond",
+              "if": { "expr": "state", "name": "isLoading" },
+              "then": { "expr": "lit", "value": "Generating..." },
+              "else": { "expr": "lit", "value": "Generate" }
+            }
+          }
+        ]
+      },
+      {
+        "kind": "if",
+        "condition": { "expr": "state", "name": "error" },
+        "then": {
+          "kind": "element",
+          "tag": "p",
+          "props": {
+            "className": { "expr": "lit", "value": "error" }
+          },
+          "children": [
+            { "kind": "text", "value": { "expr": "state", "name": "error" } }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+---
+
+## Error Handling
+
+Handle generation errors gracefully:
+
+```typescript
+import { AiError, ValidationError, SecurityError } from '@constela/ai';
+
+try {
+  const result = await generator.generate({
+    prompt: 'Create a form component',
+    output: 'component',
+  });
+
+  if (!result.validated) {
+    console.error('Validation errors:', result.errors);
+  }
+} catch (err) {
+  if (err instanceof SecurityError) {
+    console.error('Security violation:', err.violation);
+  } else if (err instanceof ValidationError) {
+    console.error('Validation failed:', err.violations);
+  } else if (err instanceof AiError) {
+    switch (err.code) {
+      case 'PROVIDER_NOT_CONFIGURED':
+        console.error('Please set your API key');
+        break;
+      case 'RATE_LIMIT_EXCEEDED':
+        console.error('Rate limit exceeded, please wait');
+        break;
+      default:
+        console.error('AI error:', err.message);
+    }
+  }
+}
+```

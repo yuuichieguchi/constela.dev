@@ -139,6 +139,15 @@
       ]
     },
     {
+      "title": "@constela/ai",
+      "items": [
+        { "title": "Overview", "href": "/reference/ai" },
+        { "title": "Installation", "href": "/reference/ai/installation" },
+        { "title": "API Reference", "href": "/reference/ai/api-reference" },
+        { "title": "Examples", "href": "/reference/ai/examples" }
+      ]
+    },
+    {
       "title": "Editor",
       "items": [
         { "title": "VSCode Extension", "href": "/reference/vscode-constela" }
@@ -402,6 +411,22 @@
     },
     "/reference/ui/style-system": {
       "prev": { "title": "Components", "href": "/reference/ui/components" },
+      "next": { "title": "@constela/ai", "href": "/reference/ai" }
+    },
+    "/reference/ai": {
+      "prev": { "title": "Style System", "href": "/reference/ui/style-system" },
+      "next": { "title": "Installation", "href": "/reference/ai/installation" }
+    },
+    "/reference/ai/installation": {
+      "prev": { "title": "@constela/ai", "href": "/reference/ai" },
+      "next": { "title": "API Reference", "href": "/reference/ai/api-reference" }
+    },
+    "/reference/ai/api-reference": {
+      "prev": { "title": "Installation", "href": "/reference/ai/installation" },
+      "next": { "title": "Examples", "href": "/reference/ai/examples" }
+    },
+    "/reference/ai/examples": {
+      "prev": { "title": "API Reference", "href": "/reference/ai/api-reference" },
       "next": null
     }
   }

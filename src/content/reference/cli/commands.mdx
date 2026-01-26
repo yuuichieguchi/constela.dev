@@ -109,3 +109,63 @@ my-app/
 ├── package.json
 └── README.md
 ```
+
+---
+
+## suggest
+
+Analyze DSL files using AI and get improvement suggestions.
+
+```bash
+constela suggest app.json --aspect accessibility
+```
+
+### Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `<input>` | DSL file to analyze |
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `--aspect <type>` | Analysis aspect: accessibility, performance, security, ux (default: accessibility) |
+| `--provider <name>` | AI provider: anthropic, openai (default: anthropic) |
+| `--json` | Output as JSON |
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `ANTHROPIC_API_KEY` | Required when using Anthropic provider |
+| `OPENAI_API_KEY` | Required when using OpenAI provider |
+
+### Examples
+
+```bash
+# Analyze for accessibility issues
+constela suggest app.json --aspect accessibility
+
+# Analyze for security (using OpenAI)
+constela suggest app.json --aspect security --provider openai
+
+# JSON output for tooling
+constela suggest app.json --aspect ux --json
+```
+
+### Example Output
+
+```
+=== Suggestions for app.json (accessibility) ===
+
+[HIGH] Missing aria-label on button
+   Recommendation: Add aria-label="Submit form" to the button element
+   Location: view.children[0].props
+
+[MED] Low color contrast in text
+   Recommendation: Increase contrast ratio to meet WCAG AA standards
+   Location: view.children[2].props.style
+
+Total: 2 suggestion(s)
+```

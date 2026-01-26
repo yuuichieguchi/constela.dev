@@ -640,12 +640,25 @@
                                             }
                                           },
                                           "right": {
-                                            "expr": "not",
-                                            "operand": {
-                                              "expr": "call",
-                                              "target": { "expr": "param", "name": "currentPath" },
-                                              "method": "startsWith",
-                                              "args": [{ "expr": "lit", "value": "/reference/vscode" }]
+                                            "expr": "bin",
+                                            "op": "&&",
+                                            "left": {
+                                              "expr": "not",
+                                              "operand": {
+                                                "expr": "call",
+                                                "target": { "expr": "param", "name": "currentPath" },
+                                                "method": "startsWith",
+                                                "args": [{ "expr": "lit", "value": "/reference/vscode" }]
+                                              }
+                                            },
+                                            "right": {
+                                              "expr": "not",
+                                              "operand": {
+                                                "expr": "call",
+                                                "target": { "expr": "param", "name": "currentPath" },
+                                                "method": "startsWith",
+                                                "args": [{ "expr": "lit", "value": "/reference/ai" }]
+                                              }
                                             }
                                           }
                                         }
@@ -759,10 +772,20 @@
                                                   "expr": "bin",
                                                   "op": "==",
                                                   "left": { "expr": "var", "name": "section", "path": "title" },
-                                                  "right": { "expr": "lit", "value": "Get Started" }
+                                                  "right": { "expr": "lit", "value": "@constela/ai" }
                                                 },
-                                                "then": { "expr": "lit", "value": "/docs" },
-                                                "else": { "expr": "lit", "value": "/" }
+                                                "then": { "expr": "lit", "value": "/reference/ai" },
+                                                "else": {
+                                                  "expr": "cond",
+                                                  "if": {
+                                                    "expr": "bin",
+                                                    "op": "==",
+                                                    "left": { "expr": "var", "name": "section", "path": "title" },
+                                                    "right": { "expr": "lit", "value": "Get Started" }
+                                                  },
+                                                  "then": { "expr": "lit", "value": "/docs" },
+                                                  "else": { "expr": "lit", "value": "/" }
+                                                }
                                               }
                                             }
                                           }

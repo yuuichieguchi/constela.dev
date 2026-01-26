@@ -1,0 +1,82 @@
+---
+title: '@constela/ai'
+description: AI-powered DSL generation for Constela
+---
+
+`@constela/ai` provides AI-powered features for generating and analyzing Constela DSL.
+
+## Features
+
+- **DSL Generator** - Generate UI components and views from natural language prompts
+- **Security Validation** - Automatically validate generated DSL against security rules
+- **Multiple Providers** - Support for Anthropic (Claude) and OpenAI (GPT-4o)
+
+## Quick Start
+
+```typescript
+import { createDslGenerator } from '@constela/ai';
+
+const generator = createDslGenerator({
+  provider: 'anthropic',
+});
+
+const result = await generator.generate({
+  prompt: 'Create a card component with title, description, and action button',
+  output: 'component',
+});
+
+console.log(result.dsl);
+```
+
+## Providers
+
+| Provider | Model | Environment Variable |
+|----------|-------|---------------------|
+| Anthropic | Claude Sonnet | `ANTHROPIC_API_KEY` |
+| OpenAI | GPT-4o | `OPENAI_API_KEY` |
+
+## DSL Integration
+
+Use AI generation directly in your Constela programs:
+
+### Build-time Generation
+
+```json
+{
+  "data": {
+    "hero": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "Create a hero section with gradient background and CTA",
+      "output": "component"
+    }
+  }
+}
+```
+
+### Runtime Generation
+
+```json
+{
+  "actions": [
+    {
+      "name": "generateCard",
+      "steps": [
+        {
+          "do": "generate",
+          "provider": "anthropic",
+          "prompt": { "expr": "state", "name": "userPrompt" },
+          "output": "component",
+          "result": "generatedCard"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Next Steps
+
+- [Installation](/reference/ai/installation) - Install the package
+- [API Reference](/reference/ai/api-reference) - Full API documentation
+- [Examples](/reference/ai/examples) - Usage patterns and recipes

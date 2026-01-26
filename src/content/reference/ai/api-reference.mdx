@@ -1,0 +1,252 @@
+---
+title: 'API Reference'
+description: Complete API documentation for @constela/ai
+---
+
+## createDslGenerator(options)
+
+Creates a new DSL generator instance.
+
+```typescript
+import { createDslGenerator } from '@constela/ai';
+
+const generator = createDslGenerator({
+  provider: 'anthropic',
+  security: {
+    allowedTags: ['div', 'button', 'input'],
+    allowedActions: ['set', 'update'],
+  },
+});
+```
+
+### Options
+
+```typescript
+interface DslGeneratorOptions {
+  provider: 'anthropic' | 'openai';
+  providerInstance?: AiProvider;
+  security?: SecurityOptions;
+  context?: GenerationContext;
+}
+
+interface SecurityOptions {
+  allowedTags?: string[];
+  allowedActions?: string[];
+  allowedUrlPatterns?: string[];
+  maxNestingDepth?: number;
+}
+
+interface GenerationContext {
+  existingComponents?: string[];
+  theme?: Record<string, unknown>;
+  schema?: Record<string, unknown>;
+}
+```
+
+---
+
+## generator.generate(options)
+
+Generates DSL from a prompt.
+
+```typescript
+const result = await generator.generate({
+  prompt: 'A card with title and description',
+  output: 'component',
+});
+```
+
+### Options
+
+```typescript
+interface GenerateOptions {
+  prompt: string;
+  output: 'component' | 'view' | 'suggestion';
+  context?: GenerationContext;
+  security?: SecurityOptions;
+}
+```
+
+### Return Value
+
+```typescript
+interface GenerateResult {
+  dsl: Record<string, unknown>;
+  raw: string;
+  validated: boolean;
+  errors?: string[];
+}
+```
+
+---
+
+## generator.validate(dsl, security?)
+
+Validates DSL against security rules.
+
+```typescript
+const result = generator.validate(dsl, {
+  allowedTags: ['div', 'span', 'button'],
+});
+
+if (!result.valid) {
+  console.error('Validation errors:', result.errors);
+}
+```
+
+### Return Value
+
+```typescript
+interface ValidationResult {
+  valid: boolean;
+  errors?: string[];
+}
+```
+
+---
+
+## Provider Access
+
+### getProvider(type)
+
+Get a provider instance by type.
+
+```typescript
+import { getProvider } from '@constela/ai';
+
+const provider = getProvider('anthropic');
+```
+
+### Direct Provider Creation
+
+```typescript
+import { AnthropicProvider, OpenAIProvider } from '@constela/ai';
+
+const anthropic = new AnthropicProvider({
+  model: 'claude-sonnet-4-20250514',
+});
+
+const openai = new OpenAIProvider({
+  model: 'gpt-4o',
+});
+```
+
+### Provider Methods
+
+```typescript
+const response = await provider.generate('Generate a button component', {
+  systemPrompt: 'You are a UI component generator...',
+  maxTokens: 4096,
+  temperature: 0.7,
+});
+```
+
+---
+
+## Security Utilities
+
+### isForbiddenTag(tag)
+
+Check if a tag is forbidden.
+
+```typescript
+import { isForbiddenTag } from '@constela/ai';
+
+isForbiddenTag('script'); // true
+isForbiddenTag('div');    // false
+```
+
+### isForbiddenAction(action)
+
+Check if an action is forbidden.
+
+```typescript
+import { isForbiddenAction } from '@constela/ai';
+
+isForbiddenAction('import'); // true
+isForbiddenAction('set');    // false
+```
+
+### isRestrictedAction(action)
+
+Check if an action is restricted (requires whitelist).
+
+```typescript
+import { isRestrictedAction } from '@constela/ai';
+
+isRestrictedAction('fetch'); // true
+isRestrictedAction('set');   // false
+```
+
+### validateUrl(url, options)
+
+Validate a URL against security rules.
+
+```typescript
+import { validateUrl } from '@constela/ai';
+
+const result = validateUrl('https://example.com/api', {
+  allowedDomains: ['example.com'],
+  allowRelative: true,
+});
+```
+
+### Constants
+
+```typescript
+import { FORBIDDEN_TAGS, FORBIDDEN_ACTIONS, RESTRICTED_ACTIONS } from '@constela/ai';
+
+// FORBIDDEN_TAGS: ['script', 'iframe', 'object', 'embed', 'form']
+// FORBIDDEN_ACTIONS: ['import', 'call', 'dom']
+// RESTRICTED_ACTIONS: ['fetch']
+```
+
+---
+
+## Error Classes
+
+### AiError
+
+Base error class for AI-related errors.
+
+```typescript
+import { AiError } from '@constela/ai';
+
+try {
+  await generator.generate({ prompt, output: 'component' });
+} catch (err) {
+  if (err instanceof AiError) {
+    console.error(err.code, err.message);
+  }
+}
+```
+
+Error codes:
+- `PROVIDER_NOT_CONFIGURED` - API key not set
+- `PROVIDER_NOT_FOUND` - Unknown provider type
+- `API_ERROR` - Provider API call failed
+- `RATE_LIMIT_EXCEEDED` - API rate limit hit
+
+### ValidationError
+
+Thrown when DSL validation fails.
+
+```typescript
+import { ValidationError } from '@constela/ai';
+
+if (err instanceof ValidationError) {
+  console.error('Violations:', err.violations);
+}
+```
+
+### SecurityError
+
+Thrown when a security rule is violated.
+
+```typescript
+import { SecurityError } from '@constela/ai';
+
+if (err instanceof SecurityError) {
+  console.error('Violation:', err.violation);
+}
+```

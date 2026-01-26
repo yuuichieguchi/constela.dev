@@ -59,7 +59,7 @@ Every Constela program has this root structure:
 | `connections` | No | WebSocket connections |
 | `lifecycle` | No | Mount/unmount hooks |
 | `route` | No | Routing configuration |
-| `data` | No | Build-time data sources |
+| `data` | No | Build-time data sources (including AI generation) |
 | `externalImports` | No | External JS module URLs |
 
 ---
@@ -302,6 +302,7 @@ Actions define responses to events. Each action has a name and array of steps.
 | `interval` | `{ "do": "interval", "ms": M, "action": "A", "result": "R" }` | Repeated execution |
 | `clearTimer` | `{ "do": "clearTimer", "target": T }` | Stop timer |
 | `focus` | `{ "do": "focus", "target": T, "operation": "focus\|blur\|select" }` | Focus control |
+| `generate` | `{ "do": "generate", "provider": "P", "prompt": EXPR, "output": "O", "result": "R", "onSuccess": [], "onError": [] }` | AI DSL generation |
 
 ### Update Operations by State Type
 
@@ -617,6 +618,84 @@ Use with style expression:
 
 Send: `{ "do": "send", "connection": "chat", "data": { "expr": "state", "name": "message" } }`
 Close: `{ "do": "close", "connection": "chat" }`
+
+---
+
+## AI Integration (@constela/ai)
+
+### AI Data Source (Build-time)
+
+Generate content at build time using AI:
+
+```json
+{
+  "data": {
+    "hero": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "Create a hero section with gradient background and CTA button",
+      "output": "component"
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "hero",
+    "props": {}
+  }
+}
+```
+
+| Property | Description |
+|----------|-------------|
+| `type` | Must be `"ai"` |
+| `provider` | `"anthropic"` or `"openai"` |
+| `prompt` | Natural language description |
+| `output` | `"component"` or `"view"` |
+
+### Generate Action (Runtime)
+
+Generate DSL dynamically in response to user actions:
+
+```json
+{
+  "name": "generateCard",
+  "steps": [
+    {
+      "do": "generate",
+      "provider": "anthropic",
+      "prompt": { "expr": "state", "name": "userPrompt" },
+      "output": "component",
+      "result": "generatedCard",
+      "onSuccess": [
+        { "do": "set", "target": "card", "value": { "expr": "var", "name": "generatedCard" } }
+      ],
+      "onError": [
+        { "do": "set", "target": "error", "value": { "expr": "param", "name": "error" } }
+      ]
+    }
+  ]
+}
+```
+
+| Property | Description |
+|----------|-------------|
+| `do` | Must be `"generate"` |
+| `provider` | `"anthropic"` or `"openai"` |
+| `prompt` | Expression evaluating to prompt string |
+| `output` | `"component"` or `"view"` |
+| `result` | Variable name to store generated DSL |
+| `onSuccess` | Steps to run on success |
+| `onError` | Steps to run on error |
+
+### Security Rules
+
+AI-generated DSL is automatically validated:
+
+**Forbidden Tags** (always blocked): `script`, `iframe`, `object`, `embed`, `form`
+
+**Forbidden Actions** (cannot be whitelisted): `import`, `call`, `dom`
+
+**Restricted Actions** (require explicit whitelist): `fetch`
 
 ---
 
