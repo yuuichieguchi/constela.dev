@@ -13,19 +13,67 @@ description: AI-powered DSL generation for Constela
 
 ## Quick Start
 
-```typescript
-import { createDslGenerator } from '@constela/ai';
+### Build-time Generation
 
-const generator = createDslGenerator({
-  provider: 'anthropic',
-});
+Use AI to generate components at build time:
 
-const result = await generator.generate({
-  prompt: 'Create a card component with title, description, and action button',
-  output: 'component',
-});
+```json
+{
+  "version": "1.0",
+  "data": {
+    "card": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "A card component with title, description, and action button",
+      "output": "component"
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "card",
+    "props": {
+      "title": { "expr": "lit", "value": "Welcome" },
+      "description": { "expr": "lit", "value": "Get started with Constela" }
+    }
+  }
+}
+```
 
-console.log(result.dsl);
+### Runtime Generation
+
+Generate DSL dynamically in response to user input:
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "userPrompt": { "type": "string", "initial": "" },
+    "generatedComponent": { "type": "object", "initial": {} }
+  },
+  "actions": [
+    {
+      "name": "generateComponent",
+      "steps": [
+        {
+          "do": "generate",
+          "provider": "anthropic",
+          "prompt": { "expr": "state", "name": "userPrompt" },
+          "output": "component",
+          "result": "generatedComponent"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### CLI Analysis
+
+Analyze existing DSL files for improvements:
+
+```bash
+constela suggest app.json --aspect accessibility
+constela suggest app.json --aspect security --provider openai
 ```
 
 ## Providers
@@ -35,48 +83,16 @@ console.log(result.dsl);
 | Anthropic | Claude Sonnet | `ANTHROPIC_API_KEY` |
 | OpenAI | GPT-4o | `OPENAI_API_KEY` |
 
-## DSL Integration
+## Security
 
-Use AI generation directly in your Constela programs:
+AI-generated DSL is automatically validated:
 
-### Build-time Generation
-
-```json
-{
-  "data": {
-    "hero": {
-      "type": "ai",
-      "provider": "anthropic",
-      "prompt": "Create a hero section with gradient background and CTA",
-      "output": "component"
-    }
-  }
-}
-```
-
-### Runtime Generation
-
-```json
-{
-  "actions": [
-    {
-      "name": "generateCard",
-      "steps": [
-        {
-          "do": "generate",
-          "provider": "anthropic",
-          "prompt": { "expr": "state", "name": "userPrompt" },
-          "output": "component",
-          "result": "generatedCard"
-        }
-      ]
-    }
-  ]
-}
-```
+- **Forbidden Tags**: `script`, `iframe`, `object`, `embed`, `form`
+- **Forbidden Actions**: `import`, `call`, `dom`
+- **Restricted Actions**: `fetch` (requires whitelist)
 
 ## Next Steps
 
 - [Installation](/reference/ai/installation) - Install the package
-- [API Reference](/reference/ai/api-reference) - Full API documentation
+- [API Reference](/reference/ai/api-reference) - Server-side TypeScript API
 - [Examples](/reference/ai/examples) - Usage patterns and recipes

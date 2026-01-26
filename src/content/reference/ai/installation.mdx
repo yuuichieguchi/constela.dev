@@ -31,33 +31,36 @@ export ANTHROPIC_API_KEY=sk-ant-...
 export OPENAI_API_KEY=sk-...
 ```
 
-## TypeScript Configuration
-
-`@constela/ai` is written in TypeScript and includes type definitions. No additional configuration is needed.
-
-```typescript
-import { createDslGenerator } from '@constela/ai';
-import type { DslGeneratorOptions, GenerateResult } from '@constela/ai';
-```
-
 ## Verification
 
-Test your installation:
+Test your installation by creating a DSL file with AI data source:
 
-```typescript
-import { createDslGenerator } from '@constela/ai';
-
-const generator = createDslGenerator({
-  provider: 'anthropic',
-});
-
-const result = await generator.generate({
-  prompt: 'A simple button component',
-  output: 'component',
-});
-
-console.log(result.validated ? 'Success!' : 'Validation failed');
+```json
+{
+  "version": "1.0",
+  "data": {
+    "testComponent": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "A simple button component",
+      "output": "component"
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "testComponent",
+    "props": {}
+  }
+}
 ```
+
+Then build your project:
+
+```bash
+constela build
+```
+
+If the build succeeds without errors, the installation is complete.
 
 ## CLI Integration
 

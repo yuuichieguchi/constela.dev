@@ -3,26 +3,32 @@ title: 'Examples'
 description: Usage patterns and examples for @constela/ai
 ---
 
-## Basic Component Generation
+## Build-time Component Generation
 
-Generate a simple component from a description:
+Generate a component at build time using the `data` section:
 
-```typescript
-import { createDslGenerator } from '@constela/ai';
-
-const generator = createDslGenerator({
-  provider: 'anthropic',
-});
-
-const result = await generator.generate({
-  prompt: 'A notification badge that shows a count',
-  output: 'component',
-});
-
-console.log(JSON.stringify(result.dsl, null, 2));
+```json
+{
+  "version": "1.0",
+  "data": {
+    "badge": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "A notification badge that shows a count",
+      "output": "component"
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "badge",
+    "props": {
+      "count": { "expr": "lit", "value": 5 }
+    }
+  }
+}
 ```
 
-Output:
+The AI generates a component like:
 
 ```json
 {
@@ -39,98 +45,34 @@ Output:
 
 ---
 
-## Full Page Generation
+## Build-time Page Generation
 
 Generate a complete page with state and actions:
-
-```typescript
-const result = await generator.generate({
-  prompt: 'A user profile page with avatar, name, bio, and edit button',
-  output: 'view',
-});
-```
-
-Output:
 
 ```json
 {
   "version": "1.0",
-  "state": {
-    "isEditing": { "type": "boolean", "initial": false }
-  },
-  "actions": [
-    {
-      "name": "toggleEdit",
-      "steps": [
-        { "do": "update", "target": "isEditing", "operation": "toggle" }
-      ]
+  "data": {
+    "profilePage": {
+      "type": "ai",
+      "provider": "anthropic",
+      "prompt": "A user profile page with avatar, name, bio, and edit button",
+      "output": "view"
     }
-  ],
+  },
   "view": {
-    "kind": "element",
-    "tag": "div",
-    "props": {
-      "className": { "expr": "lit", "value": "profile" }
-    },
-    "children": [...]
+    "kind": "component",
+    "name": "profilePage",
+    "props": {}
   }
 }
 ```
 
 ---
 
-## With Context
+## Features Grid
 
-Provide context for more accurate generation:
-
-```typescript
-const generator = createDslGenerator({
-  provider: 'anthropic',
-  context: {
-    existingComponents: ['Button', 'Card', 'Input', 'Avatar'],
-    theme: {
-      primaryColor: '#3b82f6',
-      borderRadius: '8px',
-    },
-    schema: {
-      user: {
-        name: 'string',
-        email: 'string',
-        avatar: 'string',
-      },
-    },
-  },
-});
-
-const result = await generator.generate({
-  prompt: 'A user card showing avatar, name, and email using existing components',
-  output: 'component',
-});
-```
-
----
-
-## Security Configuration
-
-Configure allowed tags and actions:
-
-```typescript
-const generator = createDslGenerator({
-  provider: 'anthropic',
-  security: {
-    allowedTags: ['div', 'span', 'button', 'input', 'a'],
-    allowedActions: ['set', 'update', 'navigate'],
-    allowedUrlPatterns: ['https://api.myapp.com/*'],
-    maxNestingDepth: 16,
-  },
-});
-```
-
----
-
-## Build-time Data Source
-
-Use AI to generate content at build time in your DSL:
+Generate a features section:
 
 ```json
 {
@@ -143,8 +85,6 @@ Use AI to generate content at build time in your DSL:
       "output": "component"
     }
   },
-  "state": {},
-  "actions": [],
   "view": {
     "kind": "element",
     "tag": "section",
@@ -170,7 +110,7 @@ Use AI to generate content at build time in your DSL:
 
 ## Runtime Generation
 
-Generate DSL in response to user input:
+Generate DSL in response to user input using the `generate` action step:
 
 ```json
 {
@@ -287,38 +227,60 @@ Generate DSL in response to user input:
 
 ---
 
-## Error Handling
+## Error Handling in DSL
 
-Handle generation errors gracefully:
+Handle generation errors using `onError`:
 
-```typescript
-import { AiError, ValidationError, SecurityError } from '@constela/ai';
-
-try {
-  const result = await generator.generate({
-    prompt: 'Create a form component',
-    output: 'component',
-  });
-
-  if (!result.validated) {
-    console.error('Validation errors:', result.errors);
-  }
-} catch (err) {
-  if (err instanceof SecurityError) {
-    console.error('Security violation:', err.violation);
-  } else if (err instanceof ValidationError) {
-    console.error('Validation failed:', err.violations);
-  } else if (err instanceof AiError) {
-    switch (err.code) {
-      case 'PROVIDER_NOT_CONFIGURED':
-        console.error('Please set your API key');
-        break;
-      case 'RATE_LIMIT_EXCEEDED':
-        console.error('Rate limit exceeded, please wait');
-        break;
-      default:
-        console.error('AI error:', err.message);
+```json
+{
+  "name": "generateWithErrorHandling",
+  "steps": [
+    {
+      "do": "generate",
+      "provider": "anthropic",
+      "prompt": { "expr": "state", "name": "userPrompt" },
+      "output": "component",
+      "result": "generatedComponent",
+      "onSuccess": [
+        { "do": "set", "target": "success", "value": { "expr": "lit", "value": true } }
+      ],
+      "onError": [
+        { "do": "set", "target": "errorMessage", "value": { "expr": "param", "name": "error", "path": "message" } },
+        { "do": "set", "target": "errorCode", "value": { "expr": "param", "name": "error", "path": "code" } }
+      ]
     }
-  }
+  ]
 }
+```
+
+Error codes:
+- `PROVIDER_NOT_CONFIGURED` - API key not set
+- `RATE_LIMIT_EXCEEDED` - API rate limit hit
+- `API_ERROR` - Provider API call failed
+- `VALIDATION_ERROR` - Generated DSL failed security validation
+
+---
+
+## CLI Analysis
+
+Use the CLI to analyze existing DSL files:
+
+```bash
+# Analyze for accessibility issues
+constela suggest app.json --aspect accessibility
+
+# Analyze for security
+constela suggest app.json --aspect security
+
+# Analyze for performance
+constela suggest app.json --aspect performance
+
+# Analyze for UX
+constela suggest app.json --aspect ux
+
+# Use OpenAI instead of Anthropic
+constela suggest app.json --aspect accessibility --provider openai
+
+# JSON output for tooling
+constela suggest app.json --aspect accessibility --json
 ```
