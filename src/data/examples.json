@@ -2660,6 +2660,1072 @@
           ]
         }
       }
+    },
+    {
+      "slug": "theme-demo",
+      "title": "Theme System",
+      "description": "Theme system with light/dark/system mode switching, CSS variables, and persistent storage.",
+      "featuresPreview": [
+        { "name": "Theme configuration", "category": "theme" },
+        { "name": "Styles with variants", "category": "style" },
+        { "name": "DOM manipulation", "category": "action" }
+      ],
+      "featuresExtra": [
+        { "name": "Local storage persistence", "category": "action" }
+      ],
+      "featuresExtraCount": 1,
+      "runCommands": [
+        "npm install @constela/core @constela/runtime",
+        "npx constela run theme-demo.json"
+      ],
+      "code": {
+        "version": "1.0",
+        "theme": {
+          "mode": "system",
+          "colors": {
+            "primary": "hsl(220 90% 56%)",
+            "primary-foreground": "hsl(0 0% 100%)",
+            "secondary": "hsl(215 28% 17%)",
+            "secondary-foreground": "hsl(210 40% 98%)",
+            "background": "hsl(0 0% 100%)",
+            "foreground": "hsl(222 47% 11%)",
+            "muted": "hsl(210 40% 96%)",
+            "muted-foreground": "hsl(215 16% 47%)",
+            "border": "hsl(214 32% 91%)",
+            "ring": "hsl(220 90% 56%)"
+          },
+          "darkColors": {
+            "background": "hsl(222 47% 11%)",
+            "foreground": "hsl(210 40% 98%)",
+            "muted": "hsl(217 33% 17%)",
+            "muted-foreground": "hsl(215 20% 65%)",
+            "border": "hsl(217 33% 17%)"
+          },
+          "fonts": {
+            "sans": "Inter, system-ui, sans-serif",
+            "mono": "JetBrains Mono, monospace"
+          },
+          "cssPrefix": "theme"
+        },
+        "state": {
+          "mode": {
+            "type": "string",
+            "initial": { "expr": "cookie", "key": "theme-mode", "default": "system" }
+          }
+        },
+        "styles": {
+          "container": {
+            "base": "min-h-screen bg-background text-foreground transition-colors duration-300"
+          },
+          "card": {
+            "base": "rounded-lg border border-border bg-card p-6 shadow-sm"
+          },
+          "button": {
+            "base": "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "variants": {
+              "variant": {
+                "default": "bg-primary text-primary-foreground hover:bg-primary/90",
+                "outline": "border border-border bg-background hover:bg-muted",
+                "ghost": "hover:bg-muted"
+              },
+              "active": {
+                "true": "ring-2 ring-ring",
+                "false": ""
+              }
+            },
+            "defaultVariants": {
+              "variant": "default",
+              "active": "false"
+            }
+          }
+        },
+        "actions": [
+          {
+            "name": "setTheme",
+            "steps": [
+              { "do": "set", "target": "mode", "value": { "expr": "var", "name": "payload" } },
+              { "do": "storage", "operation": "set", "key": { "expr": "lit", "value": "theme-mode" }, "value": { "expr": "var", "name": "payload" }, "storage": "local" },
+              {
+                "do": "if",
+                "condition": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "payload" }, "right": { "expr": "lit", "value": "dark" } },
+                "then": [{ "do": "dom", "operation": "addClass", "selector": { "expr": "lit", "value": "html" }, "value": { "expr": "lit", "value": "dark" } }],
+                "else": [
+                  {
+                    "do": "if",
+                    "condition": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "payload" }, "right": { "expr": "lit", "value": "light" } },
+                    "then": [{ "do": "dom", "operation": "removeClass", "selector": { "expr": "lit", "value": "html" }, "value": { "expr": "lit", "value": "dark" } }]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": {
+            "className": { "expr": "style", "name": "container" }
+          },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "className": { "expr": "lit", "value": "max-w-2xl mx-auto py-12 px-4" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "h1",
+                  "props": { "className": { "expr": "lit", "value": "text-3xl font-bold mb-8" } },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Theme Demo" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "style", "name": "card" } },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "h2",
+                      "props": { "className": { "expr": "lit", "value": "text-xl font-semibold mb-4" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Select Theme" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "className": { "expr": "lit", "value": "flex gap-3" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "button",
+                          "props": {
+                            "className": {
+                              "expr": "style",
+                              "name": "button",
+                              "variants": {
+                                "variant": { "expr": "lit", "value": "outline" },
+                                "active": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "mode" }, "right": { "expr": "lit", "value": "light" } }
+                              }
+                            },
+                            "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "light" } }
+                          },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Light" } }]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "button",
+                          "props": {
+                            "className": {
+                              "expr": "style",
+                              "name": "button",
+                              "variants": {
+                                "variant": { "expr": "lit", "value": "outline" },
+                                "active": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "mode" }, "right": { "expr": "lit", "value": "dark" } }
+                              }
+                            },
+                            "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "dark" } }
+                          },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dark" } }]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "button",
+                          "props": {
+                            "className": {
+                              "expr": "style",
+                              "name": "button",
+                              "variants": {
+                                "variant": { "expr": "lit", "value": "outline" },
+                                "active": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "mode" }, "right": { "expr": "lit", "value": "system" } }
+                              }
+                            },
+                            "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "system" } }
+                          },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "System" } }]
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "p",
+                      "props": { "className": { "expr": "lit", "value": "mt-4 text-sm text-muted-foreground" } },
+                      "children": [
+                        { "kind": "text", "value": { "expr": "lit", "value": "Current mode: " } },
+                        { "kind": "text", "value": { "expr": "state", "name": "mode" } }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "concat", "items": [{ "expr": "style", "name": "card" }, { "expr": "lit", "value": " mt-6" }] } },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "h2",
+                      "props": { "className": { "expr": "lit", "value": "text-xl font-semibold mb-4" } },
+                      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Color Palette" } }]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "className": { "expr": "lit", "value": "grid grid-cols-2 gap-4" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "lit", "value": "p-4 rounded bg-primary text-primary-foreground" } },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Primary" } }]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "lit", "value": "p-4 rounded bg-secondary text-secondary-foreground" } },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Secondary" } }]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "lit", "value": "p-4 rounded bg-muted text-muted-foreground" } },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Muted" } }]
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "lit", "value": "p-4 rounded border border-border" } },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Border" } }]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "realtime-notifications",
+      "title": "Realtime Notifications",
+      "description": "Real-time notifications with SSE connection, optimistic updates, and automatic reconnection.",
+      "featuresPreview": [
+        { "name": "Lifecycle hooks", "category": "lifecycle" },
+        { "name": "SSE connection", "category": "realtime" },
+        { "name": "Optimistic updates", "category": "action" }
+      ],
+      "featuresExtra": [
+        { "name": "Reconnect strategy", "category": "realtime" },
+        { "name": "Style variants", "category": "style" }
+      ],
+      "featuresExtraCount": 2,
+      "runCommands": [
+        "npm install @constela/core @constela/runtime",
+        "npx constela run realtime-notifications.json"
+      ],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "connected": { "type": "boolean", "initial": false },
+          "notifications": { "type": "list", "initial": [] },
+          "unreadCount": { "type": "number", "initial": 0 },
+          "error": { "type": "string", "initial": "" }
+        },
+        "styles": {
+          "container": {
+            "base": "min-h-screen bg-gray-50 dark:bg-gray-900"
+          },
+          "card": {
+            "base": "bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+          },
+          "notification": {
+            "base": "p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors",
+            "variants": {
+              "read": {
+                "true": "bg-white dark:bg-gray-800",
+                "false": "bg-blue-50 dark:bg-blue-900/20"
+              }
+            },
+            "defaultVariants": { "read": "true" }
+          },
+          "badge": {
+            "base": "inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-medium rounded-full",
+            "variants": {
+              "variant": {
+                "default": "bg-blue-500 text-white",
+                "success": "bg-green-500 text-white",
+                "warning": "bg-yellow-500 text-white",
+                "error": "bg-red-500 text-white"
+              }
+            },
+            "defaultVariants": { "variant": "default" }
+          },
+          "statusDot": {
+            "base": "w-2 h-2 rounded-full",
+            "variants": {
+              "connected": {
+                "true": "bg-green-500",
+                "false": "bg-red-500"
+              }
+            }
+          }
+        },
+        "lifecycle": {
+          "onMount": "connect",
+          "onUnmount": "disconnect"
+        },
+        "actions": [
+          {
+            "name": "connect",
+            "steps": [
+              {
+                "do": "sseConnect",
+                "connection": "notifications",
+                "url": { "expr": "lit", "value": "/api/notifications/stream" },
+                "eventTypes": ["notification", "read", "clear"],
+                "reconnect": {
+                  "enabled": true,
+                  "strategy": "exponential",
+                  "maxRetries": 10,
+                  "baseDelay": 1000,
+                  "maxDelay": 30000
+                },
+                "onOpen": [
+                  { "do": "set", "target": "connected", "value": { "expr": "lit", "value": true } },
+                  { "do": "set", "target": "error", "value": { "expr": "lit", "value": "" } }
+                ],
+                "onMessage": [
+                  {
+                    "do": "if",
+                    "condition": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "payload", "path": "type" }, "right": { "expr": "lit", "value": "notification" } },
+                    "then": [
+                      { "do": "update", "target": "notifications", "operation": "insertAt", "index": { "expr": "lit", "value": 0 }, "value": { "expr": "var", "name": "payload", "path": "data" } },
+                      { "do": "update", "target": "unreadCount", "operation": "increment" }
+                    ]
+                  }
+                ],
+                "onError": [
+                  { "do": "set", "target": "connected", "value": { "expr": "lit", "value": false } },
+                  { "do": "set", "target": "error", "value": { "expr": "lit", "value": "Connection lost. Reconnecting..." } }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "disconnect",
+            "steps": [
+              { "do": "sseClose", "connection": "notifications" }
+            ]
+          },
+          {
+            "name": "markAsRead",
+            "steps": [
+              {
+                "do": "optimistic",
+                "target": "notifications",
+                "path": { "expr": "var", "name": "payload", "path": "index" },
+                "value": { "expr": "lit", "value": { "read": true } },
+                "result": "updateId"
+              },
+              { "do": "update", "target": "unreadCount", "operation": "decrement" },
+              {
+                "do": "fetch",
+                "url": {
+                  "expr": "concat",
+                  "items": [
+                    { "expr": "lit", "value": "/api/notifications/" },
+                    { "expr": "var", "name": "payload", "path": "id" },
+                    { "expr": "lit", "value": "/read" }
+                  ]
+                },
+                "method": "POST",
+                "onSuccess": [
+                  { "do": "confirm", "id": { "expr": "var", "name": "updateId" } }
+                ],
+                "onError": [
+                  { "do": "reject", "id": { "expr": "var", "name": "updateId" } },
+                  { "do": "update", "target": "unreadCount", "operation": "increment" }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "markAllAsRead",
+            "steps": [
+              {
+                "do": "fetch",
+                "url": { "expr": "lit", "value": "/api/notifications/read-all" },
+                "method": "POST",
+                "onSuccess": [
+                  { "do": "set", "target": "unreadCount", "value": { "expr": "lit", "value": 0 } }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "clearAll",
+            "steps": [
+              {
+                "do": "fetch",
+                "url": { "expr": "lit", "value": "/api/notifications/clear" },
+                "method": "DELETE",
+                "onSuccess": [
+                  { "do": "set", "target": "notifications", "value": { "expr": "lit", "value": [] } },
+                  { "do": "set", "target": "unreadCount", "value": { "expr": "lit", "value": 0 } }
+                ]
+              }
+            ]
+          }
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "className": { "expr": "style", "name": "container" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "className": { "expr": "lit", "value": "max-w-lg mx-auto py-8 px-4" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "lit", "value": "flex items-center justify-between mb-6" } },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "className": { "expr": "lit", "value": "flex items-center gap-3" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "h1",
+                          "props": { "className": { "expr": "lit", "value": "text-2xl font-bold text-gray-900 dark:text-white" } },
+                          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Notifications" } }]
+                        },
+                        {
+                          "kind": "if",
+                          "condition": { "expr": "bin", "op": ">", "left": { "expr": "state", "name": "unreadCount" }, "right": { "expr": "lit", "value": 0 } },
+                          "then": {
+                            "kind": "element",
+                            "tag": "span",
+                            "props": { "className": { "expr": "style", "name": "badge" } },
+                            "children": [{ "kind": "text", "value": { "expr": "state", "name": "unreadCount" } }]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "className": { "expr": "lit", "value": "flex items-center gap-2" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "span",
+                          "props": {
+                            "className": {
+                              "expr": "style",
+                              "name": "statusDot",
+                              "variants": { "connected": { "expr": "state", "name": "connected" } }
+                            }
+                          }
+                        },
+                        {
+                          "kind": "element",
+                          "tag": "span",
+                          "props": { "className": { "expr": "lit", "value": "text-sm text-gray-500" } },
+                          "children": [
+                            {
+                              "kind": "text",
+                              "value": {
+                                "expr": "cond",
+                                "if": { "expr": "state", "name": "connected" },
+                                "then": { "expr": "lit", "value": "Connected" },
+                                "else": { "expr": "lit", "value": "Disconnected" }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "if",
+                  "condition": { "expr": "bin", "op": "!=", "left": { "expr": "state", "name": "error" }, "right": { "expr": "lit", "value": "" } },
+                  "then": {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": { "className": { "expr": "lit", "value": "mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded-lg text-sm" } },
+                    "children": [{ "kind": "text", "value": { "expr": "state", "name": "error" } }]
+                  }
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "style", "name": "card" } },
+                  "children": [
+                    {
+                      "kind": "if",
+                      "condition": { "expr": "bin", "op": "==", "left": { "expr": "call", "target": { "expr": "state", "name": "notifications" }, "method": "length" }, "right": { "expr": "lit", "value": 0 } },
+                      "then": {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "className": { "expr": "lit", "value": "p-8 text-center text-gray-500" } },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "No notifications yet" } }]
+                      },
+                      "else": {
+                        "kind": "each",
+                        "items": { "expr": "state", "name": "notifications" },
+                        "as": "notification",
+                        "index": "index",
+                        "key": { "expr": "var", "name": "notification", "path": "id" },
+                        "body": {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": {
+                            "className": {
+                              "expr": "style",
+                              "name": "notification",
+                              "variants": { "read": { "expr": "var", "name": "notification", "path": "read" } }
+                            },
+                            "onClick": {
+                              "event": "click",
+                              "action": "markAsRead",
+                              "payload": {
+                                "id": { "expr": "var", "name": "notification", "path": "id" },
+                                "index": { "expr": "var", "name": "index" }
+                              }
+                            }
+                          },
+                          "children": [
+                            {
+                              "kind": "element",
+                              "tag": "div",
+                              "props": { "className": { "expr": "lit", "value": "flex items-start gap-3" } },
+                              "children": [
+                                {
+                                  "kind": "element",
+                                  "tag": "div",
+                                  "props": { "className": { "expr": "lit", "value": "flex-1" } },
+                                  "children": [
+                                    {
+                                      "kind": "element",
+                                      "tag": "p",
+                                      "props": { "className": { "expr": "lit", "value": "font-medium text-gray-900 dark:text-white" } },
+                                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "notification", "path": "title" } }]
+                                    },
+                                    {
+                                      "kind": "element",
+                                      "tag": "p",
+                                      "props": { "className": { "expr": "lit", "value": "text-sm text-gray-500 dark:text-gray-400 mt-1" } },
+                                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "notification", "path": "message" } }]
+                                    },
+                                    {
+                                      "kind": "element",
+                                      "tag": "p",
+                                      "props": { "className": { "expr": "lit", "value": "text-xs text-gray-400 mt-2" } },
+                                      "children": [{ "kind": "text", "value": { "expr": "var", "name": "notification", "path": "time" } }]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "if",
+                  "condition": { "expr": "bin", "op": ">", "left": { "expr": "call", "target": { "expr": "state", "name": "notifications" }, "method": "length" }, "right": { "expr": "lit", "value": 0 } },
+                  "then": {
+                    "kind": "element",
+                    "tag": "div",
+                    "props": { "className": { "expr": "lit", "value": "flex gap-3 mt-4" } },
+                    "children": [
+                      {
+                        "kind": "element",
+                        "tag": "button",
+                        "props": {
+                          "className": { "expr": "lit", "value": "flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" },
+                          "onClick": { "event": "click", "action": "markAllAsRead" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Mark all as read" } }]
+                      },
+                      {
+                        "kind": "element",
+                        "tag": "button",
+                        "props": {
+                          "className": { "expr": "lit", "value": "flex-1 px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50" },
+                          "onClick": { "event": "click", "action": "clearAll" }
+                        },
+                        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Clear all" } }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "dashboard",
+      "title": "Dashboard with Islands",
+      "description": "Dashboard using Islands Architecture for selective hydration with Chart components.",
+      "featuresPreview": [
+        { "name": "Island nodes", "category": "island" },
+        { "name": "Hydration strategies", "category": "island" },
+        { "name": "Chart component", "category": "component" }
+      ],
+      "featuresExtra": [
+        { "name": "Strategy options", "category": "island" }
+      ],
+      "featuresExtraCount": 1,
+      "runCommands": [
+        "npm install @constela/core @constela/runtime @constela/ui",
+        "npx constela run dashboard.json"
+      ],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "salesData": {
+            "type": "object",
+            "initial": {
+              "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+              "datasets": [{
+                "label": "Revenue",
+                "data": [12000, 19000, 15000, 25000, 22000, 30000],
+                "borderColor": "hsl(220, 90%, 56%)",
+                "backgroundColor": "hsla(220, 90%, 56%, 0.1)",
+                "fill": true,
+                "tension": 0.4
+              }]
+            }
+          },
+          "trafficData": {
+            "type": "object",
+            "initial": {
+              "labels": ["Desktop", "Mobile", "Tablet"],
+              "datasets": [{
+                "data": [55, 35, 10],
+                "backgroundColor": ["hsl(220, 90%, 56%)", "hsl(150, 60%, 50%)", "hsl(40, 90%, 60%)"]
+              }]
+            }
+          },
+          "stats": {
+            "type": "list",
+            "initial": [
+              { "label": "Total Revenue", "value": "$123,456", "change": "+12.5%", "positive": true },
+              { "label": "Active Users", "value": "8,234", "change": "+5.2%", "positive": true },
+              { "label": "Conversion Rate", "value": "3.24%", "change": "-0.8%", "positive": false },
+              { "label": "Avg. Order Value", "value": "$89.50", "change": "+2.1%", "positive": true }
+            ]
+          }
+        },
+        "styles": {
+          "statCard": {
+            "base": "bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
+          },
+          "change": {
+            "base": "text-sm font-medium",
+            "variants": {
+              "positive": {
+                "true": "text-green-600 dark:text-green-400",
+                "false": "text-red-600 dark:text-red-400"
+              }
+            }
+          }
+        },
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "className": { "expr": "lit", "value": "min-h-screen bg-gray-50 dark:bg-gray-900" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "className": { "expr": "lit", "value": "max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "h1",
+                  "props": { "className": { "expr": "lit", "value": "text-3xl font-bold text-gray-900 dark:text-white mb-8" } },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dashboard" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "lit", "value": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" } },
+                  "children": [
+                    {
+                      "kind": "each",
+                      "items": { "expr": "state", "name": "stats" },
+                      "as": "stat",
+                      "key": { "expr": "var", "name": "stat", "path": "label" },
+                      "body": {
+                        "kind": "island",
+                        "id": "stat-card",
+                        "strategy": "visible",
+                        "content": {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "style", "name": "statCard" } },
+                          "children": [
+                            {
+                              "kind": "element",
+                              "tag": "p",
+                              "props": { "className": { "expr": "lit", "value": "text-sm font-medium text-gray-500 dark:text-gray-400" } },
+                              "children": [{ "kind": "text", "value": { "expr": "var", "name": "stat", "path": "label" } }]
+                            },
+                            {
+                              "kind": "element",
+                              "tag": "p",
+                              "props": { "className": { "expr": "lit", "value": "text-2xl font-bold text-gray-900 dark:text-white mt-2" } },
+                              "children": [{ "kind": "text", "value": { "expr": "var", "name": "stat", "path": "value" } }]
+                            },
+                            {
+                              "kind": "element",
+                              "tag": "p",
+                              "props": {
+                                "className": {
+                                  "expr": "style",
+                                  "name": "change",
+                                  "variants": { "positive": { "expr": "var", "name": "stat", "path": "positive" } }
+                                }
+                              },
+                              "children": [{ "kind": "text", "value": { "expr": "var", "name": "stat", "path": "change" } }]
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "lit", "value": "grid grid-cols-1 lg:grid-cols-3 gap-6" } },
+                  "children": [
+                    {
+                      "kind": "island",
+                      "id": "revenue-chart",
+                      "strategy": "visible",
+                      "strategyOptions": { "rootMargin": "100px" },
+                      "content": {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "className": { "expr": "lit", "value": "lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "h2",
+                            "props": { "className": { "expr": "lit", "value": "text-lg font-semibold text-gray-900 dark:text-white mb-4" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Revenue Overview" } }]
+                          },
+                          {
+                            "kind": "component",
+                            "name": "Chart",
+                            "props": {
+                              "type": { "expr": "lit", "value": "area" },
+                              "data": { "expr": "state", "name": "salesData" },
+                              "height": { "expr": "lit", "value": 300 },
+                              "options": { "expr": "lit", "value": {
+                                "responsive": true,
+                                "maintainAspectRatio": false,
+                                "animation": { "duration": 750 },
+                                "plugins": {
+                                  "legend": { "display": false }
+                                },
+                                "scales": {
+                                  "y": { "beginAtZero": true }
+                                }
+                              }}
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "kind": "island",
+                      "id": "traffic-chart",
+                      "strategy": "visible",
+                      "strategyOptions": { "rootMargin": "100px" },
+                      "content": {
+                        "kind": "element",
+                        "tag": "div",
+                        "props": { "className": { "expr": "lit", "value": "bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700" } },
+                        "children": [
+                          {
+                            "kind": "element",
+                            "tag": "h2",
+                            "props": { "className": { "expr": "lit", "value": "text-lg font-semibold text-gray-900 dark:text-white mb-4" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Traffic by Device" } }]
+                          },
+                          {
+                            "kind": "component",
+                            "name": "Chart",
+                            "props": {
+                              "type": { "expr": "lit", "value": "doughnut" },
+                              "data": { "expr": "state", "name": "trafficData" },
+                              "height": { "expr": "lit", "value": 300 },
+                              "options": { "expr": "lit", "value": {
+                                "responsive": true,
+                                "maintainAspectRatio": false,
+                                "animation": { "duration": 750 },
+                                "plugins": {
+                                  "legend": { "position": "bottom" }
+                                }
+                              }}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "slug": "data-table-demo",
+      "title": "DataTable Component",
+      "description": "DataTable component with sorting, filtering, pagination, and row selection.",
+      "featuresPreview": [
+        { "name": "DataTable component", "category": "component" },
+        { "name": "Column configuration", "category": "component" },
+        { "name": "Lambda filtering", "category": "expression" }
+      ],
+      "featuresExtra": [
+        { "name": "Selection handling", "category": "action" },
+        { "name": "Style variants", "category": "style" }
+      ],
+      "featuresExtraCount": 2,
+      "runCommands": [
+        "npm install @constela/core @constela/runtime @constela/ui",
+        "npx constela run data-table-demo.json"
+      ],
+      "code": {
+        "version": "1.0",
+        "state": {
+          "users": {
+            "type": "list",
+            "initial": [
+              { "id": 1, "name": "Alice Johnson", "email": "alice@example.com", "role": "Admin", "status": "active", "joined": "2023-01-15" },
+              { "id": 2, "name": "Bob Smith", "email": "bob@example.com", "role": "User", "status": "active", "joined": "2023-02-20" },
+              { "id": 3, "name": "Carol Williams", "email": "carol@example.com", "role": "Editor", "status": "inactive", "joined": "2023-03-10" },
+              { "id": 4, "name": "David Brown", "email": "david@example.com", "role": "User", "status": "active", "joined": "2023-04-05" },
+              { "id": 5, "name": "Eva Martinez", "email": "eva@example.com", "role": "Admin", "status": "active", "joined": "2023-05-12" },
+              { "id": 6, "name": "Frank Wilson", "email": "frank@example.com", "role": "User", "status": "pending", "joined": "2023-06-18" },
+              { "id": 7, "name": "Grace Lee", "email": "grace@example.com", "role": "Editor", "status": "active", "joined": "2023-07-22" },
+              { "id": 8, "name": "Henry Taylor", "email": "henry@example.com", "role": "User", "status": "inactive", "joined": "2023-08-30" },
+              { "id": 9, "name": "Ivy Anderson", "email": "ivy@example.com", "role": "User", "status": "active", "joined": "2023-09-14" },
+              { "id": 10, "name": "Jack Thomas", "email": "jack@example.com", "role": "Admin", "status": "active", "joined": "2023-10-25" },
+              { "id": 11, "name": "Kate Jackson", "email": "kate@example.com", "role": "Editor", "status": "pending", "joined": "2023-11-08" },
+              { "id": 12, "name": "Leo White", "email": "leo@example.com", "role": "User", "status": "active", "joined": "2023-12-01" }
+            ]
+          },
+          "page": { "type": "number", "initial": 1 },
+          "pageSize": { "type": "number", "initial": 5 },
+          "sort": { "type": "object", "initial": { "key": "name", "direction": "asc" } },
+          "filters": { "type": "object", "initial": {} },
+          "selected": { "type": "list", "initial": [] },
+          "searchQuery": { "type": "string", "initial": "" }
+        },
+        "styles": {
+          "statusBadge": {
+            "base": "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+            "variants": {
+              "status": {
+                "active": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+                "inactive": "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300",
+                "pending": "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+              }
+            }
+          },
+          "roleBadge": {
+            "base": "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium",
+            "variants": {
+              "role": {
+                "Admin": "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
+                "Editor": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+                "User": "bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+              }
+            }
+          }
+        },
+        "actions": [
+          {
+            "name": "handleSort",
+            "steps": [{ "do": "set", "target": "sort", "value": { "expr": "var", "name": "payload" } }]
+          },
+          {
+            "name": "handleFilter",
+            "steps": [{ "do": "set", "target": "filters", "value": { "expr": "var", "name": "payload" } }]
+          },
+          {
+            "name": "handlePageChange",
+            "steps": [{ "do": "set", "target": "page", "value": { "expr": "var", "name": "payload" } }]
+          },
+          {
+            "name": "handleSelectionChange",
+            "steps": [{ "do": "set", "target": "selected", "value": { "expr": "var", "name": "payload" } }]
+          },
+          {
+            "name": "updateSearch",
+            "steps": [
+              { "do": "set", "target": "searchQuery", "value": { "expr": "var", "name": "payload" } },
+              { "do": "set", "target": "page", "value": { "expr": "lit", "value": 1 } }
+            ]
+          },
+          {
+            "name": "deleteSelected",
+            "steps": [
+              {
+                "do": "set",
+                "target": "users",
+                "value": {
+                  "expr": "call",
+                  "target": { "expr": "state", "name": "users" },
+                  "method": "filter",
+                  "args": [{
+                    "expr": "lambda",
+                    "param": "user",
+                    "body": {
+                      "expr": "not",
+                      "operand": {
+                        "expr": "call",
+                        "target": { "expr": "state", "name": "selected" },
+                        "method": "includes",
+                        "args": [{ "expr": "get", "base": { "expr": "var", "name": "user" }, "path": "id" }]
+                      }
+                    }
+                  }]
+                }
+              },
+              { "do": "set", "target": "selected", "value": { "expr": "lit", "value": [] } }
+            ]
+          }
+        ],
+        "view": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "className": { "expr": "lit", "value": "min-h-screen bg-gray-50 dark:bg-gray-900" } },
+          "children": [
+            {
+              "kind": "element",
+              "tag": "div",
+              "props": { "className": { "expr": "lit", "value": "max-w-6xl mx-auto py-8 px-4" } },
+              "children": [
+                {
+                  "kind": "element",
+                  "tag": "h1",
+                  "props": { "className": { "expr": "lit", "value": "text-3xl font-bold text-gray-900 dark:text-white mb-8" } },
+                  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "User Management" } }]
+                },
+                {
+                  "kind": "element",
+                  "tag": "div",
+                  "props": { "className": { "expr": "lit", "value": "bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700" } },
+                  "children": [
+                    {
+                      "kind": "element",
+                      "tag": "div",
+                      "props": { "className": { "expr": "lit", "value": "p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between" } },
+                      "children": [
+                        {
+                          "kind": "element",
+                          "tag": "div",
+                          "props": { "className": { "expr": "lit", "value": "flex items-center gap-4" } },
+                          "children": [
+                            {
+                              "kind": "element",
+                              "tag": "input",
+                              "props": {
+                                "type": { "expr": "lit", "value": "text" },
+                                "placeholder": { "expr": "lit", "value": "Search users..." },
+                                "className": { "expr": "lit", "value": "px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" },
+                                "value": { "expr": "state", "name": "searchQuery" },
+                                "onInput": { "event": "input", "action": "updateSearch", "payload": { "expr": "var", "name": "event", "path": "target.value" } }
+                              }
+                            },
+                            {
+                              "kind": "if",
+                              "condition": { "expr": "bin", "op": ">", "left": { "expr": "call", "target": { "expr": "state", "name": "selected" }, "method": "length" }, "right": { "expr": "lit", "value": 0 } },
+                              "then": {
+                                "kind": "element",
+                                "tag": "span",
+                                "props": { "className": { "expr": "lit", "value": "text-sm text-gray-500" } },
+                                "children": [
+                                  { "kind": "text", "value": { "expr": "call", "target": { "expr": "state", "name": "selected" }, "method": "length" } },
+                                  { "kind": "text", "value": { "expr": "lit", "value": " selected" } }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "if",
+                          "condition": { "expr": "bin", "op": ">", "left": { "expr": "call", "target": { "expr": "state", "name": "selected" }, "method": "length" }, "right": { "expr": "lit", "value": 0 } },
+                          "then": {
+                            "kind": "element",
+                            "tag": "button",
+                            "props": {
+                              "className": { "expr": "lit", "value": "px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm font-medium" },
+                              "onClick": { "event": "click", "action": "deleteSelected" }
+                            },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Delete Selected" } }]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "kind": "component",
+                      "name": "DataTable",
+                      "props": {
+                        "data": { "expr": "state", "name": "users" },
+                        "columns": { "expr": "lit", "value": [
+                          { "key": "name", "title": "Name", "sortable": true, "filterable": true },
+                          { "key": "email", "title": "Email", "sortable": true, "filterable": true },
+                          { "key": "role", "title": "Role", "sortable": true, "filterable": true, "filterType": "select", "filterOptions": [
+                            { "label": "Admin", "value": "Admin" },
+                            { "label": "Editor", "value": "Editor" },
+                            { "label": "User", "value": "User" }
+                          ]},
+                          { "key": "status", "title": "Status", "sortable": true, "filterable": true, "filterType": "select", "filterOptions": [
+                            { "label": "Active", "value": "active" },
+                            { "label": "Inactive", "value": "inactive" },
+                            { "label": "Pending", "value": "pending" }
+                          ]},
+                          { "key": "joined", "title": "Joined", "sortable": true }
+                        ]},
+                        "rowKey": { "expr": "lit", "value": "id" },
+                        "pageSize": { "expr": "state", "name": "pageSize" },
+                        "page": { "expr": "state", "name": "page" },
+                        "sortable": { "expr": "lit", "value": true },
+                        "filterable": { "expr": "lit", "value": true },
+                        "selectable": { "expr": "lit", "value": true },
+                        "selectedRows": { "expr": "state", "name": "selected" },
+                        "onSort": { "event": "sort", "action": "handleSort" },
+                        "onFilter": { "event": "filter", "action": "handleFilter" },
+                        "onPageChange": { "event": "pageChange", "action": "handlePageChange" },
+                        "onSelectionChange": { "event": "selectionChange", "action": "handleSelectionChange" }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   ],
   "codes": {
@@ -2683,6 +3749,18 @@
     },
     "array-expression": {
       "$ref": "#/examples/6/code"
+    },
+    "theme-demo": {
+      "$ref": "#/examples/7/code"
+    },
+    "realtime-notifications": {
+      "$ref": "#/examples/8/code"
+    },
+    "dashboard": {
+      "$ref": "#/examples/9/code"
+    },
+    "data-table-demo": {
+      "$ref": "#/examples/10/code"
     }
   },
   "items": {
@@ -2706,6 +3784,18 @@
     },
     "array-expression": {
       "$ref": "#/examples/6"
+    },
+    "theme-demo": {
+      "$ref": "#/examples/7"
+    },
+    "realtime-notifications": {
+      "$ref": "#/examples/8"
+    },
+    "dashboard": {
+      "$ref": "#/examples/9"
+    },
+    "data-table-demo": {
+      "$ref": "#/examples/10"
     }
   },
   "defaultCode": "counter",
@@ -2717,6 +3807,10 @@
     "router": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"currentPage\": {\n      \"type\": \"string\",\n      \"initial\": \"home\"\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"navigate\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"currentPage\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\",\n            \"path\": \"page\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Router Example\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Client-side routing between pages.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"nav\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"display: flex; gap: 8px; margin-bottom: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"home\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Home\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"about\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"About\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"navigate\",\n                \"payload\": {\n                  \"page\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"contact\"\n                  }\n                }\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Contact\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"p\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"font-size: 18px; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Current page: \"\n                }\n              },\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"state\",\n                  \"name\": \"currentPage\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
     "portals-observers-validity": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"showModal\": {\n      \"type\": \"boolean\",\n      \"initial\": false\n    },\n    \"sectionVisible\": {\n      \"type\": \"boolean\",\n      \"initial\": false\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"initial\": \"\"\n    },\n    \"countdown\": {\n      \"type\": \"number\",\n      \"initial\": 3\n    },\n    \"timerId\": {\n      \"type\": \"number\",\n      \"initial\": 0\n    },\n    \"submitted\": {\n      \"type\": \"boolean\",\n      \"initial\": false\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"openModal\",\n      \"steps\": [\n        { \"do\": \"set\", \"target\": \"showModal\", \"value\": { \"expr\": \"lit\", \"value\": true } },\n        { \"do\": \"set\", \"target\": \"countdown\", \"value\": { \"expr\": \"lit\", \"value\": 3 } },\n        {\n          \"do\": \"interval\",\n          \"ms\": { \"expr\": \"lit\", \"value\": 1000 },\n          \"action\": \"tickCountdown\",\n          \"result\": \"timerId\"\n        }\n      ]\n    },\n    {\n      \"name\": \"tickCountdown\",\n      \"steps\": [\n        { \"do\": \"update\", \"target\": \"countdown\", \"operation\": \"decrement\" },\n        {\n          \"do\": \"if\",\n          \"condition\": { \"expr\": \"bin\", \"op\": \"<=\", \"left\": { \"expr\": \"state\", \"name\": \"countdown\" }, \"right\": { \"expr\": \"lit\", \"value\": 0 } },\n          \"then\": [\n            { \"do\": \"set\", \"target\": \"showModal\", \"value\": { \"expr\": \"lit\", \"value\": false } },\n            { \"do\": \"clearTimer\", \"target\": { \"expr\": \"state\", \"name\": \"timerId\" } }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"closeModal\",\n      \"steps\": [\n        { \"do\": \"clearTimer\", \"target\": { \"expr\": \"state\", \"name\": \"timerId\" } },\n        { \"do\": \"set\", \"target\": \"showModal\", \"value\": { \"expr\": \"lit\", \"value\": false } }\n      ]\n    },\n    {\n      \"name\": \"onSectionVisible\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"sectionVisible\",\n          \"value\": {\n            \"expr\": \"lit\",\n            \"value\": true\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"setEmail\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"email\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"value\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"submit\",\n      \"steps\": [\n        { \"do\": \"set\", \"target\": \"submitted\", \"value\": { \"expr\": \"lit\", \"value\": true } },\n        {\n          \"do\": \"delay\",\n          \"ms\": { \"expr\": \"lit\", \"value\": 3000 },\n          \"then\": [\n            { \"do\": \"set\", \"target\": \"submitted\", \"value\": { \"expr\": \"lit\", \"value\": false } }\n          ]\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Portals, Timers, Observers & Validity\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 24px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Demonstrating Portals, Observers, and Form Validity.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin-bottom: 24px; padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"h2\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"font-size: 18px; margin: 0 0 12px 0; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"1. Portals & Timers\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"p\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"color: #666; margin: 0 0 12px 0; font-size: 14px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Render content outside the component tree. Modal auto-closes in 3 seconds.\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;\"\n              },\n              \"onClick\": {\n                \"event\": \"click\",\n                \"action\": \"openModal\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Open Modal\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"cond\",\n            \"if\": {\n              \"expr\": \"state\",\n              \"name\": \"sectionVisible\"\n            },\n            \"then\": {\n              \"expr\": \"lit\",\n              \"value\": \"margin-bottom: 24px; padding: 16px; background: #e0f2fe; border-radius: 8px; transition: all 0.5s; transform: translateY(0); opacity: 1;\"\n            },\n            \"else\": {\n              \"expr\": \"lit\",\n              \"value\": \"margin-bottom: 24px; padding: 16px; background: #f5f5f5; border-radius: 8px; transition: all 0.5s; transform: translateY(20px); opacity: 0.5;\"\n            }\n          },\n          \"onIntersect\": {\n            \"event\": \"intersect\",\n            \"action\": \"onSectionVisible\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"h2\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"font-size: 18px; margin: 0 0 12px 0; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"2. Observers\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"p\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"color: #666; margin: 0; font-size: 14px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"This section uses Intersection Observer. Status: \"\n                }\n              },\n              {\n                \"kind\": \"element\",\n                \"tag\": \"span\",\n                \"props\": {\n                  \"style\": {\n                    \"expr\": \"cond\",\n                    \"if\": {\n                      \"expr\": \"state\",\n                      \"name\": \"sectionVisible\"\n                    },\n                    \"then\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"font-weight: bold; color: #16a34a;\"\n                    },\n                    \"else\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"font-weight: bold; color: #666;\"\n                    }\n                  }\n                },\n                \"children\": [\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"cond\",\n                      \"if\": {\n                        \"expr\": \"state\",\n                        \"name\": \"sectionVisible\"\n                      },\n                      \"then\": {\n                        \"expr\": \"lit\",\n                        \"value\": \"Visible\"\n                      },\n                      \"else\": {\n                        \"expr\": \"lit\",\n                        \"value\": \"Not visible\"\n                      }\n                    }\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin-bottom: 24px; padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"h2\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"font-size: 18px; margin: 0 0 12px 0; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"3. Form Validity\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"p\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"color: #666; margin: 0 0 12px 0; font-size: 14px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Real-time form validation using validity expressions.\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"div\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"display: flex; flex-direction: column; gap: 8px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"element\",\n                \"tag\": \"input\",\n                \"ref\": \"emailInput\",\n                \"props\": {\n                  \"type\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"email\"\n                  },\n                  \"placeholder\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"Enter your email\"\n                  },\n                  \"style\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; color: #333;\"\n                  },\n                  \"value\": {\n                    \"expr\": \"state\",\n                    \"name\": \"email\"\n                  },\n                  \"onInput\": {\n                    \"event\": \"input\",\n                    \"action\": \"setEmail\",\n                    \"payload\": {\n                      \"expr\": \"var\",\n                      \"name\": \"value\"\n                    }\n                  }\n                }\n              },\n              {\n                \"kind\": \"if\",\n                \"condition\": {\n                  \"expr\": \"bin\",\n                  \"op\": \"&&\",\n                  \"left\": {\n                    \"expr\": \"state\",\n                    \"name\": \"email\"\n                  },\n                  \"right\": {\n                    \"expr\": \"not\",\n                    \"operand\": {\n                      \"expr\": \"validity\",\n                      \"ref\": \"emailInput\",\n                      \"property\": \"valid\"\n                    }\n                  }\n                },\n                \"then\": {\n                  \"kind\": \"element\",\n                  \"tag\": \"p\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"color: #dc2626; font-size: 12px; margin: 0;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"lit\",\n                        \"value\": \"Please enter a valid email address\"\n                      }\n                    }\n                  ]\n                }\n              },\n              {\n                \"kind\": \"element\",\n                \"tag\": \"button\",\n                \"props\": {\n                  \"style\": {\n                    \"expr\": \"cond\",\n                    \"if\": {\n                      \"expr\": \"bin\",\n                      \"op\": \"&&\",\n                      \"left\": {\n                        \"expr\": \"bin\",\n                        \"op\": \"!=\",\n                        \"left\": { \"expr\": \"state\", \"name\": \"email\" },\n                        \"right\": { \"expr\": \"lit\", \"value\": \"\" }\n                      },\n                      \"right\": {\n                        \"expr\": \"validity\",\n                        \"ref\": \"emailInput\",\n                        \"property\": \"valid\"\n                      }\n                    },\n                    \"then\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;\"\n                    },\n                    \"else\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"padding: 8px 16px; background: #ccc; color: #666; border: none; border-radius: 4px; cursor: not-allowed; font-size: 14px;\"\n                    }\n                  },\n                  \"disabled\": {\n                    \"expr\": \"bin\",\n                    \"op\": \"||\",\n                    \"left\": {\n                      \"expr\": \"bin\",\n                      \"op\": \"==\",\n                      \"left\": { \"expr\": \"state\", \"name\": \"email\" },\n                      \"right\": { \"expr\": \"lit\", \"value\": \"\" }\n                    },\n                    \"right\": {\n                      \"expr\": \"not\",\n                      \"operand\": {\n                        \"expr\": \"validity\",\n                        \"ref\": \"emailInput\",\n                        \"property\": \"valid\"\n                      }\n                    }\n                  },\n                  \"onClick\": {\n                    \"event\": \"click\",\n                    \"action\": \"submit\"\n                  }\n                },\n                \"children\": [\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"Submit\"\n                    }\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": {\n          \"expr\": \"state\",\n          \"name\": \"showModal\"\n        },\n        \"then\": {\n          \"kind\": \"portal\",\n          \"target\": \"body\",\n          \"children\": [\n            {\n              \"kind\": \"element\",\n              \"tag\": \"div\",\n              \"props\": {\n                \"style\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000;\"\n                }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"div\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"background: white; padding: 24px; border-radius: 8px; max-width: 400px; width: 90%;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"h3\",\n                      \"props\": {\n                        \"style\": {\n                          \"expr\": \"lit\",\n                          \"value\": \"margin: 0 0 16px 0; font-size: 18px; color: #333;\"\n                        }\n                      },\n                      \"children\": [\n                        {\n                          \"kind\": \"text\",\n                          \"value\": {\n                            \"expr\": \"lit\",\n                            \"value\": \"Portal Modal\"\n                          }\n                        }\n                      ]\n                    },\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"p\",\n                      \"props\": {\n                        \"style\": {\n                          \"expr\": \"lit\",\n                          \"value\": \"color: #666; margin: 0 0 16px 0;\"\n                        }\n                      },\n                      \"children\": [\n                        { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This modal is rendered via a Portal. Auto-closes in \" } },\n                        { \"kind\": \"text\", \"value\": { \"expr\": \"state\", \"name\": \"countdown\" } },\n                        { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \" seconds.\" } }\n                      ]\n                    },\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"button\",\n                      \"props\": {\n                        \"style\": {\n                          \"expr\": \"lit\",\n                          \"value\": \"padding: 8px 16px; background: #0070f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;\"\n                        },\n                        \"onClick\": {\n                          \"event\": \"click\",\n                          \"action\": \"closeModal\"\n                        }\n                      },\n                      \"children\": [\n                        {\n                          \"kind\": \"text\",\n                          \"value\": {\n                            \"expr\": \"lit\",\n                            \"value\": \"Close\"\n                          }\n                        }\n                      ]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": {\n          \"expr\": \"state\",\n          \"name\": \"submitted\"\n        },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"style\": {\n              \"expr\": \"lit\",\n              \"value\": \"position: fixed; bottom: 24px; right: 24px; background: #16a34a; color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 14px; z-index: 1000;\"\n            }\n          },\n          \"children\": [\n            {\n              \"kind\": \"text\",\n              \"value\": {\n                \"expr\": \"lit\",\n                \"value\": \"Form submitted successfully!\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}",
     "call-lambda": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"products\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"id\": 1, \"name\": \"Apple\", \"price\": 150 },\n        { \"id\": 2, \"name\": \"Banana\", \"price\": 100 },\n        { \"id\": 3, \"name\": \"Orange\", \"price\": 200 },\n        { \"id\": 4, \"name\": \"Grape\", \"price\": 300 },\n        { \"id\": 5, \"name\": \"Pineapple\", \"price\": 250 }\n      ]\n    },\n    \"searchQuery\": { \"type\": \"string\", \"initial\": \"\" }\n  },\n  \"actions\": [\n    {\n      \"name\": \"setSearch\",\n      \"steps\": [\n        { \"do\": \"set\", \"target\": \"searchQuery\", \"value\": { \"expr\": \"var\", \"name\": \"value\" } }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"margin: 0 0 8px 0; font-size: 24px;\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Product Filter\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"color: #666; margin: 0 0 16px 0;\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Search products using call/lambda expressions with case-insensitive filtering.\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"input\",\n        \"props\": {\n          \"type\": { \"expr\": \"lit\", \"value\": \"text\" },\n          \"placeholder\": { \"expr\": \"lit\", \"value\": \"Search products...\" },\n          \"style\": { \"expr\": \"lit\", \"value\": \"width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; margin-bottom: 16px; box-sizing: border-box; color: #333;\" },\n          \"value\": { \"expr\": \"state\", \"name\": \"searchQuery\" },\n          \"onInput\": { \"event\": \"input\", \"action\": \"setSearch\", \"payload\": { \"expr\": \"var\", \"name\": \"value\" } }\n        }\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"margin-bottom: 16px; padding: 12px; background: #f0f9ff; border-radius: 4px; color: #0369a1;\" } },\n        \"children\": [\n          { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Showing \" } },\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"call\",\n              \"target\": {\n                \"expr\": \"call\",\n                \"target\": { \"expr\": \"state\", \"name\": \"products\" },\n                \"method\": \"filter\",\n                \"args\": [{\n                  \"expr\": \"lambda\",\n                  \"param\": \"p\",\n                  \"body\": {\n                    \"expr\": \"call\",\n                    \"target\": {\n                      \"expr\": \"call\",\n                      \"target\": { \"expr\": \"get\", \"base\": { \"expr\": \"var\", \"name\": \"p\" }, \"path\": \"name\" },\n                      \"method\": \"toLowerCase\"\n                    },\n                    \"method\": \"includes\",\n                    \"args\": [{\n                      \"expr\": \"call\",\n                      \"target\": { \"expr\": \"state\", \"name\": \"searchQuery\" },\n                      \"method\": \"toLowerCase\"\n                    }]\n                  }\n                }]\n              },\n              \"method\": \"length\"\n            }\n          },\n          { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \" of \" } },\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"call\",\n              \"target\": { \"expr\": \"state\", \"name\": \"products\" },\n              \"method\": \"length\"\n            }\n          },\n          { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \" products\" } }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"ul\",\n        \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"list-style: none; padding: 0; margin: 0;\" } },\n        \"children\": [\n          {\n            \"kind\": \"each\",\n            \"items\": {\n              \"expr\": \"call\",\n              \"target\": { \"expr\": \"state\", \"name\": \"products\" },\n              \"method\": \"filter\",\n              \"args\": [{\n                \"expr\": \"lambda\",\n                \"param\": \"p\",\n                \"body\": {\n                  \"expr\": \"call\",\n                  \"target\": {\n                    \"expr\": \"call\",\n                    \"target\": { \"expr\": \"get\", \"base\": { \"expr\": \"var\", \"name\": \"p\" }, \"path\": \"name\" },\n                    \"method\": \"toLowerCase\"\n                  },\n                  \"method\": \"includes\",\n                  \"args\": [{\n                    \"expr\": \"call\",\n                    \"target\": { \"expr\": \"state\", \"name\": \"searchQuery\" },\n                    \"method\": \"toLowerCase\"\n                  }]\n                }\n              }]\n            },\n            \"as\": \"product\",\n            \"key\": { \"expr\": \"var\", \"name\": \"product\", \"path\": \"id\" },\n            \"body\": {\n              \"kind\": \"element\",\n              \"tag\": \"li\",\n              \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; background: #f5f5f5; border-radius: 4px;\" } },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"font-weight: 500; color: #333;\" } },\n                  \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"var\", \"name\": \"product\", \"path\": \"name\" } }]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": { \"style\": { \"expr\": \"lit\", \"value\": \"color: #16a34a; font-weight: bold;\" } },\n                  \"children\": [\n                    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"¥\" } },\n                    { \"kind\": \"text\", \"value\": { \"expr\": \"var\", \"name\": \"product\", \"path\": \"price\" } }\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      }\n    ]\n  }\n}",
-    "array-expression": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"features\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": \"dark-mode\",\n          \"name\": \"Dark Mode\",\n          \"enabled\": false\n        },\n        {\n          \"id\": \"notifications\",\n          \"name\": \"Notifications\",\n          \"enabled\": true\n        },\n        {\n          \"id\": \"auto-save\",\n          \"name\": \"Auto Save\",\n          \"enabled\": false\n        }\n      ]\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggleFeature\",\n      \"steps\": [\n        {\n          \"do\": \"setPath\",\n          \"target\": \"features\",\n          \"path\": {\n            \"expr\": \"array\",\n            \"elements\": [\n              {\n                \"expr\": \"var\",\n                \"name\": \"payload\",\n                \"path\": \"index\"\n              },\n              {\n                \"expr\": \"lit\",\n                \"value\": \"enabled\"\n              }\n            ]\n          },\n          \"value\": {\n            \"expr\": \"not\",\n            \"operand\": {\n              \"expr\": \"var\",\n              \"name\": \"payload\",\n              \"path\": \"currentEnabled\"\n            }\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Feature Selector\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Toggle features and see the selected items displayed using array expression.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin-bottom: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"each\",\n            \"items\": {\n              \"expr\": \"state\",\n              \"name\": \"features\"\n            },\n            \"as\": \"feature\",\n            \"index\": \"i\",\n            \"key\": {\n              \"expr\": \"var\",\n              \"name\": \"feature\",\n              \"path\": \"id\"\n            },\n            \"body\": {\n              \"kind\": \"element\",\n              \"tag\": \"label\",\n              \"props\": {\n                \"style\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"display: flex; align-items: center; gap: 8px; padding: 8px; cursor: pointer;\"\n                }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"input\",\n                  \"props\": {\n                    \"type\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"checkbox\"\n                    },\n                    \"checked\": {\n                      \"expr\": \"var\",\n                      \"name\": \"feature\",\n                      \"path\": \"enabled\"\n                    },\n                    \"onChange\": {\n                      \"event\": \"change\",\n                      \"action\": \"toggleFeature\",\n                      \"payload\": {\n                        \"index\": {\n                          \"expr\": \"var\",\n                          \"name\": \"i\"\n                        },\n                        \"currentEnabled\": {\n                          \"expr\": \"var\",\n                          \"name\": \"feature\",\n                          \"path\": \"enabled\"\n                        }\n                      }\n                    }\n                  }\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"color: #333;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"feature\",\n                        \"path\": \"name\"\n                      }\n                    }\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"h3\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"margin: 0 0 12px 0; font-size: 16px; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Selected Features (using array expression):\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"div\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"display: flex; flex-wrap: wrap; gap: 8px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"each\",\n                \"items\": {\n                  \"expr\": \"call\",\n                  \"target\": {\n                    \"expr\": \"state\",\n                    \"name\": \"features\"\n                  },\n                  \"method\": \"filter\",\n                  \"args\": [\n                    {\n                      \"expr\": \"lambda\",\n                      \"param\": \"f\",\n                      \"body\": {\n                        \"expr\": \"get\",\n                        \"base\": {\n                          \"expr\": \"var\",\n                          \"name\": \"f\"\n                        },\n                        \"path\": \"enabled\"\n                      }\n                    }\n                  ]\n                },\n                \"as\": \"selected\",\n                \"key\": {\n                  \"expr\": \"var\",\n                  \"name\": \"selected\",\n                  \"path\": \"id\"\n                },\n                \"body\": {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"display: inline-block; padding: 4px 12px; background: #0070f3; color: white; border-radius: 16px; font-size: 14px;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"selected\",\n                        \"path\": \"name\"\n                      }\n                    }\n                  ]\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"div\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"margin-top: 16px; padding: 12px; background: #e0f2fe; border-radius: 4px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"element\",\n                \"tag\": \"code\",\n                \"props\": {\n                  \"style\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"font-size: 12px; color: #0369a1;\"\n                  }\n                },\n                \"children\": [\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"Array built: [\"\n                    }\n                  },\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"call\",\n                      \"target\": {\n                        \"expr\": \"call\",\n                        \"target\": {\n                          \"expr\": \"call\",\n                          \"target\": {\n                            \"expr\": \"state\",\n                            \"name\": \"features\"\n                          },\n                          \"method\": \"filter\",\n                          \"args\": [\n                            {\n                              \"expr\": \"lambda\",\n                              \"param\": \"f\",\n                              \"body\": {\n                                \"expr\": \"get\",\n                                \"base\": {\n                                  \"expr\": \"var\",\n                                  \"name\": \"f\"\n                                },\n                                \"path\": \"enabled\"\n                              }\n                            }\n                          ]\n                        },\n                        \"method\": \"map\",\n                        \"args\": [\n                          {\n                            \"expr\": \"lambda\",\n                            \"param\": \"f\",\n                            \"body\": {\n                              \"expr\": \"get\",\n                              \"base\": {\n                                \"expr\": \"var\",\n                                \"name\": \"f\"\n                              },\n                              \"path\": \"name\"\n                            }\n                          }\n                        ]\n                      },\n                      \"method\": \"join\",\n                      \"args\": [\n                        {\n                          \"expr\": \"lit\",\n                          \"value\": \", \"\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"]\"\n                    }\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}"
+    "array-expression": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"features\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": \"dark-mode\",\n          \"name\": \"Dark Mode\",\n          \"enabled\": false\n        },\n        {\n          \"id\": \"notifications\",\n          \"name\": \"Notifications\",\n          \"enabled\": true\n        },\n        {\n          \"id\": \"auto-save\",\n          \"name\": \"Auto Save\",\n          \"enabled\": false\n        }\n      ]\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggleFeature\",\n      \"steps\": [\n        {\n          \"do\": \"setPath\",\n          \"target\": \"features\",\n          \"path\": {\n            \"expr\": \"array\",\n            \"elements\": [\n              {\n                \"expr\": \"var\",\n                \"name\": \"payload\",\n                \"path\": \"index\"\n              },\n              {\n                \"expr\": \"lit\",\n                \"value\": \"enabled\"\n              }\n            ]\n          },\n          \"value\": {\n            \"expr\": \"not\",\n            \"operand\": {\n              \"expr\": \"var\",\n              \"name\": \"payload\",\n              \"path\": \"currentEnabled\"\n            }\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"style\": {\n        \"expr\": \"lit\",\n        \"value\": \"font-family: system-ui, sans-serif; padding: 16px;\"\n      }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"h1\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin: 0 0 8px 0; font-size: 24px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Feature Selector\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"p\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"color: #666; margin: 0 0 16px 0;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"text\",\n            \"value\": {\n              \"expr\": \"lit\",\n              \"value\": \"Toggle features and see the selected items displayed using array expression.\"\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"margin-bottom: 16px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"each\",\n            \"items\": {\n              \"expr\": \"state\",\n              \"name\": \"features\"\n            },\n            \"as\": \"feature\",\n            \"index\": \"i\",\n            \"key\": {\n              \"expr\": \"var\",\n              \"name\": \"feature\",\n              \"path\": \"id\"\n            },\n            \"body\": {\n              \"kind\": \"element\",\n              \"tag\": \"label\",\n              \"props\": {\n                \"style\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"display: flex; align-items: center; gap: 8px; padding: 8px; cursor: pointer;\"\n                }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"input\",\n                  \"props\": {\n                    \"type\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"checkbox\"\n                    },\n                    \"checked\": {\n                      \"expr\": \"var\",\n                      \"name\": \"feature\",\n                      \"path\": \"enabled\"\n                    },\n                    \"onChange\": {\n                      \"event\": \"change\",\n                      \"action\": \"toggleFeature\",\n                      \"payload\": {\n                        \"index\": {\n                          \"expr\": \"var\",\n                          \"name\": \"i\"\n                        },\n                        \"currentEnabled\": {\n                          \"expr\": \"var\",\n                          \"name\": \"feature\",\n                          \"path\": \"enabled\"\n                        }\n                      }\n                    }\n                  }\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"color: #333;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"feature\",\n                        \"path\": \"name\"\n                      }\n                    }\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"div\",\n        \"props\": {\n          \"style\": {\n            \"expr\": \"lit\",\n            \"value\": \"padding: 16px; background: #f5f5f5; border-radius: 8px;\"\n          }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"h3\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"margin: 0 0 12px 0; font-size: 16px; color: #333;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"text\",\n                \"value\": {\n                  \"expr\": \"lit\",\n                  \"value\": \"Selected Features (using array expression):\"\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"div\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"display: flex; flex-wrap: wrap; gap: 8px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"each\",\n                \"items\": {\n                  \"expr\": \"call\",\n                  \"target\": {\n                    \"expr\": \"state\",\n                    \"name\": \"features\"\n                  },\n                  \"method\": \"filter\",\n                  \"args\": [\n                    {\n                      \"expr\": \"lambda\",\n                      \"param\": \"f\",\n                      \"body\": {\n                        \"expr\": \"get\",\n                        \"base\": {\n                          \"expr\": \"var\",\n                          \"name\": \"f\"\n                        },\n                        \"path\": \"enabled\"\n                      }\n                    }\n                  ]\n                },\n                \"as\": \"selected\",\n                \"key\": {\n                  \"expr\": \"var\",\n                  \"name\": \"selected\",\n                  \"path\": \"id\"\n                },\n                \"body\": {\n                  \"kind\": \"element\",\n                  \"tag\": \"span\",\n                  \"props\": {\n                    \"style\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"display: inline-block; padding: 4px 12px; background: #0070f3; color: white; border-radius: 16px; font-size: 14px;\"\n                    }\n                  },\n                  \"children\": [\n                    {\n                      \"kind\": \"text\",\n                      \"value\": {\n                        \"expr\": \"var\",\n                        \"name\": \"selected\",\n                        \"path\": \"name\"\n                      }\n                    }\n                  ]\n                }\n              }\n            ]\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"div\",\n            \"props\": {\n              \"style\": {\n                \"expr\": \"lit\",\n                \"value\": \"margin-top: 16px; padding: 12px; background: #e0f2fe; border-radius: 4px;\"\n              }\n            },\n            \"children\": [\n              {\n                \"kind\": \"element\",\n                \"tag\": \"code\",\n                \"props\": {\n                  \"style\": {\n                    \"expr\": \"lit\",\n                    \"value\": \"font-size: 12px; color: #0369a1;\"\n                  }\n                },\n                \"children\": [\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"Array built: [\"\n                    }\n                  },\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"call\",\n                      \"target\": {\n                        \"expr\": \"call\",\n                        \"target\": {\n                          \"expr\": \"call\",\n                          \"target\": {\n                            \"expr\": \"state\",\n                            \"name\": \"features\"\n                          },\n                          \"method\": \"filter\",\n                          \"args\": [\n                            {\n                              \"expr\": \"lambda\",\n                              \"param\": \"f\",\n                              \"body\": {\n                                \"expr\": \"get\",\n                                \"base\": {\n                                  \"expr\": \"var\",\n                                  \"name\": \"f\"\n                                },\n                                \"path\": \"enabled\"\n                              }\n                            }\n                          ]\n                        },\n                        \"method\": \"map\",\n                        \"args\": [\n                          {\n                            \"expr\": \"lambda\",\n                            \"param\": \"f\",\n                            \"body\": {\n                              \"expr\": \"get\",\n                              \"base\": {\n                                \"expr\": \"var\",\n                                \"name\": \"f\"\n                              },\n                              \"path\": \"name\"\n                            }\n                          }\n                        ]\n                      },\n                      \"method\": \"join\",\n                      \"args\": [\n                        {\n                          \"expr\": \"lit\",\n                          \"value\": \", \"\n                        }\n                      ]\n                    }\n                  },\n                  {\n                    \"kind\": \"text\",\n                    \"value\": {\n                      \"expr\": \"lit\",\n                      \"value\": \"]\"\n                    }\n                  }\n                ]\n              }\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+    "theme-demo": "{\"version\":\"1.0\",\"theme\":{\"mode\":\"system\",\"colors\":{\"primary\":\"hsl(220 90% 56%)\",\"primary-foreground\":\"hsl(0 0% 100%)\",\"secondary\":\"hsl(215 28% 17%)\",\"secondary-foreground\":\"hsl(210 40% 98%)\",\"background\":\"hsl(0 0% 100%)\",\"foreground\":\"hsl(222 47% 11%)\",\"muted\":\"hsl(210 40% 96%)\",\"muted-foreground\":\"hsl(215 16% 47%)\",\"border\":\"hsl(214 32% 91%)\",\"ring\":\"hsl(220 90% 56%)\"},\"darkColors\":{\"background\":\"hsl(222 47% 11%)\",\"foreground\":\"hsl(210 40% 98%)\",\"muted\":\"hsl(217 33% 17%)\",\"muted-foreground\":\"hsl(215 20% 65%)\",\"border\":\"hsl(217 33% 17%)\"},\"fonts\":{\"sans\":\"Inter, system-ui, sans-serif\",\"mono\":\"JetBrains Mono, monospace\"},\"cssPrefix\":\"theme\"},\"state\":{\"mode\":{\"type\":\"string\",\"initial\":{\"expr\":\"cookie\",\"key\":\"theme-mode\",\"default\":\"system\"}}},\"styles\":{\"container\":{\"base\":\"min-h-screen bg-background text-foreground transition-colors duration-300\"},\"card\":{\"base\":\"rounded-lg border border-border bg-card p-6 shadow-sm\"},\"button\":{\"base\":\"inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\"variants\":{\"variant\":{\"default\":\"bg-primary text-primary-foreground hover:bg-primary/90\",\"outline\":\"border border-border bg-background hover:bg-muted\",\"ghost\":\"hover:bg-muted\"},\"active\":{\"true\":\"ring-2 ring-ring\",\"false\":\"\"}},\"defaultVariants\":{\"variant\":\"default\",\"active\":\"false\"}}},\"actions\":[{\"name\":\"setTheme\",\"steps\":[{\"do\":\"set\",\"target\":\"mode\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}},{\"do\":\"storage\",\"operation\":\"set\",\"key\":{\"expr\":\"lit\",\"value\":\"theme-mode\"},\"value\":{\"expr\":\"var\",\"name\":\"payload\"},\"storage\":\"local\"},{\"do\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"var\",\"name\":\"payload\"},\"right\":{\"expr\":\"lit\",\"value\":\"dark\"}},\"then\":[{\"do\":\"dom\",\"operation\":\"addClass\",\"selector\":{\"expr\":\"lit\",\"value\":\"html\"},\"value\":{\"expr\":\"lit\",\"value\":\"dark\"}}],\"else\":[{\"do\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"var\",\"name\":\"payload\"},\"right\":{\"expr\":\"lit\",\"value\":\"light\"}},\"then\":[{\"do\":\"dom\",\"operation\":\"removeClass\",\"selector\":{\"expr\":\"lit\",\"value\":\"html\"},\"value\":{\"expr\":\"lit\",\"value\":\"dark\"}}]}]}]}],\"view\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"container\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"max-w-2xl mx-auto py-12 px-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h1\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-3xl font-bold mb-8\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Theme Demo\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"card\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h2\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-xl font-semibold mb-4\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Select Theme\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex gap-3\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"button\",\"variants\":{\"variant\":{\"expr\":\"lit\",\"value\":\"outline\"},\"active\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"state\",\"name\":\"mode\"},\"right\":{\"expr\":\"lit\",\"value\":\"light\"}}}},\"onClick\":{\"event\":\"click\",\"action\":\"setTheme\",\"payload\":{\"expr\":\"lit\",\"value\":\"light\"}}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Light\"}}]},{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"button\",\"variants\":{\"variant\":{\"expr\":\"lit\",\"value\":\"outline\"},\"active\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"state\",\"name\":\"mode\"},\"right\":{\"expr\":\"lit\",\"value\":\"dark\"}}}},\"onClick\":{\"event\":\"click\",\"action\":\"setTheme\",\"payload\":{\"expr\":\"lit\",\"value\":\"dark\"}}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Dark\"}}]},{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"button\",\"variants\":{\"variant\":{\"expr\":\"lit\",\"value\":\"outline\"},\"active\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"state\",\"name\":\"mode\"},\"right\":{\"expr\":\"lit\",\"value\":\"system\"}}}},\"onClick\":{\"event\":\"click\",\"action\":\"setTheme\",\"payload\":{\"expr\":\"lit\",\"value\":\"system\"}}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"System\"}}]}]},{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"mt-4 text-sm text-muted-foreground\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Current mode: \"}},{\"kind\":\"text\",\"value\":{\"expr\":\"state\",\"name\":\"mode\"}}]}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"concat\",\"items\":[{\"expr\":\"style\",\"name\":\"card\"},{\"expr\":\"lit\",\"value\":\" mt-6\"}]}},\"children\":[{\"kind\":\"element\",\"tag\":\"h2\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-xl font-semibold mb-4\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Color Palette\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"grid grid-cols-2 gap-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-4 rounded bg-primary text-primary-foreground\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Primary\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-4 rounded bg-secondary text-secondary-foreground\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Secondary\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-4 rounded bg-muted text-muted-foreground\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Muted\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-4 rounded border border-border\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Border\"}}]}]}]}]}]}}",
+    "realtime-notifications": "{\"version\":\"1.0\",\"state\":{\"connected\":{\"type\":\"boolean\",\"initial\":false},\"notifications\":{\"type\":\"list\",\"initial\":[]},\"unreadCount\":{\"type\":\"number\",\"initial\":0},\"error\":{\"type\":\"string\",\"initial\":\"\"}},\"styles\":{\"container\":{\"base\":\"min-h-screen bg-gray-50 dark:bg-gray-900\"},\"card\":{\"base\":\"bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700\"},\"notification\":{\"base\":\"p-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors\",\"variants\":{\"read\":{\"true\":\"bg-white dark:bg-gray-800\",\"false\":\"bg-blue-50 dark:bg-blue-900/20\"}},\"defaultVariants\":{\"read\":\"true\"}},\"badge\":{\"base\":\"inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 text-xs font-medium rounded-full\",\"variants\":{\"variant\":{\"default\":\"bg-blue-500 text-white\",\"success\":\"bg-green-500 text-white\",\"warning\":\"bg-yellow-500 text-white\",\"error\":\"bg-red-500 text-white\"}},\"defaultVariants\":{\"variant\":\"default\"}},\"statusDot\":{\"base\":\"w-2 h-2 rounded-full\",\"variants\":{\"connected\":{\"true\":\"bg-green-500\",\"false\":\"bg-red-500\"}}}},\"lifecycle\":{\"onMount\":\"connect\",\"onUnmount\":\"disconnect\"},\"actions\":[{\"name\":\"connect\",\"steps\":[{\"do\":\"sseConnect\",\"connection\":\"notifications\",\"url\":{\"expr\":\"lit\",\"value\":\"/api/notifications/stream\"},\"eventTypes\":[\"notification\",\"read\",\"clear\"],\"reconnect\":{\"enabled\":true,\"strategy\":\"exponential\",\"maxRetries\":10,\"baseDelay\":1000,\"maxDelay\":30000},\"onOpen\":[{\"do\":\"set\",\"target\":\"connected\",\"value\":{\"expr\":\"lit\",\"value\":true}},{\"do\":\"set\",\"target\":\"error\",\"value\":{\"expr\":\"lit\",\"value\":\"\"}}],\"onMessage\":[{\"do\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"var\",\"name\":\"payload\",\"path\":\"type\"},\"right\":{\"expr\":\"lit\",\"value\":\"notification\"}},\"then\":[{\"do\":\"update\",\"target\":\"notifications\",\"operation\":\"insertAt\",\"index\":{\"expr\":\"lit\",\"value\":0},\"value\":{\"expr\":\"var\",\"name\":\"payload\",\"path\":\"data\"}},{\"do\":\"update\",\"target\":\"unreadCount\",\"operation\":\"increment\"}]}],\"onError\":[{\"do\":\"set\",\"target\":\"connected\",\"value\":{\"expr\":\"lit\",\"value\":false}},{\"do\":\"set\",\"target\":\"error\",\"value\":{\"expr\":\"lit\",\"value\":\"Connection lost. Reconnecting...\"}}]}]},{\"name\":\"disconnect\",\"steps\":[{\"do\":\"sseClose\",\"connection\":\"notifications\"}]},{\"name\":\"markAsRead\",\"steps\":[{\"do\":\"optimistic\",\"target\":\"notifications\",\"path\":{\"expr\":\"var\",\"name\":\"payload\",\"path\":\"index\"},\"value\":{\"expr\":\"lit\",\"value\":{\"read\":true}},\"result\":\"updateId\"},{\"do\":\"update\",\"target\":\"unreadCount\",\"operation\":\"decrement\"},{\"do\":\"fetch\",\"url\":{\"expr\":\"concat\",\"items\":[{\"expr\":\"lit\",\"value\":\"/api/notifications/\"},{\"expr\":\"var\",\"name\":\"payload\",\"path\":\"id\"},{\"expr\":\"lit\",\"value\":\"/read\"}]},\"method\":\"POST\",\"onSuccess\":[{\"do\":\"confirm\",\"id\":{\"expr\":\"var\",\"name\":\"updateId\"}}],\"onError\":[{\"do\":\"reject\",\"id\":{\"expr\":\"var\",\"name\":\"updateId\"}},{\"do\":\"update\",\"target\":\"unreadCount\",\"operation\":\"increment\"}]}]},{\"name\":\"markAllAsRead\",\"steps\":[{\"do\":\"fetch\",\"url\":{\"expr\":\"lit\",\"value\":\"/api/notifications/read-all\"},\"method\":\"POST\",\"onSuccess\":[{\"do\":\"set\",\"target\":\"unreadCount\",\"value\":{\"expr\":\"lit\",\"value\":0}}]}]},{\"name\":\"clearAll\",\"steps\":[{\"do\":\"fetch\",\"url\":{\"expr\":\"lit\",\"value\":\"/api/notifications/clear\"},\"method\":\"DELETE\",\"onSuccess\":[{\"do\":\"set\",\"target\":\"notifications\",\"value\":{\"expr\":\"lit\",\"value\":[]}},{\"do\":\"set\",\"target\":\"unreadCount\",\"value\":{\"expr\":\"lit\",\"value\":0}}]}]}],\"view\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"container\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"max-w-lg mx-auto py-8 px-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex items-center justify-between mb-6\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex items-center gap-3\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h1\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-2xl font-bold text-gray-900 dark:text-white\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Notifications\"}}]},{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\">\",\"left\":{\"expr\":\"state\",\"name\":\"unreadCount\"},\"right\":{\"expr\":\"lit\",\"value\":0}},\"then\":{\"kind\":\"element\",\"tag\":\"span\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"badge\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"state\",\"name\":\"unreadCount\"}}]}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex items-center gap-2\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"span\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"statusDot\",\"variants\":{\"connected\":{\"expr\":\"state\",\"name\":\"connected\"}}}}},{\"kind\":\"element\",\"tag\":\"span\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-sm text-gray-500\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"cond\",\"if\":{\"expr\":\"state\",\"name\":\"connected\"},\"then\":{\"expr\":\"lit\",\"value\":\"Connected\"},\"else\":{\"expr\":\"lit\",\"value\":\"Disconnected\"}}}]}]}]},{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\"!=\",\"left\":{\"expr\":\"state\",\"name\":\"error\"},\"right\":{\"expr\":\"lit\",\"value\":\"\"}},\"then\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded-lg text-sm\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"state\",\"name\":\"error\"}}]}},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"card\"}},\"children\":[{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\"==\",\"left\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"notifications\"},\"method\":\"length\"},\"right\":{\"expr\":\"lit\",\"value\":0}},\"then\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-8 text-center text-gray-500\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"No notifications yet\"}}]},\"else\":{\"kind\":\"each\",\"items\":{\"expr\":\"state\",\"name\":\"notifications\"},\"as\":\"notification\",\"index\":\"index\",\"key\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"id\"},\"body\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"notification\",\"variants\":{\"read\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"read\"}}},\"onClick\":{\"event\":\"click\",\"action\":\"markAsRead\",\"payload\":{\"id\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"id\"},\"index\":{\"expr\":\"var\",\"name\":\"index\"}}}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex items-start gap-3\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex-1\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"font-medium text-gray-900 dark:text-white\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"title\"}}]},{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-sm text-gray-500 dark:text-gray-400 mt-1\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"message\"}}]},{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-xs text-gray-400 mt-2\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"notification\",\"path\":\"time\"}}]}]}]}]}}}]},{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\">\",\"left\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"notifications\"},\"method\":\"length\"},\"right\":{\"expr\":\"lit\",\"value\":0}},\"then\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex gap-3 mt-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50\"},\"onClick\":{\"event\":\"click\",\"action\":\"markAllAsRead\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Mark all as read\"}}]},{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex-1 px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-300 rounded-lg hover:bg-red-50\"},\"onClick\":{\"event\":\"click\",\"action\":\"clearAll\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Clear all\"}}]}]}}]}]}}",
+    "dashboard": "{\"version\":\"1.0\",\"state\":{\"salesData\":{\"type\":\"object\",\"initial\":{\"labels\":[\"Jan\",\"Feb\",\"Mar\",\"Apr\",\"May\",\"Jun\"],\"datasets\":[{\"label\":\"Revenue\",\"data\":[12000,19000,15000,25000,22000,30000],\"borderColor\":\"hsl(220, 90%, 56%)\",\"backgroundColor\":\"hsla(220, 90%, 56%, 0.1)\",\"fill\":true,\"tension\":0.4}]}},\"trafficData\":{\"type\":\"object\",\"initial\":{\"labels\":[\"Desktop\",\"Mobile\",\"Tablet\"],\"datasets\":[{\"data\":[55,35,10],\"backgroundColor\":[\"hsl(220, 90%, 56%)\",\"hsl(150, 60%, 50%)\",\"hsl(40, 90%, 60%)\"]}]}},\"stats\":{\"type\":\"list\",\"initial\":[{\"label\":\"Total Revenue\",\"value\":\"$123,456\",\"change\":\"+12.5%\",\"positive\":true},{\"label\":\"Active Users\",\"value\":\"8,234\",\"change\":\"+5.2%\",\"positive\":true},{\"label\":\"Conversion Rate\",\"value\":\"3.24%\",\"change\":\"-0.8%\",\"positive\":false},{\"label\":\"Avg. Order Value\",\"value\":\"$89.50\",\"change\":\"+2.1%\",\"positive\":true}]}},\"styles\":{\"statCard\":{\"base\":\"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700\"},\"change\":{\"base\":\"text-sm font-medium\",\"variants\":{\"positive\":{\"true\":\"text-green-600 dark:text-green-400\",\"false\":\"text-red-600 dark:text-red-400\"}}}},\"view\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"min-h-screen bg-gray-50 dark:bg-gray-900\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h1\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-3xl font-bold text-gray-900 dark:text-white mb-8\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Dashboard\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8\"}},\"children\":[{\"kind\":\"each\",\"items\":{\"expr\":\"state\",\"name\":\"stats\"},\"as\":\"stat\",\"key\":{\"expr\":\"var\",\"name\":\"stat\",\"path\":\"label\"},\"body\":{\"kind\":\"island\",\"id\":\"stat-card\",\"strategy\":\"visible\",\"content\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"statCard\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-sm font-medium text-gray-500 dark:text-gray-400\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"stat\",\"path\":\"label\"}}]},{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-2xl font-bold text-gray-900 dark:text-white mt-2\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"stat\",\"path\":\"value\"}}]},{\"kind\":\"element\",\"tag\":\"p\",\"props\":{\"className\":{\"expr\":\"style\",\"name\":\"change\",\"variants\":{\"positive\":{\"expr\":\"var\",\"name\":\"stat\",\"path\":\"positive\"}}}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"var\",\"name\":\"stat\",\"path\":\"change\"}}]}]}}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"grid grid-cols-1 lg:grid-cols-3 gap-6\"}},\"children\":[{\"kind\":\"island\",\"id\":\"revenue-chart\",\"strategy\":\"visible\",\"strategyOptions\":{\"rootMargin\":\"100px\"},\"content\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h2\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-lg font-semibold text-gray-900 dark:text-white mb-4\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Revenue Overview\"}}]},{\"kind\":\"component\",\"name\":\"Chart\",\"props\":{\"type\":{\"expr\":\"lit\",\"value\":\"area\"},\"data\":{\"expr\":\"state\",\"name\":\"salesData\"},\"height\":{\"expr\":\"lit\",\"value\":300},\"options\":{\"expr\":\"lit\",\"value\":{\"responsive\":true,\"maintainAspectRatio\":false,\"animation\":{\"duration\":750},\"plugins\":{\"legend\":{\"display\":false}},\"scales\":{\"y\":{\"beginAtZero\":true}}}}}}]}},{\"kind\":\"island\",\"id\":\"traffic-chart\",\"strategy\":\"visible\",\"strategyOptions\":{\"rootMargin\":\"100px\"},\"content\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h2\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-lg font-semibold text-gray-900 dark:text-white mb-4\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Traffic by Device\"}}]},{\"kind\":\"component\",\"name\":\"Chart\",\"props\":{\"type\":{\"expr\":\"lit\",\"value\":\"doughnut\"},\"data\":{\"expr\":\"state\",\"name\":\"trafficData\"},\"height\":{\"expr\":\"lit\",\"value\":300},\"options\":{\"expr\":\"lit\",\"value\":{\"responsive\":true,\"maintainAspectRatio\":false,\"animation\":{\"duration\":750},\"plugins\":{\"legend\":{\"position\":\"bottom\"}}}}}}]}}]}]}]}}",
+    "data-table-demo": "{\"version\":\"1.0\",\"state\":{\"users\":{\"type\":\"list\",\"initial\":[{\"id\":1,\"name\":\"Alice Johnson\",\"email\":\"alice@example.com\",\"role\":\"Admin\",\"status\":\"active\",\"joined\":\"2023-01-15\"},{\"id\":2,\"name\":\"Bob Smith\",\"email\":\"bob@example.com\",\"role\":\"User\",\"status\":\"active\",\"joined\":\"2023-02-20\"},{\"id\":3,\"name\":\"Carol Williams\",\"email\":\"carol@example.com\",\"role\":\"Editor\",\"status\":\"inactive\",\"joined\":\"2023-03-10\"},{\"id\":4,\"name\":\"David Brown\",\"email\":\"david@example.com\",\"role\":\"User\",\"status\":\"active\",\"joined\":\"2023-04-05\"},{\"id\":5,\"name\":\"Eva Martinez\",\"email\":\"eva@example.com\",\"role\":\"Admin\",\"status\":\"active\",\"joined\":\"2023-05-12\"},{\"id\":6,\"name\":\"Frank Wilson\",\"email\":\"frank@example.com\",\"role\":\"User\",\"status\":\"pending\",\"joined\":\"2023-06-18\"},{\"id\":7,\"name\":\"Grace Lee\",\"email\":\"grace@example.com\",\"role\":\"Editor\",\"status\":\"active\",\"joined\":\"2023-07-22\"},{\"id\":8,\"name\":\"Henry Taylor\",\"email\":\"henry@example.com\",\"role\":\"User\",\"status\":\"inactive\",\"joined\":\"2023-08-30\"},{\"id\":9,\"name\":\"Ivy Anderson\",\"email\":\"ivy@example.com\",\"role\":\"User\",\"status\":\"active\",\"joined\":\"2023-09-14\"},{\"id\":10,\"name\":\"Jack Thomas\",\"email\":\"jack@example.com\",\"role\":\"Admin\",\"status\":\"active\",\"joined\":\"2023-10-25\"},{\"id\":11,\"name\":\"Kate Jackson\",\"email\":\"kate@example.com\",\"role\":\"Editor\",\"status\":\"pending\",\"joined\":\"2023-11-08\"},{\"id\":12,\"name\":\"Leo White\",\"email\":\"leo@example.com\",\"role\":\"User\",\"status\":\"active\",\"joined\":\"2023-12-01\"}]},\"page\":{\"type\":\"number\",\"initial\":1},\"pageSize\":{\"type\":\"number\",\"initial\":5},\"sort\":{\"type\":\"object\",\"initial\":{\"key\":\"name\",\"direction\":\"asc\"}},\"filters\":{\"type\":\"object\",\"initial\":{}},\"selected\":{\"type\":\"list\",\"initial\":[]},\"searchQuery\":{\"type\":\"string\",\"initial\":\"\"}},\"styles\":{\"statusBadge\":{\"base\":\"inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium\",\"variants\":{\"status\":{\"active\":\"bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400\",\"inactive\":\"bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300\",\"pending\":\"bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400\"}}},\"roleBadge\":{\"base\":\"inline-flex items-center px-2 py-0.5 rounded text-xs font-medium\",\"variants\":{\"role\":{\"Admin\":\"bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400\",\"Editor\":\"bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400\",\"User\":\"bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400\"}}}},\"actions\":[{\"name\":\"handleSort\",\"steps\":[{\"do\":\"set\",\"target\":\"sort\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}}]},{\"name\":\"handleFilter\",\"steps\":[{\"do\":\"set\",\"target\":\"filters\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}}]},{\"name\":\"handlePageChange\",\"steps\":[{\"do\":\"set\",\"target\":\"page\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}}]},{\"name\":\"handleSelectionChange\",\"steps\":[{\"do\":\"set\",\"target\":\"selected\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}}]},{\"name\":\"updateSearch\",\"steps\":[{\"do\":\"set\",\"target\":\"searchQuery\",\"value\":{\"expr\":\"var\",\"name\":\"payload\"}},{\"do\":\"set\",\"target\":\"page\",\"value\":{\"expr\":\"lit\",\"value\":1}}]},{\"name\":\"deleteSelected\",\"steps\":[{\"do\":\"set\",\"target\":\"users\",\"value\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"users\"},\"method\":\"filter\",\"args\":[{\"expr\":\"lambda\",\"param\":\"user\",\"body\":{\"expr\":\"not\",\"operand\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"selected\"},\"method\":\"includes\",\"args\":[{\"expr\":\"get\",\"base\":{\"expr\":\"var\",\"name\":\"user\"},\"path\":\"id\"}]}}}]}},{\"do\":\"set\",\"target\":\"selected\",\"value\":{\"expr\":\"lit\",\"value\":[]}}]}],\"view\":{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"min-h-screen bg-gray-50 dark:bg-gray-900\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"max-w-6xl mx-auto py-8 px-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"h1\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-3xl font-bold text-gray-900 dark:text-white mb-8\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"User Management\"}}]},{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"div\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"flex items-center gap-4\"}},\"children\":[{\"kind\":\"element\",\"tag\":\"input\",\"props\":{\"type\":{\"expr\":\"lit\",\"value\":\"text\"},\"placeholder\":{\"expr\":\"lit\",\"value\":\"Search users...\"},\"className\":{\"expr\":\"lit\",\"value\":\"px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent\"},\"value\":{\"expr\":\"state\",\"name\":\"searchQuery\"},\"onInput\":{\"event\":\"input\",\"action\":\"updateSearch\",\"payload\":{\"expr\":\"var\",\"name\":\"event\",\"path\":\"target.value\"}}}},{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\">\",\"left\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"selected\"},\"method\":\"length\"},\"right\":{\"expr\":\"lit\",\"value\":0}},\"then\":{\"kind\":\"element\",\"tag\":\"span\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"text-sm text-gray-500\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"selected\"},\"method\":\"length\"}},{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\" selected\"}}]}}]},{\"kind\":\"if\",\"condition\":{\"expr\":\"bin\",\"op\":\">\",\"left\":{\"expr\":\"call\",\"target\":{\"expr\":\"state\",\"name\":\"selected\"},\"method\":\"length\"},\"right\":{\"expr\":\"lit\",\"value\":0}},\"then\":{\"kind\":\"element\",\"tag\":\"button\",\"props\":{\"className\":{\"expr\":\"lit\",\"value\":\"px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm font-medium\"},\"onClick\":{\"event\":\"click\",\"action\":\"deleteSelected\"}},\"children\":[{\"kind\":\"text\",\"value\":{\"expr\":\"lit\",\"value\":\"Delete Selected\"}}]}}]},{\"kind\":\"component\",\"name\":\"DataTable\",\"props\":{\"data\":{\"expr\":\"state\",\"name\":\"users\"},\"columns\":{\"expr\":\"lit\",\"value\":[{\"key\":\"name\",\"title\":\"Name\",\"sortable\":true,\"filterable\":true},{\"key\":\"email\",\"title\":\"Email\",\"sortable\":true,\"filterable\":true},{\"key\":\"role\",\"title\":\"Role\",\"sortable\":true,\"filterable\":true,\"filterType\":\"select\",\"filterOptions\":[{\"label\":\"Admin\",\"value\":\"Admin\"},{\"label\":\"Editor\",\"value\":\"Editor\"},{\"label\":\"User\",\"value\":\"User\"}]},{\"key\":\"status\",\"title\":\"Status\",\"sortable\":true,\"filterable\":true,\"filterType\":\"select\",\"filterOptions\":[{\"label\":\"Active\",\"value\":\"active\"},{\"label\":\"Inactive\",\"value\":\"inactive\"},{\"label\":\"Pending\",\"value\":\"pending\"}]},{\"key\":\"joined\",\"title\":\"Joined\",\"sortable\":true}]},\"rowKey\":{\"expr\":\"lit\",\"value\":\"id\"},\"pageSize\":{\"expr\":\"state\",\"name\":\"pageSize\"},\"page\":{\"expr\":\"state\",\"name\":\"page\"},\"sortable\":{\"expr\":\"lit\",\"value\":true},\"filterable\":{\"expr\":\"lit\",\"value\":true},\"selectable\":{\"expr\":\"lit\",\"value\":true},\"selectedRows\":{\"expr\":\"state\",\"name\":\"selected\"},\"onSort\":{\"event\":\"sort\",\"action\":\"handleSort\"},\"onFilter\":{\"event\":\"filter\",\"action\":\"handleFilter\"},\"onPageChange\":{\"event\":\"pageChange\",\"action\":\"handlePageChange\"},\"onSelectionChange\":{\"event\":\"selectionChange\",\"action\":\"handleSelectionChange\"}}}]}]}]}}"
   }
 }
