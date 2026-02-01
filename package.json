@@ -14,12 +14,12 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@constela/compiler": "^0.15.4",
+    "@constela/compiler": "^0.15.5",
     "@constela/core": "^0.17.4",
     "@constela/router": "^19.0.0",
-    "@constela/runtime": "^1.0.4",
+    "@constela/runtime": "^1.0.5",
     "@constela/server": "^13.0.0",
-    "@constela/start": "^1.9.4",
+    "@constela/start": "^1.9.5",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
