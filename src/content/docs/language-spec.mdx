@@ -43,7 +43,8 @@ Every Constela program has this root structure:
   "lifecycle": { ... },
   "route": { ... },
   "data": { ... },
-  "externalImports": { ... }
+  "externalImports": { ... },
+  "theme": { ... }
 }
 ```
 
@@ -61,6 +62,7 @@ Every Constela program has this root structure:
 | `route` | No | Routing configuration |
 | `data` | No | Build-time data sources (including AI generation) |
 | `externalImports` | No | External JS module URLs |
+| `theme` | No | Theme configuration (colors, fonts, mode) |
 
 ---
 
@@ -193,7 +195,46 @@ All dynamic values in Constela use expressions.
 
 ---
 
-## View Nodes (9 types)
+## Theme System
+
+Configure application theming with CSS variables:
+
+```json
+{
+  "theme": {
+    "mode": "system",
+    "colors": {
+      "primary": "hsl(220 90% 56%)",
+      "primary-foreground": "hsl(0 0% 100%)",
+      "background": "hsl(0 0% 100%)",
+      "foreground": "hsl(222 47% 11%)",
+      "muted": "hsl(210 40% 96%)",
+      "border": "hsl(214 32% 91%)"
+    },
+    "darkColors": {
+      "background": "hsl(222 47% 11%)",
+      "foreground": "hsl(210 40% 98%)"
+    },
+    "fonts": {
+      "sans": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "cssPrefix": "app"
+  }
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `mode` | `'light' \| 'dark' \| 'system'` | Color scheme mode |
+| `colors` | `ThemeColors` | Light mode color tokens |
+| `darkColors` | `ThemeColors` | Dark mode color overrides |
+| `fonts` | `ThemeFonts` | Font family definitions |
+| `cssPrefix` | `string` | CSS variable prefix (e.g., `--app-primary`) |
+
+---
+
+## View Nodes (12 types)
 
 ### View Node Quick Reference
 
@@ -208,6 +249,9 @@ All dynamic values in Constela use expressions.
 | `markdown` | `{ "kind": "markdown", "content": EXPR }` | Markdown rendering |
 | `code` | `{ "kind": "code", "language": EXPR, "content": EXPR }` | Syntax highlighting |
 | `portal` | `{ "kind": "portal", "target": "T", "children": C }` | Render outside tree |
+| `island` | `{ "kind": "island", "id": "I", "strategy": "S", "content": C }` | Partial hydration |
+| `suspense` | `{ "kind": "suspense", "id": "I", "fallback": F, "content": C }` | Async content |
+| `errorBoundary` | `{ "kind": "errorBoundary", "fallback": F, "content": C }` | Error handling |
 
 ### View Node Examples
 
@@ -271,11 +315,48 @@ All dynamic values in Constela use expressions.
     { "kind": "element", "tag": "div", "props": { "className": { "expr": "lit", "value": "modal" } }, "children": [...] }
   ]
 }
+
+// Island (partial hydration)
+{
+  "kind": "island",
+  "id": "interactive-counter",
+  "strategy": "visible",
+  "strategyOptions": { "threshold": 0.5, "rootMargin": "100px" },
+  "content": { "kind": "component", "name": "Counter" },
+  "state": { "count": { "type": "number", "initial": 0 } },
+  "actions": [{ "name": "increment", "steps": [...] }]
+}
+
+// Suspense (async content with fallback)
+{
+  "kind": "suspense",
+  "id": "user-data",
+  "fallback": { "kind": "text", "value": { "expr": "lit", "value": "Loading..." } },
+  "content": { "kind": "component", "name": "UserProfile" }
+}
+
+// ErrorBoundary (error handling with fallback)
+{
+  "kind": "errorBoundary",
+  "fallback": { "kind": "text", "value": { "expr": "lit", "value": "Something went wrong" } },
+  "content": { "kind": "component", "name": "RiskyComponent" }
+}
 ```
+
+### Island Hydration Strategies
+
+| Strategy | Description | Options |
+|----------|-------------|---------|
+| `load` | Hydrate immediately on page load | - |
+| `idle` | Hydrate when browser is idle | `timeout` (ms) |
+| `visible` | Hydrate when element enters viewport | `threshold` (0-1), `rootMargin` |
+| `interaction` | Hydrate on first user interaction | - |
+| `media` | Hydrate when media query matches | `media` (query string) |
+| `never` | Never hydrate (static only) | - |
 
 ---
 
-## Action Steps (19 types)
+## Action Steps (27 types)
 
 Actions define responses to events. Each action has a name and array of steps.
 
@@ -303,6 +384,13 @@ Actions define responses to events. Each action has a name and array of steps.
 | `clearTimer` | `{ "do": "clearTimer", "target": T }` | Stop timer |
 | `focus` | `{ "do": "focus", "target": T, "operation": "focus\|blur\|select" }` | Focus control |
 | `generate` | `{ "do": "generate", "provider": "P", "prompt": EXPR, "output": "O", "result": "R", "onSuccess": [], "onError": [] }` | AI DSL generation |
+| `sseConnect` | `{ "do": "sseConnect", "connection": "C", "url": U, "reconnect": R, "onMessage": [] }` | SSE connection |
+| `sseClose` | `{ "do": "sseClose", "connection": "C" }` | Close SSE connection |
+| `optimistic` | `{ "do": "optimistic", "target": "T", "path": P, "value": V, "result": "R" }` | Optimistic UI update |
+| `confirm` | `{ "do": "confirm", "id": I }` | Confirm optimistic update |
+| `reject` | `{ "do": "reject", "id": I }` | Reject/rollback optimistic update |
+| `bind` | `{ "do": "bind", "connection": "C", "target": "T", "transform": X }` | Bind SSE to state |
+| `unbind` | `{ "do": "unbind", "connection": "C", "target": "T" }` | Unbind SSE from state |
 
 ### Update Operations by State Type
 
@@ -618,6 +706,84 @@ Use with style expression:
 
 Send: `{ "do": "send", "connection": "chat", "data": { "expr": "state", "name": "message" } }`
 Close: `{ "do": "close", "connection": "chat" }`
+
+---
+
+## Realtime Features (SSE)
+
+### SSE Connection
+
+```json
+{
+  "do": "sseConnect",
+  "connection": "notifications",
+  "url": { "expr": "lit", "value": "/api/events" },
+  "eventTypes": ["message", "update"],
+  "reconnect": {
+    "enabled": true,
+    "strategy": "exponential",
+    "maxRetries": 5,
+    "baseDelay": 1000,
+    "maxDelay": 30000
+  },
+  "onOpen": [{ "do": "set", "target": "connected", "value": { "expr": "lit", "value": true } }],
+  "onMessage": [{ "do": "update", "target": "messages", "operation": "push", "value": { "expr": "var", "name": "payload" } }],
+  "onError": [{ "do": "set", "target": "error", "value": { "expr": "var", "name": "payload" } }]
+}
+```
+
+| Property | Description |
+|----------|-------------|
+| `connection` | Connection identifier |
+| `url` | SSE endpoint URL |
+| `eventTypes` | Event types to listen for |
+| `reconnect.strategy` | `exponential`, `linear`, or `none` |
+| `onOpen/onMessage/onError` | Handler steps |
+
+Close: `{ "do": "sseClose", "connection": "notifications" }`
+
+### Optimistic Updates
+
+Apply UI changes immediately with automatic rollback on failure:
+
+```json
+{
+  "name": "likePost",
+  "steps": [
+    {
+      "do": "optimistic",
+      "target": "posts",
+      "path": { "expr": "var", "name": "index" },
+      "value": { "expr": "lit", "value": { "liked": true } },
+      "result": "updateId",
+      "timeout": 5000
+    },
+    {
+      "do": "fetch",
+      "url": { "expr": "lit", "value": "/api/like" },
+      "method": "POST",
+      "onSuccess": [{ "do": "confirm", "id": { "expr": "var", "name": "updateId" } }],
+      "onError": [{ "do": "reject", "id": { "expr": "var", "name": "updateId" } }]
+    }
+  ]
+}
+```
+
+### State Binding
+
+Bind SSE messages directly to state:
+
+```json
+{
+  "do": "bind",
+  "connection": "notifications",
+  "eventType": "update",
+  "target": "messages",
+  "transform": { "expr": "get", "base": { "expr": "var", "name": "payload" }, "path": "data" }
+}
+```
+
+Unbind: `{ "do": "unbind", "connection": "notifications", "target": "messages" }`
 
 ---
 
