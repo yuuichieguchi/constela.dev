@@ -652,12 +652,64 @@
                                               }
                                             },
                                             "right": {
-                                              "expr": "not",
-                                              "operand": {
-                                                "expr": "call",
-                                                "target": { "expr": "param", "name": "currentPath" },
-                                                "method": "startsWith",
-                                                "args": [{ "expr": "lit", "value": "/reference/ai" }]
+                                              "expr": "bin",
+                                              "op": "&&",
+                                              "left": {
+                                                "expr": "not",
+                                                "operand": {
+                                                  "expr": "call",
+                                                  "target": { "expr": "param", "name": "currentPath" },
+                                                  "method": "startsWith",
+                                                  "args": [{ "expr": "lit", "value": "/reference/ai" }]
+                                                }
+                                              },
+                                              "right": {
+                                                "expr": "bin",
+                                                "op": "&&",
+                                                "left": {
+                                                  "expr": "not",
+                                                  "operand": {
+                                                    "expr": "call",
+                                                    "target": { "expr": "param", "name": "currentPath" },
+                                                    "method": "startsWith",
+                                                    "args": [{ "expr": "lit", "value": "/reference/theme" }]
+                                                  }
+                                                },
+                                                "right": {
+                                                  "expr": "bin",
+                                                  "op": "&&",
+                                                  "left": {
+                                                    "expr": "not",
+                                                    "operand": {
+                                                      "expr": "call",
+                                                      "target": { "expr": "param", "name": "currentPath" },
+                                                      "method": "startsWith",
+                                                      "args": [{ "expr": "lit", "value": "/reference/islands" }]
+                                                    }
+                                                  },
+                                                  "right": {
+                                                    "expr": "bin",
+                                                    "op": "&&",
+                                                    "left": {
+                                                      "expr": "not",
+                                                      "operand": {
+                                                        "expr": "call",
+                                                        "target": { "expr": "param", "name": "currentPath" },
+                                                        "method": "startsWith",
+                                                        "args": [{ "expr": "lit", "value": "/reference/streaming" }]
+                                                      }
+                                                    },
+                                                    "right": {
+                                                      "expr": "not",
+                                                      "operand": {
+                                                        "expr": "call",
+                                                        "target": { "expr": "param", "name": "currentPath" },
+                                                        "method": "startsWith",
+                                                        "args": [{ "expr": "lit", "value": "/reference/realtime" }]
+                                                      }
+                                                    }
+                                                  }
+                                                }
                                               }
                                             }
                                           }
@@ -672,17 +724,61 @@
                         }
                       },
                       "else": {
-                        "expr": "call",
-                        "target": { "expr": "param", "name": "currentPath" },
-                        "method": "startsWith",
-                        "args": [
-                          {
-                            "expr": "cond",
-                            "if": {
+                        "expr": "cond",
+                        "if": {
+                          "expr": "bin",
+                          "op": "==",
+                          "left": { "expr": "var", "name": "section", "path": "title" },
+                          "right": { "expr": "lit", "value": "Advanced" }
+                        },
+                        "then": {
+                          "expr": "bin",
+                          "op": "||",
+                          "left": {
+                            "expr": "call",
+                            "target": { "expr": "param", "name": "currentPath" },
+                            "method": "startsWith",
+                            "args": [{ "expr": "lit", "value": "/reference/theme" }]
+                          },
+                          "right": {
+                            "expr": "bin",
+                            "op": "||",
+                            "left": {
+                              "expr": "call",
+                              "target": { "expr": "param", "name": "currentPath" },
+                              "method": "startsWith",
+                              "args": [{ "expr": "lit", "value": "/reference/islands" }]
+                            },
+                            "right": {
                               "expr": "bin",
-                              "op": "==",
-                              "left": { "expr": "var", "name": "section", "path": "title" },
-                              "right": { "expr": "lit", "value": "@constela/core" }
+                              "op": "||",
+                              "left": {
+                                "expr": "call",
+                                "target": { "expr": "param", "name": "currentPath" },
+                                "method": "startsWith",
+                                "args": [{ "expr": "lit", "value": "/reference/streaming" }]
+                              },
+                              "right": {
+                                "expr": "call",
+                                "target": { "expr": "param", "name": "currentPath" },
+                                "method": "startsWith",
+                                "args": [{ "expr": "lit", "value": "/reference/realtime" }]
+                              }
+                            }
+                          }
+                        },
+                        "else": {
+                          "expr": "call",
+                          "target": { "expr": "param", "name": "currentPath" },
+                          "method": "startsWith",
+                          "args": [
+                            {
+                              "expr": "cond",
+                              "if": {
+                                "expr": "bin",
+                                "op": "==",
+                                "left": { "expr": "var", "name": "section", "path": "title" },
+                                "right": { "expr": "lit", "value": "@constela/core" }
                             },
                             "then": { "expr": "lit", "value": "/reference/core" },
                             "else": {
@@ -796,8 +892,9 @@
                                 }
                               }
                             }
-                          }
-                        ]
+                            }
+                          ]
+                        }
                       }
                     }
                   },
