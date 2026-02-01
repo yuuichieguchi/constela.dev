@@ -1,0 +1,172 @@
+---
+title: Accordion
+description: Collapsible content sections
+---
+
+# Accordion
+
+A component for organizing content into collapsible sections.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "Accordion",
+  "props": {
+    "items": { "expr": "state", "name": "accordionItems" }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `Expression` | `[]` | Accordion items array |
+| `type` | `Expression` | `"single"` | `"single"` or `"multiple"` |
+| `collapsible` | `Expression` | `true` | Allow all items to be closed |
+| `defaultValue` | `Expression` | - | Initially expanded item(s) |
+| `value` | `Expression` | - | Controlled expanded item(s) |
+| `onValueChange` | `EventHandler` | - | Called when value changes |
+| `disabled` | `Expression` | `false` | Disable all items |
+
+## Data Structure
+
+```typescript
+interface AccordionItem {
+  value: string;
+  trigger: string;
+  content: string | ViewNode;
+  disabled?: boolean;
+}
+```
+
+## Examples
+
+### FAQ Section
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "faqs": {
+      "type": "list",
+      "initial": [
+        {
+          "value": "item-1",
+          "trigger": "What is Constela?",
+          "content": "Constela is a JSON-based DSL for building reactive web applications."
+        },
+        {
+          "value": "item-2",
+          "trigger": "How do I get started?",
+          "content": "Install the CLI with npm install -g @constela/cli, then run constela create my-app."
+        },
+        {
+          "value": "item-3",
+          "trigger": "Is it production ready?",
+          "content": "Yes! Constela is used in production by many companies."
+        }
+      ]
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "Accordion",
+    "props": {
+      "items": { "expr": "state", "name": "faqs" },
+      "type": { "expr": "lit", "value": "single" },
+      "collapsible": { "expr": "lit", "value": true },
+      "defaultValue": { "expr": "lit", "value": "item-1" }
+    }
+  }
+}
+```
+
+### Multiple Expanded
+
+```json
+{
+  "kind": "component",
+  "name": "Accordion",
+  "props": {
+    "items": { "expr": "state", "name": "sections" },
+    "type": { "expr": "lit", "value": "multiple" },
+    "defaultValue": { "expr": "lit", "value": ["section-1", "section-2"] }
+  }
+}
+```
+
+### Controlled Accordion
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "expanded": { "type": "string", "initial": "item-1" },
+    "items": { "type": "list", "initial": [...] }
+  },
+  "actions": [
+    {
+      "name": "setExpanded",
+      "steps": [{ "do": "set", "target": "expanded", "value": { "expr": "var", "name": "payload" } }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "Accordion",
+    "props": {
+      "items": { "expr": "state", "name": "items" },
+      "value": { "expr": "state", "name": "expanded" },
+      "onValueChange": { "event": "valueChange", "action": "setExpanded" }
+    }
+  }
+}
+```
+
+### With Rich Content
+
+```json
+{
+  "state": {
+    "items": {
+      "type": "list",
+      "initial": [
+        {
+          "value": "settings",
+          "trigger": "Settings",
+          "content": {
+            "kind": "element",
+            "tag": "div",
+            "children": [
+              { "kind": "component", "name": "Switch", "props": { "label": { "expr": "lit", "value": "Dark Mode" } } },
+              { "kind": "component", "name": "Switch", "props": { "label": { "expr": "lit", "value": "Notifications" } } }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+## Styling
+
+CSS classes:
+
+- `.accordion` - Main container
+- `.accordion-item` - Item container
+- `.accordion-item--expanded` - Expanded item
+- `.accordion-item--disabled` - Disabled item
+- `.accordion-trigger` - Clickable header
+- `.accordion-icon` - Expand/collapse icon
+- `.accordion-content` - Content container
+- `.accordion-content-inner` - Inner content wrapper
+
+## Accessibility
+
+- ARIA accordion pattern
+- Keyboard navigation (Tab, Enter, Space, Arrow keys)
+- Focus management
+- Screen reader support for expanded/collapsed state

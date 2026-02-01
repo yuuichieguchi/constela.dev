@@ -1,0 +1,159 @@
+---
+title: DatePicker
+description: Date selection component with calendar popup
+---
+
+# DatePicker
+
+A date selection component with an integrated calendar popup.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "DatePicker",
+  "props": {
+    "value": { "expr": "state", "name": "selectedDate" },
+    "onChange": { "event": "change", "action": "updateDate" }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Expression` | - | Selected date (ISO string or Date) |
+| `onChange` | `EventHandler` | - | Called when date changes |
+| `format` | `Expression` | `"yyyy-MM-dd"` | Display format |
+| `minDate` | `Expression` | - | Minimum selectable date |
+| `maxDate` | `Expression` | - | Maximum selectable date |
+| `locale` | `Expression` | `"en-US"` | Locale for formatting |
+| `placeholder` | `Expression` | `"Select date"` | Placeholder text |
+| `disabled` | `Expression` | `false` | Disabled state |
+| `clearable` | `Expression` | `true` | Show clear button |
+
+## Date Formats
+
+| Format | Example |
+|--------|---------|
+| `yyyy-MM-dd` | 2024-01-15 |
+| `MM/dd/yyyy` | 01/15/2024 |
+| `dd/MM/yyyy` | 15/01/2024 |
+| `MMMM d, yyyy` | January 15, 2024 |
+| `MMM d` | Jan 15 |
+
+## Examples
+
+### With Min/Max Date
+
+```json
+{
+  "kind": "component",
+  "name": "DatePicker",
+  "props": {
+    "value": { "expr": "state", "name": "appointmentDate" },
+    "onChange": { "event": "change", "action": "setAppointmentDate" },
+    "minDate": { "expr": "lit", "value": "2024-01-01" },
+    "maxDate": { "expr": "lit", "value": "2024-12-31" },
+    "format": { "expr": "lit", "value": "MMMM d, yyyy" }
+  }
+}
+```
+
+### Japanese Locale
+
+```json
+{
+  "kind": "component",
+  "name": "DatePicker",
+  "props": {
+    "value": { "expr": "state", "name": "date" },
+    "onChange": { "event": "change", "action": "updateDate" },
+    "locale": { "expr": "lit", "value": "ja-JP" },
+    "format": { "expr": "lit", "value": "yyyy年MM月dd日" }
+  }
+}
+```
+
+### In a Form
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "startDate": { "type": "string", "initial": "" },
+    "endDate": { "type": "string", "initial": "" }
+  },
+  "actions": [
+    {
+      "name": "setStartDate",
+      "steps": [{ "do": "set", "target": "startDate", "value": { "expr": "var", "name": "payload" } }]
+    },
+    {
+      "name": "setEndDate",
+      "steps": [{ "do": "set", "target": "endDate", "value": { "expr": "var", "name": "payload" } }]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "className": { "expr": "lit", "value": "flex gap-4" } },
+    "children": [
+      {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          { "kind": "element", "tag": "label", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Start Date" } }] },
+          {
+            "kind": "component",
+            "name": "DatePicker",
+            "props": {
+              "value": { "expr": "state", "name": "startDate" },
+              "onChange": { "event": "change", "action": "setStartDate" }
+            }
+          }
+        ]
+      },
+      {
+        "kind": "element",
+        "tag": "div",
+        "children": [
+          { "kind": "element", "tag": "label", "children": [{ "kind": "text", "value": { "expr": "lit", "value": "End Date" } }] },
+          {
+            "kind": "component",
+            "name": "DatePicker",
+            "props": {
+              "value": { "expr": "state", "name": "endDate" },
+              "onChange": { "event": "change", "action": "setEndDate" },
+              "minDate": { "expr": "state", "name": "startDate" }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Styling
+
+The DatePicker uses the following CSS classes:
+
+- `.datepicker` - Main container
+- `.datepicker-input` - Input field
+- `.datepicker-popup` - Calendar popup
+- `.datepicker-header` - Month/year navigation
+- `.datepicker-grid` - Day grid
+- `.datepicker-day` - Individual day
+- `.datepicker-day--selected` - Selected day
+- `.datepicker-day--today` - Today
+- `.datepicker-day--disabled` - Disabled day
+
+## Accessibility
+
+- Full keyboard navigation (Arrow keys, Enter, Escape)
+- ARIA labels for all interactive elements
+- Focus management when popup opens/closes
+- Screen reader announcements for date selection

@@ -1,0 +1,247 @@
+---
+title: Islands Architecture
+description: Partial hydration with 6 hydration strategies for optimal performance
+---
+
+# Islands Architecture
+
+Islands Architecture enables partial hydration of interactive components. Only the JavaScript needed for interactive "islands" is loaded, while the rest of the page remains static HTML.
+
+## Basic Usage
+
+Wrap interactive content in an `island` node:
+
+```json
+{
+  "kind": "island",
+  "id": "counter-widget",
+  "strategy": "visible",
+  "content": {
+    "kind": "element",
+    "tag": "button",
+    "props": { "onClick": { "event": "click", "action": "increment" } },
+    "children": [{ "kind": "text", "value": { "expr": "state", "name": "count" } }]
+  },
+  "state": {
+    "count": { "type": "number", "initial": 0 }
+  },
+  "actions": [
+    {
+      "name": "increment",
+      "steps": [{ "do": "update", "target": "count", "operation": "increment" }]
+    }
+  ]
+}
+```
+
+## Island Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier for the island |
+| `strategy` | `IslandStrategy` | Yes | Hydration strategy |
+| `strategyOptions` | `object` | No | Strategy-specific options |
+| `content` | `ViewNode` | Yes | Island content |
+| `state` | `Record<string, StateField>` | No | Island-local state |
+| `actions` | `ActionDefinition[]` | No | Island-local actions |
+
+## Hydration Strategies
+
+### `load` - Immediate
+
+Hydrate immediately when the page loads. Use for critical interactive elements above the fold.
+
+```json
+{
+  "kind": "island",
+  "id": "header-search",
+  "strategy": "load",
+  "content": { ... }
+}
+```
+
+### `idle` - Browser Idle
+
+Hydrate when the browser is idle using `requestIdleCallback`. Good for non-critical interactions.
+
+```json
+{
+  "kind": "island",
+  "id": "newsletter-form",
+  "strategy": "idle",
+  "strategyOptions": { "timeout": 2000 },
+  "content": { ... }
+}
+```
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `timeout` | `number` | Max wait time in ms (default: none) |
+
+### `visible` - Viewport Entry
+
+Hydrate when the element enters the viewport using `IntersectionObserver`. Ideal for below-the-fold content.
+
+```json
+{
+  "kind": "island",
+  "id": "comments-section",
+  "strategy": "visible",
+  "strategyOptions": {
+    "threshold": 0.5,
+    "rootMargin": "100px"
+  },
+  "content": { ... }
+}
+```
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `threshold` | `number` | Visibility threshold 0-1 (default: 0) |
+| `rootMargin` | `string` | Margin around root (default: "0px") |
+
+### `interaction` - User Interaction
+
+Hydrate on first user interaction (click, focus, mouseover). Perfect for lazy-loaded widgets.
+
+```json
+{
+  "kind": "island",
+  "id": "dropdown-menu",
+  "strategy": "interaction",
+  "content": { ... }
+}
+```
+
+### `media` - Media Query
+
+Hydrate when a media query matches. Useful for responsive components.
+
+```json
+{
+  "kind": "island",
+  "id": "mobile-nav",
+  "strategy": "media",
+  "strategyOptions": { "media": "(max-width: 768px)" },
+  "content": { ... }
+}
+```
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `media` | `string` | CSS media query |
+
+### `never` - Static Only
+
+Never hydrate. The content is rendered as static HTML only.
+
+```json
+{
+  "kind": "island",
+  "id": "static-chart",
+  "strategy": "never",
+  "content": { ... }
+}
+```
+
+## Island-Local State
+
+Each island can have its own independent state:
+
+```json
+{
+  "kind": "island",
+  "id": "todo-list",
+  "strategy": "visible",
+  "state": {
+    "items": { "type": "list", "initial": [] },
+    "newItem": { "type": "string", "initial": "" }
+  },
+  "actions": [
+    {
+      "name": "addItem",
+      "steps": [
+        { "do": "update", "target": "items", "operation": "push", "value": { "expr": "state", "name": "newItem" } },
+        { "do": "set", "target": "newItem", "value": { "expr": "lit", "value": "" } }
+      ]
+    }
+  ],
+  "content": { ... }
+}
+```
+
+## Build Optimization
+
+Islands are automatically code-split during build:
+
+```bash
+npx constela build --islands
+```
+
+Output structure:
+
+```
+dist/
+  _islands/
+    counter-widget.js      # 2KB
+    comments-section.js    # 15KB
+    dropdown-menu.js       # 5KB
+  client.js                # Main bundle (reduced size)
+```
+
+## Configuration
+
+Enable islands in `constela.config.json`:
+
+```json
+{
+  "islands": {
+    "enabled": true,
+    "defaultStrategy": "visible"
+  }
+}
+```
+
+## Best Practices
+
+1. **Use `load` sparingly** - Only for above-the-fold critical interactions
+2. **Prefer `visible`** - Good default for most interactive components
+3. **Use `interaction`** - For components that don't need immediate interactivity
+4. **Keep islands small** - Each island is a separate bundle
+5. **Avoid nested islands** - Islands cannot contain other islands
+
+## Example: Dashboard with Multiple Islands
+
+```json
+{
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "island",
+        "id": "nav-search",
+        "strategy": "load",
+        "content": { "kind": "component", "name": "SearchBar" },
+        "state": { "query": { "type": "string", "initial": "" } }
+      },
+      {
+        "kind": "island",
+        "id": "chart-widget",
+        "strategy": "visible",
+        "strategyOptions": { "rootMargin": "200px" },
+        "content": { "kind": "component", "name": "Chart" },
+        "state": { "data": { "type": "list", "initial": [] } },
+        "actions": [{ "name": "loadData", "steps": [...] }]
+      },
+      {
+        "kind": "island",
+        "id": "comments",
+        "strategy": "interaction",
+        "content": { "kind": "component", "name": "Comments" },
+        "state": { "comments": { "type": "list", "initial": [] } }
+      }
+    ]
+  }
+}
+```

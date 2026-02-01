@@ -1,0 +1,206 @@
+---
+title: DataTable
+description: Advanced data table with sorting, filtering, and pagination
+---
+
+# DataTable
+
+A feature-rich data table component with sorting, filtering, pagination, and row selection.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "DataTable",
+  "props": {
+    "data": { "expr": "state", "name": "users" },
+    "columns": { "expr": "lit", "value": [
+      { "key": "name", "title": "Name" },
+      { "key": "email", "title": "Email" },
+      { "key": "role", "title": "Role" }
+    ]}
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `data` | `Expression` | `[]` | Data array |
+| `columns` | `Expression` | `[]` | Column definitions |
+| `pageSize` | `Expression` | `10` | Rows per page |
+| `page` | `Expression` | `1` | Current page |
+| `sortable` | `Expression` | `false` | Enable sorting |
+| `filterable` | `Expression` | `false` | Enable filtering |
+| `selectable` | `Expression` | `false` | Enable row selection |
+| `selectedRows` | `Expression` | `[]` | Selected row keys |
+| `rowKey` | `Expression` | `"id"` | Key field for rows |
+| `loading` | `Expression` | `false` | Loading state |
+| `emptyText` | `Expression` | `"No data"` | Empty state text |
+| `onSort` | `EventHandler` | - | Sort change handler |
+| `onFilter` | `EventHandler` | - | Filter change handler |
+| `onPageChange` | `EventHandler` | - | Page change handler |
+| `onSelectionChange` | `EventHandler` | - | Selection change handler |
+
+## Column Definition
+
+```typescript
+interface Column {
+  key: string;
+  title: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  width?: string | number;
+  align?: 'left' | 'center' | 'right';
+  render?: ViewNode;
+  filterType?: 'text' | 'select' | 'date' | 'number';
+  filterOptions?: { label: string; value: string }[];
+}
+```
+
+## Examples
+
+### Full-Featured Table
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "users": {
+      "type": "list",
+      "initial": [
+        { "id": 1, "name": "John Doe", "email": "john@example.com", "role": "Admin", "status": "active" },
+        { "id": 2, "name": "Jane Smith", "email": "jane@example.com", "role": "User", "status": "active" },
+        { "id": 3, "name": "Bob Wilson", "email": "bob@example.com", "role": "User", "status": "inactive" }
+      ]
+    },
+    "page": { "type": "number", "initial": 1 },
+    "sort": { "type": "object", "initial": { "key": "name", "direction": "asc" } },
+    "filters": { "type": "object", "initial": {} },
+    "selected": { "type": "list", "initial": [] }
+  },
+  "actions": [
+    {
+      "name": "handleSort",
+      "steps": [{ "do": "set", "target": "sort", "value": { "expr": "var", "name": "payload" } }]
+    },
+    {
+      "name": "handleFilter",
+      "steps": [{ "do": "set", "target": "filters", "value": { "expr": "var", "name": "payload" } }]
+    },
+    {
+      "name": "handlePageChange",
+      "steps": [{ "do": "set", "target": "page", "value": { "expr": "var", "name": "payload" } }]
+    },
+    {
+      "name": "handleSelectionChange",
+      "steps": [{ "do": "set", "target": "selected", "value": { "expr": "var", "name": "payload" } }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "DataTable",
+    "props": {
+      "data": { "expr": "state", "name": "users" },
+      "columns": { "expr": "lit", "value": [
+        { "key": "name", "title": "Name", "sortable": true, "filterable": true },
+        { "key": "email", "title": "Email", "sortable": true, "filterable": true },
+        { "key": "role", "title": "Role", "sortable": true, "filterable": true, "filterType": "select", "filterOptions": [
+          { "label": "Admin", "value": "Admin" },
+          { "label": "User", "value": "User" }
+        ]},
+        { "key": "status", "title": "Status", "sortable": true }
+      ]},
+      "pageSize": { "expr": "lit", "value": 10 },
+      "page": { "expr": "state", "name": "page" },
+      "sortable": { "expr": "lit", "value": true },
+      "filterable": { "expr": "lit", "value": true },
+      "selectable": { "expr": "lit", "value": true },
+      "selectedRows": { "expr": "state", "name": "selected" },
+      "onSort": { "event": "sort", "action": "handleSort" },
+      "onFilter": { "event": "filter", "action": "handleFilter" },
+      "onPageChange": { "event": "pageChange", "action": "handlePageChange" },
+      "onSelectionChange": { "event": "selectionChange", "action": "handleSelectionChange" }
+    }
+  }
+}
+```
+
+### Custom Cell Rendering
+
+```json
+{
+  "columns": [
+    {
+      "key": "status",
+      "title": "Status",
+      "render": {
+        "kind": "element",
+        "tag": "span",
+        "props": {
+          "className": {
+            "expr": "cond",
+            "if": { "expr": "bin", "op": "==", "left": { "expr": "var", "name": "value" }, "right": { "expr": "lit", "value": "active" } },
+            "then": { "expr": "lit", "value": "badge badge-success" },
+            "else": { "expr": "lit", "value": "badge badge-gray" }
+          }
+        },
+        "children": [{ "kind": "text", "value": { "expr": "var", "name": "value" } }]
+      }
+    }
+  ]
+}
+```
+
+### Server-Side Operations
+
+```json
+{
+  "actions": [
+    {
+      "name": "fetchData",
+      "steps": [{
+        "do": "fetch",
+        "url": {
+          "expr": "concat",
+          "items": [
+            { "expr": "lit", "value": "/api/users?page=" },
+            { "expr": "state", "name": "page" },
+            { "expr": "lit", "value": "&sort=" },
+            { "expr": "get", "base": { "expr": "state", "name": "sort" }, "path": "key" }
+          ]
+        },
+        "onSuccess": [
+          { "do": "set", "target": "users", "value": { "expr": "get", "base": { "expr": "var", "name": "response" }, "path": "data" } },
+          { "do": "set", "target": "totalPages", "value": { "expr": "get", "base": { "expr": "var", "name": "response" }, "path": "totalPages" } }
+        ]
+      }]
+    }
+  ]
+}
+```
+
+## Styling
+
+CSS classes:
+
+- `.data-table` - Main container
+- `.data-table-header` - Header row
+- `.data-table-th` - Header cell
+- `.data-table-th--sortable` - Sortable header
+- `.data-table-th--sorted` - Sorted column
+- `.data-table-body` - Table body
+- `.data-table-row` - Data row
+- `.data-table-row--selected` - Selected row
+- `.data-table-cell` - Data cell
+- `.data-table-pagination` - Pagination container
+- `.data-table-filter` - Filter input
+
+## Accessibility
+
+- ARIA table/grid roles
+- Keyboard navigation for sorting
+- Screen reader announcements for sort state
+- Focus management for pagination

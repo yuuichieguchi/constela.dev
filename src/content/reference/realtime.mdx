@@ -1,0 +1,295 @@
+---
+title: Realtime Features
+description: SSE connections, optimistic updates, and state binding for real-time applications
+---
+
+# Realtime Features
+
+Constela provides declarative primitives for building real-time applications: SSE connections, optimistic updates, and state binding.
+
+## SSE Connections
+
+Establish Server-Sent Events connections for real-time data.
+
+### Connect
+
+```json
+{
+  "do": "sseConnect",
+  "connection": "notifications",
+  "url": { "expr": "lit", "value": "/api/events" },
+  "eventTypes": ["message", "update", "delete"],
+  "reconnect": {
+    "enabled": true,
+    "strategy": "exponential",
+    "maxRetries": 5,
+    "baseDelay": 1000,
+    "maxDelay": 30000
+  },
+  "onOpen": [
+    { "do": "set", "target": "connected", "value": { "expr": "lit", "value": true } }
+  ],
+  "onMessage": [
+    { "do": "update", "target": "messages", "operation": "push", "value": { "expr": "var", "name": "payload" } }
+  ],
+  "onError": [
+    { "do": "set", "target": "error", "value": { "expr": "var", "name": "payload" } }
+  ]
+}
+```
+
+### SSEConnectStep Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `connection` | `string` | Yes | Connection identifier |
+| `url` | `Expression` | Yes | SSE endpoint URL |
+| `eventTypes` | `string[]` | No | Event types to listen for |
+| `reconnect` | `ReconnectConfig` | No | Reconnection settings |
+| `onOpen` | `ActionStep[]` | No | Steps on connection open |
+| `onMessage` | `ActionStep[]` | No | Steps on message received |
+| `onError` | `ActionStep[]` | No | Steps on error |
+
+### Reconnection Strategies
+
+| Strategy | Description |
+|----------|-------------|
+| `exponential` | Exponential backoff (1s, 2s, 4s, 8s...) |
+| `linear` | Linear backoff (1s, 2s, 3s, 4s...) |
+| `none` | No automatic reconnection |
+
+### Close Connection
+
+```json
+{ "do": "sseClose", "connection": "notifications" }
+```
+
+## Optimistic Updates
+
+Apply UI changes immediately with automatic rollback on failure.
+
+### Apply Optimistic Update
+
+```json
+{
+  "do": "optimistic",
+  "target": "posts",
+  "path": { "expr": "var", "name": "index" },
+  "value": { "expr": "lit", "value": { "liked": true } },
+  "result": "updateId",
+  "timeout": 5000
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `target` | `string` | Yes | State field to update |
+| `path` | `Expression` | No | Path within state (for nested updates) |
+| `value` | `Expression` | Yes | Value to apply |
+| `result` | `string` | No | Variable name for update ID |
+| `timeout` | `number` | No | Auto-rollback timeout in ms |
+
+### Confirm Update
+
+Confirm the optimistic update was successful:
+
+```json
+{ "do": "confirm", "id": { "expr": "var", "name": "updateId" } }
+```
+
+### Reject Update
+
+Reject the update and rollback to previous state:
+
+```json
+{ "do": "reject", "id": { "expr": "var", "name": "updateId" } }
+```
+
+### Complete Example
+
+```json
+{
+  "name": "likePost",
+  "steps": [
+    {
+      "do": "optimistic",
+      "target": "posts",
+      "path": { "expr": "var", "name": "payload", "path": "index" },
+      "value": { "expr": "lit", "value": { "liked": true, "likeCount": 1 } },
+      "result": "updateId",
+      "timeout": 5000
+    },
+    {
+      "do": "fetch",
+      "url": {
+        "expr": "concat",
+        "items": [
+          { "expr": "lit", "value": "/api/posts/" },
+          { "expr": "var", "name": "payload", "path": "id" },
+          { "expr": "lit", "value": "/like" }
+        ]
+      },
+      "method": "POST",
+      "onSuccess": [
+        { "do": "confirm", "id": { "expr": "var", "name": "updateId" } }
+      ],
+      "onError": [
+        { "do": "reject", "id": { "expr": "var", "name": "updateId" } }
+      ]
+    }
+  ]
+}
+```
+
+## State Binding
+
+Automatically bind SSE messages to state.
+
+### Bind
+
+```json
+{
+  "do": "bind",
+  "connection": "notifications",
+  "eventType": "update",
+  "target": "messages",
+  "path": { "expr": "var", "name": "payload", "path": "id" },
+  "transform": { "expr": "get", "base": { "expr": "var", "name": "payload" }, "path": "data" },
+  "patch": false
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `connection` | `string` | Yes | Connection identifier |
+| `eventType` | `string` | No | Specific event type to bind |
+| `target` | `string` | Yes | State field to update |
+| `path` | `Expression` | No | Path for nested updates |
+| `transform` | `Expression` | No | Transform incoming data |
+| `patch` | `boolean` | No | Use JSON Patch mode |
+
+### Unbind
+
+Remove a state binding:
+
+```json
+{ "do": "unbind", "connection": "notifications", "target": "messages" }
+```
+
+## Complete Real-time Chat Example
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "connected": { "type": "boolean", "initial": false },
+    "messages": { "type": "list", "initial": [] },
+    "newMessage": { "type": "string", "initial": "" },
+    "error": { "type": "object", "initial": null }
+  },
+  "lifecycle": {
+    "onMount": "connect",
+    "onUnmount": "disconnect"
+  },
+  "actions": [
+    {
+      "name": "connect",
+      "steps": [
+        {
+          "do": "sseConnect",
+          "connection": "chat",
+          "url": { "expr": "lit", "value": "/api/chat/events" },
+          "eventTypes": ["message", "user-joined", "user-left"],
+          "reconnect": {
+            "enabled": true,
+            "strategy": "exponential",
+            "maxRetries": 10,
+            "baseDelay": 1000
+          },
+          "onOpen": [
+            { "do": "set", "target": "connected", "value": { "expr": "lit", "value": true } },
+            { "do": "set", "target": "error", "value": { "expr": "lit", "value": null } }
+          ],
+          "onMessage": [
+            { "do": "update", "target": "messages", "operation": "push", "value": { "expr": "var", "name": "payload" } }
+          ],
+          "onError": [
+            { "do": "set", "target": "connected", "value": { "expr": "lit", "value": false } },
+            { "do": "set", "target": "error", "value": { "expr": "var", "name": "payload" } }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "disconnect",
+      "steps": [
+        { "do": "sseClose", "connection": "chat" }
+      ]
+    },
+    {
+      "name": "sendMessage",
+      "steps": [
+        {
+          "do": "optimistic",
+          "target": "messages",
+          "value": {
+            "expr": "lit",
+            "value": { "id": "temp", "text": "", "pending": true }
+          },
+          "result": "updateId"
+        },
+        {
+          "do": "fetch",
+          "url": { "expr": "lit", "value": "/api/chat/send" },
+          "method": "POST",
+          "body": { "expr": "state", "name": "newMessage" },
+          "onSuccess": [
+            { "do": "confirm", "id": { "expr": "var", "name": "updateId" } },
+            { "do": "set", "target": "newMessage", "value": { "expr": "lit", "value": "" } }
+          ],
+          "onError": [
+            { "do": "reject", "id": { "expr": "var", "name": "updateId" } }
+          ]
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "if",
+        "condition": { "expr": "not", "operand": { "expr": "state", "name": "connected" } },
+        "then": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "className": { "expr": "lit", "value": "status disconnected" } },
+          "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Disconnected. Reconnecting..." } }]
+        }
+      },
+      {
+        "kind": "each",
+        "items": { "expr": "state", "name": "messages" },
+        "as": "msg",
+        "key": { "expr": "var", "name": "msg", "path": "id" },
+        "body": {
+          "kind": "element",
+          "tag": "div",
+          "props": { "className": { "expr": "lit", "value": "message" } },
+          "children": [{ "kind": "text", "value": { "expr": "var", "name": "msg", "path": "text" } }]
+        }
+      },
+      {
+        "kind": "element",
+        "tag": "input",
+        "props": {
+          "value": { "expr": "state", "name": "newMessage" },
+          "onInput": { "event": "input", "action": "updateInput" },
+          "onKeydown": { "event": "keydown", "action": "handleKeydown" }
+        }
+      }
+    ]
+  }
+}
+```

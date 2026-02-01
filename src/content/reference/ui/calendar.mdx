@@ -1,0 +1,156 @@
+---
+title: Calendar
+description: Calendar view for date display and selection
+---
+
+# Calendar
+
+A calendar component for displaying and selecting dates.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "Calendar",
+  "props": {
+    "value": { "expr": "state", "name": "selectedDate" },
+    "onSelect": { "event": "select", "action": "handleDateSelect" }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `Expression` | - | Selected date(s) |
+| `onSelect` | `EventHandler` | - | Called when date is selected |
+| `month` | `Expression` | Current | Displayed month (1-12) |
+| `year` | `Expression` | Current | Displayed year |
+| `onMonthChange` | `EventHandler` | - | Called when month changes |
+| `highlightedDates` | `Expression` | `[]` | Dates to highlight |
+| `disabledDates` | `Expression` | `[]` | Dates to disable |
+| `weekStartsOn` | `Expression` | `0` | Week start (0=Sun, 1=Mon) |
+| `locale` | `Expression` | `"en-US"` | Locale for formatting |
+| `mode` | `Expression` | `"single"` | Selection mode |
+
+## Selection Modes
+
+| Mode | Description |
+|------|-------------|
+| `single` | Select one date |
+| `multiple` | Select multiple dates |
+| `range` | Select a date range |
+
+## Examples
+
+### Event Calendar
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "selectedDate": { "type": "string", "initial": "" },
+    "events": {
+      "type": "list",
+      "initial": [
+        { "date": "2024-01-15", "title": "Meeting" },
+        { "date": "2024-01-20", "title": "Conference" }
+      ]
+    }
+  },
+  "actions": [
+    {
+      "name": "selectDate",
+      "steps": [{ "do": "set", "target": "selectedDate", "value": { "expr": "var", "name": "payload" } }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "Calendar",
+    "props": {
+      "value": { "expr": "state", "name": "selectedDate" },
+      "onSelect": { "event": "select", "action": "selectDate" },
+      "highlightedDates": {
+        "expr": "call",
+        "target": { "expr": "state", "name": "events" },
+        "method": "map",
+        "args": [{
+          "expr": "lambda",
+          "param": "e",
+          "body": { "expr": "get", "base": { "expr": "var", "name": "e" }, "path": "date" }
+        }]
+      }
+    }
+  }
+}
+```
+
+### Date Range Selection
+
+```json
+{
+  "kind": "component",
+  "name": "Calendar",
+  "props": {
+    "value": { "expr": "state", "name": "dateRange" },
+    "onSelect": { "event": "select", "action": "setDateRange" },
+    "mode": { "expr": "lit", "value": "range" }
+  }
+}
+```
+
+### Monday Start
+
+```json
+{
+  "kind": "component",
+  "name": "Calendar",
+  "props": {
+    "value": { "expr": "state", "name": "date" },
+    "onSelect": { "event": "select", "action": "setDate" },
+    "weekStartsOn": { "expr": "lit", "value": 1 },
+    "locale": { "expr": "lit", "value": "de-DE" }
+  }
+}
+```
+
+### With Disabled Dates
+
+```json
+{
+  "kind": "component",
+  "name": "Calendar",
+  "props": {
+    "value": { "expr": "state", "name": "appointmentDate" },
+    "onSelect": { "event": "select", "action": "setAppointment" },
+    "disabledDates": { "expr": "state", "name": "unavailableDates" }
+  }
+}
+```
+
+## Styling
+
+CSS classes:
+
+- `.calendar` - Main container
+- `.calendar-header` - Month/year header
+- `.calendar-nav` - Navigation buttons
+- `.calendar-weekdays` - Weekday labels
+- `.calendar-grid` - Day grid
+- `.calendar-day` - Day cell
+- `.calendar-day--today` - Today
+- `.calendar-day--selected` - Selected
+- `.calendar-day--highlighted` - Highlighted (event)
+- `.calendar-day--disabled` - Disabled
+- `.calendar-day--range-start` - Range start
+- `.calendar-day--range-end` - Range end
+- `.calendar-day--in-range` - In range
+
+## Accessibility
+
+- Full keyboard navigation
+- ARIA grid role
+- Screen reader support for date announcements
+- Focus visible indicators

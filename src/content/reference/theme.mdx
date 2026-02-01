@@ -1,0 +1,193 @@
+---
+title: Theme System
+description: CSS variable-based theming with light/dark/system mode support
+---
+
+# Theme System
+
+Constela provides a CSS variable-based theme system with support for light, dark, and system color schemes. The theme system is compatible with shadcn/ui color tokens.
+
+## Configuration
+
+Add a `theme` field to your program:
+
+```json
+{
+  "theme": {
+    "mode": "system",
+    "colors": {
+      "primary": "hsl(220 90% 56%)",
+      "primary-foreground": "hsl(0 0% 100%)",
+      "background": "hsl(0 0% 100%)",
+      "foreground": "hsl(222 47% 11%)",
+      "muted": "hsl(210 40% 96%)",
+      "muted-foreground": "hsl(215 16% 47%)",
+      "border": "hsl(214 32% 91%)"
+    },
+    "darkColors": {
+      "background": "hsl(222 47% 11%)",
+      "foreground": "hsl(210 40% 98%)",
+      "muted": "hsl(217 33% 17%)",
+      "muted-foreground": "hsl(215 20% 65%)",
+      "border": "hsl(217 33% 17%)"
+    },
+    "fonts": {
+      "sans": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "cssPrefix": "app"
+  }
+}
+```
+
+## ThemeConfig Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `mode` | `'light' \| 'dark' \| 'system'` | Color scheme mode |
+| `colors` | `ThemeColors` | Light mode color tokens |
+| `darkColors` | `ThemeColors` | Dark mode color tokens (overrides) |
+| `fonts` | `ThemeFonts` | Font family definitions |
+| `cssPrefix` | `string` | CSS variable prefix |
+
+## Color Tokens
+
+The following color tokens are supported (shadcn/ui compatible):
+
+| Token | Description |
+|-------|-------------|
+| `primary` | Primary brand color |
+| `primary-foreground` | Text on primary background |
+| `secondary` | Secondary color |
+| `secondary-foreground` | Text on secondary background |
+| `destructive` | Destructive/error color |
+| `destructive-foreground` | Text on destructive background |
+| `background` | Page background |
+| `foreground` | Default text color |
+| `muted` | Muted background |
+| `muted-foreground` | Muted text color |
+| `accent` | Accent color for highlights |
+| `accent-foreground` | Text on accent background |
+| `popover` | Popover background |
+| `popover-foreground` | Popover text |
+| `card` | Card background |
+| `card-foreground` | Card text |
+| `border` | Border color |
+| `input` | Input border color |
+| `ring` | Focus ring color |
+
+## CSS Variables
+
+With `cssPrefix: "app"`, CSS variables are generated as:
+
+```css
+:root {
+  --app-primary: hsl(220 90% 56%);
+  --app-background: hsl(0 0% 100%);
+  --font-sans: Inter, system-ui, sans-serif;
+  /* ... */
+}
+
+.dark {
+  --app-background: hsl(222 47% 11%);
+  /* ... */
+}
+```
+
+## Runtime API
+
+```typescript
+import { createThemeProvider } from '@constela/runtime';
+
+const theme = createThemeProvider({
+  config: program.theme,
+  storageKey: 'app-theme',
+  useCookies: true, // For SSR support
+});
+
+// Get current mode
+theme.getMode(); // 'light' | 'dark' | 'system'
+
+// Set mode
+theme.setMode('dark');
+
+// Subscribe to changes
+theme.subscribe((resolved) => {
+  console.log(resolved.resolvedMode); // 'light' or 'dark'
+});
+
+// Cleanup
+theme.destroy();
+```
+
+## SSR Support
+
+For SSR, use cookie-based persistence:
+
+```json
+{
+  "state": {
+    "theme": {
+      "type": "string",
+      "initial": { "expr": "cookie", "key": "theme", "default": "system" }
+    }
+  }
+}
+```
+
+This reads the theme preference from cookies during SSR, preventing flash of unstyled content.
+
+## Theme Toggle Example
+
+```json
+{
+  "version": "1.0",
+  "theme": {
+    "mode": "system",
+    "colors": { "primary": "hsl(220 90% 56%)" },
+    "darkColors": { "primary": "hsl(220 90% 70%)" }
+  },
+  "state": {
+    "mode": { "type": "string", "initial": "system" }
+  },
+  "actions": [
+    {
+      "name": "setTheme",
+      "steps": [
+        { "do": "set", "target": "mode", "value": { "expr": "var", "name": "payload" } },
+        { "do": "storage", "operation": "set", "key": { "expr": "lit", "value": "theme" }, "value": { "expr": "var", "name": "payload" }, "storage": "local" }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "light" } }
+        },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Light" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "dark" } }
+        },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Dark" } }]
+      },
+      {
+        "kind": "element",
+        "tag": "button",
+        "props": {
+          "onClick": { "event": "click", "action": "setTheme", "payload": { "expr": "lit", "value": "system" } }
+        },
+        "children": [{ "kind": "text", "value": { "expr": "lit", "value": "System" } }]
+      }
+    ]
+  }
+}
+```

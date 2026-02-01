@@ -1,0 +1,359 @@
+---
+title: Charts
+description: 12 chart types with animations and interactive features
+---
+
+# Charts
+
+A comprehensive charting component supporting 12 chart types with animations, tooltips, and interactivity.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "line" },
+    "data": { "expr": "state", "name": "chartData" }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `type` | `Expression` | Required | Chart type |
+| `data` | `Expression` | Required | Chart data |
+| `options` | `Expression` | `{}` | Chart options |
+| `width` | `Expression` | `"100%"` | Chart width |
+| `height` | `Expression` | `400` | Chart height |
+| `onClick` | `EventHandler` | - | Click handler |
+| `onHover` | `EventHandler` | - | Hover handler |
+
+## Chart Types
+
+| Type | Description |
+|------|-------------|
+| `line` | Line chart |
+| `bar` | Vertical bar chart |
+| `horizontalBar` | Horizontal bar chart |
+| `pie` | Pie chart |
+| `doughnut` | Doughnut chart |
+| `area` | Area chart |
+| `scatter` | Scatter plot |
+| `radar` | Radar/spider chart |
+| `polar` | Polar area chart |
+| `bubble` | Bubble chart |
+| `histogram` | Histogram |
+| `candlestick` | Candlestick chart |
+| `treemap` | Treemap visualization |
+
+## Data Structure
+
+```typescript
+interface ChartData {
+  labels: string[];
+  datasets: Dataset[];
+}
+
+interface Dataset {
+  label: string;
+  data: number[] | Point[];
+  backgroundColor?: string | string[];
+  borderColor?: string;
+  borderWidth?: number;
+  fill?: boolean;
+  tension?: number; // For curved lines
+}
+
+interface Point {
+  x: number;
+  y: number;
+  r?: number; // For bubble charts
+}
+```
+
+## Examples
+
+### Line Chart
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "chartData": {
+      "type": "object",
+      "initial": {
+        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        "datasets": [{
+          "label": "Sales",
+          "data": [65, 59, 80, 81, 56, 55],
+          "borderColor": "hsl(220, 90%, 56%)",
+          "tension": 0.4
+        }]
+      }
+    }
+  },
+  "view": {
+    "kind": "component",
+    "name": "Chart",
+    "props": {
+      "type": { "expr": "lit", "value": "line" },
+      "data": { "expr": "state", "name": "chartData" },
+      "options": { "expr": "lit", "value": {
+        "responsive": true,
+        "animation": { "duration": 750, "easing": "easeOutQuart" },
+        "plugins": {
+          "legend": { "position": "top" },
+          "tooltip": { "enabled": true }
+        },
+        "scales": {
+          "y": { "beginAtZero": true }
+        }
+      }}
+    }
+  }
+}
+```
+
+### Bar Chart
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "bar" },
+    "data": { "expr": "lit", "value": {
+      "labels": ["Red", "Blue", "Yellow", "Green", "Purple"],
+      "datasets": [{
+        "label": "Votes",
+        "data": [12, 19, 3, 5, 2],
+        "backgroundColor": [
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(54, 162, 235, 0.8)",
+          "rgba(255, 206, 86, 0.8)",
+          "rgba(75, 192, 192, 0.8)",
+          "rgba(153, 102, 255, 0.8)"
+        ]
+      }]
+    }}
+  }
+}
+```
+
+### Pie Chart
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "pie" },
+    "data": { "expr": "state", "name": "marketShare" },
+    "options": { "expr": "lit", "value": {
+      "plugins": {
+        "legend": { "position": "right" },
+        "tooltip": {
+          "callbacks": {
+            "label": "function(ctx) { return ctx.label + ': ' + ctx.raw + '%'; }"
+          }
+        }
+      }
+    }}
+  }
+}
+```
+
+### Area Chart
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "area" },
+    "data": { "expr": "lit", "value": {
+      "labels": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      "datasets": [{
+        "label": "Traffic",
+        "data": [1200, 1900, 3000, 5000, 4000],
+        "fill": true,
+        "backgroundColor": "rgba(59, 130, 246, 0.3)",
+        "borderColor": "rgb(59, 130, 246)"
+      }]
+    }}
+  }
+}
+```
+
+### Scatter Plot
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "scatter" },
+    "data": { "expr": "lit", "value": {
+      "datasets": [{
+        "label": "Points",
+        "data": [
+          { "x": 10, "y": 20 },
+          { "x": 15, "y": 25 },
+          { "x": 20, "y": 10 },
+          { "x": 25, "y": 30 }
+        ],
+        "backgroundColor": "rgb(255, 99, 132)"
+      }]
+    }}
+  }
+}
+```
+
+### Radar Chart
+
+```json
+{
+  "kind": "component",
+  "name": "Chart",
+  "props": {
+    "type": { "expr": "lit", "value": "radar" },
+    "data": { "expr": "lit", "value": {
+      "labels": ["Speed", "Power", "Defense", "Accuracy", "Stamina"],
+      "datasets": [{
+        "label": "Player A",
+        "data": [65, 80, 70, 90, 75],
+        "borderColor": "rgb(255, 99, 132)",
+        "backgroundColor": "rgba(255, 99, 132, 0.2)"
+      }, {
+        "label": "Player B",
+        "data": [80, 60, 85, 70, 90],
+        "borderColor": "rgb(54, 162, 235)",
+        "backgroundColor": "rgba(54, 162, 235, 0.2)"
+      }]
+    }}
+  }
+}
+```
+
+### Real-time Updates
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "chartData": { "type": "object", "initial": { "labels": [], "datasets": [{ "label": "CPU", "data": [] }] } }
+  },
+  "lifecycle": { "onMount": "startMonitoring" },
+  "actions": [
+    {
+      "name": "startMonitoring",
+      "steps": [{
+        "do": "interval",
+        "ms": { "expr": "lit", "value": 1000 },
+        "action": "updateChart"
+      }]
+    },
+    {
+      "name": "updateChart",
+      "steps": [{
+        "do": "fetch",
+        "url": { "expr": "lit", "value": "/api/metrics" },
+        "onSuccess": [{
+          "do": "setPath",
+          "target": "chartData",
+          "path": { "expr": "lit", "value": ["datasets", 0, "data"] },
+          "value": { "expr": "var", "name": "response", "path": "cpuHistory" }
+        }]
+      }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "Chart",
+    "props": {
+      "type": { "expr": "lit", "value": "line" },
+      "data": { "expr": "state", "name": "chartData" },
+      "options": { "expr": "lit", "value": {
+        "animation": false,
+        "scales": { "x": { "display": false } }
+      }}
+    }
+  }
+}
+```
+
+## Chart Options
+
+### Animation
+
+```json
+{
+  "animation": {
+    "duration": 1000,
+    "easing": "easeOutQuart",
+    "delay": 0
+  }
+}
+```
+
+**Easing functions:** `linear`, `easeInQuad`, `easeOutQuad`, `easeInOutQuad`, `easeInCubic`, `easeOutCubic`, `easeInQuart`, `easeOutQuart`, `easeInOutQuart`
+
+### Scales
+
+```json
+{
+  "scales": {
+    "x": {
+      "display": true,
+      "title": { "display": true, "text": "Month" }
+    },
+    "y": {
+      "beginAtZero": true,
+      "max": 100,
+      "title": { "display": true, "text": "Value" }
+    }
+  }
+}
+```
+
+### Plugins
+
+```json
+{
+  "plugins": {
+    "legend": {
+      "display": true,
+      "position": "top"
+    },
+    "tooltip": {
+      "enabled": true,
+      "mode": "index"
+    },
+    "title": {
+      "display": true,
+      "text": "Monthly Sales"
+    }
+  }
+}
+```
+
+## Styling
+
+CSS classes:
+
+- `.chart-container` - Main container
+- `.chart-canvas` - Canvas element
+- `.chart-legend` - Legend container
+- `.chart-tooltip` - Tooltip container
+- `.chart-loading` - Loading state
+
+## Accessibility
+
+- ARIA labels for chart elements
+- Keyboard navigation for data points
+- High contrast mode support
+- Screen reader descriptions for data

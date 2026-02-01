@@ -1,0 +1,212 @@
+---
+title: VirtualScroll
+description: Virtualized list for efficiently rendering large datasets
+---
+
+# VirtualScroll
+
+A virtualized list component that efficiently renders large datasets by only rendering visible items.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "VirtualScroll",
+  "props": {
+    "items": { "expr": "state", "name": "largeList" },
+    "itemHeight": { "expr": "lit", "value": 50 },
+    "containerHeight": { "expr": "lit", "value": 400 }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `Expression` | `[]` | Data array to render |
+| `itemHeight` | `Expression` | Required | Height of each item in pixels |
+| `containerHeight` | `Expression` | Required | Height of scroll container |
+| `overscan` | `Expression` | `5` | Extra items to render above/below |
+| `renderItem` | `Expression` | - | Custom item renderer |
+| `getItemKey` | `Expression` | - | Key extraction function |
+| `onScroll` | `EventHandler` | - | Scroll event handler |
+| `onReachEnd` | `EventHandler` | - | Called when scrolled to end |
+| `loading` | `Expression` | `false` | Loading state |
+| `loadingComponent` | `Expression` | - | Loading indicator |
+
+## Examples
+
+### Basic List
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "items": {
+      "type": "list",
+      "initial": []
+    }
+  },
+  "lifecycle": {
+    "onMount": "loadItems"
+  },
+  "actions": [
+    {
+      "name": "loadItems",
+      "steps": [{
+        "do": "set",
+        "target": "items",
+        "value": {
+          "expr": "array",
+          "elements": [
+            { "expr": "lit", "value": { "id": 1, "name": "Item 1" } },
+            { "expr": "lit", "value": { "id": 2, "name": "Item 2" } }
+          ]
+        }
+      }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "VirtualScroll",
+    "props": {
+      "items": { "expr": "state", "name": "items" },
+      "itemHeight": { "expr": "lit", "value": 60 },
+      "containerHeight": { "expr": "lit", "value": 500 },
+      "renderItem": {
+        "kind": "element",
+        "tag": "div",
+        "props": { "className": { "expr": "lit", "value": "list-item" } },
+        "children": [
+          { "kind": "text", "value": { "expr": "var", "name": "item", "path": "name" } }
+        ]
+      }
+    }
+  }
+}
+```
+
+### Infinite Scroll
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "items": { "type": "list", "initial": [] },
+    "page": { "type": "number", "initial": 1 },
+    "hasMore": { "type": "boolean", "initial": true },
+    "loading": { "type": "boolean", "initial": false }
+  },
+  "actions": [
+    {
+      "name": "loadMore",
+      "steps": [
+        {
+          "do": "if",
+          "condition": {
+            "expr": "bin",
+            "op": "||",
+            "left": { "expr": "state", "name": "loading" },
+            "right": { "expr": "not", "operand": { "expr": "state", "name": "hasMore" } }
+          },
+          "then": [],
+          "else": [
+            { "do": "set", "target": "loading", "value": { "expr": "lit", "value": true } },
+            {
+              "do": "fetch",
+              "url": {
+                "expr": "concat",
+                "items": [
+                  { "expr": "lit", "value": "/api/items?page=" },
+                  { "expr": "state", "name": "page" }
+                ]
+              },
+              "onSuccess": [
+                { "do": "update", "target": "items", "operation": "push", "value": { "expr": "var", "name": "response", "path": "items" } },
+                { "do": "update", "target": "page", "operation": "increment" },
+                { "do": "set", "target": "hasMore", "value": { "expr": "var", "name": "response", "path": "hasMore" } },
+                { "do": "set", "target": "loading", "value": { "expr": "lit", "value": false } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "VirtualScroll",
+    "props": {
+      "items": { "expr": "state", "name": "items" },
+      "itemHeight": { "expr": "lit", "value": 72 },
+      "containerHeight": { "expr": "lit", "value": 600 },
+      "overscan": { "expr": "lit", "value": 10 },
+      "onReachEnd": { "event": "reachEnd", "action": "loadMore" },
+      "loading": { "expr": "state", "name": "loading" }
+    }
+  }
+}
+```
+
+### Variable Height Items
+
+For variable height items, use `itemHeight` as an estimate and enable dynamic measurement:
+
+```json
+{
+  "kind": "component",
+  "name": "VirtualScroll",
+  "props": {
+    "items": { "expr": "state", "name": "messages" },
+    "itemHeight": { "expr": "lit", "value": 80 },
+    "containerHeight": { "expr": "lit", "value": 500 },
+    "dynamicHeight": { "expr": "lit", "value": true }
+  }
+}
+```
+
+### With Custom Key
+
+```json
+{
+  "kind": "component",
+  "name": "VirtualScroll",
+  "props": {
+    "items": { "expr": "state", "name": "products" },
+    "itemHeight": { "expr": "lit", "value": 100 },
+    "containerHeight": { "expr": "lit", "value": 600 },
+    "getItemKey": {
+      "expr": "lambda",
+      "param": "item",
+      "body": { "expr": "get", "base": { "expr": "var", "name": "item" }, "path": "sku" }
+    }
+  }
+}
+```
+
+## Performance Tips
+
+1. **Use stable keys** - Provide unique keys via `getItemKey` for optimal reconciliation
+2. **Increase overscan** - Higher overscan reduces flicker during fast scrolling
+3. **Memoize renderers** - Keep `renderItem` stable to prevent unnecessary re-renders
+4. **Batch updates** - Use `requestAnimationFrame` for scroll handlers
+
+## Styling
+
+CSS classes:
+
+- `.virtual-scroll` - Main container
+- `.virtual-scroll-viewport` - Visible area
+- `.virtual-scroll-spacer` - Height placeholder
+- `.virtual-scroll-content` - Items container
+- `.virtual-scroll-item` - Individual item
+- `.virtual-scroll-loading` - Loading indicator
+
+## Accessibility
+
+- ARIA listbox/option roles
+- Keyboard navigation (Arrow keys, Home, End)
+- Focus management within visible range
+- Screen reader support for list position

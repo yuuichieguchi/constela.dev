@@ -1,0 +1,153 @@
+---
+title: Tree
+description: Hierarchical tree view with expand/collapse functionality
+---
+
+# Tree
+
+A hierarchical tree view component with expand/collapse functionality.
+
+## Basic Usage
+
+```json
+{
+  "kind": "component",
+  "name": "Tree",
+  "props": {
+    "items": { "expr": "state", "name": "treeData" },
+    "onSelect": { "event": "select", "action": "handleNodeSelect" }
+  }
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `items` | `Expression` | `[]` | Tree data array |
+| `onSelect` | `EventHandler` | - | Called when node is selected |
+| `onExpand` | `EventHandler` | - | Called when node is expanded |
+| `onCollapse` | `EventHandler` | - | Called when node is collapsed |
+| `expandedKeys` | `Expression` | `[]` | Expanded node keys |
+| `selectedKey` | `Expression` | - | Selected node key |
+| `showIcons` | `Expression` | `true` | Show node icons |
+| `showLines` | `Expression` | `true` | Show connecting lines |
+| `selectable` | `Expression` | `true` | Allow selection |
+| `expandOnClick` | `Expression` | `true` | Expand on click |
+
+## Data Structure
+
+```typescript
+interface TreeNode {
+  key: string;
+  label: string;
+  icon?: string;
+  children?: TreeNode[];
+  disabled?: boolean;
+}
+```
+
+## Examples
+
+### File Explorer
+
+```json
+{
+  "version": "1.0",
+  "state": {
+    "files": {
+      "type": "list",
+      "initial": [
+        {
+          "key": "src",
+          "label": "src",
+          "icon": "folder",
+          "children": [
+            { "key": "src/index.ts", "label": "index.ts", "icon": "file-ts" },
+            { "key": "src/app.ts", "label": "app.ts", "icon": "file-ts" },
+            {
+              "key": "src/components",
+              "label": "components",
+              "icon": "folder",
+              "children": [
+                { "key": "src/components/Button.ts", "label": "Button.ts", "icon": "file-ts" }
+              ]
+            }
+          ]
+        },
+        { "key": "package.json", "label": "package.json", "icon": "file-json" }
+      ]
+    },
+    "expanded": { "type": "list", "initial": ["src"] },
+    "selected": { "type": "string", "initial": "" }
+  },
+  "actions": [
+    {
+      "name": "selectFile",
+      "steps": [{ "do": "set", "target": "selected", "value": { "expr": "var", "name": "payload" } }]
+    },
+    {
+      "name": "toggleExpand",
+      "steps": [{
+        "do": "if",
+        "condition": {
+          "expr": "call",
+          "target": { "expr": "state", "name": "expanded" },
+          "method": "includes",
+          "args": [{ "expr": "var", "name": "payload" }]
+        },
+        "then": [{ "do": "update", "target": "expanded", "operation": "remove", "value": { "expr": "var", "name": "payload" } }],
+        "else": [{ "do": "update", "target": "expanded", "operation": "push", "value": { "expr": "var", "name": "payload" } }]
+      }]
+    }
+  ],
+  "view": {
+    "kind": "component",
+    "name": "Tree",
+    "props": {
+      "items": { "expr": "state", "name": "files" },
+      "expandedKeys": { "expr": "state", "name": "expanded" },
+      "selectedKey": { "expr": "state", "name": "selected" },
+      "onSelect": { "event": "select", "action": "selectFile" },
+      "onExpand": { "event": "expand", "action": "toggleExpand" },
+      "onCollapse": { "event": "collapse", "action": "toggleExpand" }
+    }
+  }
+}
+```
+
+### Navigation Menu
+
+```json
+{
+  "kind": "component",
+  "name": "Tree",
+  "props": {
+    "items": { "expr": "import", "name": "navigation" },
+    "onSelect": { "event": "select", "action": "navigate" },
+    "showLines": { "expr": "lit", "value": false },
+    "expandOnClick": { "expr": "lit", "value": true }
+  }
+}
+```
+
+## Styling
+
+CSS classes:
+
+- `.tree` - Main container
+- `.tree-node` - Node container
+- `.tree-node--expanded` - Expanded node
+- `.tree-node--selected` - Selected node
+- `.tree-node--disabled` - Disabled node
+- `.tree-toggle` - Expand/collapse button
+- `.tree-icon` - Node icon
+- `.tree-label` - Node label
+- `.tree-children` - Children container
+- `.tree-line` - Connecting line
+
+## Accessibility
+
+- ARIA tree/treeitem roles
+- Full keyboard navigation (Arrow keys, Enter, Space)
+- Screen reader announcements for expand/collapse state

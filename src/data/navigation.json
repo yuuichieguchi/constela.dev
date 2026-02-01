@@ -39,6 +39,15 @@
       ]
     },
     {
+      "title": "Advanced",
+      "items": [
+        { "title": "Theme System", "href": "/reference/theme" },
+        { "title": "Islands Architecture", "href": "/reference/islands" },
+        { "title": "Streaming SSR", "href": "/reference/streaming" },
+        { "title": "Realtime Features", "href": "/reference/realtime" }
+      ]
+    },
+    {
       "title": "@constela/core",
       "items": [
         { "title": "Overview", "href": "/reference/core" },
@@ -135,6 +144,13 @@
         { "title": "Installation", "href": "/reference/ui/installation" },
         { "title": "Components", "href": "/reference/ui/components" },
         { "title": "Style System", "href": "/reference/ui/style-system" },
+        { "title": "DatePicker", "href": "/reference/ui/datepicker" },
+        { "title": "Calendar", "href": "/reference/ui/calendar" },
+        { "title": "Tree", "href": "/reference/ui/tree" },
+        { "title": "Accordion", "href": "/reference/ui/accordion" },
+        { "title": "DataTable", "href": "/reference/ui/data-table" },
+        { "title": "VirtualScroll", "href": "/reference/ui/virtual-scroll" },
+        { "title": "Charts", "href": "/reference/ui/charts" },
         { "title": "Catalog", "href": "/ui" }
       ]
     },
