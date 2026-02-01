@@ -5,9 +5,27 @@
       "name": "Button",
       "description": "Clickable button with variants and sizes",
       "category": "basic",
-      "variants": ["default", "destructive", "outline", "secondary", "ghost", "link"],
-      "sizes": ["default", "sm", "lg", "icon"],
-      "params": ["variant", "size", "disabled", "type", "ariaLabel"],
+      "variants": [
+        "default",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link"
+      ],
+      "sizes": [
+        "default",
+        "sm",
+        "lg",
+        "icon"
+      ],
+      "params": [
+        "variant",
+        "size",
+        "disabled",
+        "type",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Button\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"size\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Click me\" } }\n  ]\n}"
     },
     {
@@ -15,8 +33,21 @@
       "name": "Input",
       "description": "Text input field with validation support",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "placeholder", "disabled", "required", "type", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "placeholder",
+        "disabled",
+        "required",
+        "type",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Input\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter text...\" },\n    \"type\": { \"expr\": \"lit\", \"value\": \"text\" }\n  }\n}"
     },
     {
@@ -24,8 +55,21 @@
       "name": "Textarea",
       "description": "Multi-line text input",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "placeholder", "disabled", "required", "rows", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "placeholder",
+        "disabled",
+        "required",
+        "rows",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Textarea\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter message...\" },\n    \"rows\": { \"expr\": \"lit\", \"value\": 4 }\n  }\n}"
     },
     {
@@ -33,8 +77,20 @@
       "name": "Select",
       "description": "Dropdown selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "disabled", "required", "placeholder", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "disabled",
+        "required",
+        "placeholder",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Select\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Select option...\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"option\", \"props\": { \"value\": { \"expr\": \"lit\", \"value\": \"1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 1\" } }] }\n  ]\n}"
     },
     {
@@ -42,8 +98,20 @@
       "name": "Checkbox",
       "description": "Checkbox input for boolean selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "required", "name", "id", "ariaLabel", "value"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "required",
+        "name",
+        "id",
+        "ariaLabel",
+        "value"
+      ],
       "example": "{\n  \"state\": {\n    \"isChecked\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggle\",\n      \"steps\": [{ \"do\": \"update\", \"target\": \"isChecked\", \"operation\": \"toggle\" }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"label\",\n    \"props\": {\n      \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"checkbox\" },\n          \"aria-checked\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded border bg-primary flex items-center justify-center\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded border bg-background\" }\n          },\n          \"onClick\": { \"action\": \"toggle\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"if\",\n            \"condition\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n            \"then\": {\n              \"kind\": \"element\",\n              \"tag\": \"span\",\n              \"props\": {\n                \"class\": { \"expr\": \"lit\", \"value\": \"text-primary-foreground text-xs\" }\n              },\n              \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"✓\" } }]\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Accept terms\" } }]\n      }\n    ]\n  }\n}"
     },
     {
@@ -51,8 +119,19 @@
       "name": "Radio",
       "description": "Radio button for single selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "name", "value", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "name",
+        "value",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"state\": {\n    \"selected\": { \"type\": \"string\", \"initial\": \"option1\" }\n  },\n  \"actions\": [\n    { \"name\": \"selectOption1\", \"steps\": [{ \"do\": \"set\", \"target\": \"selected\", \"value\": { \"expr\": \"lit\", \"value\": \"option1\" } }] },\n    { \"name\": \"selectOption2\", \"steps\": [{ \"do\": \"set\", \"target\": \"selected\", \"value\": { \"expr\": \"lit\", \"value\": \"option2\" } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"role\": { \"expr\": \"lit\", \"value\": \"radiogroup\" },\n      \"class\": { \"expr\": \"lit\", \"value\": \"flex flex-col gap-2\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"label\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"role\": { \"expr\": \"lit\", \"value\": \"radio\" },\n              \"aria-checked\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option1\" } },\n              \"class\": {\n                \"expr\": \"cond\",\n                \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option1\" } },\n                \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-4 border-primary\" },\n                \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-2 border-muted-foreground\" }\n              },\n              \"onClick\": { \"action\": \"selectOption1\" }\n            }\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"span\",\n            \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" } },\n            \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 1\" } }]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"label\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"role\": { \"expr\": \"lit\", \"value\": \"radio\" },\n              \"aria-checked\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option2\" } },\n              \"class\": {\n                \"expr\": \"cond\",\n                \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option2\" } },\n                \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-4 border-primary\" },\n                \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-2 border-muted-foreground\" }\n              },\n              \"onClick\": { \"action\": \"selectOption2\" }\n            }\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"span\",\n            \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" } },\n            \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 2\" } }]\n          }\n        ]\n      }\n    ]\n  }\n}"
     },
     {
@@ -60,8 +139,18 @@
       "name": "Switch",
       "description": "Toggle switch for on/off states",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"state\": {\n    \"isEnabled\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggle\",\n      \"steps\": [{ \"do\": \"update\", \"target\": \"isEnabled\", \"operation\": \"toggle\" }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"button\",\n    \"props\": {\n      \"role\": { \"expr\": \"lit\", \"value\": \"switch\" },\n      \"aria-checked\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n      \"class\": {\n        \"expr\": \"cond\",\n        \"if\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n        \"then\": { \"expr\": \"lit\", \"value\": \"relative inline-flex h-6 w-11 items-center rounded-full bg-primary\" },\n        \"else\": { \"expr\": \"lit\", \"value\": \"relative inline-flex h-6 w-11 items-center rounded-full bg-muted\" }\n      },\n      \"onClick\": { \"action\": \"toggle\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n            \"then\": { \"expr\": \"lit\", \"value\": \"inline-block h-4 w-4 rounded-full bg-white translate-x-6\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"inline-block h-4 w-4 rounded-full bg-white translate-x-1\" }\n          }\n        }\n      }\n    ]\n  }\n}"
     },
     {
@@ -69,8 +158,14 @@
       "name": "Alert",
       "description": "Alert message with icon",
       "category": "feedback",
-      "variants": ["default", "destructive"],
-      "params": ["variant", "title"],
+      "variants": [
+        "default",
+        "destructive"
+      ],
+      "params": [
+        "variant",
+        "title"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Alert\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"title\": { \"expr\": \"lit\", \"value\": \"Heads up!\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This is an alert message.\" } }\n  ]\n}"
     },
     {
@@ -78,8 +173,14 @@
       "name": "Card",
       "description": "Card container for content",
       "category": "feedback",
-      "variants": ["default", "outline"],
-      "params": ["variant", "className"],
+      "variants": [
+        "default",
+        "outline"
+      ],
+      "params": [
+        "variant",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Card\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"h3\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card Title\" } }] },\n    { \"kind\": \"element\", \"tag\": \"p\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card content goes here.\" } }] }\n  ]\n}"
     },
     {
@@ -87,8 +188,15 @@
       "name": "Badge",
       "description": "Inline badge for labels",
       "category": "feedback",
-      "variants": ["default", "secondary", "destructive", "outline"],
-      "params": ["variant"],
+      "variants": [
+        "default",
+        "secondary",
+        "destructive",
+        "outline"
+      ],
+      "params": [
+        "variant"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Badge\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"New\" } }\n  ]\n}"
     },
     {
@@ -96,7 +204,11 @@
       "name": "Skeleton",
       "description": "Loading placeholder with animation",
       "category": "feedback",
-      "params": ["width", "height", "className"],
+      "params": [
+        "width",
+        "height",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Skeleton\",\n  \"props\": {\n    \"width\": { \"expr\": \"lit\", \"value\": \"100%\" },\n    \"height\": { \"expr\": \"lit\", \"value\": \"20px\" }\n  }\n}"
     },
     {
@@ -104,8 +216,17 @@
       "name": "Avatar",
       "description": "User avatar with fallback",
       "category": "feedback",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["src", "alt", "fallback", "size"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "src",
+        "alt",
+        "fallback",
+        "size"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Avatar\",\n  \"props\": {\n    \"src\": { \"expr\": \"lit\", \"value\": \"/avatar.png\" },\n    \"alt\": { \"expr\": \"lit\", \"value\": \"User\" },\n    \"fallback\": { \"expr\": \"lit\", \"value\": \"JD\" }\n  }\n}"
     },
     {
@@ -113,8 +234,14 @@
       "name": "Dialog",
       "description": "Modal dialog with ARIA support",
       "category": "overlay",
-      "params": ["open", "title"],
-      "accessibility": ["role=dialog", "aria-modal"],
+      "params": [
+        "open",
+        "title"
+      ],
+      "accessibility": [
+        "role=dialog",
+        "aria-modal"
+      ],
       "example": "{\n  \"state\": {\n    \"isOpen\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"open\", \"steps\": [{ \"do\": \"set\", \"target\": \"isOpen\", \"value\": { \"expr\": \"lit\", \"value\": true } }] },\n    { \"name\": \"close\", \"steps\": [{ \"do\": \"set\", \"target\": \"isOpen\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground\" },\n          \"onClick\": { \"action\": \"open\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Open Dialog\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"class\": { \"expr\": \"lit\", \"value\": \"fixed inset-0 z-50 flex items-center justify-center\" }\n          },\n          \"children\": [\n            {\n              \"kind\": \"element\",\n              \"tag\": \"div\",\n              \"props\": {\n                \"class\": { \"expr\": \"lit\", \"value\": \"fixed inset-0 bg-black/50\" },\n                \"onClick\": { \"action\": \"close\" }\n              }\n            },\n            {\n              \"kind\": \"element\",\n              \"tag\": \"div\",\n              \"props\": {\n                \"role\": { \"expr\": \"lit\", \"value\": \"dialog\" },\n                \"aria-modal\": { \"expr\": \"lit\", \"value\": true },\n                \"class\": { \"expr\": \"lit\", \"value\": \"relative z-10 rounded-lg bg-background p-6 shadow-lg w-full max-w-md\" }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"h2\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-lg font-semibold\" } },\n                  \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Confirm Action\" } }]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"p\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mt-2 text-sm text-muted-foreground\" } },\n                  \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Are you sure you want to proceed?\" } }]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"div\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mt-4 flex justify-end gap-2\" } },\n                  \"children\": [\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"button\",\n                      \"props\": {\n                        \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md border px-4 py-2 text-sm\" },\n                        \"onClick\": { \"action\": \"close\" }\n                      },\n                      \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Cancel\" } }]\n                    },\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"button\",\n                      \"props\": {\n                        \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground\" },\n                        \"onClick\": { \"action\": \"close\" }\n                      },\n                      \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Confirm\" } }]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     {
@@ -122,9 +249,19 @@
       "name": "Tooltip",
       "description": "Hover tooltip",
       "category": "overlay",
-      "positions": ["top", "right", "bottom", "left"],
-      "params": ["content", "position"],
-      "accessibility": ["role=tooltip"],
+      "positions": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ],
+      "params": [
+        "content",
+        "position"
+      ],
+      "accessibility": [
+        "role=tooltip"
+      ],
       "example": "{\n  \"state\": {\n    \"visible\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"show\", \"steps\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": true } }] },\n    { \"name\": \"hide\", \"steps\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative inline-flex\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-secondary px-3 py-1.5 text-sm\" },\n          \"onMouseEnter\": { \"action\": \"show\" },\n          \"onMouseLeave\": { \"action\": \"hide\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Hover me\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"visible\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"role\": { \"expr\": \"lit\", \"value\": \"tooltip\" },\n            \"class\": { \"expr\": \"lit\", \"value\": \"absolute bottom-full left-1/2 -translate-x-1/2 mb-2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap\" }\n          },\n          \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tooltip content\" } }]\n        }\n      }\n    ]\n  }\n}"
     },
     {
@@ -132,8 +269,16 @@
       "name": "Popover",
       "description": "Click-triggered popover",
       "category": "overlay",
-      "positions": ["top", "right", "bottom", "left"],
-      "params": ["open", "position"],
+      "positions": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ],
+      "params": [
+        "open",
+        "position"
+      ],
       "example": "{\n  \"state\": {\n    \"isOpen\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"toggle\", \"steps\": [{ \"do\": \"update\", \"target\": \"isOpen\", \"operation\": \"toggle\" }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative inline-block\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-secondary px-3 py-1.5 text-sm\" },\n          \"onClick\": { \"action\": \"toggle\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Open Popover\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"absolute top-full left-1/2 -translate-x-1/2 mt-2 rounded-lg border bg-card p-4 shadow-lg w-64 z-10\" } },\n          \"children\": [\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium text-sm\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Popover Title\" } }] },\n            { \"kind\": \"element\", \"tag\": \"p\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm text-muted-foreground mt-1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This is the popover content.\" } }] }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     {
@@ -141,9 +286,22 @@
       "name": "Toast",
       "description": "Notification toast",
       "category": "overlay",
-      "variants": ["default", "success", "error", "warning", "info"],
-      "params": ["variant", "title", "description"],
-      "accessibility": ["role=alert", "aria-live"],
+      "variants": [
+        "default",
+        "success",
+        "error",
+        "warning",
+        "info"
+      ],
+      "params": [
+        "variant",
+        "title",
+        "description"
+      ],
+      "accessibility": [
+        "role=alert",
+        "aria-live"
+      ],
       "example": "{\n  \"state\": {\n    \"visible\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"show\",\n      \"steps\": [\n        { \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": true } },\n        { \"do\": \"delay\", \"ms\": { \"expr\": \"lit\", \"value\": 3000 }, \"then\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground\" },\n          \"onClick\": { \"action\": \"show\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Show Toast\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"visible\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"role\": { \"expr\": \"lit\", \"value\": \"alert\" },\n            \"class\": { \"expr\": \"lit\", \"value\": \"absolute top-full left-0 mt-4 rounded-lg border bg-card p-4 shadow-lg\" }\n          },\n          \"children\": [\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Success!\" } }] },\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm text-muted-foreground\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Changes saved.\" } }] }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     {
@@ -151,9 +309,17 @@
       "name": "Tabs",
       "description": "Tab navigation",
       "category": "navigation",
-      "variants": ["default", "outline"],
-      "params": ["activeTab", "variant"],
-      "accessibility": ["role=tablist"],
+      "variants": [
+        "default",
+        "outline"
+      ],
+      "params": [
+        "activeTab",
+        "variant"
+      ],
+      "accessibility": [
+        "role=tablist"
+      ],
       "example": "{\n  \"state\": {\n    \"activeTab\": { \"type\": \"string\", \"initial\": \"tab1\" }\n  },\n  \"actions\": [\n    { \"name\": \"setTab1\", \"steps\": [{ \"do\": \"set\", \"target\": \"activeTab\", \"value\": { \"expr\": \"lit\", \"value\": \"tab1\" } }] },\n    { \"name\": \"setTab2\", \"steps\": [{ \"do\": \"set\", \"target\": \"activeTab\", \"value\": { \"expr\": \"lit\", \"value\": \"tab2\" } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"role\": { \"expr\": \"lit\", \"value\": \"tablist\" }, \"class\": { \"expr\": \"lit\", \"value\": \"border-b\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"tab\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"activeTab\" }, \"right\": { \"expr\": \"lit\", \"value\": \"tab1\" } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"border-b-2 border-primary px-4 py-2 text-sm font-medium\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"px-4 py-2 text-sm text-muted-foreground\" }\n          },\n          \"onClick\": { \"action\": \"setTab1\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tab 1\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"tab\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"activeTab\" }, \"right\": { \"expr\": \"lit\", \"value\": \"tab2\" } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"border-b-2 border-primary px-4 py-2 text-sm font-medium\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"px-4 py-2 text-sm text-muted-foreground\" }\n          },\n          \"onClick\": { \"action\": \"setTab2\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tab 2\" } }]\n      }\n    ]\n  }\n}"
     },
     {
@@ -161,8 +327,12 @@
       "name": "Breadcrumb",
       "description": "Breadcrumb navigation",
       "category": "navigation",
-      "params": ["separator"],
-      "accessibility": ["aria-label"],
+      "params": [
+        "separator"
+      ],
+      "accessibility": [
+        "aria-label"
+      ],
       "example": "{\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"nav\",\n    \"props\": { \"aria-label\": { \"expr\": \"lit\", \"value\": \"Breadcrumb\" }, \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center text-sm\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"a\",\n        \"props\": { \"href\": { \"expr\": \"lit\", \"value\": \"/\" }, \"class\": { \"expr\": \"lit\", \"value\": \"text-muted-foreground hover:text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Home\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mx-2 text-muted-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"/\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"a\",\n        \"props\": { \"href\": { \"expr\": \"lit\", \"value\": \"/products\" }, \"class\": { \"expr\": \"lit\", \"value\": \"text-muted-foreground hover:text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Products\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mx-2 text-muted-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"/\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Current\" } }]\n      }\n    ]\n  }\n}"
     },
     {
@@ -170,9 +340,19 @@
       "name": "Pagination",
       "description": "Page pagination",
       "category": "navigation",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["currentPage", "totalPages", "size"],
-      "accessibility": ["aria-label"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "currentPage",
+        "totalPages",
+        "size"
+      ],
+      "accessibility": [
+        "aria-label"
+      ],
       "example": "{\n  \"state\": {\n    \"currentPage\": { \"type\": \"number\", \"initial\": 1 }\n  },\n  \"actions\": [\n    { \"name\": \"setPage1\", \"steps\": [{ \"do\": \"set\", \"target\": \"currentPage\", \"value\": { \"expr\": \"lit\", \"value\": 1 } }] },\n    { \"name\": \"setPage2\", \"steps\": [{ \"do\": \"set\", \"target\": \"currentPage\", \"value\": { \"expr\": \"lit\", \"value\": 2 } }] },\n    {\n      \"name\": \"prevPage\",\n      \"steps\": [{\n        \"do\": \"set\",\n        \"target\": \"currentPage\",\n        \"value\": {\n          \"expr\": \"cond\",\n          \"if\": { \"expr\": \"bin\", \"op\": \">\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"then\": { \"expr\": \"bin\", \"op\": \"-\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"else\": { \"expr\": \"lit\", \"value\": 1 }\n        }\n      }]\n    },\n    {\n      \"name\": \"nextPage\",\n      \"steps\": [{\n        \"do\": \"set\",\n        \"target\": \"currentPage\",\n        \"value\": {\n          \"expr\": \"cond\",\n          \"if\": { \"expr\": \"bin\", \"op\": \"<\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 2 } },\n          \"then\": { \"expr\": \"bin\", \"op\": \"+\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"else\": { \"expr\": \"lit\", \"value\": 2 }\n        }\n      }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"nav\",\n    \"props\": { \"aria-label\": { \"expr\": \"lit\", \"value\": \"Pagination\" }, \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-1\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }, \"onClick\": { \"action\": \"prevPage\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"←\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md bg-primary text-primary-foreground\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }\n          },\n          \"onClick\": { \"action\": \"setPage1\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"1\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 2 } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md bg-primary text-primary-foreground\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }\n          },\n          \"onClick\": { \"action\": \"setPage2\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"2\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }, \"onClick\": { \"action\": \"nextPage\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"→\" } }]\n      }\n    ]\n  }\n}"
     },
     {
@@ -180,8 +360,18 @@
       "name": "Container",
       "description": "Max-width container",
       "category": "layout",
-      "sizes": ["sm", "md", "lg", "xl", "2xl", "full"],
-      "params": ["maxWidth", "className"],
+      "sizes": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl",
+        "full"
+      ],
+      "params": [
+        "maxWidth",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Container\",\n  \"props\": {\n    \"maxWidth\": { \"expr\": \"lit\", \"value\": \"lg\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Content here\" } }\n  ]\n}"
     },
     {
@@ -189,9 +379,25 @@
       "name": "Grid",
       "description": "CSS Grid layout",
       "category": "layout",
-      "cols": ["1", "2", "3", "4", "6", "12"],
-      "gaps": ["none", "sm", "md", "lg"],
-      "params": ["cols", "gap", "className"],
+      "cols": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "12"
+      ],
+      "gaps": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "params": [
+        "cols",
+        "gap",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Grid\",\n  \"props\": {\n    \"cols\": { \"expr\": \"lit\", \"value\": \"3\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 3\" } }] }\n  ]\n}"
     },
     {
@@ -199,18 +405,103 @@
       "name": "Stack",
       "description": "Flexbox stack layout",
       "category": "layout",
-      "directions": ["row", "column"],
-      "gaps": ["none", "sm", "md", "lg"],
-      "params": ["direction", "gap", "align", "justify", "className"],
+      "directions": [
+        "row",
+        "column"
+      ],
+      "gaps": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "params": [
+        "direction",
+        "gap",
+        "align",
+        "justify",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Stack\",\n  \"props\": {\n    \"direction\": { \"expr\": \"lit\", \"value\": \"column\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" },\n    \"align\": { \"expr\": \"lit\", \"value\": \"center\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] }\n  ]\n}"
+    },
+    {
+      "slug": "chart",
+      "name": "Chart",
+      "description": "Data visualization charts including line, bar, pie, area, and more",
+      "category": "data",
+      "variants": [
+        "line",
+        "bar",
+        "pie",
+        "area",
+        "donut",
+        "radar",
+        "scatter"
+      ],
+      "params": [
+        "type",
+        "data",
+        "width",
+        "height",
+        "colors",
+        "showGrid",
+        "showLabels",
+        "options"
+      ],
+      "example": "{\n  \"state\": {\n    \"chartData\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"labels\": [\n          \"Jan\",\n          \"Feb\",\n          \"Mar\",\n          \"Apr\",\n          \"May\"\n        ],\n        \"datasets\": [\n          {\n            \"label\": \"Sales\",\n            \"data\": [\n              12,\n              19,\n              15,\n              25,\n              22\n            ],\n            \"borderColor\": \"hsl(220, 90%, 56%)\",\n            \"backgroundColor\": \"hsla(220, 90%, 56%, 0.1)\",\n            \"fill\": true\n          }\n        ]\n      }\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"Chart\",\n    \"props\": {\n      \"type\": {\n        \"expr\": \"lit\",\n        \"value\": \"line\"\n      },\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"chartData\"\n      },\n      \"height\": {\n        \"expr\": \"lit\",\n        \"value\": 300\n      },\n      \"options\": {\n        \"expr\": \"lit\",\n        \"value\": {\n          \"responsive\": true,\n          \"maintainAspectRatio\": false\n        }\n      }\n    }\n  }\n}"
+    },
+    {
+      "slug": "data-table",
+      "name": "DataTable",
+      "description": "Data table with sorting, filtering, pagination and row selection",
+      "category": "data",
+      "params": [
+        "data",
+        "columns",
+        "pageSize",
+        "sortable",
+        "filterable",
+        "selectable",
+        "rowKey",
+        "onSort",
+        "onFilter",
+        "onPageChange",
+        "onSelectionChange"
+      ],
+      "example": "{\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": 1,\n          \"name\": \"Alice\",\n          \"email\": \"alice@example.com\",\n          \"role\": \"Admin\"\n        },\n        {\n          \"id\": 2,\n          \"name\": \"Bob\",\n          \"email\": \"bob@example.com\",\n          \"role\": \"User\"\n        },\n        {\n          \"id\": 3,\n          \"name\": \"Carol\",\n          \"email\": \"carol@example.com\",\n          \"role\": \"Editor\"\n        }\n      ]\n    },\n    \"page\": {\n      \"type\": \"number\",\n      \"initial\": 1\n    },\n    \"sort\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"key\": \"name\",\n        \"direction\": \"asc\"\n      }\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"handleSort\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"sort\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"handlePageChange\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"page\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"users\"\n      },\n      \"columns\": {\n        \"expr\": \"lit\",\n        \"value\": [\n          {\n            \"key\": \"name\",\n            \"title\": \"Name\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"email\",\n            \"title\": \"Email\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"role\",\n            \"title\": \"Role\",\n            \"sortable\": true\n          }\n        ]\n      },\n      \"rowKey\": {\n        \"expr\": \"lit\",\n        \"value\": \"id\"\n      },\n      \"pageSize\": {\n        \"expr\": \"lit\",\n        \"value\": 10\n      },\n      \"sortable\": {\n        \"expr\": \"lit\",\n        \"value\": true\n      },\n      \"onSort\": {\n        \"event\": \"sort\",\n        \"action\": \"handleSort\"\n      },\n      \"onPageChange\": {\n        \"event\": \"pageChange\",\n        \"action\": \"handlePageChange\"\n      }\n    }\n  }\n}"
     }
   ],
   "categories": [
-    { "id": "basic", "name": "Basic", "description": "Form inputs and buttons" },
-    { "id": "feedback", "name": "Feedback", "description": "Alerts, cards, and status indicators" },
-    { "id": "overlay", "name": "Overlay", "description": "Dialogs, tooltips, and popovers" },
-    { "id": "navigation", "name": "Navigation", "description": "Tabs, breadcrumbs, and pagination" },
-    { "id": "layout", "name": "Layout", "description": "Containers and layout primitives" }
+    {
+      "id": "basic",
+      "name": "Basic",
+      "description": "Form inputs and buttons"
+    },
+    {
+      "id": "feedback",
+      "name": "Feedback",
+      "description": "Alerts, cards, and status indicators"
+    },
+    {
+      "id": "overlay",
+      "name": "Overlay",
+      "description": "Dialogs, tooltips, and popovers"
+    },
+    {
+      "id": "navigation",
+      "name": "Navigation",
+      "description": "Tabs, breadcrumbs, and pagination"
+    },
+    {
+      "id": "layout",
+      "name": "Layout",
+      "description": "Containers and layout primitives"
+    },
+    {
+      "id": "data",
+      "name": "Data",
+      "description": "Charts, tables, and data visualization"
+    }
   ],
   "items": {
     "button": {
@@ -218,9 +509,27 @@
       "name": "Button",
       "description": "Clickable button with variants and sizes",
       "category": "basic",
-      "variants": ["default", "destructive", "outline", "secondary", "ghost", "link"],
-      "sizes": ["default", "sm", "lg", "icon"],
-      "params": ["variant", "size", "disabled", "type", "ariaLabel"],
+      "variants": [
+        "default",
+        "destructive",
+        "outline",
+        "secondary",
+        "ghost",
+        "link"
+      ],
+      "sizes": [
+        "default",
+        "sm",
+        "lg",
+        "icon"
+      ],
+      "params": [
+        "variant",
+        "size",
+        "disabled",
+        "type",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Button\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"size\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Click me\" } }\n  ]\n}"
     },
     "input": {
@@ -228,8 +537,21 @@
       "name": "Input",
       "description": "Text input field with validation support",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "placeholder", "disabled", "required", "type", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "placeholder",
+        "disabled",
+        "required",
+        "type",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Input\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter text...\" },\n    \"type\": { \"expr\": \"lit\", \"value\": \"text\" }\n  }\n}"
     },
     "textarea": {
@@ -237,8 +559,21 @@
       "name": "Textarea",
       "description": "Multi-line text input",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "placeholder", "disabled", "required", "rows", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "placeholder",
+        "disabled",
+        "required",
+        "rows",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Textarea\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Enter message...\" },\n    \"rows\": { \"expr\": \"lit\", \"value\": 4 }\n  }\n}"
     },
     "select": {
@@ -246,8 +581,20 @@
       "name": "Select",
       "description": "Dropdown selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["value", "disabled", "required", "placeholder", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "value",
+        "disabled",
+        "required",
+        "placeholder",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Select\",\n  \"props\": {\n    \"placeholder\": { \"expr\": \"lit\", \"value\": \"Select option...\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"option\", \"props\": { \"value\": { \"expr\": \"lit\", \"value\": \"1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 1\" } }] }\n  ]\n}"
     },
     "checkbox": {
@@ -255,8 +602,20 @@
       "name": "Checkbox",
       "description": "Checkbox input for boolean selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "required", "name", "id", "ariaLabel", "value"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "required",
+        "name",
+        "id",
+        "ariaLabel",
+        "value"
+      ],
       "example": "{\n  \"state\": {\n    \"isChecked\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggle\",\n      \"steps\": [{ \"do\": \"update\", \"target\": \"isChecked\", \"operation\": \"toggle\" }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"label\",\n    \"props\": {\n      \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"checkbox\" },\n          \"aria-checked\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded border bg-primary flex items-center justify-center\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded border bg-background\" }\n          },\n          \"onClick\": { \"action\": \"toggle\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"if\",\n            \"condition\": { \"expr\": \"state\", \"name\": \"isChecked\" },\n            \"then\": {\n              \"kind\": \"element\",\n              \"tag\": \"span\",\n              \"props\": {\n                \"class\": { \"expr\": \"lit\", \"value\": \"text-primary-foreground text-xs\" }\n              },\n              \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"✓\" } }]\n            }\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Accept terms\" } }]\n      }\n    ]\n  }\n}"
     },
     "radio": {
@@ -264,8 +623,19 @@
       "name": "Radio",
       "description": "Radio button for single selection",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "name", "value", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "name",
+        "value",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"state\": {\n    \"selected\": { \"type\": \"string\", \"initial\": \"option1\" }\n  },\n  \"actions\": [\n    { \"name\": \"selectOption1\", \"steps\": [{ \"do\": \"set\", \"target\": \"selected\", \"value\": { \"expr\": \"lit\", \"value\": \"option1\" } }] },\n    { \"name\": \"selectOption2\", \"steps\": [{ \"do\": \"set\", \"target\": \"selected\", \"value\": { \"expr\": \"lit\", \"value\": \"option2\" } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": {\n      \"role\": { \"expr\": \"lit\", \"value\": \"radiogroup\" },\n      \"class\": { \"expr\": \"lit\", \"value\": \"flex flex-col gap-2\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"label\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"role\": { \"expr\": \"lit\", \"value\": \"radio\" },\n              \"aria-checked\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option1\" } },\n              \"class\": {\n                \"expr\": \"cond\",\n                \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option1\" } },\n                \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-4 border-primary\" },\n                \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-2 border-muted-foreground\" }\n              },\n              \"onClick\": { \"action\": \"selectOption1\" }\n            }\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"span\",\n            \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" } },\n            \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 1\" } }]\n          }\n        ]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"label\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-2 cursor-pointer\" }\n        },\n        \"children\": [\n          {\n            \"kind\": \"element\",\n            \"tag\": \"button\",\n            \"props\": {\n              \"role\": { \"expr\": \"lit\", \"value\": \"radio\" },\n              \"aria-checked\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option2\" } },\n              \"class\": {\n                \"expr\": \"cond\",\n                \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"selected\" }, \"right\": { \"expr\": \"lit\", \"value\": \"option2\" } },\n                \"then\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-4 border-primary\" },\n                \"else\": { \"expr\": \"lit\", \"value\": \"h-4 w-4 rounded-full border-2 border-muted-foreground\" }\n              },\n              \"onClick\": { \"action\": \"selectOption2\" }\n            }\n          },\n          {\n            \"kind\": \"element\",\n            \"tag\": \"span\",\n            \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm\" } },\n            \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Option 2\" } }]\n          }\n        ]\n      }\n    ]\n  }\n}"
     },
     "switch": {
@@ -273,8 +643,18 @@
       "name": "Switch",
       "description": "Toggle switch for on/off states",
       "category": "basic",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["checked", "disabled", "name", "id", "ariaLabel"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "checked",
+        "disabled",
+        "name",
+        "id",
+        "ariaLabel"
+      ],
       "example": "{\n  \"state\": {\n    \"isEnabled\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"toggle\",\n      \"steps\": [{ \"do\": \"update\", \"target\": \"isEnabled\", \"operation\": \"toggle\" }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"button\",\n    \"props\": {\n      \"role\": { \"expr\": \"lit\", \"value\": \"switch\" },\n      \"aria-checked\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n      \"class\": {\n        \"expr\": \"cond\",\n        \"if\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n        \"then\": { \"expr\": \"lit\", \"value\": \"relative inline-flex h-6 w-11 items-center rounded-full bg-primary\" },\n        \"else\": { \"expr\": \"lit\", \"value\": \"relative inline-flex h-6 w-11 items-center rounded-full bg-muted\" }\n      },\n      \"onClick\": { \"action\": \"toggle\" }\n    },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"state\", \"name\": \"isEnabled\" },\n            \"then\": { \"expr\": \"lit\", \"value\": \"inline-block h-4 w-4 rounded-full bg-white translate-x-6\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"inline-block h-4 w-4 rounded-full bg-white translate-x-1\" }\n          }\n        }\n      }\n    ]\n  }\n}"
     },
     "alert": {
@@ -282,8 +662,14 @@
       "name": "Alert",
       "description": "Alert message with icon",
       "category": "feedback",
-      "variants": ["default", "destructive"],
-      "params": ["variant", "title"],
+      "variants": [
+        "default",
+        "destructive"
+      ],
+      "params": [
+        "variant",
+        "title"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Alert\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" },\n    \"title\": { \"expr\": \"lit\", \"value\": \"Heads up!\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This is an alert message.\" } }\n  ]\n}"
     },
     "card": {
@@ -291,8 +677,14 @@
       "name": "Card",
       "description": "Card container for content",
       "category": "feedback",
-      "variants": ["default", "outline"],
-      "params": ["variant", "className"],
+      "variants": [
+        "default",
+        "outline"
+      ],
+      "params": [
+        "variant",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Card\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"h3\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card Title\" } }] },\n    { \"kind\": \"element\", \"tag\": \"p\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Card content goes here.\" } }] }\n  ]\n}"
     },
     "badge": {
@@ -300,8 +692,15 @@
       "name": "Badge",
       "description": "Inline badge for labels",
       "category": "feedback",
-      "variants": ["default", "secondary", "destructive", "outline"],
-      "params": ["variant"],
+      "variants": [
+        "default",
+        "secondary",
+        "destructive",
+        "outline"
+      ],
+      "params": [
+        "variant"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Badge\",\n  \"props\": {\n    \"variant\": { \"expr\": \"lit\", \"value\": \"default\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"New\" } }\n  ]\n}"
     },
     "skeleton": {
@@ -309,7 +708,11 @@
       "name": "Skeleton",
       "description": "Loading placeholder with animation",
       "category": "feedback",
-      "params": ["width", "height", "className"],
+      "params": [
+        "width",
+        "height",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Skeleton\",\n  \"props\": {\n    \"width\": { \"expr\": \"lit\", \"value\": \"100%\" },\n    \"height\": { \"expr\": \"lit\", \"value\": \"20px\" }\n  }\n}"
     },
     "avatar": {
@@ -317,8 +720,17 @@
       "name": "Avatar",
       "description": "User avatar with fallback",
       "category": "feedback",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["src", "alt", "fallback", "size"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "src",
+        "alt",
+        "fallback",
+        "size"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Avatar\",\n  \"props\": {\n    \"src\": { \"expr\": \"lit\", \"value\": \"/avatar.png\" },\n    \"alt\": { \"expr\": \"lit\", \"value\": \"User\" },\n    \"fallback\": { \"expr\": \"lit\", \"value\": \"JD\" }\n  }\n}"
     },
     "dialog": {
@@ -326,8 +738,14 @@
       "name": "Dialog",
       "description": "Modal dialog with ARIA support",
       "category": "overlay",
-      "params": ["open", "title"],
-      "accessibility": ["role=dialog", "aria-modal"],
+      "params": [
+        "open",
+        "title"
+      ],
+      "accessibility": [
+        "role=dialog",
+        "aria-modal"
+      ],
       "example": "{\n  \"state\": {\n    \"isOpen\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"open\", \"steps\": [{ \"do\": \"set\", \"target\": \"isOpen\", \"value\": { \"expr\": \"lit\", \"value\": true } }] },\n    { \"name\": \"close\", \"steps\": [{ \"do\": \"set\", \"target\": \"isOpen\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground\" },\n          \"onClick\": { \"action\": \"open\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Open Dialog\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"class\": { \"expr\": \"lit\", \"value\": \"fixed inset-0 z-50 flex items-center justify-center\" }\n          },\n          \"children\": [\n            {\n              \"kind\": \"element\",\n              \"tag\": \"div\",\n              \"props\": {\n                \"class\": { \"expr\": \"lit\", \"value\": \"fixed inset-0 bg-black/50\" },\n                \"onClick\": { \"action\": \"close\" }\n              }\n            },\n            {\n              \"kind\": \"element\",\n              \"tag\": \"div\",\n              \"props\": {\n                \"role\": { \"expr\": \"lit\", \"value\": \"dialog\" },\n                \"aria-modal\": { \"expr\": \"lit\", \"value\": true },\n                \"class\": { \"expr\": \"lit\", \"value\": \"relative z-10 rounded-lg bg-background p-6 shadow-lg w-full max-w-md\" }\n              },\n              \"children\": [\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"h2\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-lg font-semibold\" } },\n                  \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Confirm Action\" } }]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"p\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mt-2 text-sm text-muted-foreground\" } },\n                  \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Are you sure you want to proceed?\" } }]\n                },\n                {\n                  \"kind\": \"element\",\n                  \"tag\": \"div\",\n                  \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mt-4 flex justify-end gap-2\" } },\n                  \"children\": [\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"button\",\n                      \"props\": {\n                        \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md border px-4 py-2 text-sm\" },\n                        \"onClick\": { \"action\": \"close\" }\n                      },\n                      \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Cancel\" } }]\n                    },\n                    {\n                      \"kind\": \"element\",\n                      \"tag\": \"button\",\n                      \"props\": {\n                        \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground\" },\n                        \"onClick\": { \"action\": \"close\" }\n                      },\n                      \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Confirm\" } }]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     "tooltip": {
@@ -335,9 +753,19 @@
       "name": "Tooltip",
       "description": "Hover tooltip",
       "category": "overlay",
-      "positions": ["top", "right", "bottom", "left"],
-      "params": ["content", "position"],
-      "accessibility": ["role=tooltip"],
+      "positions": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ],
+      "params": [
+        "content",
+        "position"
+      ],
+      "accessibility": [
+        "role=tooltip"
+      ],
       "example": "{\n  \"state\": {\n    \"visible\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"show\", \"steps\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": true } }] },\n    { \"name\": \"hide\", \"steps\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative inline-flex\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-secondary px-3 py-1.5 text-sm\" },\n          \"onMouseEnter\": { \"action\": \"show\" },\n          \"onMouseLeave\": { \"action\": \"hide\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Hover me\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"visible\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"role\": { \"expr\": \"lit\", \"value\": \"tooltip\" },\n            \"class\": { \"expr\": \"lit\", \"value\": \"absolute bottom-full left-1/2 -translate-x-1/2 mb-2 rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground whitespace-nowrap\" }\n          },\n          \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tooltip content\" } }]\n        }\n      }\n    ]\n  }\n}"
     },
     "popover": {
@@ -345,8 +773,16 @@
       "name": "Popover",
       "description": "Click-triggered popover",
       "category": "overlay",
-      "positions": ["top", "right", "bottom", "left"],
-      "params": ["open", "position"],
+      "positions": [
+        "top",
+        "right",
+        "bottom",
+        "left"
+      ],
+      "params": [
+        "open",
+        "position"
+      ],
       "example": "{\n  \"state\": {\n    \"isOpen\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    { \"name\": \"toggle\", \"steps\": [{ \"do\": \"update\", \"target\": \"isOpen\", \"operation\": \"toggle\" }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative inline-block\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-secondary px-3 py-1.5 text-sm\" },\n          \"onClick\": { \"action\": \"toggle\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Open Popover\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"isOpen\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"absolute top-full left-1/2 -translate-x-1/2 mt-2 rounded-lg border bg-card p-4 shadow-lg w-64 z-10\" } },\n          \"children\": [\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium text-sm\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Popover Title\" } }] },\n            { \"kind\": \"element\", \"tag\": \"p\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm text-muted-foreground mt-1\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"This is the popover content.\" } }] }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     "toast": {
@@ -354,9 +790,22 @@
       "name": "Toast",
       "description": "Notification toast",
       "category": "overlay",
-      "variants": ["default", "success", "error", "warning", "info"],
-      "params": ["variant", "title", "description"],
-      "accessibility": ["role=alert", "aria-live"],
+      "variants": [
+        "default",
+        "success",
+        "error",
+        "warning",
+        "info"
+      ],
+      "params": [
+        "variant",
+        "title",
+        "description"
+      ],
+      "accessibility": [
+        "role=alert",
+        "aria-live"
+      ],
       "example": "{\n  \"state\": {\n    \"visible\": { \"type\": \"boolean\", \"initial\": false }\n  },\n  \"actions\": [\n    {\n      \"name\": \"show\",\n      \"steps\": [\n        { \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": true } },\n        { \"do\": \"delay\", \"ms\": { \"expr\": \"lit\", \"value\": 3000 }, \"then\": [{ \"do\": \"set\", \"target\": \"visible\", \"value\": { \"expr\": \"lit\", \"value\": false } }] }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"relative\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": { \"expr\": \"lit\", \"value\": \"rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground\" },\n          \"onClick\": { \"action\": \"show\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Show Toast\" } }]\n      },\n      {\n        \"kind\": \"if\",\n        \"condition\": { \"expr\": \"state\", \"name\": \"visible\" },\n        \"then\": {\n          \"kind\": \"element\",\n          \"tag\": \"div\",\n          \"props\": {\n            \"role\": { \"expr\": \"lit\", \"value\": \"alert\" },\n            \"class\": { \"expr\": \"lit\", \"value\": \"absolute top-full left-0 mt-4 rounded-lg border bg-card p-4 shadow-lg\" }\n          },\n          \"children\": [\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Success!\" } }] },\n            { \"kind\": \"element\", \"tag\": \"div\", \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"text-sm text-muted-foreground\" } }, \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Changes saved.\" } }] }\n          ]\n        }\n      }\n    ]\n  }\n}"
     },
     "tabs": {
@@ -364,9 +813,17 @@
       "name": "Tabs",
       "description": "Tab navigation",
       "category": "navigation",
-      "variants": ["default", "outline"],
-      "params": ["activeTab", "variant"],
-      "accessibility": ["role=tablist"],
+      "variants": [
+        "default",
+        "outline"
+      ],
+      "params": [
+        "activeTab",
+        "variant"
+      ],
+      "accessibility": [
+        "role=tablist"
+      ],
       "example": "{\n  \"state\": {\n    \"activeTab\": { \"type\": \"string\", \"initial\": \"tab1\" }\n  },\n  \"actions\": [\n    { \"name\": \"setTab1\", \"steps\": [{ \"do\": \"set\", \"target\": \"activeTab\", \"value\": { \"expr\": \"lit\", \"value\": \"tab1\" } }] },\n    { \"name\": \"setTab2\", \"steps\": [{ \"do\": \"set\", \"target\": \"activeTab\", \"value\": { \"expr\": \"lit\", \"value\": \"tab2\" } }] }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"div\",\n    \"props\": { \"role\": { \"expr\": \"lit\", \"value\": \"tablist\" }, \"class\": { \"expr\": \"lit\", \"value\": \"border-b\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"tab\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"activeTab\" }, \"right\": { \"expr\": \"lit\", \"value\": \"tab1\" } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"border-b-2 border-primary px-4 py-2 text-sm font-medium\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"px-4 py-2 text-sm text-muted-foreground\" }\n          },\n          \"onClick\": { \"action\": \"setTab1\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tab 1\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"role\": { \"expr\": \"lit\", \"value\": \"tab\" },\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"activeTab\" }, \"right\": { \"expr\": \"lit\", \"value\": \"tab2\" } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"border-b-2 border-primary px-4 py-2 text-sm font-medium\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"px-4 py-2 text-sm text-muted-foreground\" }\n          },\n          \"onClick\": { \"action\": \"setTab2\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Tab 2\" } }]\n      }\n    ]\n  }\n}"
     },
     "breadcrumb": {
@@ -374,8 +831,12 @@
       "name": "Breadcrumb",
       "description": "Breadcrumb navigation",
       "category": "navigation",
-      "params": ["separator"],
-      "accessibility": ["aria-label"],
+      "params": [
+        "separator"
+      ],
+      "accessibility": [
+        "aria-label"
+      ],
       "example": "{\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"nav\",\n    \"props\": { \"aria-label\": { \"expr\": \"lit\", \"value\": \"Breadcrumb\" }, \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center text-sm\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"a\",\n        \"props\": { \"href\": { \"expr\": \"lit\", \"value\": \"/\" }, \"class\": { \"expr\": \"lit\", \"value\": \"text-muted-foreground hover:text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Home\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mx-2 text-muted-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"/\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"a\",\n        \"props\": { \"href\": { \"expr\": \"lit\", \"value\": \"/products\" }, \"class\": { \"expr\": \"lit\", \"value\": \"text-muted-foreground hover:text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Products\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"mx-2 text-muted-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"/\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"span\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"font-medium text-foreground\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Current\" } }]\n      }\n    ]\n  }\n}"
     },
     "pagination": {
@@ -383,9 +844,19 @@
       "name": "Pagination",
       "description": "Page pagination",
       "category": "navigation",
-      "sizes": ["default", "sm", "lg"],
-      "params": ["currentPage", "totalPages", "size"],
-      "accessibility": ["aria-label"],
+      "sizes": [
+        "default",
+        "sm",
+        "lg"
+      ],
+      "params": [
+        "currentPage",
+        "totalPages",
+        "size"
+      ],
+      "accessibility": [
+        "aria-label"
+      ],
       "example": "{\n  \"state\": {\n    \"currentPage\": { \"type\": \"number\", \"initial\": 1 }\n  },\n  \"actions\": [\n    { \"name\": \"setPage1\", \"steps\": [{ \"do\": \"set\", \"target\": \"currentPage\", \"value\": { \"expr\": \"lit\", \"value\": 1 } }] },\n    { \"name\": \"setPage2\", \"steps\": [{ \"do\": \"set\", \"target\": \"currentPage\", \"value\": { \"expr\": \"lit\", \"value\": 2 } }] },\n    {\n      \"name\": \"prevPage\",\n      \"steps\": [{\n        \"do\": \"set\",\n        \"target\": \"currentPage\",\n        \"value\": {\n          \"expr\": \"cond\",\n          \"if\": { \"expr\": \"bin\", \"op\": \">\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"then\": { \"expr\": \"bin\", \"op\": \"-\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"else\": { \"expr\": \"lit\", \"value\": 1 }\n        }\n      }]\n    },\n    {\n      \"name\": \"nextPage\",\n      \"steps\": [{\n        \"do\": \"set\",\n        \"target\": \"currentPage\",\n        \"value\": {\n          \"expr\": \"cond\",\n          \"if\": { \"expr\": \"bin\", \"op\": \"<\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 2 } },\n          \"then\": { \"expr\": \"bin\", \"op\": \"+\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n          \"else\": { \"expr\": \"lit\", \"value\": 2 }\n        }\n      }]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"element\",\n    \"tag\": \"nav\",\n    \"props\": { \"aria-label\": { \"expr\": \"lit\", \"value\": \"Pagination\" }, \"class\": { \"expr\": \"lit\", \"value\": \"flex items-center gap-1\" } },\n    \"children\": [\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }, \"onClick\": { \"action\": \"prevPage\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"←\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 1 } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md bg-primary text-primary-foreground\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }\n          },\n          \"onClick\": { \"action\": \"setPage1\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"1\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": {\n          \"class\": {\n            \"expr\": \"cond\",\n            \"if\": { \"expr\": \"bin\", \"op\": \"==\", \"left\": { \"expr\": \"state\", \"name\": \"currentPage\" }, \"right\": { \"expr\": \"lit\", \"value\": 2 } },\n            \"then\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md bg-primary text-primary-foreground\" },\n            \"else\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }\n          },\n          \"onClick\": { \"action\": \"setPage2\" }\n        },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"2\" } }]\n      },\n      {\n        \"kind\": \"element\",\n        \"tag\": \"button\",\n        \"props\": { \"class\": { \"expr\": \"lit\", \"value\": \"h-9 w-9 rounded-md border hover:bg-muted\" }, \"onClick\": { \"action\": \"nextPage\" } },\n        \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"→\" } }]\n      }\n    ]\n  }\n}"
     },
     "container": {
@@ -393,8 +864,18 @@
       "name": "Container",
       "description": "Max-width container",
       "category": "layout",
-      "sizes": ["sm", "md", "lg", "xl", "2xl", "full"],
-      "params": ["maxWidth", "className"],
+      "sizes": [
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "2xl",
+        "full"
+      ],
+      "params": [
+        "maxWidth",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Container\",\n  \"props\": {\n    \"maxWidth\": { \"expr\": \"lit\", \"value\": \"lg\" }\n  },\n  \"children\": [\n    { \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Content here\" } }\n  ]\n}"
     },
     "grid": {
@@ -402,9 +883,25 @@
       "name": "Grid",
       "description": "CSS Grid layout",
       "category": "layout",
-      "cols": ["1", "2", "3", "4", "6", "12"],
-      "gaps": ["none", "sm", "md", "lg"],
-      "params": ["cols", "gap", "className"],
+      "cols": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "6",
+        "12"
+      ],
+      "gaps": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "params": [
+        "cols",
+        "gap",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Grid\",\n  \"props\": {\n    \"cols\": { \"expr\": \"lit\", \"value\": \"3\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 3\" } }] }\n  ]\n}"
     },
     "stack": {
@@ -412,10 +909,70 @@
       "name": "Stack",
       "description": "Flexbox stack layout",
       "category": "layout",
-      "directions": ["row", "column"],
-      "gaps": ["none", "sm", "md", "lg"],
-      "params": ["direction", "gap", "align", "justify", "className"],
+      "directions": [
+        "row",
+        "column"
+      ],
+      "gaps": [
+        "none",
+        "sm",
+        "md",
+        "lg"
+      ],
+      "params": [
+        "direction",
+        "gap",
+        "align",
+        "justify",
+        "className"
+      ],
       "example": "{\n  \"kind\": \"component\",\n  \"name\": \"Stack\",\n  \"props\": {\n    \"direction\": { \"expr\": \"lit\", \"value\": \"column\" },\n    \"gap\": { \"expr\": \"lit\", \"value\": \"md\" },\n    \"align\": { \"expr\": \"lit\", \"value\": \"center\" }\n  },\n  \"children\": [\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 1\" } }] },\n    { \"kind\": \"element\", \"tag\": \"div\", \"children\": [{ \"kind\": \"text\", \"value\": { \"expr\": \"lit\", \"value\": \"Item 2\" } }] }\n  ]\n}"
+    },
+    "chart": {
+      "slug": "chart",
+      "name": "Chart",
+      "description": "Data visualization charts including line, bar, pie, area, and more",
+      "category": "data",
+      "variants": [
+        "line",
+        "bar",
+        "pie",
+        "area",
+        "donut",
+        "radar",
+        "scatter"
+      ],
+      "params": [
+        "type",
+        "data",
+        "width",
+        "height",
+        "colors",
+        "showGrid",
+        "showLabels",
+        "options"
+      ],
+      "example": "{\n  \"state\": {\n    \"chartData\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"labels\": [\n          \"Jan\",\n          \"Feb\",\n          \"Mar\",\n          \"Apr\",\n          \"May\"\n        ],\n        \"datasets\": [\n          {\n            \"label\": \"Sales\",\n            \"data\": [\n              12,\n              19,\n              15,\n              25,\n              22\n            ],\n            \"borderColor\": \"hsl(220, 90%, 56%)\",\n            \"backgroundColor\": \"hsla(220, 90%, 56%, 0.1)\",\n            \"fill\": true\n          }\n        ]\n      }\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"Chart\",\n    \"props\": {\n      \"type\": {\n        \"expr\": \"lit\",\n        \"value\": \"line\"\n      },\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"chartData\"\n      },\n      \"height\": {\n        \"expr\": \"lit\",\n        \"value\": 300\n      },\n      \"options\": {\n        \"expr\": \"lit\",\n        \"value\": {\n          \"responsive\": true,\n          \"maintainAspectRatio\": false\n        }\n      }\n    }\n  }\n}"
+    },
+    "data-table": {
+      "slug": "data-table",
+      "name": "DataTable",
+      "description": "Data table with sorting, filtering, pagination and row selection",
+      "category": "data",
+      "params": [
+        "data",
+        "columns",
+        "pageSize",
+        "sortable",
+        "filterable",
+        "selectable",
+        "rowKey",
+        "onSort",
+        "onFilter",
+        "onPageChange",
+        "onSelectionChange"
+      ],
+      "example": "{\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": 1,\n          \"name\": \"Alice\",\n          \"email\": \"alice@example.com\",\n          \"role\": \"Admin\"\n        },\n        {\n          \"id\": 2,\n          \"name\": \"Bob\",\n          \"email\": \"bob@example.com\",\n          \"role\": \"User\"\n        },\n        {\n          \"id\": 3,\n          \"name\": \"Carol\",\n          \"email\": \"carol@example.com\",\n          \"role\": \"Editor\"\n        }\n      ]\n    },\n    \"page\": {\n      \"type\": \"number\",\n      \"initial\": 1\n    },\n    \"sort\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"key\": \"name\",\n        \"direction\": \"asc\"\n      }\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"handleSort\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"sort\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"handlePageChange\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"page\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"users\"\n      },\n      \"columns\": {\n        \"expr\": \"lit\",\n        \"value\": [\n          {\n            \"key\": \"name\",\n            \"title\": \"Name\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"email\",\n            \"title\": \"Email\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"role\",\n            \"title\": \"Role\",\n            \"sortable\": true\n          }\n        ]\n      },\n      \"rowKey\": {\n        \"expr\": \"lit\",\n        \"value\": \"id\"\n      },\n      \"pageSize\": {\n        \"expr\": \"lit\",\n        \"value\": 10\n      },\n      \"sortable\": {\n        \"expr\": \"lit\",\n        \"value\": true\n      },\n      \"onSort\": {\n        \"event\": \"sort\",\n        \"action\": \"handleSort\"\n      },\n      \"onPageChange\": {\n        \"event\": \"pageChange\",\n        \"action\": \"handlePageChange\"\n      }\n    }\n  }\n}"
     }
   }
 }

@@ -14,26 +14,31 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@constela/compiler": "^0.14.7",
-    "@constela/core": "^0.16.2",
-    "@constela/router": "^18.0.1",
-    "@constela/runtime": "^0.19.6",
-    "@constela/server": "^12.0.2",
-    "@constela/start": "^1.8.26",
+    "@constela/compiler": "^0.15.4",
+    "@constela/core": "^0.17.4",
+    "@constela/router": "^19.0.0",
+    "@constela/runtime": "^1.0.4",
+    "@constela/server": "^13.0.0",
+    "@constela/start": "^1.9.4",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/node": "^20",
-    "eslint": "^9",
-    "happy-dom": "^20.0.11",
-    "monaco-editor": "^0.52.0",
-    "tailwindcss": "^4",
-    "typescript": "^5",
-    "vite": "^6",
-    "vitest": "^4.0.16"
+    "@types/node": "^20.19.30",
+    "eslint": "^9.39.2",
+    "happy-dom": "^20.4.0",
+    "monaco-editor": "^0.52.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1",
+    "vitest": "^4.0.18"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
