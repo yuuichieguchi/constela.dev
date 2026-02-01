@@ -7,163 +7,70 @@ description: Progressive HTML rendering with ReadableStream for improved TTFB
 
 Constela supports streaming server-side rendering using the Web Streams API. This enables progressive HTML delivery for improved Time to First Byte (TTFB) and better user experience.
 
-## Basic Usage
+## Configuration
 
-```typescript
-import { renderToStream, createHtmlTransformStream } from '@constela/server';
+Enable streaming in `constela.config.json`:
 
-// Render program to stream
-const contentStream = renderToStream(compiledProgram, {
-  flushStrategy: 'batched',
-});
-
-// Wrap with HTML document structure
-const htmlStream = contentStream.pipeThrough(
-  createHtmlTransformStream({
-    title: 'My Page',
-    lang: 'en',
-    stylesheets: ['/styles.css'],
-    scripts: ['/client.js'],
-  })
-);
-
-// Return as Response
-return new Response(htmlStream, {
-  headers: { 'Content-Type': 'text/html; charset=utf-8' },
-});
+```json
+{
+  "streaming": {
+    "enabled": true,
+    "flushStrategy": "batched"
+  }
+}
 ```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enabled` | `boolean` | `false` | Enable streaming SSR |
+| `flushStrategy` | `string` | `"batched"` | Chunk flushing strategy |
 
 ## Flush Strategies
 
 ### `immediate`
 
-Flush each chunk as soon as it's ready. Best for real-time streaming.
+Flush each chunk as soon as it's ready. Best for real-time streaming and long pages where users benefit from seeing content immediately.
 
-```typescript
-renderToStream(program, { flushStrategy: 'immediate' });
+```json
+{
+  "streaming": {
+    "enabled": true,
+    "flushStrategy": "immediate"
+  }
+}
 ```
 
 ### `batched` (Default)
 
-Batch chunks until buffer exceeds 1KB threshold. Balances streaming with efficiency.
+Batch chunks until buffer exceeds 1KB threshold. Balances streaming with network efficiency.
 
-```typescript
-renderToStream(program, { flushStrategy: 'batched' });
+```json
+{
+  "streaming": {
+    "enabled": true,
+    "flushStrategy": "batched"
+  }
+}
 ```
 
 ### `manual`
 
 Only flush at the end. Use for small pages where streaming provides no benefit.
 
-```typescript
-renderToStream(program, { flushStrategy: 'manual' });
-```
-
-## Render Options
-
-```typescript
-interface StreamRenderOptions {
-  route?: {
-    params?: Record<string, string>;
-    query?: Record<string, string>;
-    path?: string;
-  };
-  imports?: Record<string, unknown>;
-  styles?: Record<string, StylePreset>;
-  stateOverrides?: Record<string, unknown>;
-  cookies?: Record<string, string>;
-  signal?: AbortSignal;
+```json
+{
+  "streaming": {
+    "enabled": true,
+    "flushStrategy": "manual"
+  }
 }
 ```
 
-### Route Context
-
-Pass route parameters for dynamic pages:
-
-```typescript
-const stream = renderToStream(program, { flushStrategy: 'batched' }, {
-  route: {
-    params: { id: '123' },
-    query: { tab: 'overview' },
-    path: '/users/123',
-  },
-});
-```
-
-### State Overrides
-
-Override initial state values:
-
-```typescript
-const stream = renderToStream(program, { flushStrategy: 'batched' }, {
-  stateOverrides: {
-    user: { name: 'John', email: 'john@example.com' },
-  },
-});
-```
-
-### Cookie Support
-
-Pass cookies for SSR-safe state initialization:
-
-```typescript
-const stream = renderToStream(program, { flushStrategy: 'batched' }, {
-  cookies: {
-    theme: 'dark',
-    locale: 'ja-JP',
-  },
-});
-```
-
-## Abort Signal
-
-Cancel streaming when the client disconnects:
-
-```typescript
-const controller = new AbortController();
-
-const stream = renderToStream(program, { flushStrategy: 'batched' }, {
-  signal: controller.signal,
-});
-
-// Cancel on client disconnect
-request.signal.addEventListener('abort', () => {
-  controller.abort();
-});
-```
-
-## HTML Transform Stream
-
-Wrap content with HTML document structure:
-
-```typescript
-const htmlStream = contentStream.pipeThrough(
-  createHtmlTransformStream({
-    title: 'My Page',
-    lang: 'en',
-    meta: {
-      description: 'Page description',
-      'og:title': 'My Page',
-    },
-    stylesheets: ['/styles.css', '/theme.css'],
-    scripts: ['/client.js'],
-  })
-);
-```
-
-### Options
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `title` | `string` | Page title (required) |
-| `lang` | `string` | HTML lang attribute (default: "en") |
-| `meta` | `Record<string, string>` | Meta tags |
-| `stylesheets` | `string[]` | CSS file paths |
-| `scripts` | `string[]` | Script file paths |
-
 ## Suspense Boundaries
 
-Use suspense for async content:
+Use `suspense` nodes for async content. The server renders fallback content immediately, then streams the actual content when ready.
+
+### Basic Suspense
 
 ```json
 {
@@ -181,7 +88,48 @@ Use suspense for async content:
 }
 ```
 
-Server renders with markers:
+### Suspense Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `id` | `string` | Yes | Unique identifier for the boundary |
+| `fallback` | `ViewNode` | Yes | Loading state content |
+| `content` | `ViewNode` | Yes | Async content to load |
+| `timeout` | `number` | No | Fallback timeout in ms |
+
+### Nested Suspense
+
+Suspense boundaries can be nested for granular loading states:
+
+```json
+{
+  "kind": "suspense",
+  "id": "dashboard",
+  "fallback": { "kind": "component", "name": "DashboardSkeleton" },
+  "content": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      {
+        "kind": "suspense",
+        "id": "user-profile",
+        "fallback": { "kind": "component", "name": "ProfileSkeleton" },
+        "content": { "kind": "component", "name": "UserProfile" }
+      },
+      {
+        "kind": "suspense",
+        "id": "activity-feed",
+        "fallback": { "kind": "component", "name": "FeedSkeleton" },
+        "content": { "kind": "component", "name": "ActivityFeed" }
+      }
+    ]
+  }
+}
+```
+
+### Server Output
+
+The server renders suspense boundaries with markers:
 
 ```html
 <div data-suspense-id="user-data">
@@ -189,7 +137,198 @@ Server renders with markers:
 </div>
 ```
 
-## Edge Runtime Integration
+When content is ready, it streams as:
+
+```html
+<template data-suspense-replace="user-data">
+  <div class="user-profile">...</div>
+</template>
+<script>__CONSTELA_RESOLVE__("user-data")</script>
+```
+
+## Server Render Options
+
+Configure server-side rendering behavior in your program:
+
+```json
+{
+  "version": "1.0",
+  "ssr": {
+    "route": {
+      "params": { "id": "123" },
+      "query": { "tab": "overview" },
+      "path": "/users/123"
+    },
+    "stateOverrides": {
+      "user": { "name": "John", "email": "john@example.com" }
+    },
+    "cookies": {
+      "theme": "dark",
+      "locale": "ja-JP"
+    }
+  }
+}
+```
+
+### Route Context
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `params` | `Record<string, string>` | Route parameters |
+| `query` | `Record<string, string>` | Query string parameters |
+| `path` | `string` | Full request path |
+
+### State Overrides
+
+Pre-populate state values for SSR:
+
+```json
+{
+  "ssr": {
+    "stateOverrides": {
+      "user": { "name": "John", "authenticated": true },
+      "theme": "dark"
+    }
+  }
+}
+```
+
+### Cookie Support
+
+Pass cookies for SSR-safe state initialization:
+
+```json
+{
+  "ssr": {
+    "cookies": {
+      "sessionId": "abc123",
+      "preferences": "{\"theme\":\"dark\"}"
+    }
+  }
+}
+```
+
+## Performance Tips
+
+1. **Use `batched` by default** - Balances streaming with network efficiency
+2. **Use `immediate` for long pages** - Users see content faster
+3. **Use `manual` for small pages** - Reduces overhead
+4. **Add suspense boundaries** - Shows loading states for async content
+5. **Enable gzip/brotli** - Compress streamed chunks
+
+---
+
+## Advanced: Server API
+
+This section covers the TypeScript API for custom server implementations. Most applications don't need this - the built-in server handles streaming automatically based on your configuration.
+
+### renderToStream
+
+Render a compiled program to a ReadableStream:
+
+```typescript
+import { renderToStream } from '@constela/server';
+
+const stream = renderToStream(compiledProgram, {
+  flushStrategy: 'batched',
+});
+```
+
+### createHtmlTransformStream
+
+Wrap content with HTML document structure:
+
+```typescript
+import { createHtmlTransformStream } from '@constela/server';
+
+const htmlStream = contentStream.pipeThrough(
+  createHtmlTransformStream({
+    title: 'My Page',
+    lang: 'en',
+    meta: {
+      description: 'Page description',
+      'og:title': 'My Page',
+    },
+    stylesheets: ['/styles.css', '/theme.css'],
+    scripts: ['/client.js'],
+  })
+);
+```
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `title` | `string` | Page title (required) |
+| `lang` | `string` | HTML lang attribute (default: "en") |
+| `meta` | `Record<string, string>` | Meta tags |
+| `stylesheets` | `string[]` | CSS file paths |
+| `scripts` | `string[]` | Script file paths |
+
+### StreamRenderOptions
+
+```typescript
+interface StreamRenderOptions {
+  route?: {
+    params?: Record<string, string>;
+    query?: Record<string, string>;
+    path?: string;
+  };
+  imports?: Record<string, unknown>;
+  styles?: Record<string, StylePreset>;
+  stateOverrides?: Record<string, unknown>;
+  cookies?: Record<string, string>;
+  signal?: AbortSignal;
+}
+```
+
+### Abort Signal
+
+Cancel streaming when the client disconnects:
+
+```typescript
+const controller = new AbortController();
+
+const stream = renderToStream(program, { flushStrategy: 'batched' }, {
+  signal: controller.signal,
+});
+
+// Cancel on client disconnect
+request.signal.addEventListener('abort', () => {
+  controller.abort();
+});
+```
+
+### Complete Server Example
+
+```typescript
+import { renderToStream, createHtmlTransformStream } from '@constela/server';
+
+async function handleRequest(request: Request) {
+  const stream = renderToStream(program, { flushStrategy: 'batched' }, {
+    route: {
+      params: { id: '123' },
+      path: '/users/123',
+    },
+    cookies: Object.fromEntries(
+      request.headers.get('cookie')?.split(';').map(c => c.trim().split('=')) ?? []
+    ),
+    signal: request.signal,
+  });
+
+  const htmlStream = stream.pipeThrough(
+    createHtmlTransformStream({
+      title: 'User Profile',
+      stylesheets: ['/styles.css'],
+      scripts: ['/client.js'],
+    })
+  );
+
+  return new Response(htmlStream, {
+    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+  });
+}
+```
+
+## Edge Runtime Examples
 
 ### Cloudflare Workers
 
@@ -239,24 +378,3 @@ Deno.serve(async (request) => {
   });
 });
 ```
-
-## Configuration
-
-Enable streaming in `constela.config.json`:
-
-```json
-{
-  "streaming": {
-    "enabled": true,
-    "flushStrategy": "batched"
-  }
-}
-```
-
-## Performance Tips
-
-1. **Use `batched` by default** - Balances streaming with network efficiency
-2. **Use `immediate` for long pages** - Users see content faster
-3. **Use `manual` for small pages** - Reduces overhead
-4. **Add suspense boundaries** - Shows loading states for async content
-5. **Enable gzip/brotli** - Compress streamed chunks
