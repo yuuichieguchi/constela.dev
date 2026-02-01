@@ -5,7 +5,7 @@ description: Complete reference for all view node types in Constela
 
 ## Overview
 
-View nodes are the building blocks of Constela UIs. There are 8 node types, each serving a specific purpose in describing your interface.
+View nodes are the building blocks of Constela UIs. There are 9 node types, each serving a specific purpose in describing your interface.
 
 ## Element Node
 
@@ -539,4 +539,63 @@ Portal children are cleaned up automatically when the portal node is removed fro
 
 <Callout type="note">
 When using a CSS selector as the target, the element must exist in the DOM. If not found, children are not rendered. Consider adding a dedicated container element like `<div id="modal-root"></div>` to your HTML template.
+</Callout>
+
+## Suspense Node
+
+Renders fallback content while async content is loading. Used with [Streaming SSR](/reference/streaming#suspense-boundaries) for progressive HTML delivery.
+
+```json
+{
+  "kind": "suspense",
+  "id": "user-data",
+  "fallback": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "className": { "expr": "lit", "value": "skeleton" } }
+  },
+  "content": {
+    "kind": "component",
+    "name": "UserProfile"
+  }
+}
+```
+
+<PropsTable items={[
+  { name: "kind", type: "\"suspense\"", required: true, description: "Node type identifier." },
+  { name: "id", type: "string", required: true, description: "Unique identifier for the suspense boundary." },
+  { name: "fallback", type: "ViewNode", required: true, description: "Content to show while loading (e.g., skeleton, spinner)." },
+  { name: "content", type: "ViewNode", required: true, description: "Async content to load and render." },
+  { name: "timeout", type: "number", required: false, description: "Fallback timeout in milliseconds." }
+]} />
+
+### Example: Dashboard with Loading States
+
+```json
+{
+  "kind": "element",
+  "tag": "div",
+  "children": [
+    {
+      "kind": "suspense",
+      "id": "user-profile",
+      "fallback": { "kind": "component", "name": "ProfileSkeleton" },
+      "content": { "kind": "component", "name": "UserProfile" }
+    },
+    {
+      "kind": "suspense",
+      "id": "activity-feed",
+      "fallback": { "kind": "component", "name": "FeedSkeleton" },
+      "content": { "kind": "component", "name": "ActivityFeed" }
+    }
+  ]
+}
+```
+
+<Callout type="tip">
+Suspense boundaries can be nested for granular loading states. Each boundary streams independently when its content is ready.
+</Callout>
+
+<Callout type="note">
+Suspense nodes require [Streaming SSR](/reference/streaming) to be enabled. Without streaming, the server waits for all content before sending the response.
 </Callout>
