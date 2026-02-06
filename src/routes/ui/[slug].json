@@ -1,5 +1,11 @@
 {
   "version": "1.0",
+  "externalImports": {
+    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.18.5/+esm",
+    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.15.12/+esm",
+    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@2.0.9/+esm",
+    "@constela/ui": "https://cdn.jsdelivr.net/npm/@constela/ui@0.4.9/+esm"
+  },
   "route": {
     "path": "/ui/:slug",
     "layout": "ui",
@@ -27,9 +33,127 @@
     "activeTab": { "type": "string", "initial": "tab1" },
     "activeBreadcrumb": { "type": "string", "initial": "current" },
     "currentPage": { "type": "number", "initial": 1 },
-    "switchChecked": { "type": "boolean", "initial": true }
+    "switchChecked": { "type": "boolean", "initial": true },
+    "previewApp": { "type": "object", "initial": null },
+    "previewError": { "type": "string", "initial": "" }
+  },
+  "lifecycle": {
+    "onMount": "initDynamicPreview",
+    "onUnmount": "cleanupPreview"
   },
   "actions": [
+    {
+      "name": "initDynamicPreview",
+      "steps": [
+        {
+          "do": "if",
+          "condition": {
+            "expr": "bin",
+            "op": "||",
+            "left": { "expr": "bin", "op": "==", "left": { "expr": "route", "name": "slug" }, "right": { "expr": "lit", "value": "chart" } },
+            "right": { "expr": "bin", "op": "==", "left": { "expr": "route", "name": "slug" }, "right": { "expr": "lit", "value": "data-table" } }
+          },
+          "then": [
+            {
+              "do": "import",
+              "module": "@constela/compiler",
+              "result": "compiler",
+              "onSuccess": [
+                {
+                  "do": "import",
+                  "module": "@constela/runtime",
+                  "result": "runtime",
+                  "onSuccess": [
+                    {
+                      "do": "import",
+                      "module": "@constela/ui",
+                      "result": "ui",
+                      "onSuccess": [
+                        {
+                          "do": "call",
+                          "target": { "expr": "var", "name": "JSON", "path": "parse" },
+                          "args": [
+                            { "expr": "get", "base": { "expr": "index", "base": { "expr": "import", "name": "uiData", "path": "items" }, "key": { "expr": "route", "name": "slug" } }, "path": "example" }
+                          ],
+                          "result": "exampleJson"
+                        },
+                        {
+                          "do": "call",
+                          "target": { "expr": "var", "name": "Object", "path": "assign" },
+                          "args": [
+                            { "expr": "var", "name": "exampleJson" },
+                            {
+                              "expr": "obj",
+                              "props": {
+                                "components": { "expr": "get", "base": { "expr": "var", "name": "ui" }, "path": "components" },
+                                "styles": { "expr": "get", "base": { "expr": "var", "name": "ui" }, "path": "styles" }
+                              }
+                            }
+                          ],
+                          "result": "fullProgram"
+                        },
+                        {
+                          "do": "call",
+                          "target": { "expr": "var", "name": "compiler", "path": "compile" },
+                          "args": [
+                            { "expr": "var", "name": "fullProgram" }
+                          ],
+                          "result": "compiled"
+                        },
+                        {
+                          "do": "call",
+                          "target": { "expr": "var", "name": "runtime", "path": "createApp" },
+                          "args": [
+                            { "expr": "var", "name": "compiled", "path": "program" },
+                            { "expr": "ref", "name": "dynamicPreviewContainer" }
+                          ],
+                          "result": "appInstance"
+                        },
+                        {
+                          "do": "set",
+                          "target": "previewApp",
+                          "value": { "expr": "var", "name": "appInstance" }
+                        }
+                      ],
+                      "onError": [
+                        { "do": "set", "target": "previewError", "value": { "expr": "lit", "value": "Failed to load @constela/ui" } }
+                      ]
+                    }
+                  ],
+                  "onError": [
+                    { "do": "set", "target": "previewError", "value": { "expr": "lit", "value": "Failed to load @constela/runtime" } }
+                  ]
+                }
+              ],
+              "onError": [
+                { "do": "set", "target": "previewError", "value": { "expr": "lit", "value": "Failed to load @constela/compiler" } }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cleanupPreview",
+      "steps": [
+        {
+          "do": "if",
+          "condition": { "expr": "state", "name": "previewApp" },
+          "then": [
+            {
+              "do": "call",
+              "target": { "expr": "state", "name": "previewApp", "path": "destroy" },
+              "args": []
+            },
+            {
+              "do": "set",
+              "target": "previewApp",
+              "value": { "expr": "lit", "value": null }
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "showTooltip",
       "steps": [{ "do": "set", "target": "tooltipVisible", "value": { "expr": "lit", "value": true } }]
@@ -344,8 +468,50 @@
               {
                 "kind": "element",
                 "tag": "div",
-                "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-card p-8 flex items-center justify-center" } },
+                "props": { "class": { "expr": "lit", "value": "rounded-lg border bg-card p-8 flex items-center justify-center min-h-[200px]" } },
                 "children": [
+                  {
+                    "kind": "if",
+                    "condition": {
+                      "expr": "bin",
+                      "op": "||",
+                      "left": { "expr": "bin", "op": "==", "left": { "expr": "route", "name": "slug" }, "right": { "expr": "lit", "value": "chart" } },
+                      "right": { "expr": "bin", "op": "==", "left": { "expr": "route", "name": "slug" }, "right": { "expr": "lit", "value": "data-table" } }
+                    },
+                    "then": {
+                      "kind": "element",
+                      "tag": "div",
+                      "ref": "dynamicPreviewContainer",
+                      "props": { "class": { "expr": "lit", "value": "w-full" } },
+                      "children": [
+                        {
+                          "kind": "if",
+                          "condition": { "expr": "state", "name": "previewError" },
+                          "then": {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "text-red-500 text-sm" } },
+                            "children": [{ "kind": "text", "value": { "expr": "state", "name": "previewError" } }]
+                          }
+                        },
+                        {
+                          "kind": "if",
+                          "condition": {
+                            "expr": "bin",
+                            "op": "&&",
+                            "left": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "previewApp" }, "right": { "expr": "lit", "value": null } },
+                            "right": { "expr": "bin", "op": "==", "left": { "expr": "state", "name": "previewError" }, "right": { "expr": "lit", "value": "" } }
+                          },
+                          "then": {
+                            "kind": "element",
+                            "tag": "div",
+                            "props": { "class": { "expr": "lit", "value": "text-muted-foreground text-sm" } },
+                            "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Loading preview..." } }]
+                          }
+                        }
+                      ]
+                    }
+                  },
                   {
                     "kind": "if",
                     "condition": { "expr": "bin", "op": "==", "left": { "expr": "route", "name": "slug" }, "right": { "expr": "lit", "value": "button" } },
