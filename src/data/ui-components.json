@@ -426,7 +426,7 @@
     },
     {
       "slug": "chart",
-      "name": "Chart",
+      "name": "LineChart",
       "description": "Data visualization charts including line, bar, pie, area, and more",
       "category": "data",
       "variants": [
@@ -439,16 +439,20 @@
         "scatter"
       ],
       "params": [
-        "type",
         "data",
+        "valueKey",
+        "labelKey",
         "width",
         "height",
         "colors",
         "showGrid",
         "showLabels",
-        "options"
+        "showPoints",
+        "curved",
+        "strokeWidth",
+        "pointRadius"
       ],
-      "example": "{\n  \"state\": {\n    \"chartData\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"labels\": [\n          \"Jan\",\n          \"Feb\",\n          \"Mar\",\n          \"Apr\",\n          \"May\"\n        ],\n        \"datasets\": [\n          {\n            \"label\": \"Sales\",\n            \"data\": [\n              12,\n              19,\n              15,\n              25,\n              22\n            ],\n            \"borderColor\": \"hsl(220, 90%, 56%)\",\n            \"backgroundColor\": \"hsla(220, 90%, 56%, 0.1)\",\n            \"fill\": true\n          }\n        ]\n      }\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"Chart\",\n    \"props\": {\n      \"type\": {\n        \"expr\": \"lit\",\n        \"value\": \"line\"\n      },\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"chartData\"\n      },\n      \"height\": {\n        \"expr\": \"lit\",\n        \"value\": 300\n      },\n      \"options\": {\n        \"expr\": \"lit\",\n        \"value\": {\n          \"responsive\": true,\n          \"maintainAspectRatio\": false\n        }\n      }\n    }\n  }\n}"
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"LineChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true },\n      \"showPoints\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
     },
     {
       "slug": "data-table",
@@ -456,19 +460,16 @@
       "description": "Data table with sorting, filtering, pagination and row selection",
       "category": "data",
       "params": [
-        "data",
         "columns",
+        "data",
         "pageSize",
         "sortable",
         "filterable",
         "selectable",
-        "rowKey",
-        "onSort",
-        "onFilter",
-        "onPageChange",
-        "onSelectionChange"
+        "multiSelect",
+        "stickyHeader"
       ],
-      "example": "{\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": 1,\n          \"name\": \"Alice\",\n          \"email\": \"alice@example.com\",\n          \"role\": \"Admin\"\n        },\n        {\n          \"id\": 2,\n          \"name\": \"Bob\",\n          \"email\": \"bob@example.com\",\n          \"role\": \"User\"\n        },\n        {\n          \"id\": 3,\n          \"name\": \"Carol\",\n          \"email\": \"carol@example.com\",\n          \"role\": \"Editor\"\n        }\n      ]\n    },\n    \"page\": {\n      \"type\": \"number\",\n      \"initial\": 1\n    },\n    \"sort\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"key\": \"name\",\n        \"direction\": \"asc\"\n      }\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"handleSort\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"sort\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"handlePageChange\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"page\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"users\"\n      },\n      \"columns\": {\n        \"expr\": \"lit\",\n        \"value\": [\n          {\n            \"key\": \"name\",\n            \"title\": \"Name\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"email\",\n            \"title\": \"Email\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"role\",\n            \"title\": \"Role\",\n            \"sortable\": true\n          }\n        ]\n      },\n      \"rowKey\": {\n        \"expr\": \"lit\",\n        \"value\": \"id\"\n      },\n      \"pageSize\": {\n        \"expr\": \"lit\",\n        \"value\": 10\n      },\n      \"sortable\": {\n        \"expr\": \"lit\",\n        \"value\": true\n      },\n      \"onSort\": {\n        \"event\": \"sort\",\n        \"action\": \"handleSort\"\n      },\n      \"onPageChange\": {\n        \"event\": \"pageChange\",\n        \"action\": \"handlePageChange\"\n      }\n    }\n  }\n}"
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\", \"role\": \"Admin\" },\n        { \"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\", \"role\": \"User\" },\n        { \"id\": 3, \"name\": \"Carol\", \"email\": \"carol@example.com\", \"role\": \"Editor\" }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"columns\": { \"expr\": \"lit\", \"value\": [{ \"key\": \"name\", \"title\": \"Name\" }, { \"key\": \"email\", \"title\": \"Email\" }, { \"key\": \"role\", \"title\": \"Role\" }] },\n      \"data\": { \"expr\": \"state\", \"name\": \"users\" }\n    }\n  }\n}"
     }
   ],
   "categories": [
@@ -930,7 +931,7 @@
     },
     "chart": {
       "slug": "chart",
-      "name": "Chart",
+      "name": "LineChart",
       "description": "Data visualization charts including line, bar, pie, area, and more",
       "category": "data",
       "variants": [
@@ -943,16 +944,20 @@
         "scatter"
       ],
       "params": [
-        "type",
         "data",
+        "valueKey",
+        "labelKey",
         "width",
         "height",
         "colors",
         "showGrid",
         "showLabels",
-        "options"
+        "showPoints",
+        "curved",
+        "strokeWidth",
+        "pointRadius"
       ],
-      "example": "{\n  \"state\": {\n    \"chartData\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"labels\": [\n          \"Jan\",\n          \"Feb\",\n          \"Mar\",\n          \"Apr\",\n          \"May\"\n        ],\n        \"datasets\": [\n          {\n            \"label\": \"Sales\",\n            \"data\": [\n              12,\n              19,\n              15,\n              25,\n              22\n            ],\n            \"borderColor\": \"hsl(220, 90%, 56%)\",\n            \"backgroundColor\": \"hsla(220, 90%, 56%, 0.1)\",\n            \"fill\": true\n          }\n        ]\n      }\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"Chart\",\n    \"props\": {\n      \"type\": {\n        \"expr\": \"lit\",\n        \"value\": \"line\"\n      },\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"chartData\"\n      },\n      \"height\": {\n        \"expr\": \"lit\",\n        \"value\": 300\n      },\n      \"options\": {\n        \"expr\": \"lit\",\n        \"value\": {\n          \"responsive\": true,\n          \"maintainAspectRatio\": false\n        }\n      }\n    }\n  }\n}"
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"LineChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true },\n      \"showPoints\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
     },
     "data-table": {
       "slug": "data-table",
@@ -960,19 +965,16 @@
       "description": "Data table with sorting, filtering, pagination and row selection",
       "category": "data",
       "params": [
-        "data",
         "columns",
+        "data",
         "pageSize",
         "sortable",
         "filterable",
         "selectable",
-        "rowKey",
-        "onSort",
-        "onFilter",
-        "onPageChange",
-        "onSelectionChange"
+        "multiSelect",
+        "stickyHeader"
       ],
-      "example": "{\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        {\n          \"id\": 1,\n          \"name\": \"Alice\",\n          \"email\": \"alice@example.com\",\n          \"role\": \"Admin\"\n        },\n        {\n          \"id\": 2,\n          \"name\": \"Bob\",\n          \"email\": \"bob@example.com\",\n          \"role\": \"User\"\n        },\n        {\n          \"id\": 3,\n          \"name\": \"Carol\",\n          \"email\": \"carol@example.com\",\n          \"role\": \"Editor\"\n        }\n      ]\n    },\n    \"page\": {\n      \"type\": \"number\",\n      \"initial\": 1\n    },\n    \"sort\": {\n      \"type\": \"object\",\n      \"initial\": {\n        \"key\": \"name\",\n        \"direction\": \"asc\"\n      }\n    }\n  },\n  \"actions\": [\n    {\n      \"name\": \"handleSort\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"sort\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    },\n    {\n      \"name\": \"handlePageChange\",\n      \"steps\": [\n        {\n          \"do\": \"set\",\n          \"target\": \"page\",\n          \"value\": {\n            \"expr\": \"var\",\n            \"name\": \"payload\"\n          }\n        }\n      ]\n    }\n  ],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"data\": {\n        \"expr\": \"state\",\n        \"name\": \"users\"\n      },\n      \"columns\": {\n        \"expr\": \"lit\",\n        \"value\": [\n          {\n            \"key\": \"name\",\n            \"title\": \"Name\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"email\",\n            \"title\": \"Email\",\n            \"sortable\": true\n          },\n          {\n            \"key\": \"role\",\n            \"title\": \"Role\",\n            \"sortable\": true\n          }\n        ]\n      },\n      \"rowKey\": {\n        \"expr\": \"lit\",\n        \"value\": \"id\"\n      },\n      \"pageSize\": {\n        \"expr\": \"lit\",\n        \"value\": 10\n      },\n      \"sortable\": {\n        \"expr\": \"lit\",\n        \"value\": true\n      },\n      \"onSort\": {\n        \"event\": \"sort\",\n        \"action\": \"handleSort\"\n      },\n      \"onPageChange\": {\n        \"event\": \"pageChange\",\n        \"action\": \"handlePageChange\"\n      }\n    }\n  }\n}"
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"users\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\", \"role\": \"Admin\" },\n        { \"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\", \"role\": \"User\" },\n        { \"id\": 3, \"name\": \"Carol\", \"email\": \"carol@example.com\", \"role\": \"Editor\" }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DataTable\",\n    \"props\": {\n      \"columns\": { \"expr\": \"lit\", \"value\": [{ \"key\": \"name\", \"title\": \"Name\" }, { \"key\": \"email\", \"title\": \"Email\" }, { \"key\": \"role\", \"title\": \"Role\" }] },\n      \"data\": { \"expr\": \"state\", \"name\": \"users\" }\n    }\n  }\n}"
     }
   }
 }
