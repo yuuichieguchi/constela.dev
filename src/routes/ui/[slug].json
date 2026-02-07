@@ -1,10 +1,10 @@
 {
   "version": "1.0",
   "externalImports": {
-    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.21.4/+esm",
-    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.15.20/+esm",
-    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@5.0.6/+esm",
-    "@constela/ui": "https://cdn.jsdelivr.net/npm/@constela/ui@0.6.5/+esm"
+    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.22.0/+esm",
+    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.15.21/+esm",
+    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@6.0.0/+esm",
+    "@constela/ui": "https://cdn.jsdelivr.net/npm/@constela/ui@0.6.6/+esm"
   },
   "route": {
     "path": "/ui/:slug",
