@@ -10,6 +10,7 @@
     "start": "constela-start start",
     "preview": "constela-start start",
     "lint": "eslint",
+    "sync-cdn": "npx tsx scripts/sync-cdn-versions.cli.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },
