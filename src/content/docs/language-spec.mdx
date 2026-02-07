@@ -92,7 +92,7 @@ State fields are declared with type and initial value:
 
 ---
 
-## Expressions (20 types)
+## Expressions (22 types)
 
 All dynamic values in Constela use expressions.
 
@@ -120,10 +120,12 @@ All dynamic values in Constela use expressions.
 | `call` | `{ "expr": "call", "target": T, "method": "M", "args": A }` | Method calls |
 | `lambda` | `{ "expr": "lambda", "param": "P", "body": B }` | Anonymous functions |
 | `array` | `{ "expr": "array", "elements": [...] }` | Dynamic arrays |
+| `local` | `{ "expr": "local", "name": "N" }` | Component local state values |
+| `obj` | `{ "expr": "obj", "props": { "key": expr } }` | Object literal construction |
 
 ### Binary Operators
 
-`+`, `-`, `*`, `/`, `==`, `!=`, `<`, `<=`, `>`, `>=`, `&&`, `||`
+`+`, `-`, `*`, `/`, `%`, `==`, `!=`, `<`, `<=`, `>`, `>=`, `&&`, `||`
 
 ### Expression Examples
 
@@ -190,6 +192,18 @@ All dynamic values in Constela use expressions.
     "param": "item",
     "body": { "expr": "get", "base": { "expr": "var", "name": "item" }, "path": "active" }
   }]
+}
+
+// Local state access (in components with localState)
+{ "expr": "local", "name": "isExpanded" }
+
+// Object literal construction
+{
+  "expr": "obj",
+  "props": {
+    "x": { "expr": "var", "name": "item", "path": "x" },
+    "y": { "expr": "var", "name": "item", "path": "y" }
+  }
 }
 ```
 

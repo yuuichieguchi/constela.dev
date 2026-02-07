@@ -1,145 +1,87 @@
 ---
 title: Charts
-description: 12 chart types with animations and interactive features
+description: 7 chart types with Apple Health-inspired design
 ---
 
 # Charts
 
-A comprehensive charting component supporting 12 chart types with animations, tooltips, and interactivity.
+7 chart types with Apple Health-inspired SVG rendering. Each chart type is a separate component.
 
-## Basic Usage
+## Chart Components
 
-```json
-{
-  "kind": "component",
-  "name": "Chart",
-  "props": {
-    "type": { "expr": "lit", "value": "line" },
-    "data": { "expr": "state", "name": "chartData" }
-  }
-}
-```
+| Component | Description |
+|-----------|-------------|
+| `BarChart` | Vertical bar chart with rounded corners |
+| `LineChart` | Line chart with optional data points |
+| `PieChart` | Pie chart |
+| `DonutChart` | Donut chart with center cutout |
+| `AreaChart` | Area chart with gradient fill |
+| `RadarChart` | Radar/spider chart |
+| `ScatterChart` | Scatter plot |
 
-## Props
+## Common Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `type` | `Expression` | Required | Chart type |
-| `data` | `Expression` | Required | Chart data |
-| `options` | `Expression` | `{}` | Chart options |
-| `width` | `Expression` | `"100%"` | Chart width |
-| `height` | `Expression` | `400` | Chart height |
-| `onClick` | `EventHandler` | - | Click handler |
-| `onHover` | `EventHandler` | - | Hover handler |
+| `data` | `Expression` | Required | Array of data objects |
+| `valueKey` | `Expression` | Required | Key to extract numeric values from data |
+| `labelKey` | `Expression` | - | Key to extract labels from data |
+| `width` | `Expression` | `300` | Chart width in pixels |
+| `height` | `Expression` | `200` | Chart height in pixels |
+| `colors` | `Expression` | Built-in palette | Array of color strings |
+| `showGrid` | `Expression` | `false` | Show grid lines |
+| `showLabels` | `Expression` | `false` | Show axis labels |
 
-## Chart Types
+### BarChart Additional Props
 
-| Type | Description |
-|------|-------------|
-| `line` | Line chart |
-| `bar` | Vertical bar chart |
-| `horizontalBar` | Horizontal bar chart |
-| `pie` | Pie chart |
-| `doughnut` | Doughnut chart |
-| `area` | Area chart |
-| `scatter` | Scatter plot |
-| `radar` | Radar/spider chart |
-| `polar` | Polar area chart |
-| `bubble` | Bubble chart |
-| `histogram` | Histogram |
-| `candlestick` | Candlestick chart |
-| `treemap` | Treemap visualization |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `barGap` | `Expression` | - | Gap between bars |
+| `barRadius` | `Expression` | - | Corner radius for rounded bars |
+| `orientation` | `Expression` | `"vertical"` | Bar orientation |
 
-## Data Structure
+## Data Format
 
-```typescript
-interface ChartData {
-  labels: string[];
-  datasets: Dataset[];
-}
+Chart data is a flat array of objects:
 
-interface Dataset {
-  label: string;
-  data: number[] | Point[];
-  backgroundColor?: string | string[];
-  borderColor?: string;
-  borderWidth?: number;
-  fill?: boolean;
-  tension?: number; // For curved lines
-}
-
-interface Point {
-  x: number;
-  y: number;
-  r?: number; // For bubble charts
-}
+```json
+[
+  { "label": "Jan", "value": 65 },
+  { "label": "Feb", "value": 59 },
+  { "label": "Mar", "value": 80 }
+]
 ```
 
 ## Examples
-
-### Line Chart
-
-```json
-{
-  "version": "1.0",
-  "state": {
-    "chartData": {
-      "type": "object",
-      "initial": {
-        "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-        "datasets": [{
-          "label": "Sales",
-          "data": [65, 59, 80, 81, 56, 55],
-          "borderColor": "hsl(220, 90%, 56%)",
-          "tension": 0.4
-        }]
-      }
-    }
-  },
-  "view": {
-    "kind": "component",
-    "name": "Chart",
-    "props": {
-      "type": { "expr": "lit", "value": "line" },
-      "data": { "expr": "state", "name": "chartData" },
-      "options": { "expr": "lit", "value": {
-        "responsive": true,
-        "animation": { "duration": 750, "easing": "easeOutQuart" },
-        "plugins": {
-          "legend": { "position": "top" },
-          "tooltip": { "enabled": true }
-        },
-        "scales": {
-          "y": { "beginAtZero": true }
-        }
-      }}
-    }
-  }
-}
-```
 
 ### Bar Chart
 
 ```json
 {
   "kind": "component",
-  "name": "Chart",
+  "name": "BarChart",
   "props": {
-    "type": { "expr": "lit", "value": "bar" },
-    "data": { "expr": "lit", "value": {
-      "labels": ["Red", "Blue", "Yellow", "Green", "Purple"],
-      "datasets": [{
-        "label": "Votes",
-        "data": [12, 19, 3, 5, 2],
-        "backgroundColor": [
-          "rgba(255, 99, 132, 0.8)",
-          "rgba(54, 162, 235, 0.8)",
-          "rgba(255, 206, 86, 0.8)",
-          "rgba(75, 192, 192, 0.8)",
-          "rgba(153, 102, 255, 0.8)"
-        ]
-      }]
-    }}
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" },
+    "showGrid": { "expr": "lit", "value": true },
+    "showLabels": { "expr": "lit", "value": true },
+    "barRadius": { "expr": "lit", "value": 4 }
+  }
+}
+```
+
+### Line Chart
+
+```json
+{
+  "kind": "component",
+  "name": "LineChart",
+  "props": {
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" },
+    "showGrid": { "expr": "lit", "value": true }
   }
 }
 ```
@@ -149,20 +91,25 @@ interface Point {
 ```json
 {
   "kind": "component",
-  "name": "Chart",
+  "name": "PieChart",
   "props": {
-    "type": { "expr": "lit", "value": "pie" },
-    "data": { "expr": "state", "name": "marketShare" },
-    "options": { "expr": "lit", "value": {
-      "plugins": {
-        "legend": { "position": "right" },
-        "tooltip": {
-          "callbacks": {
-            "label": "function(ctx) { return ctx.label + ': ' + ctx.raw + '%'; }"
-          }
-        }
-      }
-    }}
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" }
+  }
+}
+```
+
+### Donut Chart
+
+```json
+{
+  "kind": "component",
+  "name": "DonutChart",
+  "props": {
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" }
   }
 }
 ```
@@ -172,43 +119,12 @@ interface Point {
 ```json
 {
   "kind": "component",
-  "name": "Chart",
+  "name": "AreaChart",
   "props": {
-    "type": { "expr": "lit", "value": "area" },
-    "data": { "expr": "lit", "value": {
-      "labels": ["Mon", "Tue", "Wed", "Thu", "Fri"],
-      "datasets": [{
-        "label": "Traffic",
-        "data": [1200, 1900, 3000, 5000, 4000],
-        "fill": true,
-        "backgroundColor": "rgba(59, 130, 246, 0.3)",
-        "borderColor": "rgb(59, 130, 246)"
-      }]
-    }}
-  }
-}
-```
-
-### Scatter Plot
-
-```json
-{
-  "kind": "component",
-  "name": "Chart",
-  "props": {
-    "type": { "expr": "lit", "value": "scatter" },
-    "data": { "expr": "lit", "value": {
-      "datasets": [{
-        "label": "Points",
-        "data": [
-          { "x": 10, "y": 20 },
-          { "x": 15, "y": 25 },
-          { "x": 20, "y": 10 },
-          { "x": 25, "y": 30 }
-        ],
-        "backgroundColor": "rgb(255, 99, 132)"
-      }]
-    }}
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" },
+    "showGrid": { "expr": "lit", "value": true }
   }
 }
 ```
@@ -218,125 +134,25 @@ interface Point {
 ```json
 {
   "kind": "component",
-  "name": "Chart",
+  "name": "RadarChart",
   "props": {
-    "type": { "expr": "lit", "value": "radar" },
-    "data": { "expr": "lit", "value": {
-      "labels": ["Speed", "Power", "Defense", "Accuracy", "Stamina"],
-      "datasets": [{
-        "label": "Player A",
-        "data": [65, 80, 70, 90, 75],
-        "borderColor": "rgb(255, 99, 132)",
-        "backgroundColor": "rgba(255, 99, 132, 0.2)"
-      }, {
-        "label": "Player B",
-        "data": [80, 60, 85, 70, 90],
-        "borderColor": "rgb(54, 162, 235)",
-        "backgroundColor": "rgba(54, 162, 235, 0.2)"
-      }]
-    }}
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" }
   }
 }
 ```
 
-### Real-time Updates
+### Scatter Chart
 
 ```json
 {
-  "version": "1.0",
-  "state": {
-    "chartData": { "type": "object", "initial": { "labels": [], "datasets": [{ "label": "CPU", "data": [] }] } }
-  },
-  "lifecycle": { "onMount": "startMonitoring" },
-  "actions": [
-    {
-      "name": "startMonitoring",
-      "steps": [{
-        "do": "interval",
-        "ms": { "expr": "lit", "value": 1000 },
-        "action": "updateChart"
-      }]
-    },
-    {
-      "name": "updateChart",
-      "steps": [{
-        "do": "fetch",
-        "url": { "expr": "lit", "value": "/api/metrics" },
-        "onSuccess": [{
-          "do": "setPath",
-          "target": "chartData",
-          "path": { "expr": "lit", "value": ["datasets", 0, "data"] },
-          "value": { "expr": "var", "name": "response", "path": "cpuHistory" }
-        }]
-      }]
-    }
-  ],
-  "view": {
-    "kind": "component",
-    "name": "Chart",
-    "props": {
-      "type": { "expr": "lit", "value": "line" },
-      "data": { "expr": "state", "name": "chartData" },
-      "options": { "expr": "lit", "value": {
-        "animation": false,
-        "scales": { "x": { "display": false } }
-      }}
-    }
-  }
-}
-```
-
-## Chart Options
-
-### Animation
-
-```json
-{
-  "animation": {
-    "duration": 1000,
-    "easing": "easeOutQuart",
-    "delay": 0
-  }
-}
-```
-
-**Easing functions:** `linear`, `easeInQuad`, `easeOutQuad`, `easeInOutQuad`, `easeInCubic`, `easeOutCubic`, `easeInQuart`, `easeOutQuart`, `easeInOutQuart`
-
-### Scales
-
-```json
-{
-  "scales": {
-    "x": {
-      "display": true,
-      "title": { "display": true, "text": "Month" }
-    },
-    "y": {
-      "beginAtZero": true,
-      "max": 100,
-      "title": { "display": true, "text": "Value" }
-    }
-  }
-}
-```
-
-### Plugins
-
-```json
-{
-  "plugins": {
-    "legend": {
-      "display": true,
-      "position": "top"
-    },
-    "tooltip": {
-      "enabled": true,
-      "mode": "index"
-    },
-    "title": {
-      "display": true,
-      "text": "Monthly Sales"
-    }
+  "kind": "component",
+  "name": "ScatterChart",
+  "props": {
+    "data": { "expr": "state", "name": "chartData" },
+    "valueKey": { "expr": "lit", "value": "value" },
+    "labelKey": { "expr": "lit", "value": "label" }
   }
 }
 ```
@@ -346,14 +162,18 @@ interface Point {
 CSS classes:
 
 - `.chart-container` - Main container
-- `.chart-canvas` - Canvas element
-- `.chart-legend` - Legend container
-- `.chart-tooltip` - Tooltip container
-- `.chart-loading` - Loading state
+- `.chart-svg` - SVG element
+- `.chart-bar` - Bar elements
+- `.chart-line` - Line paths
+- `.chart-area` - Area fills
+- `.chart-point` - Data points
+- `.chart-slice` - Pie/donut slices
+- `.chart-grid` - Grid lines
+- `.chart-label` - Axis labels
 
 ## Accessibility
 
 - ARIA labels for chart elements
-- Keyboard navigation for data points
+- Semantic SVG structure
 - High contrast mode support
 - Screen reader descriptions for data
