@@ -24,8 +24,8 @@ importers:
         specifier: ^17.0.1
         version: 17.0.1(@constela/compiler@0.15.20)(@constela/core@0.21.4)
       '@constela/start':
-        specifier: ^1.9.28
-        version: 1.9.28(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.10.0
+        version: 1.10.0(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)
       '@constela/ui':
         specifier: 0.6.5
         version: 0.6.5
@@ -143,8 +143,8 @@ packages:
       '@constela/compiler': ^0.15.16
       '@constela/core': ^0.21.0
 
-  '@constela/start@1.9.28':
-    resolution: {integrity: sha512-972gjcasqzongX3sxsfzRoP/k1ZOyK+5CwjeEMaWEA36YXCOOPUL9gh8N6a3502kMRitv57hPufy/8J1zKBe8w==}
+  '@constela/start@1.10.0':
+    resolution: {integrity: sha512-P3ydBmuoRbn6ZCx6wjaZLWRT/JcgnJbvVn1rGgc+++OlVfoviviCCzbQNep3ZoY4XqJMv82wu83nZS2tNkuUlA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -2361,7 +2361,7 @@ snapshots:
       - canvas
       - supports-color
 
-  '@constela/start@1.9.28(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)':
+  '@constela/start@1.10.0(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
       '@constela/ai': 6.0.4(@constela/core@0.21.4)(ws@8.19.0)
       '@constela/compiler': 0.15.20

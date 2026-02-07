@@ -20,7 +20,7 @@
     "@constela/router": "^23.0.0",
     "@constela/runtime": "^5.0.6",
     "@constela/server": "^17.0.1",
-    "@constela/start": "^1.9.28",
+    "@constela/start": "^1.10.0",
     "@constela/ui": "0.6.5",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
