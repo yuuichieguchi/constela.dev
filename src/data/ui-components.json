@@ -429,15 +429,6 @@
       "name": "LineChart",
       "description": "Data visualization charts including line, bar, pie, area, and more",
       "category": "data",
-      "variants": [
-        "line",
-        "bar",
-        "pie",
-        "area",
-        "donut",
-        "radar",
-        "scatter"
-      ],
       "params": [
         "data",
         "valueKey",
@@ -453,6 +444,54 @@
         "pointRadius"
       ],
       "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"LineChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true },\n      \"showPoints\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "bar-chart",
+      "name": "BarChart",
+      "description": "Vertical bar chart for comparing categorical data",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"BarChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "pie-chart",
+      "name": "PieChart",
+      "description": "Pie chart for showing proportional data",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"PieChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "area-chart",
+      "name": "AreaChart",
+      "description": "Area chart for visualizing trends over time",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"AreaChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "donut-chart",
+      "name": "DonutChart",
+      "description": "Donut chart for proportional data with center space",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DonutChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "radar-chart",
+      "name": "RadarChart",
+      "description": "Radar chart for multivariate data comparison",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "maxValue", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"RadarChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"maxValue\": { \"expr\": \"lit\", \"value\": 30 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    {
+      "slug": "scatter-chart",
+      "name": "ScatterChart",
+      "description": "Scatter chart for visualizing correlations between two variables",
+      "category": "data",
+      "params": ["data", "xKey", "yKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"scatterData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"x\": 10, \"y\": 25 },\n        { \"x\": 20, \"y\": 15 },\n        { \"x\": 35, \"y\": 30 },\n        { \"x\": 45, \"y\": 20 },\n        { \"x\": 55, \"y\": 35 },\n        { \"x\": 70, \"y\": 28 },\n        { \"x\": 80, \"y\": 40 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"ScatterChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"scatterData\" },\n      \"xKey\": { \"expr\": \"lit\", \"value\": \"x\" },\n      \"yKey\": { \"expr\": \"lit\", \"value\": \"y\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
     },
     {
       "slug": "data-table",
@@ -934,15 +973,6 @@
       "name": "LineChart",
       "description": "Data visualization charts including line, bar, pie, area, and more",
       "category": "data",
-      "variants": [
-        "line",
-        "bar",
-        "pie",
-        "area",
-        "donut",
-        "radar",
-        "scatter"
-      ],
       "params": [
         "data",
         "valueKey",
@@ -958,6 +988,54 @@
         "pointRadius"
       ],
       "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"LineChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true },\n      \"showPoints\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "bar-chart": {
+      "slug": "bar-chart",
+      "name": "BarChart",
+      "description": "Vertical bar chart for comparing categorical data",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"BarChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "pie-chart": {
+      "slug": "pie-chart",
+      "name": "PieChart",
+      "description": "Pie chart for showing proportional data",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"PieChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "area-chart": {
+      "slug": "area-chart",
+      "name": "AreaChart",
+      "description": "Area chart for visualizing trends over time",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"AreaChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "donut-chart": {
+      "slug": "donut-chart",
+      "name": "DonutChart",
+      "description": "Donut chart for proportional data with center space",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"DonutChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "radar-chart": {
+      "slug": "radar-chart",
+      "name": "RadarChart",
+      "description": "Radar chart for multivariate data comparison",
+      "category": "data",
+      "params": ["data", "valueKey", "labelKey", "width", "height", "maxValue", "colors", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"salesData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"month\": \"Jan\", \"value\": 12 },\n        { \"month\": \"Feb\", \"value\": 19 },\n        { \"month\": \"Mar\", \"value\": 15 },\n        { \"month\": \"Apr\", \"value\": 25 },\n        { \"month\": \"May\", \"value\": 22 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"RadarChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"salesData\" },\n      \"valueKey\": { \"expr\": \"lit\", \"value\": \"value\" },\n      \"labelKey\": { \"expr\": \"lit\", \"value\": \"month\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"maxValue\": { \"expr\": \"lit\", \"value\": 30 },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
+    },
+    "scatter-chart": {
+      "slug": "scatter-chart",
+      "name": "ScatterChart",
+      "description": "Scatter chart for visualizing correlations between two variables",
+      "category": "data",
+      "params": ["data", "xKey", "yKey", "width", "height", "colors", "showGrid", "showLabels"],
+      "example": "{\n  \"version\": \"1.0\",\n  \"state\": {\n    \"scatterData\": {\n      \"type\": \"list\",\n      \"initial\": [\n        { \"x\": 10, \"y\": 25 },\n        { \"x\": 20, \"y\": 15 },\n        { \"x\": 35, \"y\": 30 },\n        { \"x\": 45, \"y\": 20 },\n        { \"x\": 55, \"y\": 35 },\n        { \"x\": 70, \"y\": 28 },\n        { \"x\": 80, \"y\": 40 }\n      ]\n    }\n  },\n  \"actions\": [],\n  \"view\": {\n    \"kind\": \"component\",\n    \"name\": \"ScatterChart\",\n    \"props\": {\n      \"data\": { \"expr\": \"state\", \"name\": \"scatterData\" },\n      \"xKey\": { \"expr\": \"lit\", \"value\": \"x\" },\n      \"yKey\": { \"expr\": \"lit\", \"value\": \"y\" },\n      \"width\": { \"expr\": \"lit\", \"value\": 400 },\n      \"height\": { \"expr\": \"lit\", \"value\": 300 },\n      \"showGrid\": { \"expr\": \"lit\", \"value\": true },\n      \"showLabels\": { \"expr\": \"lit\", \"value\": true }\n    }\n  }\n}"
     },
     "data-table": {
       "slug": "data-table",

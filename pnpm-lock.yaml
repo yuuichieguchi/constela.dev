@@ -9,26 +9,26 @@ importers:
   .:
     dependencies:
       '@constela/compiler':
-        specifier: ^0.15.12
-        version: 0.15.12
+        specifier: ^0.15.20
+        version: 0.15.20
       '@constela/core':
-        specifier: ^0.18.5
-        version: 0.18.5
+        specifier: ^0.21.4
+        version: 0.21.4
       '@constela/router':
-        specifier: ^20.0.0
-        version: 20.0.0(@constela/compiler@0.15.12)(@constela/runtime@2.0.9(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0)))
+        specifier: ^23.0.0
+        version: 23.0.0(@constela/compiler@0.15.20)(@constela/runtime@5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0)))
       '@constela/runtime':
-        specifier: ^2.0.9
-        version: 2.0.9(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))
+        specifier: ^5.0.6
+        version: 5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0))
       '@constela/server':
-        specifier: ^14.0.6
-        version: 14.0.6(@constela/compiler@0.15.12)(@constela/core@0.18.5)
+        specifier: ^17.0.1
+        version: 17.0.1(@constela/compiler@0.15.20)(@constela/core@0.21.4)
       '@constela/start':
-        specifier: ^1.9.15
-        version: 1.9.15(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)
+        specifier: ^1.9.28
+        version: 1.9.28(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)
       '@constela/ui':
-        specifier: 0.4.9
-        version: 0.4.9
+        specifier: 0.6.5
+        version: 0.6.5
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.1.18)
@@ -68,7 +68,7 @@ importers:
         version: 6.4.1(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)
       vitest:
         specifier: ^4.0.18
-        version: 4.0.18(@types/node@20.19.30)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@27.4.0)(lightningcss@1.30.2)
+        version: 4.0.18(@types/node@20.19.30)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@28.0.0)(lightningcss@1.30.2)
 
 packages:
 
@@ -106,63 +106,50 @@ packages:
     resolution: {integrity: sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA==}
     engines: {node: '>=6.9.0'}
 
-  '@constela/ai@3.0.5':
-    resolution: {integrity: sha512-ZbkbrySYfW2G+5LaX/fhn+6kLeOVFpKR2TE2pBys1FRognLlhIQzmz2qAw1rQ1BTS5iTFboON0Jc2WngnALnzA==}
+  '@constela/ai@6.0.4':
+    resolution: {integrity: sha512-2U1/RaPzTkpry1Mw/pNxEFeKWMlY0j9zSSJppskDpLRSsjKzbici+MsQ0l/+KagARAl5DJBDBdsJ3fPpiEQeIw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@constela/core': 0.18.5
+      '@constela/core': 0.21.4
 
-  '@constela/compiler@0.15.11':
-    resolution: {integrity: sha512-7O2QOh4ozEeyVC9pb6I7H0hxP29i+VzSBXLNacIQjc8ziZGZj/y73rF2xmSfIF2ENP4L6Q1XcivwbhbOP1GJ0w==}
+  '@constela/compiler@0.15.20':
+    resolution: {integrity: sha512-Q+pW2rouyRpzHXmqmoEd9pLC+CDqsjT/DyWRIgAlv+LpzmuK50WyQZYmKPgyyE499OGZk5skmBV5Pu+GERENVQ==}
     engines: {node: '>=20.0.0'}
 
-  '@constela/compiler@0.15.12':
-    resolution: {integrity: sha512-sxQJLjokKuBCfc2vsH55NszrikEPSow/tk9QMCKg4gMOiKZzqxi+YImNYe8zDEPF5ZD5M4KwUNoqf9s6El3+lQ==}
+  '@constela/core@0.21.4':
+    resolution: {integrity: sha512-zjcLV2uU7QX3zwHNMQjG0HlgqgVYwUKFzh7+KRxBxmyai8aqmzDRynM7lhtH/HR+z84IqfvvvGcsf2+C5z2tnw==}
     engines: {node: '>=20.0.0'}
 
-  '@constela/core@0.18.5':
-    resolution: {integrity: sha512-VaHlf0Ca1V5raLHnFxDjUR9WEsJGLfUDwNqujEKsvRIedt+8Ust4YHRyeeYR327angLx4uQGZPR4sJqNbYtBxw==}
-    engines: {node: '>=20.0.0'}
-
-  '@constela/router@20.0.0':
-    resolution: {integrity: sha512-Wq1T8bhV1NfQn4XUqQXK0nSglkHlKZ47sCJDAPyN2a3TUy3BwNpGVTcZ1BSrV6joks2PVdFyiJKR5o0nb4tW4g==}
+  '@constela/router@23.0.0':
+    resolution: {integrity: sha512-ODKukGUaikYwQ+x3vvGyk5VrmSSd0ES/taXE4Yu9H6jZQiTeoUnHl3LmTflAXts0u4j3RylUI5TzSK+FDA/tvQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@constela/compiler': ^0.15.6
-      '@constela/runtime': ^2.0.0
+      '@constela/compiler': ^0.15.16
+      '@constela/runtime': ^5.0.0
 
-  '@constela/runtime@2.0.8':
-    resolution: {integrity: sha512-392dCQuVU3xthm5n8CZ91HOrpSRbI7uSZQgWJMb6ucHWRzsPYdNnmXONuNff3Blzww7xU3DQvIA6mMJQEAf/GA==}
+  '@constela/runtime@5.0.6':
+    resolution: {integrity: sha512-TFrEeQ+WHq5QS8xCG7Z9CauPFk14Q3bQtiv88BAmpAWCGmiDsyABxoSO8tCdtlYLAbaqixoF0ZG1LFci2Dhqlg==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@constela/ai': 3.0.5
+      '@constela/ai': 6.0.4
     peerDependenciesMeta:
       '@constela/ai':
         optional: true
 
-  '@constela/runtime@2.0.9':
-    resolution: {integrity: sha512-GgN/IQY8J293WhILsFf0D817QJ7/sgrZ0Mm4/Qjjorg2/iCUH45ojmOUXv/R3EDAaPJ/l6NYXjzrX9ROzk2Hzg==}
+  '@constela/server@17.0.1':
+    resolution: {integrity: sha512-5/wYtq9pq37XOATUJtrQAsk9oQIYsk0/YhAUuKAaWsnjJZ8keOmQmqDsR3YPmTzJ71ypSrNR2vtLeBLiU5bEfQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      '@constela/ai': 3.0.5
-    peerDependenciesMeta:
-      '@constela/ai':
-        optional: true
+      '@constela/compiler': ^0.15.16
+      '@constela/core': ^0.21.0
 
-  '@constela/server@14.0.6':
-    resolution: {integrity: sha512-j7bC8PLfqB8yAt8H0o3yn+Jux9lud158hr+w5PHJr52Nc60Va7SKiP3GV0QVmZXWCgxBbYSpLaGD3h1VpsbKvQ==}
-    engines: {node: '>=20.0.0'}
-    peerDependencies:
-      '@constela/compiler': ^0.15.11
-      '@constela/core': ^0.18.5
-
-  '@constela/start@1.9.15':
-    resolution: {integrity: sha512-ZAiNi9+b4G5ejBVzTKVi5xznS+odZj76d/jf1RjmJdj0W/1O6qUPn3bz37TlPPFF4OHpuqPJgcl0Ya8fIJv3Qg==}
+  '@constela/start@1.9.28':
+    resolution: {integrity: sha512-972gjcasqzongX3sxsfzRoP/k1ZOyK+5CwjeEMaWEA36YXCOOPUL9gh8N6a3502kMRitv57hPufy/8J1zKBe8w==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  '@constela/ui@0.4.9':
-    resolution: {integrity: sha512-u1+56TUp4+OIElUILKlMLj09BhzB48TnaE4icBzeMnieCfa8VgjQnU2iAt1zn2f1Ge5BO0IhR3ZYHfLeRt7gGA==}
+  '@constela/ui@0.6.5':
+    resolution: {integrity: sha512-4pzvotd+KFhf6nISytQVFn/e0A8YxU5irBSF+jcoVrbGg8neT6g36G7UXJxH9igjoYhZGPcCfBhmQMVr2wzzlg==}
     engines: {node: '>=20.0.0'}
 
   '@csstools/color-helpers@6.0.1':
@@ -1092,9 +1079,9 @@ packages:
     resolution: {integrity: sha512-7D2EPVltRrsTkhpQmksIu+LxeWAIEk6wRDMJ1qljlv+CKHJM+cJLlfhWIzNA44eAsHXSNe3+vO6DW1yCYx8SuQ==}
     engines: {node: '>=20'}
 
-  data-urls@6.0.1:
-    resolution: {integrity: sha512-euIQENZg6x8mj3fO6o9+fOW8MimUI4PpD/fZBhJfeioZVy9TUpM4UY7KjQNVZFlqwJ0UdzRDzkycB997HEq1BQ==}
-    engines: {node: '>=20'}
+  data-urls@7.0.0:
+    resolution: {integrity: sha512-23XHcCF+coGYevirZceTVD7NdJOqVn+49IHyxgszm+JIiHLoB2TkmPtsYkNWT1pvRSGkc35L6NHs0yHkN2SumA==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -1385,8 +1372,8 @@ packages:
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
 
-  hono@4.11.7:
-    resolution: {integrity: sha512-l7qMiNee7t82bH3SeyUCt9UF15EVmaBvsppY2zQtrbIhl/yzBTny+YUxsVjSjQ6gaqaeVtZmGocom8TzBlA4Yw==}
+  hono@4.11.8:
+    resolution: {integrity: sha512-eVkB/CYCCei7K2WElZW9yYQFWssG0DhaDhVvr7wy5jJ22K+ck8fWW0EsLpB0sITUTvPnc97+rrbQqIr5iqiy9Q==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
@@ -1461,8 +1448,8 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  isomorphic-dompurify@2.35.0:
-    resolution: {integrity: sha512-a9+LQqylQCU8f1zmsYmg2tfrbdY2YS/Hc+xntcq/mDI2MY3Q108nq8K23BWDIg6YGC5JsUMC15fj2ZMqCzt/+A==}
+  isomorphic-dompurify@2.36.0:
+    resolution: {integrity: sha512-E8YkGyPY3a/U5s0WOoc8Ok+3SWL/33yn2IHCoxCFLBUUPVy9WGa++akJZFxQCcJIhI+UvYhbrbnTIFQkHKZbgA==}
     engines: {node: '>=20.19.5'}
 
   jiti@2.6.1:
@@ -1480,8 +1467,8 @@ packages:
     resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
-  jsdom@27.4.0:
-    resolution: {integrity: sha512-mjzqwWRD9Y1J1KUi7W97Gja1bwOOM5Ug0EZ6UDK3xS7j7mndrkwozHtSblfomlzyB4NepioNt+B2sOSzczVgtQ==}
+  jsdom@28.0.0:
+    resolution: {integrity: sha512-KDYJgZ6T2TKdU8yBfYueq5EPG/EylMsBvCaenWMJb2OXmjgczzwveRCoJ+Hgj1lXPDyasvrgneSn4GBuR1hYyA==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
@@ -2101,6 +2088,10 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
+  undici@7.21.0:
+    resolution: {integrity: sha512-Hn2tCQpoDt1wv23a68Ctc8Cr/BHpUSfaPYrkajTXOS9IKpxVRx/X5m1K2YkbK2ipgZgxXSgsUinl3x+2YdSSfg==}
+    engines: {node: '>=20.18.1'}
+
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
 
@@ -2227,17 +2218,13 @@ packages:
     resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
     engines: {node: '>=12'}
 
-  whatwg-mimetype@4.0.0:
-    resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
-    engines: {node: '>=18'}
-
   whatwg-mimetype@5.0.0:
     resolution: {integrity: sha512-sXcNcHOC51uPGF0P/D4NVtrkjSU2fNsm9iog4ZvZJsL3rjoDAzXZhkm2MWt1y+PUdggKAYVoMAIYcs78wJ51Cw==}
     engines: {node: '>=20'}
 
-  whatwg-url@15.1.0:
-    resolution: {integrity: sha512-2ytDk0kiEj/yu90JOAp44PVPUkO9+jVhyf+SybKlRHSDlvOOZhdPIrr7xTH64l4WixO2cP+wQIcgujkGBPPz6g==}
-    engines: {node: '>=20'}
+  whatwg-url@16.0.0:
+    resolution: {integrity: sha512-9CcxtEKsf53UFwkSUZjG+9vydAsFO4lFHBpJUtjBcoJOCJpKnSJNwCw813zrYJHpCJ7sgfbtOe0V5Ku7Pa1XMQ==}
+    engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
 
   whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
@@ -2330,100 +2317,64 @@ snapshots:
 
   '@babel/runtime@7.28.6': {}
 
-  '@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0)':
+  '@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0)':
     dependencies:
       '@anthropic-ai/sdk': 0.39.0
-      '@constela/core': 0.18.5
+      '@constela/core': 0.21.4
       openai: 4.104.0(ws@8.19.0)
     transitivePeerDependencies:
       - encoding
       - ws
       - zod
 
-  '@constela/compiler@0.15.11':
+  '@constela/compiler@0.15.20':
     dependencies:
-      '@constela/core': 0.18.5
+      '@constela/core': 0.21.4
 
-  '@constela/compiler@0.15.12':
+  '@constela/core@0.21.4': {}
+
+  '@constela/router@23.0.0(@constela/compiler@0.15.20)(@constela/runtime@5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0)))':
     dependencies:
-      '@constela/core': 0.18.5
+      '@constela/compiler': 0.15.20
+      '@constela/runtime': 5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0))
 
-  '@constela/core@0.18.5': {}
-
-  '@constela/router@20.0.0(@constela/compiler@0.15.11)(@constela/runtime@2.0.8(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0)))':
+  '@constela/runtime@5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0))':
     dependencies:
-      '@constela/compiler': 0.15.11
-      '@constela/runtime': 2.0.8(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))
-
-  '@constela/router@20.0.0(@constela/compiler@0.15.12)(@constela/runtime@2.0.9(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0)))':
-    dependencies:
-      '@constela/compiler': 0.15.12
-      '@constela/runtime': 2.0.9(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))
-
-  '@constela/runtime@2.0.8(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))':
-    dependencies:
-      '@constela/compiler': 0.15.11
-      '@constela/core': 0.18.5
+      '@constela/compiler': 0.15.20
+      '@constela/core': 0.21.4
       dompurify: 3.3.1
       marked: 17.0.1
       shiki: 3.22.0
     optionalDependencies:
-      '@constela/ai': 3.0.5(@constela/core@0.18.5)(ws@8.19.0)
+      '@constela/ai': 6.0.4(@constela/core@0.21.4)(ws@8.19.0)
 
-  '@constela/runtime@2.0.9(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))':
+  '@constela/server@17.0.1(@constela/compiler@0.15.20)(@constela/core@0.21.4)':
     dependencies:
-      '@constela/compiler': 0.15.12
-      '@constela/core': 0.18.5
-      dompurify: 3.3.1
-      marked: 17.0.1
-      shiki: 3.22.0
-    optionalDependencies:
-      '@constela/ai': 3.0.5(@constela/core@0.18.5)(ws@8.19.0)
-
-  '@constela/server@14.0.6(@constela/compiler@0.15.11)(@constela/core@0.18.5)':
-    dependencies:
-      '@constela/compiler': 0.15.11
-      '@constela/core': 0.18.5
-      isomorphic-dompurify: 2.35.0
+      '@constela/compiler': 0.15.20
+      '@constela/core': 0.21.4
+      isomorphic-dompurify: 2.36.0
       marked: 17.0.1
       marked-shiki: 1.2.1(marked@17.0.1)(shiki@1.29.2)
       shiki: 1.29.2
     transitivePeerDependencies:
       - '@noble/hashes'
-      - bufferutil
       - canvas
       - supports-color
-      - utf-8-validate
 
-  '@constela/server@14.0.6(@constela/compiler@0.15.12)(@constela/core@0.18.5)':
+  '@constela/start@1.9.28(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)':
     dependencies:
-      '@constela/compiler': 0.15.12
-      '@constela/core': 0.18.5
-      isomorphic-dompurify: 2.35.0
-      marked: 17.0.1
-      marked-shiki: 1.2.1(marked@17.0.1)(shiki@1.29.2)
-      shiki: 1.29.2
-    transitivePeerDependencies:
-      - '@noble/hashes'
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
-
-  '@constela/start@1.9.15(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)':
-    dependencies:
-      '@constela/ai': 3.0.5(@constela/core@0.18.5)(ws@8.19.0)
-      '@constela/compiler': 0.15.11
-      '@constela/core': 0.18.5
-      '@constela/router': 20.0.0(@constela/compiler@0.15.11)(@constela/runtime@2.0.8(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0)))
-      '@constela/runtime': 2.0.8(@constela/ai@3.0.5(@constela/core@0.18.5)(ws@8.19.0))
-      '@constela/server': 14.0.6(@constela/compiler@0.15.11)(@constela/core@0.18.5)
+      '@constela/ai': 6.0.4(@constela/core@0.21.4)(ws@8.19.0)
+      '@constela/compiler': 0.15.20
+      '@constela/core': 0.21.4
+      '@constela/router': 23.0.0(@constela/compiler@0.15.20)(@constela/runtime@5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0)))
+      '@constela/runtime': 5.0.6(@constela/ai@6.0.4(@constela/core@0.21.4)(ws@8.19.0))
+      '@constela/server': 17.0.1(@constela/compiler@0.15.20)(@constela/core@0.21.4)
       '@tailwindcss/postcss': 4.1.18
       commander: 12.1.0
       esbuild: 0.24.2
       fast-glob: 3.3.3
       gray-matter: 4.0.3
-      hono: 4.11.7
+      hono: 4.11.8
       postcss: 8.5.6
       remark-gfm: 4.0.1
       remark-mdx: 3.1.1
@@ -2452,9 +2403,9 @@ snapshots:
       - yaml
       - zod
 
-  '@constela/ui@0.4.9':
+  '@constela/ui@0.6.5':
     dependencies:
-      '@constela/core': 0.18.5
+      '@constela/core': 0.21.4
 
   '@csstools/color-helpers@6.0.1': {}
 
@@ -3182,10 +3133,12 @@ snapshots:
       css-tree: 3.1.0
       lru-cache: 11.2.5
 
-  data-urls@6.0.1:
+  data-urls@7.0.0:
     dependencies:
       whatwg-mimetype: 5.0.0
-      whatwg-url: 15.1.0
+      whatwg-url: 16.0.0
+    transitivePeerDependencies:
+      - '@noble/hashes'
 
   debug@4.4.3:
     dependencies:
@@ -3546,7 +3499,7 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
-  hono@4.11.7: {}
+  hono@4.11.8: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:
@@ -3612,16 +3565,14 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isomorphic-dompurify@2.35.0:
+  isomorphic-dompurify@2.36.0:
     dependencies:
       dompurify: 3.3.1
-      jsdom: 27.4.0
+      jsdom: 28.0.0
     transitivePeerDependencies:
       - '@noble/hashes'
-      - bufferutil
       - canvas
       - supports-color
-      - utf-8-validate
 
   jiti@2.6.1: {}
 
@@ -3636,13 +3587,13 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsdom@27.4.0:
+  jsdom@28.0.0:
     dependencies:
       '@acemir/cssom': 0.9.31
       '@asamuzakjp/dom-selector': 6.7.8
       '@exodus/bytes': 1.11.0
       cssstyle: 5.3.7
-      data-urls: 6.0.1
+      data-urls: 7.0.0
       decimal.js: 10.6.0
       html-encoding-sniffer: 6.0.0
       http-proxy-agent: 7.0.2
@@ -3652,17 +3603,15 @@ snapshots:
       saxes: 6.0.0
       symbol-tree: 3.2.4
       tough-cookie: 6.0.0
+      undici: 7.21.0
       w3c-xmlserializer: 5.0.0
       webidl-conversions: 8.0.1
-      whatwg-mimetype: 4.0.0
-      whatwg-url: 15.1.0
-      ws: 8.19.0
+      whatwg-mimetype: 5.0.0
+      whatwg-url: 16.0.0
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - '@noble/hashes'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   json-buffer@3.0.1: {}
 
@@ -4538,6 +4487,8 @@ snapshots:
 
   undici-types@6.21.0: {}
 
+  undici@7.21.0: {}
+
   unified@11.0.5:
     dependencies:
       '@types/unist': 3.0.3
@@ -4605,7 +4556,7 @@ snapshots:
       jiti: 2.6.1
       lightningcss: 1.30.2
 
-  vitest@4.0.18(@types/node@20.19.30)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@27.4.0)(lightningcss@1.30.2):
+  vitest@4.0.18(@types/node@20.19.30)(happy-dom@20.4.0)(jiti@2.6.1)(jsdom@28.0.0)(lightningcss@1.30.2):
     dependencies:
       '@vitest/expect': 4.0.18
       '@vitest/mocker': 4.0.18(vite@6.4.1(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2))
@@ -4630,7 +4581,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.19.30
       happy-dom: 20.4.0
-      jsdom: 27.4.0
+      jsdom: 28.0.0
     transitivePeerDependencies:
       - jiti
       - less
@@ -4656,14 +4607,15 @@ snapshots:
 
   whatwg-mimetype@3.0.0: {}
 
-  whatwg-mimetype@4.0.0: {}
-
   whatwg-mimetype@5.0.0: {}
 
-  whatwg-url@15.1.0:
+  whatwg-url@16.0.0:
     dependencies:
+      '@exodus/bytes': 1.11.0
       tr46: 6.0.0
       webidl-conversions: 8.0.1
+    transitivePeerDependencies:
+      - '@noble/hashes'
 
   whatwg-url@5.0.0:
     dependencies:
