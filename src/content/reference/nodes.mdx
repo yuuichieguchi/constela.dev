@@ -97,7 +97,8 @@ Conditionally renders content based on an expression.
   { name: "kind", type: "\"if\"", required: true, description: "Node type identifier." },
   { name: "condition", type: "Expression", required: true, description: "Expression that evaluates to a boolean." },
   { name: "then", type: "ViewNode", required: true, description: "Node to render when condition is truthy." },
-  { name: "else", type: "ViewNode", required: false, description: "Node to render when condition is falsy." }
+  { name: "else", type: "ViewNode", required: false, description: "Node to render when condition is falsy." },
+  { name: "transition", type: "TransitionDirective", required: false, description: "CSS class-based enter/exit transition. See Transitions section below." }
 ]} />
 
 ### Example
@@ -122,6 +123,58 @@ Conditionally renders content based on an expression.
 }
 ```
 
+### Transitions
+
+Add smooth enter/exit animations when content is conditionally rendered:
+
+```json
+{
+  "kind": "if",
+  "condition": { "expr": "state", "name": "visible" },
+  "transition": {
+    "enter": "fade-enter",
+    "enterActive": "fade-enter-active",
+    "exit": "fade-exit",
+    "exitActive": "fade-exit-active"
+  },
+  "then": {
+    "kind": "element",
+    "tag": "div",
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Hello!" } }
+    ]
+  }
+}
+```
+
+Define the corresponding CSS:
+
+```css
+.fade-enter { opacity: 0; }
+.fade-enter-active { transition: opacity 300ms ease; opacity: 1; }
+.fade-exit { opacity: 1; }
+.fade-exit-active { transition: opacity 300ms ease; opacity: 0; }
+```
+
+**How it works:**
+
+1. **Enter**: When the condition becomes truthy, the `enter` class is applied on the first frame, then `enterActive` on the next frame to trigger the CSS transition
+2. **Exit**: When the condition becomes falsy, the `exit` class is applied first, then `exitActive` triggers the transition. The element is removed after `transitionend` fires
+
+#### TransitionDirective
+
+<PropsTable items={[
+  { name: "enter", type: "string", required: true, description: "CSS class applied on the initial frame of enter." },
+  { name: "enterActive", type: "string", required: true, description: "CSS class applied on the next frame to trigger the enter animation." },
+  { name: "exit", type: "string", required: true, description: "CSS class applied on the initial frame of exit." },
+  { name: "exitActive", type: "string", required: true, description: "CSS class applied on the next frame to trigger the exit animation." },
+  { name: "duration", type: "number", required: false, description: "Fallback duration in milliseconds. Defaults to transitionend event detection." }
+]} />
+
+<Callout type="note">
+Transitions are ignored during server-side rendering (SSR). Content is rendered immediately without animation.
+</Callout>
+
 ## Each Node
 
 Iterates over an array and renders content for each item.
@@ -143,8 +196,13 @@ Iterates over an array and renders content for each item.
   { name: "as", type: "string", required: true, description: "Variable name for the current item in each iteration." },
   { name: "index", type: "string", required: false, description: "Variable name for the current index." },
   { name: "key", type: "Expression", required: false, description: "Expression that evaluates to a unique key for each item (e.g., item.id)." },
-  { name: "body", type: "ViewNode", required: true, description: "Node to render for each item." }
+  { name: "body", type: "ViewNode", required: true, description: "Node to render for each item." },
+  { name: "transition", type: "TransitionDirective", required: false, description: "CSS class-based enter/exit transition for list items." }
 ]} />
+
+<Callout type="note">
+Transition support for each nodes with keyed reconciliation is planned for a future release.
+</Callout>
 
 ### Example
 

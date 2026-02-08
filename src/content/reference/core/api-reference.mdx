@@ -14,6 +14,10 @@ description: Key exports and types from @constela/core
 | `ActionStep` | Union type for all step types |
 | `validateProgram` | Function to validate a program against the schema |
 | `ProgramSchema` | Zod schema for runtime validation |
+| `registerPlugin` | Registers a plugin and its global functions |
+| `clearPlugins` | Removes all registered plugins |
+| `getRegisteredPlugins` | Returns a list of registered plugins |
+| `registerGlobalFunction` | Registers a custom global function |
 
 ## Type Definitions
 
@@ -46,3 +50,70 @@ interface ValidationResult {
   errors?: ValidationError[];
 }
 ```
+
+## Plugin System
+
+The plugin system allows external packages to register custom global functions that can be called from the JSON DSL.
+
+### ConstelaPlugin
+
+```typescript
+interface ConstelaPlugin {
+  readonly name: string;
+  readonly globalFunctions?: Record<string, (...args: unknown[]) => unknown>;
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | `string` | Yes | Unique plugin identifier |
+| `globalFunctions` | `Record<string, Function>` | No | Map of function names to implementations |
+
+### registerPlugin
+
+Registers a plugin and all of its global functions:
+
+```typescript
+function registerPlugin(plugin: ConstelaPlugin): void;
+```
+
+- Throws if a plugin with the same name is already registered
+- Throws if any global function name collides with an existing function
+- **Atomic**: if any function registration fails, all previously registered functions from the same plugin are rolled back
+
+### clearPlugins
+
+Removes all registered plugins and their global functions:
+
+```typescript
+function clearPlugins(): void;
+```
+
+### getRegisteredPlugins
+
+Returns a copy of the registered plugins array:
+
+```typescript
+function getRegisteredPlugins(): readonly ConstelaPlugin[];
+```
+
+### registerGlobalFunction
+
+Registers a single custom global function:
+
+```typescript
+function registerGlobalFunction(name: string, fn: (...args: unknown[]) => unknown): void;
+```
+
+- Throws if the name is already taken by a built-in or custom function
+- **Security**: names `__proto__`, `constructor`, and `prototype` are blocked to prevent prototype pollution
+
+### unregisterGlobalFunction
+
+Removes a custom global function:
+
+```typescript
+function unregisterGlobalFunction(name: string): void;
+```
+
+- Throws if the name belongs to a built-in function (built-ins cannot be removed)
