@@ -430,6 +430,170 @@ In fetch `onSuccess` handlers, use `result` to access the response data. In `onE
 }
 ```
 
+## Compile-Time Warnings
+
+Accessibility warnings are reported during compilation but do not block output. They help you progressively improve accessibility.
+
+### A11Y_IMG_NO_ALT
+
+**When it occurs:** An `img` element is missing the `alt` attribute.
+
+**How to fix:**
+
+```json
+// Warning: img without alt
+{ "kind": "element", "tag": "img", "props": { "src": { "expr": "lit", "value": "/photo.jpg" } } }
+
+// Fixed: add alt attribute
+{
+  "kind": "element",
+  "tag": "img",
+  "props": {
+    "src": { "expr": "lit", "value": "/photo.jpg" },
+    "alt": { "expr": "lit", "value": "A scenic mountain view" }
+  }
+}
+```
+
+### A11Y_BUTTON_NO_LABEL
+
+**When it occurs:** A `button` element has no text content or `aria-label`.
+
+**How to fix:**
+
+```json
+// Warning: button with no accessible label
+{
+  "kind": "element",
+  "tag": "button",
+  "props": { "onClick": { "event": "click", "action": "submit" } }
+}
+
+// Fixed: add text content
+{
+  "kind": "element",
+  "tag": "button",
+  "props": { "onClick": { "event": "click", "action": "submit" } },
+  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Submit" } }]
+}
+
+// Alternative: use aria-label for icon buttons
+{
+  "kind": "element",
+  "tag": "button",
+  "props": {
+    "onClick": { "event": "click", "action": "close" },
+    "aria-label": { "expr": "lit", "value": "Close dialog" }
+  }
+}
+```
+
+### A11Y_ANCHOR_NO_LABEL
+
+**When it occurs:** An `a` element has no text content or `aria-label`.
+
+**How to fix:**
+
+```json
+// Warning: anchor with no accessible label
+{
+  "kind": "element",
+  "tag": "a",
+  "props": { "href": { "expr": "lit", "value": "/about" } }
+}
+
+// Fixed: add text content
+{
+  "kind": "element",
+  "tag": "a",
+  "props": { "href": { "expr": "lit", "value": "/about" } },
+  "children": [{ "kind": "text", "value": { "expr": "lit", "value": "About us" } }]
+}
+```
+
+### A11Y_INPUT_NO_LABEL
+
+**When it occurs:** An `input`, `textarea`, or `select` element has no `aria-label` or `aria-labelledby`.
+
+**How to fix:**
+
+```json
+// Warning: input without label
+{ "kind": "element", "tag": "input", "props": { "type": { "expr": "lit", "value": "text" } } }
+
+// Fixed: add aria-label
+{
+  "kind": "element",
+  "tag": "input",
+  "props": {
+    "type": { "expr": "lit", "value": "text" },
+    "aria-label": { "expr": "lit", "value": "Search query" }
+  }
+}
+```
+
+### A11Y_HEADING_SKIP
+
+**When it occurs:** Heading levels are skipped (e.g., `h1` followed by `h3`).
+
+**How to fix:**
+
+```json
+// Warning: skipping from h1 to h3
+[
+  { "kind": "element", "tag": "h1", "children": [...] },
+  { "kind": "element", "tag": "h3", "children": [...] }
+]
+
+// Fixed: use sequential levels
+[
+  { "kind": "element", "tag": "h1", "children": [...] },
+  { "kind": "element", "tag": "h2", "children": [...] }
+]
+```
+
+### A11Y_POSITIVE_TABINDEX
+
+**When it occurs:** An element has a positive `tabindex` value, which disrupts natural tab order.
+
+**How to fix:**
+
+```json
+// Warning: positive tabindex
+{
+  "kind": "element",
+  "tag": "button",
+  "props": { "tabindex": { "expr": "lit", "value": 5 } }
+}
+
+// Fixed: use 0 (natural order) or -1 (programmatic focus only)
+{
+  "kind": "element",
+  "tag": "button",
+  "props": { "tabindex": { "expr": "lit", "value": 0 } }
+}
+```
+
+### A11Y_DUPLICATE_ID
+
+**When it occurs:** Multiple elements share the same literal `id` value.
+
+**How to fix:**
+
+```json
+// Warning: duplicate id "header"
+[
+  { "kind": "element", "tag": "div", "props": { "id": { "expr": "lit", "value": "header" } } },
+  { "kind": "element", "tag": "div", "props": { "id": { "expr": "lit", "value": "header" } } }
+]
+
+// Fixed: use unique ids
+[
+  { "kind": "element", "tag": "div", "props": { "id": { "expr": "lit", "value": "main-header" } } },
+  { "kind": "element", "tag": "div", "props": { "id": { "expr": "lit", "value": "sub-header" } } }
+]
+```
+
 ## Debugging Tips
 
 1. **Read the full error message**: Error messages include the location and context of the issue.

@@ -36,6 +36,27 @@ interface CompileResult {
   code?: string;
   program?: CompiledProgram;
   errors?: CompileError[];
+  warnings?: CompileWarning[];
   sourcemap?: string;
 }
 ```
+
+### CompileWarning
+
+Warnings are non-blocking issues detected during compilation, such as accessibility violations:
+
+```typescript
+interface CompileWarning {
+  code: string;
+  message: string;
+  path: string;
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `code` | `string` | Warning code (e.g., `"A11Y_IMG_NO_ALT"`) |
+| `message` | `string` | Human-readable description of the issue |
+| `path` | `string` | JSON path to the offending node (e.g., `"/view/children/0"`) |
+
+See [Error Codes](/reference/errors#compile-time-warnings) for the full list of warning codes.

@@ -10,6 +10,8 @@ description: Key exports and types from @constela/runtime
 | `createApp` | Creates an application instance |
 | `mount` | Mounts the app to a DOM element |
 | `hydrate` | Hydrates server-rendered HTML |
+| `applyEnterTransition` | Applies enter transition to an element |
+| `applyExitTransition` | Applies exit transition to an element |
 
 ## createApp
 
@@ -44,3 +46,64 @@ interface App {
   dispatch(action: string, payload?: unknown): void;
 }
 ```
+
+## Transition Functions
+
+Low-level transition utilities for applying CSS class-based enter/exit animations. These are called automatically by the runtime when `transition` is specified on `if` or `each` nodes.
+
+### applyEnterTransition
+
+Applies an enter transition to a DOM element:
+
+```typescript
+function applyEnterTransition(el: HTMLElement, config: TransitionDirective): () => void;
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `el` | `HTMLElement` | Target DOM element |
+| `config` | `TransitionDirective` | Transition class configuration |
+| **Returns** | `() => void` | Cancel function to abort the transition |
+
+**Flow:**
+1. Apply `config.enter` class
+2. Next animation frame: apply `config.enterActive`
+3. On `transitionend` (or fallback timeout): remove both classes
+
+### applyExitTransition
+
+Applies an exit transition to a DOM element:
+
+```typescript
+function applyExitTransition(
+  el: HTMLElement,
+  config: TransitionDirective
+): { promise: Promise<void>; cancel: () => void };
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `el` | `HTMLElement` | Target DOM element |
+| `config` | `TransitionDirective` | Transition class configuration |
+| **Returns** | `{ promise, cancel }` | Promise resolves when transition completes; cancel aborts it |
+
+**Flow:**
+1. Apply `config.exit` class
+2. Next animation frame: apply `config.exitActive`
+3. On `transitionend` (or fallback timeout): remove both classes and resolve
+
+### TransitionDirective
+
+```typescript
+interface TransitionDirective {
+  enter: string;
+  enterActive: string;
+  exit: string;
+  exitActive: string;
+  duration?: number;
+}
+```
+
+<Callout type="note">
+These functions are used internally by the runtime. Direct usage is only needed for advanced use cases such as custom renderers.
+</Callout>
