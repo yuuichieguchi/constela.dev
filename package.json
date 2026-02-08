@@ -15,13 +15,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@constela/compiler": "^0.15.22",
-    "@constela/core": "^0.22.1",
-    "@constela/router": "^24.0.0",
-    "@constela/runtime": "^6.0.1",
-    "@constela/server": "^18.0.1",
-    "@constela/start": "^1.10.2",
-    "@constela/ui": "0.6.7",
+    "@constela/compiler": "^0.16.0",
+    "@constela/core": "^0.23.0",
+    "@constela/router": "^25.0.0",
+    "@constela/runtime": "^7.0.0",
+    "@constela/server": "^19.0.0",
+    "@constela/start": "^1.11.0",
+    "@constela/ui": "0.6.8",
     "@tailwindcss/typography": "^0.5.19",
     "remark-gfm": "^4.0.1"
   },

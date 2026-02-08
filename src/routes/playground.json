@@ -2,10 +2,10 @@
   "version": "1.0",
   "externalImports": {
     "monaco-editor": "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0/+esm",
-    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.22.1/+esm",
-    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.15.22/+esm",
-    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@6.0.1/+esm",
-    "@constela/ui": "https://cdn.jsdelivr.net/npm/@constela/ui@0.6.7/+esm"
+    "@constela/core": "https://cdn.jsdelivr.net/npm/@constela/core@0.23.0/+esm",
+    "@constela/compiler": "https://cdn.jsdelivr.net/npm/@constela/compiler@0.16.0/+esm",
+    "@constela/runtime": "https://cdn.jsdelivr.net/npm/@constela/runtime@7.0.0/+esm",
+    "@constela/ui": "https://cdn.jsdelivr.net/npm/@constela/ui@0.6.8/+esm"
   },
   "route": {
     "path": "/playground",
