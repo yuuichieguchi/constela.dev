@@ -370,6 +370,61 @@ Configure application theming with CSS variables:
 
 ---
 
+## Transition Directive
+
+`if` and `each` nodes support an optional `transition` property for CSS class-based enter/exit animations.
+
+### Transition Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `enter` | `string` | No | CSS class applied on the first frame of enter |
+| `enterActive` | `string` | No | CSS class applied during the enter transition |
+| `exit` | `string` | No | CSS class applied on the first frame of exit |
+| `exitActive` | `string` | No | CSS class applied during the exit transition |
+| `duration` | `number` | No | Transition duration in ms (must be non-negative) |
+
+### Example
+
+```json
+{
+  "kind": "if",
+  "condition": { "expr": "state", "name": "showMessage" },
+  "then": {
+    "kind": "element",
+    "tag": "div",
+    "props": { "className": { "expr": "lit", "value": "toast" } },
+    "children": [
+      { "kind": "text", "value": { "expr": "lit", "value": "Saved successfully!" } }
+    ]
+  },
+  "transition": {
+    "enter": "fade-enter",
+    "enterActive": "fade-enter-active",
+    "exit": "fade-exit",
+    "exitActive": "fade-exit-active",
+    "duration": 300
+  }
+}
+```
+
+### CSS for the transition
+
+```css
+.fade-enter { opacity: 0; }
+.fade-enter-active { transition: opacity 300ms ease; opacity: 1; }
+.fade-exit { opacity: 1; }
+.fade-exit-active { transition: opacity 300ms ease; opacity: 0; }
+```
+
+**Enter flow:** Element created → `enter` class → next frame: swap to `enterActive` → transitionend: cleanup.
+
+**Exit flow:** `exit` class → next frame: swap to `exitActive` → transitionend: remove from DOM.
+
+> **SSR Note:** Transitions are client-side only. Server rendering ignores transition directives.
+
+---
+
 ## Action Steps (27 types)
 
 Actions define responses to events. Each action has a name and array of steps.
@@ -876,6 +931,122 @@ AI-generated DSL is automatically validated:
 **Forbidden Actions** (cannot be whitelisted): `import`, `call`, `dom`
 
 **Restricted Actions** (require explicit whitelist): `fetch`
+
+---
+
+## Plugin System
+
+Extend Constela with custom global functions via plugins.
+
+### Configuration
+
+Add plugins to `constela.config.json`:
+
+```json
+{
+  "plugins": ["constela-plugin-charts", "./src/plugins/my-plugin"]
+}
+```
+
+### Defining a Plugin
+
+```typescript
+import type { ConstelaPlugin } from '@constela/core';
+
+const myPlugin: ConstelaPlugin = {
+  name: 'my-plugin',
+  version: '1.0.0',
+  globalFunctions: {
+    greet: (name: string) => `Hello, ${name}!`,
+    formatPrice: (amount: number) => `$${amount.toFixed(2)}`,
+  },
+};
+
+export default myPlugin;
+```
+
+### Using Plugin Functions in DSL
+
+```json
+{
+  "expr": "call",
+  "target": { "expr": "var", "name": "globalFunctions" },
+  "method": "formatPrice",
+  "args": [{ "expr": "state", "name": "price" }]
+}
+```
+
+### Registration API
+
+| Function | Description |
+|----------|-------------|
+| `registerPlugin(plugin)` | Register plugin and all its global functions (atomic) |
+| `clearPlugins()` | Remove all plugins and their functions |
+| `getRegisteredPlugins()` | List registered plugin names |
+| `registerGlobalFunction(name, fn)` | Register a single global function |
+| `unregisterGlobalFunction(name)` | Remove a single global function |
+
+> **Security:** Names containing `__proto__`, `constructor`, or `prototype` are rejected.
+
+---
+
+## Accessibility (a11y) Best Practices
+
+Constela includes compile-time accessibility validation. The compiler checks 7 rules and reports warnings (compilation is not blocked).
+
+### a11y Rules
+
+| Code | Rule | Fix |
+|------|------|-----|
+| `IMG_NO_ALT` | `<img>` missing `alt` | Add `alt` prop |
+| `BUTTON_NO_LABEL` | `<button>` has no label | Add text child or `aria-label` |
+| `ANCHOR_NO_LABEL` | `<a>` has no label | Add text child or `aria-label` |
+| `INPUT_NO_LABEL` | `<input>` has no label | Add `aria-label` prop |
+| `HEADING_SKIP` | Heading levels skipped | Use sequential headings (h1 → h2 → h3) |
+| `POSITIVE_TABINDEX` | Positive `tabindex` | Use `tabindex="0"` or `-1` instead |
+| `DUPLICATE_ID` | Duplicate `id` values | Use unique `id` per element |
+
+### Accessible Form Example
+
+```json
+{
+  "kind": "element",
+  "tag": "form",
+  "children": [
+    {
+      "kind": "element",
+      "tag": "h1",
+      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Contact Us" } }]
+    },
+    {
+      "kind": "element",
+      "tag": "h2",
+      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Your Information" } }]
+    },
+    {
+      "kind": "element",
+      "tag": "img",
+      "props": {
+        "src": { "expr": "lit", "value": "/logo.png" },
+        "alt": { "expr": "lit", "value": "Company logo" }
+      }
+    },
+    {
+      "kind": "element",
+      "tag": "input",
+      "props": {
+        "type": { "expr": "lit", "value": "email" },
+        "aria-label": { "expr": "lit", "value": "Email address" }
+      }
+    },
+    {
+      "kind": "element",
+      "tag": "button",
+      "children": [{ "kind": "text", "value": { "expr": "lit", "value": "Submit" } }]
+    }
+  ]
+}
+```
 
 ---
 
